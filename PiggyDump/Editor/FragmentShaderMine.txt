@@ -1,0 +1,70 @@
+﻿/*
+    Copyright (c) 2019 SaladBadger
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+*/
+
+#version 330 core
+
+smooth in vec3 uvCoord;
+
+uniform sampler1D palette;
+uniform usampler2D texture1;
+uniform usampler2D texture2;
+uniform int hasTexture2;
+
+out vec4 color;
+
+void main()
+{
+	uvec4 pixel = texture(texture1, uvCoord.xy);
+	uint index = pixel.r;
+	vec4 pixelColor = texelFetch(palette, int(index), 0);
+	if (hasTexture2 != 0)
+	{
+		int rot = ((hasTexture2 & (~0x3FFF))>>14)&3;
+		vec2 rotUV = uvCoord.xy;
+		if (rot == 1)
+		{
+			float temp = rotUV.x;
+			rotUV.x = -rotUV.y;
+			rotUV.y = temp;
+			//pixelColor = vec4(1.0, 0.0, 0.0, 1.0);
+		}
+		else if (rot == 2)
+		{
+			rotUV = -rotUV;
+			//pixelColor = vec4(0.0, 1.0, 0.0, 1.0);
+		}
+		else if (rot == 3)
+		{
+			float temp = rotUV.x;
+			rotUV.x = rotUV.y;
+			rotUV.y = -temp;
+			//pixelColor = vec4(0.0, 0.0, 1.0, 1.0);
+		}
+		uvec4 pixel2 = texture(texture2, rotUV);
+		uint index2 = pixel2.r;
+		if (index2 == 254) discard;
+		if (index2 != 255)
+			pixelColor = texelFetch(palette, int(index2), 0);
+	}
+	if (index == 255) discard;
+	color = vec4(pixelColor.rgb * uvCoord.z, 1.0);
+}

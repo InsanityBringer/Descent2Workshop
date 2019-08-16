@@ -1,0 +1,357 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A9CC48AF-AEDF-4A2D-86A7-9288BADBC801}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PiggyDump</RootNamespace>
+    <AssemblyName>PiggyDump</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="OpenTK, Version=3.0.1.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTK.3.0.1\lib\net20\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK.GLControl, Version=3.0.1.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenTK.GLControl.3.0.1\lib\net20\OpenTK.GLControl.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BSPTree.cs" />
+    <Compile Include="ConfigDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigDialog.Designer.cs">
+      <DependentUpon>ConfigDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\ControlCenter.cs" />
+    <Compile Include="Editor\ConvertToOverload.cs" />
+    <Compile Include="Editor\DynamicLight.cs" />
+    <Compile Include="Editor\EditorObject.cs" />
+    <Compile Include="Editor\EditorUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Editor\EditorUI.Designer.cs">
+      <DependentUpon>EditorUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Editor\FlickeringLight.cs" />
+    <Compile Include="Editor\Level.cs" />
+    <Compile Include="Editor\LevelTransform.cs" />
+    <Compile Include="Editor\MatCenter.cs" />
+    <Compile Include="Editor\Render\Camera.cs" />
+    <Compile Include="Editor\Render\MineRender.cs" />
+    <Compile Include="Editor\Render\PickBuffer.cs" />
+    <Compile Include="Editor\Render\Shader.cs" />
+    <Compile Include="Editor\Render\GLUtilities.cs" />
+    <Compile Include="Editor\Render\TransformBuffer.cs" />
+    <Compile Include="Editor\Segment.cs" />
+    <Compile Include="Editor\SharedRendererState.cs" />
+    <Compile Include="Editor\Trigger.cs" />
+    <Compile Include="Editor\VertMatcher.cs" />
+    <Compile Include="Editor\Wall.cs" />
+    <Compile Include="ElementCopy.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ElementCopy.Designer.cs">
+      <DependentUpon>ElementCopy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ElementList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ElementList.Designer.cs">
+      <DependentUpon>ElementList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FixVector.cs" />
+    <Compile Include="HAMDataWriter.cs" />
+    <Compile Include="HAMDataReader.cs" />
+    <Compile Include="HAMEditor2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HAMEditor2.Designer.cs">
+      <DependentUpon>HAMEditor2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HAMElement.cs" />
+    <Compile Include="HAMFile.cs" />
+    <Compile Include="EClip.cs" />
+    <Compile Include="ElementBrowser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ElementBrowser.Designer.cs">
+      <DependentUpon>ElementBrowser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HOGEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HOGEditor.Designer.cs">
+      <DependentUpon>HOGEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HOGFile.cs" />
+    <Compile Include="HOGLump.cs" />
+    <Compile Include="HXMEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HXMEditor.Designer.cs">
+      <DependentUpon>HXMEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HXMFile.cs" />
+    <Compile Include="VHAMLoadDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VHAMLoadDialog.Designer.cs">
+      <DependentUpon>VHAMLoadDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HXMLoadDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HXMLoadDialog.Designer.cs">
+      <DependentUpon>HXMLoadDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IElementManager.cs" />
+    <Compile Include="ImageData.cs" />
+    <Compile Include="ElementLists.cs" />
+    <Compile Include="ImageSelector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImageSelector.Designer.cs">
+      <DependentUpon>ImageSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelRenderer.cs" />
+    <Compile Include="ModelTextureManager.cs" />
+    <Compile Include="Palette.cs" />
+    <Compile Include="PIGEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PIGEditor.Designer.cs">
+      <DependentUpon>PIGEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PIGFile.cs" />
+    <Compile Include="POFReader.cs" />
+    <Compile Include="POFWriter.cs" />
+    <Compile Include="PolymodelFace.cs" />
+    <Compile Include="PolymodelPreviewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PolymodelPreviewer.Designer.cs">
+      <DependentUpon>PolymodelPreviewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Ship.cs" />
+    <Compile Include="Polymodel.cs" />
+    <Compile Include="PolymodelData.cs" />
+    <Compile Include="Powerup.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ConfigDialog.resx">
+      <DependentUpon>ConfigDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Editor\EditorUI.resx">
+      <DependentUpon>EditorUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ElementBrowser.resx">
+      <DependentUpon>ElementBrowser.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ElementCopy.resx">
+      <DependentUpon>ElementCopy.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ElementList.resx">
+      <DependentUpon>ElementList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HAMEditor2.resx">
+      <DependentUpon>HAMEditor2.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HOGEditor.resx">
+      <DependentUpon>HOGEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HXMEditor.resx">
+      <DependentUpon>HXMEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VHAMLoadDialog.resx">
+      <DependentUpon>VHAMLoadDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HXMLoadDialog.resx">
+      <DependentUpon>HXMLoadDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImageSelector.resx">
+      <DependentUpon>ImageSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PIGEditor.resx">
+      <DependentUpon>PIGEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PolymodelPreviewer.resx">
+      <DependentUpon>PolymodelPreviewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StandardUI.resx">
+      <DependentUpon>StandardUI.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SXXEditor.resx">
+      <DependentUpon>SXXEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TexturePreview.resx">
+      <DependentUpon>TexturePreview.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="VHAMEditor.resx">
+      <DependentUpon>VHAMEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="OpenTK.dll.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Reactor.cs" />
+    <Compile Include="RLEEncoder.cs" />
+    <Compile Include="Robot.cs" />
+    <Compile Include="SNDFile.cs" />
+    <Compile Include="Sound.cs" />
+    <Compile Include="StandardUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StandardUI.Designer.cs">
+      <DependentUpon>StandardUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SXXEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SXXEditor.Designer.cs">
+      <DependentUpon>SXXEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TexturePreview.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TexturePreview.Designer.cs">
+      <DependentUpon>TexturePreview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TMAPInfo.cs" />
+    <Compile Include="UserOptions.cs" />
+    <Compile Include="Utilites.cs" />
+    <Compile Include="VClip.cs" />
+    <Compile Include="VHAMEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VHAMEditor.Designer.cs">
+      <DependentUpon>VHAMEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VHAMFile.cs" />
+    <Compile Include="WClip.cs" />
+    <Compile Include="Weapon.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Editor\FragmentShaderMine.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Editor\FragmentShaderOutline.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Editor\VertexShaderShadow.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Editor\VertexShaderMine.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Editor\VertexShaderOutline.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
