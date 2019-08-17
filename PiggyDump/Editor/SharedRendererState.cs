@@ -87,9 +87,9 @@ namespace PiggyDump.Editor
             renderers.Add(renderer);
         }
 
-        public void ToggleSelectedVert(LevelVertex vert)
+        public void SetSelectedVert(LevelVertex vert, int index)
         {
-            if (!vert.selected)
+            if (vert.selected)
             {
                 foreach (Render.MineRender renderer in renderers)
                 {
@@ -100,8 +100,7 @@ namespace PiggyDump.Editor
             {
                 foreach (Render.MineRender renderer in renderers)
                 {
-                    int deleteIndex = state.SelectedVertMapping[vert];
-                    renderer.RemoveSelectedVertAt(deleteIndex);
+                    renderer.RemoveSelectedVertAt(index);
                 }
             }
         }

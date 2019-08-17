@@ -11,6 +11,7 @@ namespace PiggyDump.Editor
         private Level level;
         private HAMFile dataFile;
         private SharedRendererState rendererState;
+        private EditorUI host;
         private List<LevelVertex> selectedVertices = new List<LevelVertex>();
         private Dictionary<LevelVertex, int> selectedVertMapping = new Dictionary<LevelVertex, int>();
         private float gridSize = 1;
@@ -19,11 +20,12 @@ namespace PiggyDump.Editor
         public float GridSize { get { return gridSize; } set { gridSize = value; } }
         public Dictionary<LevelVertex, int> SelectedVertMapping { get => selectedVertMapping; set => selectedVertMapping = value; }
 
-        public EditorState(Level level, HAMFile dataFile, SharedRendererState rendererState)
+        public EditorState(Level level, HAMFile dataFile, SharedRendererState rendererState, EditorUI host)
         {
             this.level = level;
             this.dataFile = dataFile;
             this.rendererState = rendererState;
+            this.host = host;
             rendererState.state = this;
         }
 
@@ -34,23 +36,28 @@ namespace PiggyDump.Editor
 
         public void ToggleSelectedVert(LevelVertex vert)
         {
+            int index;
             if (!vert.selected)
             {
                 vert.selected = true;
-                selectedVertMapping.Add(vert, selectedVertices.Count);
+                index = selectedVertices.Count;
+                selectedVertMapping.Add(vert, index);
                 selectedVertices.Add(vert);
             }
             else
             {
+                index = selectedVertices.Count - 1;
                 vert.selected = false;
-                LevelVertex lastVert = selectedVertices[selectedVertices.Count - 1];
+                LevelVertex lastVert = selectedVertices[index];
                 int deleteIndex = selectedVertMapping[vert];
                 selectedVertMapping[lastVert] = deleteIndex;
                 selectedVertMapping.Remove(vert);
                 selectedVertices[deleteIndex] = lastVert;
-                selectedVertices.RemoveAt(selectedVertices.Count - 1);
+                selectedVertices.RemoveAt(index);
+                index = deleteIndex;
             }
-            rendererState.ToggleSelectedVert(vert);
+            rendererState.SetSelectedVert(vert, index);
+            host.InvalidateAll();
         }
     }
 }

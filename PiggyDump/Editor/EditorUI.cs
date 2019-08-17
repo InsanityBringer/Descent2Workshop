@@ -114,18 +114,17 @@ namespace PiggyDump.Editor
             this.tableLayoutPanel1.Controls.Add(this.glSideView, 1, 1);
 
             SharedRendererState sharedState = new SharedRendererState(level);
+            state = new EditorState(level, datafile, sharedState, this);
+            gl3DView.Tag = new MineRender(level, datafile, state, sharedState, gl3DView);
+            glTopView.Tag = new MineRender(level, datafile, state, sharedState, glTopView);
+            glSideView.Tag = new MineRender(level, datafile, state, sharedState, glSideView);
+            glFrontView.Tag = new MineRender(level, datafile, state, sharedState, glFrontView);
             sharedState.AddRenderer((MineRender)gl3DView.Tag);
             sharedState.AddRenderer((MineRender)glTopView.Tag);
             sharedState.AddRenderer((MineRender)glSideView.Tag);
             sharedState.AddRenderer((MineRender)glFrontView.Tag);
             sharedState.BuildWorld();
 
-            state = new EditorState(level, datafile, sharedState);
-
-            gl3DView.Tag = new MineRender(level, datafile, state, sharedState, gl3DView);
-            glTopView.Tag = new MineRender(level, datafile, state, sharedState, glTopView);
-            glSideView.Tag = new MineRender(level, datafile, state, sharedState, glSideView);
-            glFrontView.Tag = new MineRender(level, datafile, state, sharedState, glFrontView);
         }
 
         private void GLControlPerspective_Load(object sender, EventArgs e)
@@ -234,6 +233,14 @@ namespace PiggyDump.Editor
 
             if (state.HandleEvent(ev)) return;
             if (((IInputEventHandler)control.Tag).HandleEvent(ev)) return;
+        }
+
+        public void InvalidateAll()
+        {
+            gl3DView.Invalidate();
+            glTopView.Invalidate();
+            glSideView.Invalidate();
+            glFrontView.Invalidate();
         }
     }
 }

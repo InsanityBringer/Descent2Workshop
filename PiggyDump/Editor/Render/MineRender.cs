@@ -382,59 +382,6 @@ namespace PiggyDump.Editor.Render
             camera.GetUpSide(out up, out side);
         }
 
-        public int testPick(float testx, float testy)
-        {
-            float[] verts = sharedState.VertBuffer;
-            int numVerts = verts.Length / 4;
-            Vector3 vec;
-            List<Vector3> pts = new List<Vector3>();
-            float bestZ = 10000.0f;
-            int bestID = 0;
-            Vector3 bestVec = new Vector3(0, 0, 0);
-            for (int i = 0; i < numVerts; i++)
-            {
-                vec.X = verts[i * 4 + 0];
-                vec.Y = verts[i * 4 + 1];
-                vec.Z = verts[i * 4 + 2];
-                if (camera.CameraFacingPoint(vec))
-                {
-                    //Console.WriteLine("point in front of camera");
-                    Vector4 projPoint = camera.TransformPoint(vec);
-                    projPoint.Xyz /= projPoint.W;
-                    if (Math.Abs(projPoint.X - testx) < 0.05f && Math.Abs(projPoint.Y - -testy) < 0.05f)
-                    {
-                        if (projPoint.Z < bestZ)
-                        {
-                            bestZ = projPoint.Z;
-                            bestVec = vec;
-                            bestID = i;
-                        }
-                    }
-                }
-            }
-            if (bestZ < 9000.0f)
-            {
-                pts.Add(bestVec);
-                sharedState.ToggleSelectedVert(level.Verts[bestID]);
-            }
-            /*testSelectBuffer = new float[pts.Count * 3];
-            for (int i = 0; i < pts.Count; i++)
-            {
-                testSelectBuffer[i * 3 + 0] = pts[i].X;
-                testSelectBuffer[i * 3 + 1] = pts[i].Y;
-                testSelectBuffer[i * 3 + 2] = pts[i].Z;
-            }
-            testSelectCount = pts.Count;
-            testSelectVAO = GL.GenVertexArray();
-            GL.BindVertexArray(testSelectVAO);
-            testSelectBufferName = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, testSelectBufferName);
-            GL.BufferData(BufferTarget.ArrayBuffer, testSelectBuffer.Length * sizeof(float), testSelectBuffer, BufferUsageHint.StaticDraw);
-            GL.EnableVertexAttribArray(0);
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);*/
-            return -1;
-        }
-
         public void AddSelectedVert(LevelVertex vert)
         {
             host.MakeCurrent();
@@ -536,6 +483,13 @@ namespace PiggyDump.Editor.Render
                     translating = ev.down;
                     return true;
                 }
+                else if (ev.mouseButton == MouseButtons.Left && ev.down)
+                {
+                    float xLocal = ((float)ev.x / ev.w) * 2 - 1f;
+                    float yLocal = ((float)ev.y / ev.h) * 2 - 1f;
+                    PickVertex(xLocal, yLocal);
+                    return true;
+                }
             }
             else if (ev.type == EventType.MouseMove)
             {
@@ -553,6 +507,44 @@ namespace PiggyDump.Editor.Render
                 }
             }
             return false;
+        }
+
+        public int PickVertex(float testx, float testy)
+        {
+            float[] verts = sharedState.VertBuffer;
+            int numVerts = verts.Length / 4;
+            Vector3 vec;
+            List<Vector3> pts = new List<Vector3>();
+            float bestZ = 10000.0f;
+            int bestID = 0;
+            Vector3 bestVec = new Vector3(0, 0, 0);
+            for (int i = 0; i < numVerts; i++)
+            {
+                vec.X = verts[i * 4 + 0];
+                vec.Y = verts[i * 4 + 1];
+                vec.Z = verts[i * 4 + 2];
+                if (camera.CameraFacingPoint(vec))
+                {
+                    //Console.WriteLine("point in front of camera");
+                    Vector4 projPoint = camera.TransformPoint(vec);
+                    projPoint.Xyz /= projPoint.W;
+                    if (Math.Abs(projPoint.X - testx) < 0.05f && Math.Abs(projPoint.Y - -testy) < 0.05f)
+                    {
+                        if (projPoint.Z < bestZ)
+                        {
+                            bestZ = projPoint.Z;
+                            bestVec = vec;
+                            bestID = i;
+                        }
+                    }
+                }
+            }
+            if (bestZ < 9000.0f)
+            {
+                pts.Add(bestVec);
+                state.ToggleSelectedVert(level.Verts[bestID]);
+            }
+            return -1;
         }
     }
 }

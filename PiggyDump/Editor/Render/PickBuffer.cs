@@ -67,7 +67,7 @@ namespace PiggyDump.Editor.Render
         public void RemoveVertAt(int id)
         {
             lastVertex--;
-            if (lastVertex != 0)
+            if (lastVertex != 0 && lastVertex != id) //Don't copy yourself to yourself...
             {
                 GL.BindVertexArray(selectVAOName);
                 GL.BindBuffer(BufferTarget.ArrayBuffer, selectBufferName);
