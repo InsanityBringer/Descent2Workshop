@@ -61,14 +61,11 @@ namespace PiggyDump.Editor
         private Level level;
         private HAMFile datafile;
         private float[] vertBuffer;
-        private List<LevelVertex> selectedVertices = new List<LevelVertex>();
+        public EditorState state;
+
         private List<Render.MineRender> renderers = new List<Render.MineRender>();
         private Dictionary<int, int> textureChainMapping = new Dictionary<int, int>();
         private List<TextureChain> dirtyChains = new List<TextureChain>();
-        private float gridSize = 1;
-        public float GridSize { get { return gridSize; } set { gridSize = value; } }
-        public List<LevelVertex> SelectedVertices { get { return selectedVertices; } }
-        private Dictionary<LevelVertex, int> selectedVertMapping = new Dictionary<LevelVertex, int>();
 
         public float[] VertBuffer
         {
@@ -94,9 +91,6 @@ namespace PiggyDump.Editor
         {
             if (!vert.selected)
             {
-                vert.selected = true;
-                selectedVertMapping.Add(vert, selectedVertices.Count);
-                selectedVertices.Add(vert);
                 foreach (Render.MineRender renderer in renderers)
                 {
                     renderer.AddSelectedVert(vert);
@@ -104,15 +98,9 @@ namespace PiggyDump.Editor
             }
             else
             {
-                vert.selected = false;
-                LevelVertex lastVert = selectedVertices[selectedVertices.Count - 1];
-                int deleteIndex = selectedVertMapping[vert];
-                selectedVertMapping[lastVert] = deleteIndex;
-                selectedVertMapping.Remove(vert);
-                selectedVertices[deleteIndex] = lastVert;
-                selectedVertices.RemoveAt(selectedVertices.Count - 1);
                 foreach (Render.MineRender renderer in renderers)
                 {
+                    int deleteIndex = state.SelectedVertMapping[vert];
                     renderer.RemoveSelectedVertAt(deleteIndex);
                 }
             }
@@ -320,7 +308,7 @@ namespace PiggyDump.Editor
                     renderer.MakeHostCurrent();
                     renderer.ClearShadow();
                     renderer.UpdateWorldOutline();
-                    renderer.RegenerateSelectedPoints(selectedVertices);
+                    renderer.RegenerateSelectedPoints(state.SelectedVertices);
                     renderer.UpdateChains(dirtyChains);
                 }
                 dirtyChains.Clear();

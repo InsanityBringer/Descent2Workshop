@@ -91,12 +91,14 @@
     <Compile Include="Editor\ConvertToOverload.cs" />
     <Compile Include="Editor\DynamicLight.cs" />
     <Compile Include="Editor\EditorObject.cs" />
+    <Compile Include="Editor\EditorState.cs" />
     <Compile Include="Editor\EditorUI.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Editor\EditorUI.Designer.cs">
       <DependentUpon>EditorUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="Editor\InputEvent.cs" />
     <Compile Include="Editor\FlickeringLight.cs" />
     <Compile Include="Editor\Level.cs" />
     <Compile Include="Editor\LevelTransform.cs" />

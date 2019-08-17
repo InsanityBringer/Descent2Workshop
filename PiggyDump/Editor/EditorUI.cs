@@ -38,14 +38,8 @@ namespace PiggyDump.Editor
     public partial class EditorUI : Form
     {
         private bool contextCreated = false;
-        private Level level;
-        private HAMFile datafile;
-        private SharedRendererState sharedState;
-        private bool testDown = false;
-        private int testX = 0, testY = 0;
+        private EditorState state;
         private GLControl lastFocus;
-        private int focusMouseX, focusMouseY;
-        private LevelTransform transform;
         private OpenTK.GLControl gl3DView;
         private OpenTK.GLControl glTopView;
         private OpenTK.GLControl glFrontView;
@@ -118,20 +112,20 @@ namespace PiggyDump.Editor
             this.tableLayoutPanel1.Controls.Add(this.gl3DView, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.glFrontView, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.glSideView, 1, 1);
-            //what a pile of shit
-            this.level = level;
-            this.datafile = datafile;
-            sharedState = new SharedRendererState(level);
-            transform = new LevelTransform(level, sharedState);
-            sharedState.BuildWorld();
-            gl3DView.Tag = new MineRender(level, datafile, sharedState, gl3DView);
-            glTopView.Tag = new MineRender(level, datafile, sharedState, glTopView);
-            glSideView.Tag = new MineRender(level, datafile, sharedState, glSideView);
-            glFrontView.Tag = new MineRender(level, datafile, sharedState, glFrontView);
+
+            SharedRendererState sharedState = new SharedRendererState(level);
             sharedState.AddRenderer((MineRender)gl3DView.Tag);
             sharedState.AddRenderer((MineRender)glTopView.Tag);
             sharedState.AddRenderer((MineRender)glSideView.Tag);
             sharedState.AddRenderer((MineRender)glFrontView.Tag);
+            sharedState.BuildWorld();
+
+            state = new EditorState(level, datafile, sharedState);
+
+            gl3DView.Tag = new MineRender(level, datafile, state, sharedState, gl3DView);
+            glTopView.Tag = new MineRender(level, datafile, state, sharedState, glTopView);
+            glSideView.Tag = new MineRender(level, datafile, state, sharedState, glSideView);
+            glFrontView.Tag = new MineRender(level, datafile, state, sharedState, glFrontView);
         }
 
         private void GLControlPerspective_Load(object sender, EventArgs e)
@@ -200,88 +194,46 @@ namespace PiggyDump.Editor
         private void gl3DView_MouseDown(object sender, MouseEventArgs e)
         {
             Console.WriteLine("mousedown");
-            testX = e.X; testY = e.Y;
-            testDown = true;
+            Control sendingControl = (Control)sender;
+            InputEvent ev = new InputEvent(e.Button, true);
+            ev.x = e.X; ev.y = e.Y;
+            ev.w = sendingControl.Width; ev.h = sendingControl.Height;
+
+            if (state.HandleEvent(ev)) return;
+            if (((IInputEventHandler)sendingControl.Tag).HandleEvent(ev)) return;
         }
 
         private void gl3DView_MouseUp(object sender, MouseEventArgs e)
         {
             GLControl control = (GLControl)sender;
-            MineRender controlRenderer = (MineRender)control.Tag;
-            Console.WriteLine("mouseup {0} {1}", e.X, e.Y);
-            testDown = false;
-            gl3DView.Invalidate();
-            glTopView.Invalidate();
-            glSideView.Invalidate();
-            glFrontView.Invalidate();
-            if (e.Button == MouseButtons.Left)
-            {
-                if (sender == lastFocus)
-                {
-                    if (transform.Type != TransformType.None)
-                    {
-                        transform.FinalizeTransform();
-                        return;
-                    }
-                }
-                controlRenderer.testPick(((float)e.X / control.Size.Width) * 2f - 1f, ((float)e.Y / control.Size.Height) * 2f - 1f);
-            }
+            Control sendingControl = (Control)sender;
+            InputEvent ev = new InputEvent(e.Button, false);
+            ev.x = e.X; ev.y = e.Y;
+            ev.w = sendingControl.Width; ev.h = sendingControl.Height;
+
+            if (state.HandleEvent(ev)) return;
+            if (((IInputEventHandler)sendingControl.Tag).HandleEvent(ev)) return;
         }
 
         private void gl3DView_MouseEnter(object sender, EventArgs e)
         {
-            if (transform.Type == TransformType.None)
-            {
-                lastFocus = (GLControl)sender;
-            }
         }
 
         private void gl3DView_KeyDown(object sender, KeyEventArgs e)
         {
             Console.WriteLine("{0} got a KeyDown", sender);
-            /*if (sender is GLControl)
-                e.Handled = false;*/
-            if (e.KeyCode == Keys.G)
-            {
-                if (lastFocus != null)
-                {
-                    transform.InitTransform(sharedState.SelectedVertices);
-                    Vector3 side, up;
-                    MineRender renderer = (MineRender)lastFocus.Tag;
-                    renderer.GetCameraUpSide(out up, out side);
-                    transform.InitTranslation(side, up, focusMouseX, focusMouseY);
-                }
-            }
+            //need to set up key up before doing event
         }
 
         private void gl3DView_MouseMove(object sender, MouseEventArgs e)
         {
             GLControl control = (GLControl)sender;
             control.MakeCurrent();
-            if (testDown)
-            {
-                int deltaX = e.X - testX;
-                int deltaY = e.Y - testY;
-                //Console.WriteLine("{0} {1}", deltaX, deltaY);
-                int moveType = 0;
-                if (e.Button == MouseButtons.Middle)
-                    moveType = 1;
-                ((MineRender)control.Tag).testMouseMove(-deltaX, -deltaY, moveType);
+            InputEvent ev = new InputEvent(e.X, e.Y);
+            ev.w = control.Width; ev.h = control.Height;
 
-                testX = e.X;
-                testY = e.Y;
-
-                control.Invalidate();
-            }
-            if (sender == lastFocus)
-            {
-                focusMouseX = e.X; focusMouseY = e.Y;
-                if (transform.Type != TransformType.None)
-                {
-                    transform.MouseMove(e.X, e.Y);
-                    control.Invalidate();
-                }
-            }
+            if (state.HandleEvent(ev)) return;
+            if (((IInputEventHandler)control.Tag).HandleEvent(ev)) return;
         }
     }
 }

@@ -25,12 +25,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace PiggyDump.Editor.Render
 {
-    public class MineRender
+    public class MineRender : IInputEventHandler
     {
         class InternalChain
         {
@@ -77,6 +78,7 @@ namespace PiggyDump.Editor.Render
             {
             }
         }
+        private EditorState state;
         private SharedRendererState sharedState;
         private Shader mineShader, outlineShader, shadowShader;
         private List<InternalChain> currentChains = new List<InternalChain>();
@@ -91,14 +93,17 @@ namespace PiggyDump.Editor.Render
         private TransformBuffer transformBuffer = new TransformBuffer();
         private Camera camera;
         private GLControl host;
+        private bool orbiting, translating;
+        private int lastX, lastY;
 
         public Camera ViewCamera { get { return camera; } }
 
-        public MineRender(Level level, HAMFile datafile, SharedRendererState sharedState, GLControl host)
+        public MineRender(Level level, HAMFile datafile, EditorState state, SharedRendererState sharedState, GLControl host)
         {
             this.level = level;
             this.datafile = datafile;
             this.sharedState = sharedState;
+            this.state = state;
             camera = new Camera();
             this.host = host;
         }
@@ -229,17 +234,19 @@ namespace PiggyDump.Editor.Render
             return textureID;
         }
 
-        public void testMouseMove(int x, int y, int move)
+        private void OrbitCamera(int dx, int dy)
         {
-            float ang = (float)(x * .25 * Math.PI / 180.0);
-            float pitch = (float)(y * .25 * Math.PI / 180.0);
-            //camera.Rotate(new Vector3(1.0f, 0.0f, 0.0f), pitch);
-            //camera.Rotate(new Vector3(0.0f, 1.0f, 0.0f), ang);
-            if (move == 0)
-                camera.Translate(new Vector3(-x / 5.0f, y / 5.0f, 0.0f));
-            else if (move == 1)
-                camera.Rotate(-ang, -pitch);
-            //camera.Pitch(pitch);
+            float ang = (float)(dx * .25 * Math.PI / 180.0);
+            float pitch = (float)(dy * .25 * Math.PI / 180.0);
+            camera.Rotate(-ang, -pitch);
+            camera.UpdateShader(mineShader);
+            camera.UpdateShader(outlineShader);
+            camera.UpdateShader(shadowShader);
+        }
+
+        private void TranslateCamera(int dx, int dy)
+        {
+            camera.Translate(new Vector3(-dx / 5.0f, dy / 5.0f, 0.0f));
             camera.UpdateShader(mineShader);
             camera.UpdateShader(outlineShader);
             camera.UpdateShader(shadowShader);
@@ -506,6 +513,46 @@ namespace PiggyDump.Editor.Render
                 InternalChain internalChain = currentChains[textureChainMapping[identifier]];
                 internalChain.UpdateChain(chain);
             }
+        }
+
+        public bool HandleEvent(InputEvent ev)
+        {
+            int deltaX = 0; int deltaY = 0;
+            if (ev.type == EventType.MouseButton || ev.type == EventType.MouseMove)
+            {
+                deltaX = lastX - ev.x; deltaY = lastY - ev.y;
+                lastX = ev.x; lastY = ev.y;
+            }
+
+            if (ev.type == EventType.MouseButton)
+            {
+                if (ev.mouseButton == MouseButtons.Right)
+                {
+                    orbiting = ev.down;
+                    return true;
+                }
+                else if (ev.mouseButton == MouseButtons.Middle)
+                {
+                    translating = ev.down;
+                    return true;
+                }
+            }
+            else if (ev.type == EventType.MouseMove)
+            {
+                if (orbiting)
+                {
+                    OrbitCamera(deltaX, deltaY);
+                    host.Invalidate();
+                    return true;
+                }
+                else if (translating)
+                {
+                    TranslateCamera(deltaX, deltaY);
+                    host.Invalidate();
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
