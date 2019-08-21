@@ -39,6 +39,8 @@
             this.menuItem3 = new System.Windows.Forms.MenuItem();
             this.OpenHAMMenu = new System.Windows.Forms.MenuItem();
             this.OpenVHAMMenu = new System.Windows.Forms.MenuItem();
+            this.OpenHXMMenu = new System.Windows.Forms.MenuItem();
+            this.menuItem2 = new System.Windows.Forms.MenuItem();
             this.OpenHOGMenu = new System.Windows.Forms.MenuItem();
             this.OpenPIGMenu = new System.Windows.Forms.MenuItem();
             this.OpenPOGMenu = new System.Windows.Forms.MenuItem();
@@ -221,8 +223,6 @@
             this.label76 = new System.Windows.Forms.Label();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.tbLog = new System.Windows.Forms.TextBox();
-            this.OpenHXMMenu = new System.Windows.Forms.MenuItem();
-            this.menuItem2 = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.tabPage10.SuspendLayout();
@@ -320,6 +320,17 @@
             this.OpenVHAMMenu.Index = 3;
             this.OpenVHAMMenu.Text = "Open V-HAM";
             this.OpenVHAMMenu.Click += new System.EventHandler(this.menuItem6_Click_1);
+            // 
+            // OpenHXMMenu
+            // 
+            this.OpenHXMMenu.Index = 4;
+            this.OpenHXMMenu.Text = "Open .HXM...";
+            this.OpenHXMMenu.Click += new System.EventHandler(this.OpenHXMMenu_Click);
+            // 
+            // menuItem2
+            // 
+            this.menuItem2.Index = 5;
+            this.menuItem2.Text = "-";
             // 
             // OpenHOGMenu
             // 
@@ -430,6 +441,7 @@
             // 
             this.ViewFNTMenu.Index = 1;
             this.ViewFNTMenu.Text = "View .FNT";
+            this.ViewFNTMenu.Click += new System.EventHandler(this.ViewFNTMenu_Click);
             // 
             // DebugMenu
             // 
@@ -2044,17 +2056,6 @@
             this.tbLog.Size = new System.Drawing.Size(404, 165);
             this.tbLog.TabIndex = 2;
             this.tbLog.Text = "Descent II Workshop log";
-            // 
-            // OpenHXMMenu
-            // 
-            this.OpenHXMMenu.Index = 4;
-            this.OpenHXMMenu.Text = "Open .HXM...";
-            this.OpenHXMMenu.Click += new System.EventHandler(this.OpenHXMMenu_Click);
-            // 
-            // menuItem2
-            // 
-            this.menuItem2.Index = 5;
-            this.menuItem2.Text = "-";
             // 
             // StandardUI
             // 

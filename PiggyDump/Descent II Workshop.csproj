@@ -127,6 +127,13 @@
       <DependentUpon>ElementList.cs</DependentUpon>
     </Compile>
     <Compile Include="FixVector.cs" />
+    <Compile Include="Font.cs" />
+    <Compile Include="FontViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FontViewer.Designer.cs">
+      <DependentUpon>FontViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="HAMDataWriter.cs" />
     <Compile Include="HAMDataReader.cs" />
     <Compile Include="HAMEditor2.cs">
@@ -221,6 +228,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ElementList.resx">
       <DependentUpon>ElementList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FontViewer.resx">
+      <DependentUpon>FontViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="HAMEditor2.resx">
       <DependentUpon>HAMEditor2.cs</DependentUpon>

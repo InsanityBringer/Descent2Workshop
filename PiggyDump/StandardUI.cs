@@ -431,5 +431,17 @@ namespace PiggyDump
                 editor.Show();
             }
         }
+
+        private void ViewFNTMenu_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.Filter = "Font files|*.FNT";
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                Font font = new Font();
+                font.LoadFont(openFileDialog1.FileName);
+                FontViewer viewer = new FontViewer(font);
+                viewer.Show();
+            }
+        }
     }
 }
