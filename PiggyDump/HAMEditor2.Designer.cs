@@ -697,7 +697,7 @@
             this.cbTexHoardGoal.Tag = "5";
             this.cbTexHoardGoal.Text = "Hoard Goal";
             this.cbTexHoardGoal.UseVisualStyleBackColor = true;
-            this.cbTexHoardGoal.CheckedChanged += new System.EventHandler(this.texFlagCheckbox_CheckedChanged);
+            this.cbTexHoardGoal.CheckedChanged += new System.EventHandler(this.TextureFlagCheckbox_CheckedChanged);
             // 
             // cbTexRedGoal
             // 
@@ -709,7 +709,7 @@
             this.cbTexRedGoal.Tag = "4";
             this.cbTexRedGoal.Text = "Red Goal";
             this.cbTexRedGoal.UseVisualStyleBackColor = true;
-            this.cbTexRedGoal.CheckedChanged += new System.EventHandler(this.texFlagCheckbox_CheckedChanged);
+            this.cbTexRedGoal.CheckedChanged += new System.EventHandler(this.TextureFlagCheckbox_CheckedChanged);
             // 
             // cbTexBlueGoal
             // 
@@ -721,7 +721,7 @@
             this.cbTexBlueGoal.Tag = "3";
             this.cbTexBlueGoal.Text = "Blue Goal";
             this.cbTexBlueGoal.UseVisualStyleBackColor = true;
-            this.cbTexBlueGoal.CheckedChanged += new System.EventHandler(this.texFlagCheckbox_CheckedChanged);
+            this.cbTexBlueGoal.CheckedChanged += new System.EventHandler(this.TextureFlagCheckbox_CheckedChanged);
             // 
             // cbTexForcefield
             // 
@@ -733,7 +733,7 @@
             this.cbTexForcefield.Tag = "2";
             this.cbTexForcefield.Text = "Force Field";
             this.cbTexForcefield.UseVisualStyleBackColor = true;
-            this.cbTexForcefield.CheckedChanged += new System.EventHandler(this.texFlagCheckbox_CheckedChanged);
+            this.cbTexForcefield.CheckedChanged += new System.EventHandler(this.TextureFlagCheckbox_CheckedChanged);
             // 
             // cbTexWater
             // 
@@ -745,7 +745,7 @@
             this.cbTexWater.Tag = "1";
             this.cbTexWater.Text = "Water";
             this.cbTexWater.UseVisualStyleBackColor = true;
-            this.cbTexWater.CheckedChanged += new System.EventHandler(this.texFlagCheckbox_CheckedChanged);
+            this.cbTexWater.CheckedChanged += new System.EventHandler(this.TextureFlagCheckbox_CheckedChanged);
             // 
             // cbTexLava
             // 
@@ -757,7 +757,7 @@
             this.cbTexLava.Tag = "0";
             this.cbTexLava.Text = "Volatile (like lava)";
             this.cbTexLava.UseVisualStyleBackColor = true;
-            this.cbTexLava.CheckedChanged += new System.EventHandler(this.texFlagCheckbox_CheckedChanged);
+            this.cbTexLava.CheckedChanged += new System.EventHandler(this.TextureFlagCheckbox_CheckedChanged);
             // 
             // label12
             // 
@@ -4312,7 +4312,7 @@
             this.txtShipMaxRotThrust.TabIndex = 16;
             this.txtShipMaxRotThrust.Tag = "9";
             this.mainToolTip.SetToolTip(this.txtShipMaxRotThrust, "Maximum amount of thrust applied when turning. ");
-            this.txtShipMaxRotThrust.TextChanged += new System.EventHandler(this.txtShipProperty_TextChanged);
+            this.txtShipMaxRotThrust.TextChanged += new System.EventHandler(this.ShipProperty_TextChanged);
             // 
             // txtShipWiggle
             // 
@@ -4322,7 +4322,7 @@
             this.txtShipWiggle.TabIndex = 15;
             this.txtShipWiggle.Tag = "8";
             this.mainToolTip.SetToolTip(this.txtShipWiggle, "Amount the ship bounces up and down while flying.");
-            this.txtShipWiggle.TextChanged += new System.EventHandler(this.txtShipProperty_TextChanged);
+            this.txtShipWiggle.TextChanged += new System.EventHandler(this.ShipProperty_TextChanged);
             // 
             // label119
             // 
@@ -4360,7 +4360,7 @@
             this.txtShipBrakes.Tag = "7";
             this.mainToolTip.SetToolTip(this.txtShipBrakes, "Would be how fast the ship can stop, but not used by default. Included for comple" +
         "teness.");
-            this.txtShipBrakes.TextChanged += new System.EventHandler(this.txtShipProperty_TextChanged);
+            this.txtShipBrakes.TextChanged += new System.EventHandler(this.ShipProperty_TextChanged);
             // 
             // txtShipRevThrust
             // 
@@ -4370,7 +4370,7 @@
             this.txtShipRevThrust.TabIndex = 10;
             this.txtShipRevThrust.Tag = "6";
             this.mainToolTip.SetToolTip(this.txtShipRevThrust, "Would be reverse thrust, but not used by default. Included for completeness.");
-            this.txtShipRevThrust.TextChanged += new System.EventHandler(this.txtShipProperty_TextChanged);
+            this.txtShipRevThrust.TextChanged += new System.EventHandler(this.ShipProperty_TextChanged);
             // 
             // txtShipThrust
             // 
@@ -4380,7 +4380,7 @@
             this.txtShipThrust.TabIndex = 9;
             this.txtShipThrust.Tag = "5";
             this.mainToolTip.SetToolTip(this.txtShipThrust, "Thrust applied 64 times a second.");
-            this.txtShipThrust.TextChanged += new System.EventHandler(this.txtShipProperty_TextChanged);
+            this.txtShipThrust.TextChanged += new System.EventHandler(this.ShipProperty_TextChanged);
             // 
             // label116
             // 
@@ -4399,7 +4399,7 @@
             this.txtShipDrag.TabIndex = 7;
             this.txtShipDrag.Tag = "4";
             this.mainToolTip.SetToolTip(this.txtShipDrag, "Amount of velocity lost 64 times a second. ");
-            this.txtShipDrag.TextChanged += new System.EventHandler(this.txtShipProperty_TextChanged);
+            this.txtShipDrag.TextChanged += new System.EventHandler(this.ShipProperty_TextChanged);
             // 
             // txtShipMass
             // 
@@ -4409,7 +4409,7 @@
             this.txtShipMass.TabIndex = 6;
             this.txtShipMass.Tag = "3";
             this.mainToolTip.SetToolTip(this.txtShipMass, "Mass of the ship, affects how hard it is to get moving.");
-            this.txtShipMass.TextChanged += new System.EventHandler(this.txtShipProperty_TextChanged);
+            this.txtShipMass.TextChanged += new System.EventHandler(this.ShipProperty_TextChanged);
             // 
             // label115
             // 
@@ -4663,7 +4663,7 @@
             this.btnList.TabIndex = 213;
             this.btnList.Text = "List";
             this.btnList.UseVisualStyleBackColor = true;
-            this.btnList.Click += new System.EventHandler(this.button15_Click);
+            this.btnList.Click += new System.EventHandler(this.ListElem_Click);
             // 
             // label50
             // 
@@ -4682,7 +4682,7 @@
             this.btnDeleteElem.TabIndex = 211;
             this.btnDeleteElem.Text = "Delete";
             this.btnDeleteElem.UseVisualStyleBackColor = true;
-            this.btnDeleteElem.Click += new System.EventHandler(this.btnDeleteElem_Click);
+            this.btnDeleteElem.Click += new System.EventHandler(this.DeleteElem_Click);
             // 
             // btnInsertElem
             // 
@@ -4692,7 +4692,7 @@
             this.btnInsertElem.TabIndex = 210;
             this.btnInsertElem.Text = "Insert";
             this.btnInsertElem.UseVisualStyleBackColor = true;
-            this.btnInsertElem.Click += new System.EventHandler(this.btnInsertElem_Click);
+            this.btnInsertElem.Click += new System.EventHandler(this.InsertElem_Click);
             // 
             // label49
             // 
@@ -4727,7 +4727,7 @@
             this.txtElemName.Size = new System.Drawing.Size(164, 20);
             this.txtElemName.TabIndex = 214;
             this.txtElemName.Text = "<unnamed>";
-            this.txtElemName.TextChanged += new System.EventHandler(this.txtElemName_TextChanged);
+            this.txtElemName.TextChanged += new System.EventHandler(this.ElemName_TextChanged);
             // 
             // statusBar1
             // 
