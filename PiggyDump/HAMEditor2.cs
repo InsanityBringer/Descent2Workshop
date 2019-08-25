@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using System.Text;
 
 namespace PiggyDump
 {
@@ -62,6 +63,8 @@ namespace PiggyDump
             datafile = data;
             this.host = host;
             modelRenderer = new ModelRenderer(datafile, host.DefaultPigFile);
+
+            MakeFixedString(12345);
         }
 
         private void HAMEditor2_Load(object sender, EventArgs e)
@@ -74,7 +77,43 @@ namespace PiggyDump
 
         public double GetFloatFromFixed(int fixedvalue)
         {
-            return (double)fixedvalue / 65536D;
+            return fixedvalue / 65536d;
+        }
+
+        //TODO: OPTIMIZE ME
+        public string MakeFixedString(int fixedValue)
+        {
+            int lastDigit = 0;
+            long low = fixedValue & 65535; int high = fixedValue >> 16;
+            byte[] data = new byte[5];
+            data[0] = (byte)(((low * 10) / 65536) % 10);
+            data[1] = (byte)(((low * 100) / 65536) % 10);
+            data[2] = (byte)(((low * 1000) / 65536) % 10);
+            data[3] = (byte)(((low * 10000) / 65536) % 10);
+            data[4] = (byte)(((low * 100000) / 65536) % 10);
+            if (data[4] >= 5) data[3]++;
+            for (int i = 3; i > 0; i--)
+                if (data[i] >= 10)
+                {
+                    data[i] = 0; data[i - 1]++;
+                }
+            if (data[0] >= 10) { data[0] = 0; high++; }
+
+            for (int i = 0; i < 4; i++)
+                if (data[i] != 0)
+                {
+                    lastDigit = i+1;
+                }
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append(high);
+            if (lastDigit > 0)
+            {
+                sb.Append('.');
+                for (int i = 0; i < lastDigit; i++)
+                    sb.Append(data[i]);
+            }
+            return sb.ToString();
         }
 
         public double GetFloatFromFixed88(short fixedvalue)
@@ -97,8 +136,8 @@ namespace PiggyDump
         {
             TMAPInfo texture = datafile.TMapInfo[num];
             txtTexID.Text = datafile.Textures[num].ToString();
-            txtTexLight.Text = GetFloatFromFixed(texture.lighting).ToString();
-            txtTexDamage.Text = GetFloatFromFixed(texture.damage).ToString();
+            txtTexLight.Text = MakeFixedString(texture.lighting);
+            txtTexDamage.Text = MakeFixedString(texture.damage);
             cbTexEClip.SelectedIndex = texture.EClipID + 1;
             txtTexSlideU.Text = GetFloatFromFixed88(texture.slide_u).ToString();
             txtTexSlideV.Text = GetFloatFromFixed88(texture.slide_v).ToString();
@@ -141,9 +180,9 @@ namespace PiggyDump
         public void UpdateVClipPanel(int num)
         {
             VClip animation = datafile.VClips[num];
-            txtAnimFrameSpeed.Text = string.Format("{0:F3}", GetFloatFromFixed(animation.frame_time));
-            txtAnimTotalTime.Text = string.Format("{0:F3}", GetFloatFromFixed(animation.play_time));
-            txtAnimLight.Text = string.Format("{0:F3}", GetFloatFromFixed(animation.light_value));
+            txtAnimFrameSpeed.Text = MakeFixedString(animation.frame_time);
+            txtAnimTotalTime.Text = MakeFixedString(animation.play_time);
+            txtAnimLight.Text =  MakeFixedString(animation.light_value);
             cbVClipSound.SelectedIndex = animation.sound_num + 1;
             txtAnimFrameCount.Text = animation.num_frames.ToString();
             cbAnimRod.Checked = ((animation.flags & 1) == 1);
@@ -159,15 +198,15 @@ namespace PiggyDump
             EClip animation = datafile.EClips[num];
 
             //vclip specific data
-            txtEffectFrameSpeed.Text = string.Format("{0:F3}", GetFloatFromFixed(animation.vc.frame_time));
-            txtEffectTotalTime.Text = string.Format("{0:F3}", GetFloatFromFixed(animation.vc.play_time));
-            txtEffectLight.Text = string.Format("{0:F3}", GetFloatFromFixed(animation.vc.light_value));
+            txtEffectFrameSpeed.Text = MakeFixedString(animation.vc.frame_time);
+            txtEffectTotalTime.Text = MakeFixedString(animation.vc.play_time);
+            txtEffectLight.Text = MakeFixedString(animation.vc.light_value);
             txtEffectFrameCount.Text = animation.vc.num_frames.ToString();
 
             //eclip stuff
             cbEClipBreakEClip.SelectedIndex = animation.DestEClipID + 1;
             cbEClipBreakVClip.SelectedIndex = animation.DestVClipID + 1;
-            txtEffectExplodeSize.Text = string.Format("{0:F3}", GetFloatFromFixed(animation.dest_size));
+            txtEffectExplodeSize.Text = MakeFixedString(animation.dest_size);
             txtEffectBrokenID.Text = animation.dest_bm_num.ToString();
             cbEClipBreakSound.SelectedIndex = animation.sound_num+1;
             cbEClipMineCritical.SelectedIndex = animation.CritClipID + 1;
@@ -183,7 +222,7 @@ namespace PiggyDump
         public void UpdateWClipPanel(int num)
         {
             WClip animation = datafile.WClips[num];
-            txtWallTotalTime.Text = string.Format("{0:F3}", GetFloatFromFixed(animation.play_time)); 
+            txtWallTotalTime.Text = MakeFixedString(animation.play_time); 
             cbWallOpenSound.SelectedIndex = animation.open_sound+1;
             cbWallCloseSound.SelectedIndex = animation.close_sound+1;
             txtWallFilename.Text = new string(animation.filename);
@@ -223,16 +262,16 @@ namespace PiggyDump
             Robot robot = datafile.Robots[num];
             cbRobotAttackSound.SelectedIndex = robot.attack_sound;
             cbRobotClawSound.SelectedIndex = robot.claw_sound;
-            txtRobotDrag.Text = GetFloatFromFixed(robot.drag).ToString();
+            txtRobotDrag.Text = MakeFixedString(robot.drag);
             txtRobotDropProb.Text = robot.contains_prob.ToString();
             txtRobotDrops.Text = robot.contains_count.ToString();
-            txtRobotLight.Text = GetFloatFromFixed(robot.lighting).ToString();
-            txtRobotMass.Text = GetFloatFromFixed(robot.mass).ToString();
+            txtRobotLight.Text = MakeFixedString(robot.lighting);
+            txtRobotMass.Text = MakeFixedString(robot.mass);
             txtRobotScore.Text = robot.score_value.ToString();
             cbRobotHitSound.SelectedIndex = robot.exp1_sound_num;
             cbRobotDeathSound.SelectedIndex = robot.exp2_sound_num;
             cbRobotSeeSound.SelectedIndex = robot.see_sound;
-            txtRobotShield.Text = GetFloatFromFixed(robot.strength).ToString();
+            txtRobotShield.Text = MakeFixedString(robot.strength);
             cbRobotTauntSound.SelectedIndex = robot.taunt_sound;
             txtRobotAim.Text = robot.aim.ToString();
             txtRobotBadass.Text = robot.badass.ToString();
@@ -291,13 +330,13 @@ namespace PiggyDump
         {
             Robot robot = datafile.Robots[(int)nudElementNum.Value];
 
-            txtRobotCircleDist.Text = GetFloatFromFixed(robot.circle_distance[num]).ToString();
+            txtRobotCircleDist.Text = MakeFixedString(robot.circle_distance[num]).ToString();
             txtRobotEvadeSpeed.Text = robot.evade_speed[num].ToString();
-            txtRobotFireDelay.Text = GetFloatFromFixed(robot.firing_wait[num]).ToString();
-            txtRobotFireDelay2.Text = GetFloatFromFixed(robot.firing_wait2[num]).ToString();
-            txtRobotFOV.Text = ((int)(Math.Acos(GetFloatFromFixed(robot.field_of_view[num])) * 180 / Math.PI)).ToString();
-            txtRobotMaxSpeed.Text = GetFloatFromFixed(robot.max_speed[num]).ToString();
-            txtRobotTurnSpeed.Text = GetFloatFromFixed(robot.turn_time[num]).ToString();
+            txtRobotFireDelay.Text = MakeFixedString(robot.firing_wait[num]);
+            txtRobotFireDelay2.Text = MakeFixedString(robot.firing_wait2[num]);
+            txtRobotFOV.Text = ((int)(Math.Round(Math.Acos(GetFloatFromFixed(robot.field_of_view[num])) * 180 / Math.PI, MidpointRounding.AwayFromZero))).ToString();
+            txtRobotMaxSpeed.Text = MakeFixedString(robot.max_speed[num]);
+            txtRobotTurnSpeed.Text = MakeFixedString(robot.turn_time[num]);
             txtRobotShotCount.Text = robot.rapidfire_count[num].ToString();
         }
 
@@ -320,22 +359,22 @@ namespace PiggyDump
             cbWeaponBounce.SelectedIndex = weapon.bounce;
             txtWeaponCockpitImage.Text = weapon.picture.ToString();
             txtWeaponCockpitImageh.Text = weapon.hires_picture.ToString();
-            txtWeaponDrag.Text = GetFloatFromFixed(weapon.drag).ToString();
-            txtWeaponEnergyUsage.Text = GetFloatFromFixed(weapon.energy_usage).ToString();
-            txtWeaponExplosionSize.Text = GetFloatFromFixed(weapon.damage_radius).ToString();
-            txtWeaponFireWait.Text = GetFloatFromFixed(weapon.fire_wait).ToString();
-            txtWeaponFlashSize.Text = GetFloatFromFixed(weapon.flash_size).ToString();
-            txtWeaponImpactSize.Text = GetFloatFromFixed(weapon.impact_size).ToString();
-            txtWeaponLifetime.Text = GetFloatFromFixed(weapon.lifetime).ToString();
-            txtWeaponLight.Text = GetFloatFromFixed(weapon.light).ToString();
-            txtWeaponMass.Text = GetFloatFromFixed(weapon.mass).ToString();
-            txtWeaponMPScale.Text = GetFloatFromFixed(weapon.multi_damage_scale).ToString();
-            txtWeaponPolyLWRatio.Text = GetFloatFromFixed(weapon.po_len_to_width_ratio).ToString();
+            txtWeaponDrag.Text = MakeFixedString(weapon.drag);
+            txtWeaponEnergyUsage.Text = MakeFixedString(weapon.energy_usage);
+            txtWeaponExplosionSize.Text = MakeFixedString(weapon.damage_radius);
+            txtWeaponFireWait.Text = MakeFixedString(weapon.fire_wait);
+            txtWeaponFlashSize.Text = MakeFixedString(weapon.flash_size);
+            txtWeaponImpactSize.Text = MakeFixedString(weapon.impact_size);
+            txtWeaponLifetime.Text = MakeFixedString(weapon.lifetime);
+            txtWeaponLight.Text = MakeFixedString(weapon.light);
+            txtWeaponMass.Text = MakeFixedString(weapon.mass);
+            txtWeaponMPScale.Text = MakeFixedString(weapon.multi_damage_scale);
+            txtWeaponPolyLWRatio.Text = MakeFixedString(weapon.po_len_to_width_ratio);
             txtWeaponProjectileCount.Text = weapon.fire_count.ToString();
-            txtWeaponProjectileSize.Text = GetFloatFromFixed(weapon.blob_size).ToString();
+            txtWeaponProjectileSize.Text = MakeFixedString(weapon.blob_size);
             txtWeaponSpeedvar.Text = weapon.speedvar.ToString();
             txtWeaponStaticSprite.Text = weapon.bitmap.ToString();
-            txtWeaponThrust.Text = GetFloatFromFixed(weapon.thrust).ToString();
+            txtWeaponThrust.Text = MakeFixedString(weapon.thrust);
 
             cbWeaponDestroyable.Checked = weapon.destroyable != 0;
             cbWeaponHoming.Checked = weapon.homing_flag != 0;
@@ -365,8 +404,8 @@ namespace PiggyDump
         {
             Weapon weapon = datafile.Weapons[(int)nudElementNum.Value];
 
-            txtWeaponStr.Text = GetFloatFromFixed(weapon.strength[num]).ToString();
-            txtWeaponSpeed.Text = GetFloatFromFixed(weapon.speed[num]).ToString();
+            txtWeaponStr.Text = MakeFixedString(weapon.strength[num]);
+            txtWeaponSpeed.Text = MakeFixedString(weapon.speed[num]);
         }
 
         private void UpdateWeaponGraphicControls()
@@ -392,18 +431,18 @@ namespace PiggyDump
             Polymodel model = datafile.PolygonModels[num];
             txtModelNumModels.Text = model.n_models.ToString();
             txtModelDataSize.Text = model.model_data_size.ToString();
-            txtModelRadius.Text = GetFloatFromFixed(model.rad).ToString();
+            txtModelRadius.Text = MakeFixedString(model.rad);
             txtModelTextureCount.Text = model.n_textures.ToString();
             cbModelLowDetail.SelectedIndex = model.SimpleModelID+1;
             cbModelDyingModel.SelectedIndex = model.DyingModelID+1;
             cbModelDeadModel.SelectedIndex = model.DeadModelID+1;
 
-            txtModelMinX.Text = GetFloatFromFixed(model.mins.x).ToString();
-            txtModelMinY.Text = GetFloatFromFixed(model.mins.y).ToString();
-            txtModelMinZ.Text = GetFloatFromFixed(model.mins.z).ToString();
-            txtModelMaxX.Text = GetFloatFromFixed(model.maxs.x).ToString();
-            txtModelMaxY.Text = GetFloatFromFixed(model.maxs.y).ToString();
-            txtModelMaxZ.Text = GetFloatFromFixed(model.maxs.z).ToString();
+            txtModelMinX.Text = MakeFixedString(model.mins.x);
+            txtModelMinY.Text = MakeFixedString(model.mins.y);
+            txtModelMinZ.Text = MakeFixedString(model.mins.z);
+            txtModelMaxX.Text = MakeFixedString(model.maxs.x);
+            txtModelMaxY.Text = MakeFixedString(model.maxs.y);
+            txtModelMaxZ.Text = MakeFixedString(model.maxs.z);
 
             txtElemName.Text = datafile.ModelNames[num];
             if (!noPMView)
@@ -419,8 +458,8 @@ namespace PiggyDump
             Powerup powerup = datafile.Powerups[num];
             cbPowerupPickupSound.SelectedIndex = powerup.hit_sound;
             cbPowerupSprite.SelectedIndex = powerup.VClipID;
-            txtPowerupSize.Text = GetFloatFromFixed(powerup.size).ToString();
-            txtPowerupLight.Text = GetFloatFromFixed(powerup.light).ToString();
+            txtPowerupSize.Text = MakeFixedString(powerup.size);
+            txtPowerupLight.Text = MakeFixedString(powerup.light);
             txtElemName.Text = datafile.PowerupNames[num];
         }
 
@@ -437,13 +476,13 @@ namespace PiggyDump
                 cbMarkerModel.Items.Add(datafile.ModelNames[i]);
             }
 
-            txtShipBrakes.Text = GetFloatFromFixed(ship.brakes).ToString();
-            txtShipDrag.Text = GetFloatFromFixed(ship.drag).ToString();
-            txtShipMass.Text = GetFloatFromFixed(ship.mass).ToString();
-            txtShipMaxRotThrust.Text = GetFloatFromFixed(ship.max_rotthrust).ToString();
-            txtShipRevThrust.Text = GetFloatFromFixed(ship.reverse_thrust).ToString();
-            txtShipThrust.Text = GetFloatFromFixed(ship.max_thrust).ToString();
-            txtShipWiggle.Text = GetFloatFromFixed(ship.wiggle).ToString();
+            txtShipBrakes.Text = MakeFixedString(ship.brakes);
+            txtShipDrag.Text = MakeFixedString(ship.drag);
+            txtShipMass.Text = MakeFixedString(ship.mass);
+            txtShipMaxRotThrust.Text = MakeFixedString(ship.max_rotthrust);
+            txtShipRevThrust.Text = MakeFixedString(ship.reverse_thrust);
+            txtShipThrust.Text = MakeFixedString(ship.max_thrust);
+            txtShipWiggle.Text = MakeFixedString(ship.wiggle);
             nudShipTextures.Value = nudShipTextures.Minimum;
             UpdateShipTextures(0);
             //This can thereoetically null, but it never will except on deformed data that descent itself probably wouldn't like
@@ -1350,7 +1389,7 @@ namespace PiggyDump
                         int totalTimeFix = (int)(value * 65536);
                         clip.play_time = totalTimeFix;
                         clip.frame_time = totalTimeFix / clip.num_frames;
-                        txtAnimFrameSpeed.Text = string.Format("{0:F3}", GetFloatFromFixed(clip.frame_time));
+                        txtAnimFrameSpeed.Text = MakeFixedString(clip.frame_time);
                         break;
                     case "2":
                         clip.light_value = (int)(value * 65536);
@@ -1374,7 +1413,7 @@ namespace PiggyDump
                         int totalTimeFix = (int)(value * 65536);
                         clip.vc.play_time = totalTimeFix;
                         clip.vc.frame_time = totalTimeFix / clip.vc.num_frames;
-                        txtEffectFrameSpeed.Text = string.Format("{0:F3}", GetFloatFromFixed(clip.vc.frame_time));
+                        txtEffectFrameSpeed.Text = MakeFixedString(clip.vc.frame_time);
                         break;
                     case "2":
                         clip.vc.light_value = (int)(value * 65536);
