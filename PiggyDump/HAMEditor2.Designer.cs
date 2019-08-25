@@ -2716,9 +2716,10 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(25, 23);
             this.button3.TabIndex = 224;
-            this.button3.Tag = "4";
+            this.button3.Tag = "11";
             this.button3.Text = "...";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.RemapSingleImage_Click);
             // 
             // button1
             // 
@@ -2726,9 +2727,10 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(25, 23);
             this.button1.TabIndex = 223;
-            this.button1.Tag = "4";
+            this.button1.Tag = "10";
             this.button1.Text = "...";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.RemapSingleImage_Click);
             // 
             // btnRemapWeaponSprite
             // 

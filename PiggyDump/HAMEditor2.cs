@@ -1566,21 +1566,21 @@ namespace PiggyDump
                     case "1":
                         datafile.Textures[ElementNumber] = (ushort)(value);
                         UpdatePictureBox(datafile.piggyFile.GetBitmap(value), pbTexPrev);
-                        txtTexID.Text = (value + 1).ToString();
+                        txtTexID.Text = (value).ToString();
                         break;
                     case "2":
                         datafile.VClips[ElementNumber].frames[(int)nudAnimFrame.Value] = (ushort)(value);
                         UpdatePictureBox(datafile.piggyFile.GetBitmap(value), pbAnimFramePreview);
-                        txtAnimFrameNum.Text = (value + 1).ToString();
+                        txtAnimFrameNum.Text = (value).ToString();
                         break;
                     case "3":
                         datafile.EClips[ElementNumber].vc.frames[(int)nudAnimFrame.Value] = (ushort)(value);
                         UpdatePictureBox(datafile.piggyFile.GetBitmap(value), pbAnimFramePreview);
-                        txtEffectFrameNum.Text = (value + 1).ToString();
+                        txtEffectFrameNum.Text = (value).ToString();
                         break;
                     case "4":
                         datafile.Weapons[ElementNumber].bitmap = (ushort)(value);
-                        txtWeaponStaticSprite.Text = (value + 1).ToString();
+                        txtWeaponStaticSprite.Text = (value).ToString();
                         break;
                     case "5":
                         shipvalue = (int)nudShipTextures.Value - 2;
@@ -1593,19 +1593,27 @@ namespace PiggyDump
                         UpdateShipTextures(shipvalue);
                         break;
                     case "7":
-                        txtGagueLores.Text = (value+1).ToString();
+                        txtGagueLores.Text = (value).ToString();
                         datafile.Gauges[ElementNumber] = (ushort)(value);
                         UpdatePictureBox(datafile.piggyFile.GetBitmap(value), pbGagueLores);
                         break;
                     case "8":
-                        txtGagueHires.Text = (value+1).ToString();
+                        txtGagueHires.Text = (value).ToString();
                         datafile.GaugesHires[ElementNumber] = (ushort)(value);
                         UpdatePictureBox(datafile.piggyFile.GetBitmap(value), pbGagueHires);
                         break;
                     case "9":
-                        txtCockpitID.Text = (value + 1).ToString();
+                        txtCockpitID.Text = (value).ToString();
                         datafile.Cockpits[ElementNumber] = (ushort)(value);
                         UpdatePictureBox(datafile.piggyFile.GetBitmap(value), pbCockpit);
+                        break;
+                    case "10":
+                        txtWeaponCockpitImage.Text = (value).ToString();
+                        datafile.Weapons[ElementNumber].picture = (ushort)value;
+                        break;
+                    case "11":
+                        txtWeaponCockpitImageh.Text = (value).ToString();
+                        datafile.Weapons[ElementNumber].hires_picture = (ushort)value;
                         break;
                 }
                 isLocked = false;
