@@ -63,8 +63,6 @@ namespace PiggyDump
             datafile = data;
             this.host = host;
             modelRenderer = new ModelRenderer(datafile, host.DefaultPigFile);
-
-            MakeFixedString(12345);
         }
 
         private void HAMEditor2_Load(object sender, EventArgs e)
@@ -238,9 +236,9 @@ namespace PiggyDump
             {
                 //Update the maximum of the numeric up/down control and ensure that any comboboxes that need to be regenerated for the current element are
                 ElementListInit();
+                isLocked = true;
                 if (nudElementNum.Value >= returnv)
                     nudElementNum.Value = returnv - 1;
-                isLocked = true;
                 FillOutCurrentPanel(tabControl1.SelectedIndex, ElementNumber);
                 isLocked = false;
             }
@@ -562,7 +560,6 @@ namespace PiggyDump
                 isLocked = false;
             }
         }
-
 
         public void UpdateWClipPanel(int num)
         {
