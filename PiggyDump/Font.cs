@@ -120,34 +120,61 @@ namespace PiggyDump
             if (charNum >= numChars) return null;
 
             int charWidth = charWidths[charNum];
-            int[] charData = new int[charWidth * height];
+            int[] charData = new int[charWidth * 4 * height * 4];
 
-            Bitmap bitmap = new Bitmap(charWidth, height);
-            BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, charWidth, height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+            //prescale the image because apparently someone on the .net team thought it would be a good idea to not have any obvious way to rescale images with nearest-neighbor filtering
+            //amazing. My life will be improved the day I never, ever have to touch system.graphics ever again. 
+            //Can someone just tell me what obvious thing I missed while looking at the docs? It would be very nice. 
+            //How about something like a old OpenGL texture, where min and mag filters are properties of the texture? 
+            //Or even the newer sampler model would be nice?
+            Bitmap bitmap = new Bitmap(charWidth * 4, height * 4);
+            BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, charWidth * 4, height * 4), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
             byte pixel;
             byte r, g, b, a;
             int offset = 0, bitmask = 0;
+            int xpix, ypix;
+            int color;
             if ((flags & FT_COLOR) != 0)
             {
                 for (int i = 0; i < charWidth * height; i++)
                 {
+                    xpix = i % charWidth;
+                    ypix = i / charWidth;
                     pixel = fontData[charPointers[charNum] + i];
                     r = (byte)(palette[pixel * 3 + 0] * 255 / 63);
                     g = (byte)(palette[pixel * 3 + 1] * 255 / 63);
                     b = (byte)(palette[pixel * 3 + 2] * 255 / 63);
                     a = 255;
-                    charData[i] = b + (g << 8) + (r << 16) + (a << 24);
+                    color = b + (g << 8) + (r << 16) + (a << 24);
+                    charData[ypix * 4 * charWidth * 4 + xpix * 4] = color;
+                    charData[ypix * 4 * charWidth * 4 + xpix * 4 + 1] = color;
+                    charData[ypix * 4 * charWidth * 4 + xpix * 4 + 2] = color;
+                    charData[ypix * 4 * charWidth * 4 + xpix * 4 + 3] = color;
+                    charData[ypix * 4 * charWidth * 4 + xpix * 4 + (charWidth * 4)] = color;
+                    charData[ypix * 4 * charWidth * 4 + xpix * 4 + 1 + (charWidth * 4)] = color;
+                    charData[ypix * 4 * charWidth * 4 + xpix * 4 + 2 + (charWidth * 4)] = color;
+                    charData[ypix * 4 * charWidth * 4 + xpix * 4 + 3 + (charWidth * 4)] = color;
+                    charData[ypix * 4 * charWidth * 4 + xpix * 4 + (2 * charWidth * 4)] = color;
+                    charData[ypix * 4 * charWidth * 4 + xpix * 4 + 1 + (2 * charWidth * 4)] = color;
+                    charData[ypix * 4 * charWidth * 4 + xpix * 4 + 2 + (2 * charWidth * 4)] = color;
+                    charData[ypix * 4 * charWidth * 4 + xpix * 4 + 3 + (2 * charWidth * 4)] = color;
+                    charData[ypix * 4 * charWidth * 4 + xpix * 4 + (3 * charWidth * 4)] = color;
+                    charData[ypix * 4 * charWidth * 4 + xpix * 4 + 1 + (3 * charWidth * 4)] = color;
+                    charData[ypix * 4 * charWidth * 4 + xpix * 4 + 2 + (3 * charWidth * 4)] = color;
+                    charData[ypix * 4 * charWidth * 4 + xpix * 4 + 3 + (3 * charWidth * 4)] = color;
                 }
             }
             else
             {
                 for (int y = 0; y < height; y++)
                 {
-                    offset = (((width + 7) >> 3) * y);
+                    ypix = y;
+                    offset = (((charWidth + 7) >> 3) * y);
                     bitmask = 0x80;
                     for (int x = 0; x < charWidth; x++)
                     {
+                        xpix = x;
                         if (bitmask == 0)
                         {
                             bitmask = 0x80;
@@ -164,11 +191,27 @@ namespace PiggyDump
                             a = 255;
                         }
                         bitmask >>= 1;
-                        charData[y * charWidth + x] = b + (g << 8) + (r << 16) + (a << 24);
+                        color = b + (g << 8) + (r << 16) + (a << 24);
+                        charData[ypix * 4 * charWidth * 4 + xpix * 4] = color;
+                        charData[ypix * 4 * charWidth * 4 + xpix * 4 + 1] = color;
+                        charData[ypix * 4 * charWidth * 4 + xpix * 4 + 2] = color;
+                        charData[ypix * 4 * charWidth * 4 + xpix * 4 + 3] = color;
+                        charData[ypix * 4 * charWidth * 4 + xpix * 4 + (charWidth * 4)] = color;
+                        charData[ypix * 4 * charWidth * 4 + xpix * 4 + 1 + (charWidth * 4)] = color;
+                        charData[ypix * 4 * charWidth * 4 + xpix * 4 + 2 + (charWidth * 4)] = color;
+                        charData[ypix * 4 * charWidth * 4 + xpix * 4 + 3 + (charWidth * 4)] = color;
+                        charData[ypix * 4 * charWidth * 4 + xpix * 4 + (2 * charWidth * 4)] = color;
+                        charData[ypix * 4 * charWidth * 4 + xpix * 4 + 1 + (2 * charWidth * 4)] = color;
+                        charData[ypix * 4 * charWidth * 4 + xpix * 4 + 2 + (2 * charWidth * 4)] = color;
+                        charData[ypix * 4 * charWidth * 4 + xpix * 4 + 3 + (2 * charWidth * 4)] = color;
+                        charData[ypix * 4 * charWidth * 4 + xpix * 4 + (3 * charWidth * 4)] = color;
+                        charData[ypix * 4 * charWidth * 4 + xpix * 4 + 1 + (3 * charWidth * 4)] = color;
+                        charData[ypix * 4 * charWidth * 4 + xpix * 4 + 2 + (3 * charWidth * 4)] = color;
+                        charData[ypix * 4 * charWidth * 4 + xpix * 4 + 3 + (3 * charWidth * 4)] = color;
                     }
                 }
             }
-            System.Runtime.InteropServices.Marshal.Copy(charData, 0, bitmapData.Scan0, charWidth * height);
+            System.Runtime.InteropServices.Marshal.Copy(charData, 0, bitmapData.Scan0, charWidth * 4 * height * 4);
             bitmap.UnlockBits(bitmapData);
 
             return bitmap;
