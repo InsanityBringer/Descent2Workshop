@@ -347,8 +347,20 @@ namespace PiggyDump
                 sounddata = br.ReadBytes(dataToRead);
             }
 
-            string nameFilename = Path.ChangeExtension(filename, ".names");
-            if (ReadNamefile(nameFilename) != 0)
+            //string nameFilename = Path.ChangeExtension(filename, ".names");
+            //if (ReadNamefile(nameFilename) != 0)
+
+            int chunkName;
+            while (br.BaseStream.Position <= br.BaseStream.Length - 4) //Still room for some chunks
+            {
+                chunkName = br.ReadInt32();
+                if (chunkName == 0x4E4D4148 && ReadNamefile(br) != -1)
+                {
+                    generateNameLists = false;
+                }
+            }
+
+            if (generateNameLists)
             {
                 for (int i = 0; i < VClips.Count; i++)
                     VClipNames.Add(ElementLists.GetVClipName(i));
@@ -372,7 +384,6 @@ namespace PiggyDump
                 }
                 for (int i = 0; i < Powerups.Count; i++)
                     PowerupNames.Add(ElementLists.GetPowerupName(i));
-
             }
 
             foreach (Robot robot in Robots)
@@ -915,9 +926,8 @@ namespace PiggyDump
                 bw.BaseStream.Seek(ptr, SeekOrigin.Begin);
                 bw.Write(sounddata);
             }
+            SaveNamefile(bw);
             bw.Close();
-            string nameFilename = Path.ChangeExtension(filename, ".names");
-            SaveNamefile(nameFilename);
         }
 
         private void LoadReactorGuns(Reactor reactor)
@@ -1210,31 +1220,11 @@ namespace PiggyDump
             }
         }
 
-        public int ReadNamefile(string filename)
+        public int ReadNamefile(BinaryReader br)
         {
-            BinaryReader br;
-            try
-            {
-                br = new BinaryReader(File.Open(filename, FileMode.Open), Encoding.UTF8);
-            }
-            catch (FileNotFoundException)
-            {
-                return -1;
-            }
-            catch (UnauthorizedAccessException)
-            {
-                return -2;
-            }
-            catch (Exception)
-            {
-                return -3;
-            }
-            int sig = br.ReadInt32();
             int ver = br.ReadInt32();
-            if (sig != 0x4E4D4148 || ver != 1)
+            if (/*sig != 0x4E4D4148 ||*/ver != 1)
             {
-                br.Close();
-                br.Dispose();
                 return -1;
             }
             int VClipsCount = br.ReadInt32();
@@ -1247,9 +1237,7 @@ namespace PiggyDump
             if (VClipsCount != VClips.Count || EClipsCount != EClips.Count || RobotsCount != Robots.Count || WeaponsCount != Weapons.Count ||
                 SoundsCount != Sounds.Count || PolymodelCount != PolygonModels.Count || PowerupsCount != Powerups.Count)
             {
-                br.Close();
-                br.Dispose();
-                return -1;
+                return -1; //okay something went really wrong
             }
             for (int i = 0; i < VClips.Count; i++)
                 VClipNames.Add(br.ReadString());
@@ -1266,30 +1254,11 @@ namespace PiggyDump
             for (int i = 0; i < Powerups.Count; i++)
                 PowerupNames.Add(br.ReadString());
 
-            br.Close();
-            br.Dispose();
             return 0;
         }
 
-        public int SaveNamefile(string filename)
+        public int SaveNamefile(BinaryWriter bw)
         {
-            BinaryWriter bw = null;
-            try
-            {
-                bw = new BinaryWriter(File.Open(filename, FileMode.Create), Encoding.UTF8);
-            }
-            catch (FileNotFoundException)
-            {
-                return -1;
-            }
-            catch (UnauthorizedAccessException)
-            {
-                return -2;
-            }
-            catch (Exception)
-            {
-                return -3;
-            }
             //48 41 4D 4E
             bw.Write(0x4E4D4148); //HAMN
             bw.Write(1); //version. in case i fuck something up
@@ -1316,8 +1285,6 @@ namespace PiggyDump
             foreach (string name in PowerupNames)
                 bw.Write(name);
 
-            bw.Close();
-            bw.Dispose();
             return 0;
         }
 
