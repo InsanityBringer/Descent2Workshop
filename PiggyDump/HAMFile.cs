@@ -1226,37 +1226,44 @@ namespace PiggyDump
 
         public int ReadNamefile(BinaryReader br)
         {
-            int ver = br.ReadInt32();
-            if (/*sig != 0x4E4D4148 ||*/ver != 1)
+            try
+            {
+                int ver = br.ReadInt32();
+                if (/*sig != 0x4E4D4148 ||*/ver != 1)
+                {
+                    return -1;
+                }
+                int VClipsCount = br.ReadInt32();
+                int EClipsCount = br.ReadInt32();
+                int RobotsCount = br.ReadInt32();
+                int WeaponsCount = br.ReadInt32();
+                int SoundsCount = br.ReadInt32();
+                int PolymodelCount = br.ReadInt32();
+                int PowerupsCount = br.ReadInt32();
+                if (VClipsCount != VClips.Count || EClipsCount != EClips.Count || RobotsCount != Robots.Count || WeaponsCount != Weapons.Count ||
+                    SoundsCount != Sounds.Count || PolymodelCount != PolygonModels.Count || PowerupsCount != Powerups.Count)
+                {
+                    return -1; //okay something went really wrong
+                }
+                for (int i = 0; i < VClips.Count; i++)
+                    VClipNames.Add(br.ReadString());
+                for (int i = 0; i < EClips.Count; i++)
+                    EClipNames.Add(br.ReadString());
+                for (int i = 0; i < Robots.Count; i++)
+                    RobotNames.Add(br.ReadString());
+                for (int i = 0; i < Weapons.Count; i++)
+                    WeaponNames.Add(br.ReadString());
+                for (int i = 0; i < Sounds.Count; i++)
+                    SoundNames.Add(br.ReadString());
+                for (int i = 0; i < PolygonModels.Count; i++)
+                    ModelNames.Add(br.ReadString());
+                for (int i = 0; i < Powerups.Count; i++)
+                    PowerupNames.Add(br.ReadString());
+            }
+            catch (Exception) //godawful error handling
             {
                 return -1;
             }
-            int VClipsCount = br.ReadInt32();
-            int EClipsCount = br.ReadInt32();
-            int RobotsCount = br.ReadInt32();
-            int WeaponsCount = br.ReadInt32();
-            int SoundsCount = br.ReadInt32();
-            int PolymodelCount = br.ReadInt32();
-            int PowerupsCount = br.ReadInt32();
-            if (VClipsCount != VClips.Count || EClipsCount != EClips.Count || RobotsCount != Robots.Count || WeaponsCount != Weapons.Count ||
-                SoundsCount != Sounds.Count || PolymodelCount != PolygonModels.Count || PowerupsCount != Powerups.Count)
-            {
-                return -1; //okay something went really wrong
-            }
-            for (int i = 0; i < VClips.Count; i++)
-                VClipNames.Add(br.ReadString());
-            for (int i = 0; i < EClips.Count; i++)
-                EClipNames.Add(br.ReadString());
-            for (int i = 0; i < Robots.Count; i++)
-                RobotNames.Add(br.ReadString());
-            for (int i = 0; i < Weapons.Count; i++)
-                WeaponNames.Add(br.ReadString());
-            for (int i = 0; i < Sounds.Count; i++)
-                SoundNames.Add(br.ReadString());
-            for (int i = 0; i < PolygonModels.Count; i++)
-                ModelNames.Add(br.ReadString());
-            for (int i = 0; i < Powerups.Count; i++)
-                PowerupNames.Add(br.ReadString());
 
             return 0;
         }
@@ -1265,40 +1272,47 @@ namespace PiggyDump
         {
             //4F 52 50 4E
 
-            int numOrphaned = 0;
-            Polymodel model;
-            int version = br.ReadInt32();
-            if (version != 1) return -1; //how
-            numOrphaned = br.ReadInt32();
-            int orphanedID;
-            for (int i = 0; i < numOrphaned; i++)
+            try
             {
-                orphanedID = br.ReadInt32();
-                model = PolygonModels[orphanedID];
-                model.numGuns = br.ReadInt32();
-                for (int j = 0; j < model.numGuns; j++)
+                int numOrphaned = 0;
+                Polymodel model;
+                int version = br.ReadInt32();
+                if (version != 1) return -1; //how
+                numOrphaned = br.ReadInt32();
+                int orphanedID;
+                for (int i = 0; i < numOrphaned; i++)
                 {
-                    model.gunSubmodels[j] = br.ReadInt32();
-                    model.gunPoints[j].x = br.ReadInt32();
-                    model.gunPoints[j].y = br.ReadInt32();
-                    model.gunPoints[j].z = br.ReadInt32();
-                    model.gunDirs[j].x = br.ReadInt32();
-                    model.gunDirs[j].y = br.ReadInt32();
-                    model.gunDirs[j].z = br.ReadInt32();
-                }
-                model.isAnimated = br.ReadBoolean();
-                if (model.isAnimated)
-                {
-                    for (int j = 0; j < 10; j++)
+                    orphanedID = br.ReadInt32();
+                    model = PolygonModels[orphanedID];
+                    model.numGuns = br.ReadInt32();
+                    for (int j = 0; j < model.numGuns; j++)
                     {
-                        for (int k = 0; k < 5; k++)
+                        model.gunSubmodels[j] = br.ReadInt32();
+                        model.gunPoints[j].x = br.ReadInt32();
+                        model.gunPoints[j].y = br.ReadInt32();
+                        model.gunPoints[j].z = br.ReadInt32();
+                        model.gunDirs[j].x = br.ReadInt32();
+                        model.gunDirs[j].y = br.ReadInt32();
+                        model.gunDirs[j].z = br.ReadInt32();
+                    }
+                    model.isAnimated = br.ReadBoolean();
+                    if (model.isAnimated)
+                    {
+                        for (int j = 0; j < 10; j++)
                         {
-                            model.animationMatrix[j, k].p = br.ReadInt16();
-                            model.animationMatrix[j, k].b = br.ReadInt16();
-                            model.animationMatrix[j, k].h = br.ReadInt16();
+                            for (int k = 0; k < 5; k++)
+                            {
+                                model.animationMatrix[j, k].p = br.ReadInt16();
+                                model.animationMatrix[j, k].b = br.ReadInt16();
+                                model.animationMatrix[j, k].h = br.ReadInt16();
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception)
+            {
+                return -1;
             }
 
             return 0;
