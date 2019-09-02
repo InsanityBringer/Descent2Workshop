@@ -358,6 +358,10 @@ namespace PiggyDump
                 {
                     generateNameLists = false;
                 }
+                else if (chunkName == 0x4E50524F)
+                {
+                    ReadOrphanedModels(br);
+                }
             }
 
             if (generateNameLists)
@@ -927,6 +931,7 @@ namespace PiggyDump
                 bw.Write(sounddata);
             }
             SaveNamefile(bw);
+            WriteOrphanedModels(bw);
             bw.Close();
         }
 
@@ -1083,7 +1088,6 @@ namespace PiggyDump
         }
 
         //If you call this function, you're a masochist or don't know what you're doing tbh.
-        //Can only delete from the top of the list, to avoid having to update all references of higher numbered elements. Ugh
         public int DeleteElement(HAMType type, int slot)
         {
             switch (type)
@@ -1257,6 +1261,49 @@ namespace PiggyDump
             return 0;
         }
 
+        private int ReadOrphanedModels(BinaryReader br)
+        {
+            //4F 52 50 4E
+
+            int numOrphaned = 0;
+            Polymodel model;
+            int version = br.ReadInt32();
+            if (version != 1) return -1; //how
+            numOrphaned = br.ReadInt32();
+            int orphanedID;
+            for (int i = 0; i < numOrphaned; i++)
+            {
+                orphanedID = br.ReadInt32();
+                model = PolygonModels[orphanedID];
+                model.numGuns = br.ReadInt32();
+                for (int j = 0; j < model.numGuns; j++)
+                {
+                    model.gunSubmodels[j] = br.ReadInt32();
+                    model.gunPoints[j].x = br.ReadInt32();
+                    model.gunPoints[j].y = br.ReadInt32();
+                    model.gunPoints[j].z = br.ReadInt32();
+                    model.gunDirs[j].x = br.ReadInt32();
+                    model.gunDirs[j].y = br.ReadInt32();
+                    model.gunDirs[j].z = br.ReadInt32();
+                }
+                model.isAnimated = br.ReadBoolean();
+                if (model.isAnimated)
+                {
+                    for (int j = 0; j < 10; j++)
+                    {
+                        for (int k = 0; k < 5; k++)
+                        {
+                            model.animationMatrix[j, k].p = br.ReadInt16();
+                            model.animationMatrix[j, k].b = br.ReadInt16();
+                            model.animationMatrix[j, k].h = br.ReadInt16();
+                        }
+                    }
+                }
+            }
+
+            return 0;
+        }
+
         public int SaveNamefile(BinaryWriter bw)
         {
             //48 41 4D 4E
@@ -1284,6 +1331,58 @@ namespace PiggyDump
                 bw.Write(name);
             foreach (string name in PowerupNames)
                 bw.Write(name);
+
+            return 0;
+        }
+
+        private int WriteOrphanedModels(BinaryWriter bw)
+        {
+            //4F 52 50 4E
+
+            int numOrphaned = 0;
+            Polymodel model;
+            for (int i = 0; i < PolygonModels.Count; i++)
+            {
+                if (PolygonModels[i].References.Count == 0)
+                    numOrphaned++;
+            }
+            if (numOrphaned == 0)
+                return 0; //Don't write the chunk if there's no orphaned models. 
+            bw.Write(0x4E50524F); //ORPH
+            bw.Write(1);
+            bw.Write(numOrphaned);
+            for (int i = 0; i < PolygonModels.Count; i++)
+            {
+                model = PolygonModels[i];
+                if (model.References.Count == 0)
+                {
+                    bw.Write(i);
+                    bw.Write(model.numGuns);
+                    for (int j = 0; j < model.numGuns; j++)
+                    {
+                        bw.Write(model.gunSubmodels[j]);
+                        bw.Write(model.gunPoints[j].x);
+                        bw.Write(model.gunPoints[j].y);
+                        bw.Write(model.gunPoints[j].z);
+                        bw.Write(model.gunDirs[j].x);
+                        bw.Write(model.gunDirs[j].y);
+                        bw.Write(model.gunDirs[j].z);
+                    }
+                    bw.Write(model.isAnimated);
+                    if (model.isAnimated)
+                    {
+                        for (int j = 0; j < 10; j++)
+                        {
+                            for (int k = 0; k < 5; k++)
+                            {
+                                bw.Write(model.animationMatrix[j, k].p);
+                                bw.Write(model.animationMatrix[j, k].b);
+                                bw.Write(model.animationMatrix[j, k].h);
+                            }
+                        }
+                    }
+                }
+            }
 
             return 0;
         }

@@ -141,7 +141,7 @@ namespace PiggyDump
                     SetElementControl(true, false);
                     break;
                 case 13:
-                    nudElementNum.Maximum = 2620;
+                    nudElementNum.Maximum = 2619;
                     SetElementControl(false, false);
                     break;
             }

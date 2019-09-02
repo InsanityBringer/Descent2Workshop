@@ -123,8 +123,11 @@ namespace PiggyDump
 
         public void InitReferences(IElementManager manager)
         {
-            model = manager.GetModel(model_num);
-            modelInner = manager.GetModel(model_num_inner);
+            if (render_type == 2)
+            {
+                model = manager.GetModel(model_num);
+                modelInner = manager.GetModel(model_num_inner);
+            }
             flashVClip = manager.GetVClip(flash_vclip);
             robotHitVClip = manager.GetVClip(robot_hit_vclip);
             wallHitVClip = manager.GetVClip(wall_hit_vclip);

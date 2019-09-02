@@ -118,6 +118,7 @@ namespace PiggyDump
 
         public Bitmap GetBitmap(int id)
         {
+            if (id >= images.Count) return images[0].GetPicture(palette);
             ImageData image = (ImageData)images[id];
             return image.GetPicture(palette);
         }
