@@ -126,6 +126,7 @@
     <Compile Include="ElementList.Designer.cs">
       <DependentUpon>ElementList.cs</DependentUpon>
     </Compile>
+    <Compile Include="FileUtilities.cs" />
     <Compile Include="FixVector.cs" />
     <Compile Include="Font.cs" />
     <Compile Include="FontViewer.cs">

@@ -78,9 +78,19 @@ namespace PiggyDump
             }
         }
 
-        public void SaveDataFile(string name)
+        public int SaveDataFile(string filename)
         {
-            BinaryWriter bw = new BinaryWriter(File.Open(name, FileMode.Create));
+            string tempFilename = Path.ChangeExtension(filename, ".newtmp");
+            BinaryWriter bw;
+            try
+            {
+                bw = new BinaryWriter(File.Open(tempFilename, FileMode.Create));
+            }
+            catch (Exception exc)
+            {
+                return FileUtilities.GetErrorCode(exc);
+            }
+
             bw.Write((byte)'D');
             bw.Write((byte)'H');
             bw.Write((byte)'F');
@@ -96,12 +106,38 @@ namespace PiggyDump
                         bw.Write((byte)0);
                 }
                 bw.Write(lump.size);
-                bw.Write(lump.data);
+                if (lump.offset == -1) //This lump has cached data
+                    bw.Write(lump.data);
+                else //This lump doesn't have cached data, and instead needs to be read from the old stream
+                {
+                    byte[] data = GetLumpData(i);
+                    bw.Write(data);
+                }
+                lump.offset = (int)bw.BaseStream.Position - lump.size; //Update the offset for the new file
             }
             bw.Flush();
             bw.Close();
             bw.Dispose();
-            
+
+            //Dispose of the old stream, and open up the new file as the read stream
+            fileStream.Close();
+            fileStream.Dispose();
+
+            if (File.Exists(filename))
+            {
+                try
+                {
+                    File.Delete(filename);
+                }
+                catch (Exception exc) //Can't delete the old file for whatever reason...
+                {
+                    File.Delete(tempFilename); //Delete the temp file then...
+                    return -4;
+                }
+            }
+            File.Move(tempFilename, filename);
+
+            return 0;
         }
 
         public int GetLumpNum(string filename)

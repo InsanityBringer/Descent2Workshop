@@ -92,7 +92,7 @@ namespace PiggyDump
             {
                 HOGFile archive = new HOGFile();
                 archive.LoadDataFile(openFileDialog1.FileName);
-                HOGEditor archiveEditor = new HOGEditor(archive);
+                HOGEditor archiveEditor = new HOGEditor(archive, this);
                 archiveEditor.Show();
             }
         }
@@ -100,7 +100,7 @@ namespace PiggyDump
         private void menuItem12_Click(object sender, EventArgs e)
         {
             HOGFile archive = new HOGFile();
-            HOGEditor archiveEditor = new HOGEditor(archive);
+            HOGEditor archiveEditor = new HOGEditor(archive, this);
             archiveEditor.Show();
         }
 

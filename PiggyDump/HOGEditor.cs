@@ -35,10 +35,12 @@ namespace PiggyDump
     public partial class HOGEditor : Form
     {
         private HOGFile mainFile;
-        public HOGEditor(HOGFile data)
+        private StandardUI host;
+        public HOGEditor(HOGFile data, StandardUI host)
         {
             InitializeComponent();
             mainFile = data;
+            this.host = host;
         }
 
         private void HOGEditor_Load(object sender, EventArgs e)
@@ -139,7 +141,11 @@ namespace PiggyDump
             saveFileDialog1.Filter = "HOG Files|*.HOG";
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                mainFile.SaveDataFile(saveFileDialog1.FileName);
+                int err = mainFile.SaveDataFile(saveFileDialog1.FileName);
+                if (err != 0)
+                {
+                    host.AppendConsole(FileUtilities.FileErrorCodeHandler(err, "write", "HOG file"));
+                }
             }
         }
 
