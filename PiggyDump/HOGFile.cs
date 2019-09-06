@@ -137,6 +137,8 @@ namespace PiggyDump
             }
             File.Move(tempFilename, filename);
 
+            fileStream = new BinaryReader(File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.Read));
+
             return 0;
         }
 

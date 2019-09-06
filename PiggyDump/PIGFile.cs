@@ -103,10 +103,12 @@ namespace PiggyDump
             int offset = 0;
             bw.Write(header);
             bw.Write(version);
-            bw.Write(images.Count-1);
+            bw.Write(images.Count-1); //Start from 1 to avoid writing the bogus image
             for (int i = 1; i < images.Count; i++)
             {
-                images[i].writeImageHeader(ref offset, bw);
+                images[i].offset = offset;
+                offset += images[i].GetSize();
+                images[i].WriteImageHeader(bw);
             }
             for (int i = 1; i < images.Count; i++)
             {

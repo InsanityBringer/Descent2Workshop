@@ -96,17 +96,22 @@ namespace PiggyDump
             if ((flags & BM_FLAG_RLE) != 0)
             {
                 int compressedSize = br.ReadInt32();
-                data = br.ReadBytes(compressedSize);
+                data = br.ReadBytes(compressedSize-4);
             }
             else
             {
-                data = new byte[width * height];
-                for (int cur = 0; cur < width * height; cur++)
-                {
-                    data[cur] = br.ReadByte();
-                }
+                data = br.ReadBytes(width * height);
             }
             br.BaseStream.Seek(curpos, SeekOrigin.Begin);
+        }
+
+        public int GetSize()
+        {
+            if ((flags & BM_FLAG_RLE) != 0)
+            {
+                return data.Length + 4;
+            }
+            return width * height;
         }
 
         public Bitmap GetPicture(Palette palette)
@@ -167,37 +172,18 @@ namespace PiggyDump
 
         public void WriteImage(BinaryWriter bw)
         {
-            /*if ((flags & BM_FLAG_RLE_BIG) != 0)
+            if ((flags & BM_FLAG_RLE) != 0)
             {
-                bw.Write(compressedSize);
-                for (int r = 0; r < height; r++)
-                {
-                    bw.Write(linesizesl[r]);
-                }
-                bw.Write(compressedData);
-            }
-            else if ((flags & BM_FLAG_RLE) != 0)
-            {
-                bw.Write(compressedSize);
-                for (int r = 0; r < height; r++)
-                {
-                    bw.Write(linesizes[r]);
-                }
-                bw.Write(compressedData);
+                bw.Write(data.Length+4); //okay maybe this was a bad idea...
+                bw.Write(data);
             }
             else
             {
-                for (int cy = 0; cy < baseHeight; cy++)
-                {
-                    for (int cx = 0; cx < width; cx++)
-                    {
-                        bw.Write(data[cx + cy * width]);
-                    }
-                }
-            }*/
+                bw.Write(data);
+            }
         }
 
-        public void writeImageHeader(ref int doffset, BinaryWriter bw)
+        public void WriteImageHeader(BinaryWriter bw)
         {
             for (int sx = 0; sx < 8; sx++)
             {
@@ -216,7 +202,7 @@ namespace PiggyDump
             bw.Write(extension);
             bw.Write(flags);
             bw.Write(averageIndex);
-            bw.Write(doffset);
+            bw.Write(offset);
         }
     }
 }
