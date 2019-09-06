@@ -48,7 +48,7 @@ namespace PiggyDump
         {
             int numFrames = 0;
             int nextFrame = 0;
-            ImageData img = piggyFile.images[firstFrame];
+            PIGImage img = piggyFile.images[firstFrame];
             if (img.isAnimated)
             {
                 //Clear the old animation

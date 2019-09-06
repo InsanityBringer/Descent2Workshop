@@ -64,7 +64,7 @@ namespace PiggyDump
 
         private void ImageSelector_Load(object sender, EventArgs e)
         {
-            ImageData img;
+            PIGImage img;
             for (int i = 0; i < pigFile.images.Count; i++)
             {
                 img = pigFile.images[i];

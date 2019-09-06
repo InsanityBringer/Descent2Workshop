@@ -29,7 +29,7 @@ namespace PiggyDump
 {
     public class PIGFile
     {
-        public List<ImageData> images = new List<ImageData>();
+        public List<PIGImage> images = new List<PIGImage>();
         public long startptr = 0L;
         private int header, version;
         private Palette palette;
@@ -38,7 +38,7 @@ namespace PiggyDump
         {
             this.palette = palette;
             //Init a bogus texture for all piggyfiles
-            ImageData bogusTexture = new ImageData(64, 64, 0, 0, 0, 0, "bogus", 0);
+            PIGImage bogusTexture = new PIGImage(64, 64, 0, 0, 0, 0, "bogus", 0);
             bogusTexture.data = new byte[64 * 64];
             //Create an X using descent 1 palette indicies. For accuracy. Heh
             for (int i = 0; i < 4096; i++)
@@ -83,7 +83,7 @@ namespace PiggyDump
                 byte average = br.ReadByte();
                 int offset = br.ReadInt32();
 
-                ImageData image = new ImageData(lx, ly, framedata, flag, average, offset, imagename, extension);
+                PIGImage image = new PIGImage(lx, ly, framedata, flag, average, offset, imagename, extension);
                 images.Add(image);
             }
             startptr = br.BaseStream.Position;
@@ -119,7 +119,7 @@ namespace PiggyDump
         public Bitmap GetBitmap(int id)
         {
             if (id >= images.Count) return images[0].GetPicture(palette);
-            ImageData image = (ImageData)images[id];
+            PIGImage image = (PIGImage)images[id];
             return image.GetPicture(palette);
         }
 

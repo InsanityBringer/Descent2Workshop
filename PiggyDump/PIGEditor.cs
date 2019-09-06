@@ -47,7 +47,7 @@ namespace PiggyDump
         {
             for (int x = 0; x < datafile.images.Count; x++)
             {
-                ImageData image = (ImageData)datafile.images[x];
+                PIGImage image = (PIGImage)datafile.images[x];
                 ListViewItem lvi = new ListViewItem(image.name);
                 lvi.SubItems.Add(image.offset.ToString());
                 //int compressionPercentage = (int)(image.compressionratio * 100f);
@@ -76,11 +76,11 @@ namespace PiggyDump
                 pictureBox1.Image = null;
                 temp.Dispose();
             }
-            ImageData image = datafile.images[listView1.SelectedIndices[0]];
+            PIGImage image = datafile.images[listView1.SelectedIndices[0]];
             pictureBox1.Image = datafile.GetBitmap(listView1.SelectedIndices[0]);
-            TransparentCheck.Checked = (image.flags & ImageData.BM_FLAG_TRANSPARENT) != 0;
-            SupertransparentCheck.Checked = (image.flags & ImageData.BM_FLAG_SUPER_TRANSPARENT) != 0;
-            NoLightingCheck.Checked = (image.flags & ImageData.BM_FLAG_NO_LIGHTING) != 0;
+            TransparentCheck.Checked = (image.flags & PIGImage.BM_FLAG_TRANSPARENT) != 0;
+            SupertransparentCheck.Checked = (image.flags & PIGImage.BM_FLAG_SUPER_TRANSPARENT) != 0;
+            NoLightingCheck.Checked = (image.flags & PIGImage.BM_FLAG_NO_LIGHTING) != 0;
             Color color = datafile.PiggyPalette.GetDrawingColor(image.averageIndex);
             ColorPreview.BackColor = color;
             pictureBox1.Refresh();
@@ -126,7 +126,7 @@ namespace PiggyDump
 
         private string ImageFilename(int index)
         {
-            ImageData image = datafile.images[index];
+            PIGImage image = datafile.images[index];
             if (!image.isAnimated)
             {
                 return image.name;

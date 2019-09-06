@@ -193,7 +193,7 @@ namespace PiggyDump.Editor.Render
             if (!textureMapping.ContainsKey(tex1))
             {
                 ushort texture = datafile.Textures[tex1];
-                ImageData img = datafile.piggyFile.images[texture];
+                PIGImage img = datafile.piggyFile.images[texture];
                 GL.ActiveTexture(TextureUnit.Texture0);
                 int textureID = LoadTexture(img.data, img.width, img.height);
                 textureMapping.Add(tex1, textureID);
@@ -209,7 +209,7 @@ namespace PiggyDump.Editor.Render
                 if (!textureMapping.ContainsKey(tex2))
                 {
                     ushort texture = datafile.Textures[tex2];
-                    ImageData img = datafile.piggyFile.images[texture];
+                    PIGImage img = datafile.piggyFile.images[texture];
                     GL.ActiveTexture(TextureUnit.Texture1);
                     int textureID = LoadTexture(img.data, img.width, img.height);
                     textureMapping.Add(tex2, textureID);

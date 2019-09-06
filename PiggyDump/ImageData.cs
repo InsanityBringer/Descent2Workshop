@@ -31,7 +31,7 @@ using System.Windows.Forms;
 
 namespace PiggyDump
 {
-    public class ImageData
+    public class PIGImage
     {
         public const int BM_FLAG_TRANSPARENT = 1;
         public const int BM_FLAG_SUPER_TRANSPARENT = 2;
@@ -93,7 +93,7 @@ namespace PiggyDump
         public byte extension;
         public bool isAnimated;
         const byte animdata = 1 | 2 | 4 | 8 | 16;
-        public ImageData(int mx, int my, byte framed, byte flag, byte average, int dataOffset, string imagename, byte extension)
+        public PIGImage(int mx, int my, byte framed, byte flag, byte average, int dataOffset, string imagename, byte extension)
         {
             baseWidth = mx; baseHeight = my; flags = flag; averageIndex = average; frameData = framed; offset = dataOffset; this.extension = extension;
             width = baseWidth + (((int)extension & 0x0f) << 8); height = baseHeight + (((int)extension & 0xf0) << 4);

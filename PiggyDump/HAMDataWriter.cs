@@ -506,7 +506,7 @@ namespace PiggyDump
         {
             int eclipCount = CountValidEClips(datafile);
             bool extra;
-            ImageData img;
+            PIGImage img;
             TMAPInfo info = null;
             stringBuilder.Append("!EFFECTS_FLAG\n$EFFECTS\n");
             foreach (EClip clip in datafile.EClips)
@@ -535,7 +535,7 @@ namespace PiggyDump
                     }
                     else if (clip.changing_object_texture != -1)
                         stringBuilder.Append("obj_eclip=1 ");
-                    if ((img.flags & ImageData.BM_FLAG_NO_LIGHTING) != 0)
+                    if ((img.flags & PIGImage.BM_FLAG_NO_LIGHTING) != 0)
                         stringBuilder.Append("vlighting=-1 ");
 
                     stringBuilder.AppendFormat("\n{0}.abm ", img.name);
@@ -556,7 +556,7 @@ namespace PiggyDump
                             stringBuilder.Append("water ");
                         if ((info.flags & TMAPInfo.TMI_FORCE_FIELD) != 0)
                             stringBuilder.Append("force_field ");
-                        if ((img.flags & ImageData.BM_FLAG_SUPER_TRANSPARENT) != 0)
+                        if ((img.flags & PIGImage.BM_FLAG_SUPER_TRANSPARENT) != 0)
                             stringBuilder.Append("superx=254 ");
                         if (info.slide_u != 0 || info.slide_v != 0)
                             stringBuilder.AppendFormat("slide={0:F1} {1:F1} ", info.slide_u / 256.0f, info.slide_v / 256.0f);
@@ -568,7 +568,7 @@ namespace PiggyDump
 
         public static void TableWriteWalls(HAMFile datafile, StringBuilder stringBuilder, PIGFile piggyFile)
         {
-            ImageData img;
+            PIGImage img;
             TMAPInfo info;
             WClip clip;
             stringBuilder.AppendFormat("$WALL_ANIMS Num_wall_anims={0}\n", datafile.WClips.Count);
@@ -584,7 +584,7 @@ namespace PiggyDump
                         stringBuilder.AppendFormat("open_sound={0} ", clip.open_sound);
                     if (clip.close_sound != -1)
                         stringBuilder.AppendFormat("close_sound={0} ", clip.close_sound);
-                    if ((img.flags & ImageData.BM_FLAG_NO_LIGHTING) != 0)
+                    if ((img.flags & PIGImage.BM_FLAG_NO_LIGHTING) != 0)
                         stringBuilder.Append("vlighting=-1 ");
                     else
                         stringBuilder.Append("vlighting=0 ");
@@ -611,7 +611,7 @@ namespace PiggyDump
                         stringBuilder.Append("water ");
                     if ((info.flags & TMAPInfo.TMI_FORCE_FIELD) != 0)
                         stringBuilder.Append("force_field ");
-                    if ((img.flags & ImageData.BM_FLAG_SUPER_TRANSPARENT) != 0)
+                    if ((img.flags & PIGImage.BM_FLAG_SUPER_TRANSPARENT) != 0)
                         stringBuilder.Append("superx=254 ");
                     if (info.slide_u != 0 || info.slide_v != 0)
                         stringBuilder.AppendFormat("slide={0:F1} {1:F1} ", info.slide_u / 256.0f, info.slide_v / 256.0f);
@@ -622,7 +622,7 @@ namespace PiggyDump
 
         public static void TableWriteTextures(HAMFile datafile, StringBuilder stringBuilder, PIGFile piggyFile)
         {
-            ImageData img;
+            PIGImage img;
             TMAPInfo info;
             EClip clip;
             int firstEClip = datafile.EClips[0].changing_wall_texture;
@@ -661,7 +661,7 @@ namespace PiggyDump
                         stringBuilder.Append("water ");
                     if ((info.flags & TMAPInfo.TMI_FORCE_FIELD) != 0)
                         stringBuilder.Append("force_field ");
-                    if ((img.flags & ImageData.BM_FLAG_SUPER_TRANSPARENT) != 0)
+                    if ((img.flags & PIGImage.BM_FLAG_SUPER_TRANSPARENT) != 0)
                         stringBuilder.Append("superx=254 ");
                     if (info.slide_u != 0 || info.slide_v != 0)
                         stringBuilder.AppendFormat("slide={0:F1} {1:F1} ", info.slide_u / 256.0f, info.slide_v / 256.0f);
@@ -826,7 +826,7 @@ namespace PiggyDump
                 id = datafile.Gauges[i];
                 if (id != 0)
                 {
-                    ImageData img = piggyFile.images[id];
+                    PIGImage img = piggyFile.images[id];
                     lastname = name;
                     name = img.name;
                     if (lastname != name)
@@ -855,7 +855,7 @@ namespace PiggyDump
                 id = datafile.GaugesHires[i];
                 if (id != 0)
                 {
-                    ImageData img = piggyFile.images[id];
+                    PIGImage img = piggyFile.images[id];
                     lastname = name;
                     name = img.name;
                     if (lastname != name)

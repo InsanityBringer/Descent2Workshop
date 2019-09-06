@@ -179,7 +179,7 @@ namespace PiggyDump
             {
                 bitmap = GetObjBitmap(i);
                 if (bitmap == 0) continue;
-                ImageData image = baseFile.piggyFile.images[bitmap];
+                PIGImage image = baseFile.piggyFile.images[bitmap];
                 name = image.name.ToLower();
                 if (!image.isAnimated)
                 {
