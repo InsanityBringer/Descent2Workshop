@@ -35,30 +35,6 @@ namespace PiggyDump
     {
         public byte[,] palette = new byte[256, 3];
 
-        public void LoadPalette(string filename)
-        {
-            try
-            {
-                BinaryReader br = new BinaryReader(File.Open(filename, FileMode.Open));
-                for (int x = 0; x < 256; x++)
-                {
-                    for (int y = 0; y < 3; y++)
-                    {
-                        byte channel = br.ReadByte();
-                        palette[x, y] = (byte)(channel * 255 / 63);
-                    }
-                }
-            }
-            catch (FileNotFoundException)
-            {
-                MessageBox.Show("The palette file does not appear to exist");
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("There was an error loading this file");
-            }
-        }
-
         public Palette()
         {
             for (int x = 0; x < 3; x++)
@@ -66,6 +42,17 @@ namespace PiggyDump
                 for (int c = 0; c < 255; c++)
                 {
                     palette[c, x] = (byte)c;
+                }
+            }
+        }
+
+        public Palette(byte[] data)
+        {
+            for (int c = 0; c < 255; c++)
+            {
+                for (int x = 0; x < 3; x++)
+                {
+                    palette[c, x] = (byte)(data[c * 3 + x] * 255 / 63);
                 }
             }
         }

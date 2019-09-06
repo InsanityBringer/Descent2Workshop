@@ -114,13 +114,17 @@ namespace PiggyDump
             openFileDialog1.Filter = ".PIG files|*.PIG";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                string paletteName = Path.GetFileNameWithoutExtension(openFileDialog1.FileName);
-                PIGFile archive = new PIGFile(defaultHogFile.LookUpPalette(paletteName + ".256"));
+                string paletteName = Path.GetFileNameWithoutExtension(openFileDialog1.FileName) + ".256";
+                Palette newPalette; int lumpIndex;
+
+                lumpIndex = defaultHogFile.GetLumpNum(paletteName);
+                if (lumpIndex != -1) newPalette = new Palette(defaultHogFile.GetLumpData(lumpIndex));
+                else newPalette = new Palette(); //If the palette couldn't be located, make a default grayscale palette
+
+                PIGFile archive = new PIGFile(newPalette);
                 archive.LoadDataFile(openFileDialog1.FileName);
                 PIGEditor archiveEditor = new PIGEditor(archive);
                 archiveEditor.host = this;
-                string[] tempstr = openFileDialog1.SafeFileName.Split('.');
-                string palname = tempstr[0] + ".256";
                 archiveEditor.Show();
             }
         }
@@ -337,8 +341,14 @@ namespace PiggyDump
 
         private PIGFile LoadDefaultPig(string filename, HOGFile hogFile)
         {
-            string paletteName = Path.ChangeExtension(Path.GetFileName(filename), ".256");
-            PIGFile defaultPIG = new PIGFile(hogFile.LookUpPalette(paletteName));
+            string paletteName = Path.GetFileNameWithoutExtension(filename) + ".256";
+            Palette newPalette; int lumpIndex;
+
+            lumpIndex = defaultHogFile.GetLumpNum(paletteName);
+            if (lumpIndex != -1) newPalette = new Palette(defaultHogFile.GetLumpData(lumpIndex));
+            else newPalette = new Palette(); //If the palette couldn't be located, make a default grayscale palette
+
+            PIGFile defaultPIG = new PIGFile(newPalette);
             try
             {
                 defaultPIG.LoadDataFile(filename);

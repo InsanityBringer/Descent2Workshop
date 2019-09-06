@@ -64,9 +64,10 @@ namespace PiggyDump
                     string filename = new string(filenamedata);
                     filename = filename.Trim(' ', '\0');
                     int filesize = br.ReadInt32();
+                    int offset = (int)br.BaseStream.Position;
                     br.BaseStream.Seek(filesize, SeekOrigin.Current); //I hate hog files. Wads are cooler..
 
-                    HOGLump lump = new HOGLump(filename, filesize, (int)br.BaseStream.Position);
+                    HOGLump lump = new HOGLump(filename, filesize, offset);
                     lumps.Add(lump);
                 }
             }
@@ -103,6 +104,19 @@ namespace PiggyDump
             
         }
 
+        public int GetLumpNum(string filename)
+        {
+            //TODO: Dictionary lookup
+            for (int i = 0; i < NumLumps; i++)
+            {
+                if (lumps[i].name.Equals(filename, StringComparison.OrdinalIgnoreCase))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
         public HOGLump GetLumpHeader(int id)
         {
             return lumps[id];
@@ -122,29 +136,6 @@ namespace PiggyDump
         public void DeleteLump(int id)
         {
             lumps.RemoveAt(id);
-        }
-
-        public Palette LookUpPalette(string name)
-        {
-            /*for (int x = 0; x < lumps.Count; x++)
-            {
-                if (name.Equals(((HOGLump)lumps[x]).name, StringComparison.OrdinalIgnoreCase))
-                {
-                    HOGLump lump = (HOGLump)lumps[x];
-                    Palette pal = new Palette();
-                    int index = 0;
-                    for (int i = 0; i < 256; i++)
-                    {
-                        for (int c = 0; c < 3; c++)
-                        {
-                            pal.palette[i, c] = (byte)(lump.data[index] * 4);
-                            index++;
-                        }
-                    }
-                    return pal;
-                }
-            }*/
-            return Palette.defaultPalette;
         }
     }
 }
