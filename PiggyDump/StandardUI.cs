@@ -214,7 +214,16 @@ namespace PiggyDump
             openFileDialog1.Filter = ".S** files|*.S22;*.S11";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                SNDFile archive = new SNDFile();
+                bool closeOnExit = true;
+                SNDFile archive;
+
+                if (defaultSoundFile != null && Path.GetFullPath(openFileDialog1.FileName) == Path.GetFullPath(options.GetOption("SNDFile", "")))
+                {
+                    AppendConsole("Loading internal SND file for editing.");
+                    archive = defaultSoundFile;
+                    closeOnExit = false;
+                }
+                archive = new SNDFile();
                 archive.LoadDataFile(openFileDialog1.FileName);
                 SXXEditor archiveEditor = new SXXEditor(this, archive);
                 if (Path.GetExtension(openFileDialog1.FileName).Equals(".S11", StringComparison.OrdinalIgnoreCase) ||
@@ -222,6 +231,7 @@ namespace PiggyDump
                 {
                     archiveEditor.isLowFi = true;
                 }
+                archiveEditor.closeOnExit = closeOnExit;
                 archiveEditor.Show();
             }
         }
