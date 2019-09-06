@@ -28,11 +28,15 @@ namespace PiggyDump
 {
     public class HOGFile
     {
-        public List<HOGLump> lumpList = new List<HOGLump>();
+        private BinaryReader fileStream;
+        private List<HOGLump> lumps = new List<HOGLump>();
+
+        public int NumLumps { get { return lumps.Count; } }
         
         public void LoadDataFile(string name)
         {
-            BinaryReader br = new BinaryReader(File.Open(name, FileMode.Open));
+            BinaryReader br = new BinaryReader(File.Open(name, FileMode.Open, FileAccess.Read, FileShare.Read));
+            fileStream = br;
 
             char[] header = new char[3];
             header[0] = (char)br.ReadByte();
@@ -60,10 +64,10 @@ namespace PiggyDump
                     string filename = new string(filenamedata);
                     filename = filename.Trim(' ', '\0');
                     int filesize = br.ReadInt32();
-                    byte[] data = br.ReadBytes(filesize);
+                    br.BaseStream.Seek(filesize, SeekOrigin.Current); //I hate hog files. Wads are cooler..
 
-                    HOGLump lump = new HOGLump(filename, filesize, data);
-                    lumpList.Add(lump);
+                    HOGLump lump = new HOGLump(filename, filesize, (int)br.BaseStream.Position);
+                    lumps.Add(lump);
                 }
             }
             catch (EndOfStreamException)
@@ -71,8 +75,6 @@ namespace PiggyDump
                 //we got all the files
                 //heh
             }
-
-            br.Close();
         }
 
         public void SaveDataFile(string name)
@@ -82,9 +84,9 @@ namespace PiggyDump
             bw.Write((byte)'H');
             bw.Write((byte)'F');
             HOGLump lump;
-            for (int i = 0; i < lumpList.Count; i++)
+            for (int i = 0; i < lumps.Count; i++)
             {
-                lump = lumpList[i];
+                lump = lumps[i];
                 for (int c = 0; c < 13; c++)
                 {
                     if (c < lump.name.Length)
@@ -101,13 +103,34 @@ namespace PiggyDump
             
         }
 
+        public HOGLump GetLumpHeader(int id)
+        {
+            return lumps[id];
+        }
+
+        public byte[] GetLumpData(int id)
+        {
+            fileStream.BaseStream.Seek(lumps[id].offset, SeekOrigin.Begin);
+            return fileStream.ReadBytes(lumps[id].size);
+        }
+
+        public void AddLump(HOGLump lump)
+        {
+            lumps.Add(lump);
+        }
+
+        public void DeleteLump(int id)
+        {
+            lumps.RemoveAt(id);
+        }
+
         public Palette LookUpPalette(string name)
         {
-            for (int x = 0; x < lumpList.Count; x++)
+            /*for (int x = 0; x < lumps.Count; x++)
             {
-                if (name.Equals(((HOGLump)lumpList[x]).name, StringComparison.OrdinalIgnoreCase))
+                if (name.Equals(((HOGLump)lumps[x]).name, StringComparison.OrdinalIgnoreCase))
                 {
-                    HOGLump lump = (HOGLump)lumpList[x];
+                    HOGLump lump = (HOGLump)lumps[x];
                     Palette pal = new Palette();
                     int index = 0;
                     for (int i = 0; i < 256; i++)
@@ -120,7 +143,7 @@ namespace PiggyDump
                     }
                     return pal;
                 }
-            }
+            }*/
             return Palette.defaultPalette;
         }
     }

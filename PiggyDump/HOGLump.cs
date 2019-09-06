@@ -31,13 +31,14 @@ namespace PiggyDump
     {
         public string name;
         public int size;
-        public byte[] data;
+        public int offset;
+        public byte[] data; //Needed for imported items
 
-        public HOGLump(string name, int size, byte[] data)
+        public HOGLump(string name, int size, int offset)
         {
             this.name = name;
             this.size = size;
-            this.data = data;
+            this.offset = offset;
         }
     }
 }

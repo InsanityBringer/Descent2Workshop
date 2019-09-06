@@ -43,13 +43,13 @@ namespace PiggyDump
 
         private void HOGEditor_Load(object sender, EventArgs e)
         {
-            for (int x = 0; x < mainFile.lumpList.Count; x++)
+            for (int x = 0; x < mainFile.NumLumps; x++)
             {
-                ListViewItem lumpElement = new ListViewItem(((HOGLump)mainFile.lumpList[x]).name);
-                lumpElement.SubItems.Add(((HOGLump)mainFile.lumpList[x]).size.ToString());
+                ListViewItem lumpElement = new ListViewItem(mainFile.GetLumpHeader(x).name);
+                lumpElement.SubItems.Add(mainFile.GetLumpHeader(x).size.ToString());
                 listView1.Items.Add(lumpElement);
             }
-            string count = String.Format("Total Elements: {0}", mainFile.lumpList.Count);
+            string count = string.Format("Total Elements: {0}", mainFile.NumLumps);
             label1.Text = count; 
         }
 
@@ -62,18 +62,18 @@ namespace PiggyDump
                 {
                     br = new BinaryReader(File.Open(openFileDialog1.FileName, FileMode.Open));
                     string filename = openFileDialog1.SafeFileName;
-                    if (filename.Length > 13)
+                    if (filename.Length > 12)
                     {
                         //trim the filename
-                        filename = filename.Remove(13);
+                        filename = filename.Remove(12);
                     }
                     int size = (int)br.BaseStream.Length;
                     byte[] data = br.ReadBytes((int)br.BaseStream.Length);
-                    HOGLump newLump = new HOGLump(filename, size, data);
+                    HOGLump newLump = new HOGLump(filename, size, -1);
                     ListViewItem lumpElement = new ListViewItem(newLump.name);
                     lumpElement.SubItems.Add(newLump.size.ToString());
                     listView1.Items.Add(lumpElement);
-                    mainFile.lumpList.Add(newLump);
+                    mainFile.AddLump(newLump);
                 }
                 catch (Exception)
                 {
@@ -88,22 +88,22 @@ namespace PiggyDump
             {
                 return;
             }
-            mainFile.lumpList.RemoveAt(listView1.SelectedIndices[0]);
+            mainFile.DeleteLump(listView1.SelectedIndices[0]);
             listView1.Items.RemoveAt(listView1.SelectedIndices[0]);
         }
 
         //TODO WHAT THE EVERLOVING CRAP IS THIS DOING HERE
-        private void WriteHogLump(string filename, HOGLump lump)
+        /*private void WriteHogLump(string filename, HOGLump lump)
         {
             BinaryWriter bw = new BinaryWriter(File.Open(filename, FileMode.Create));
             bw.Write(lump.data);
             bw.Flush();
             bw.Close();
-        }
+        }*/
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if (listView1.SelectedIndices.Count == 0) return;
+            /*if (listView1.SelectedIndices.Count == 0) return;
             saveFileDialog1.Filter = "All Files|*.*";
             if (listView1.SelectedIndices.Count > 1)
             {
@@ -121,17 +121,17 @@ namespace PiggyDump
                     foreach (int index in listView1.SelectedIndices)
                     {
                         string newpath = directory + Path.DirectorySeparatorChar + listView1.Items[index].Text;
-                        WriteHogLump(newpath, mainFile.lumpList[index]);
+                        WriteHogLump(newpath, mainFile.lumps[index]);
                     }
                 }
                 else
                 {
                     if (saveFileDialog1.FileName != "")
                     {
-                        WriteHogLump(saveFileDialog1.FileName, mainFile.lumpList[listView1.SelectedIndices[0]]);
+                        WriteHogLump(saveFileDialog1.FileName, mainFile.lumps[listView1.SelectedIndices[0]]);
                     }
                 }
-            }
+            }*/
         }
 
         private void menuItem3_Click(object sender, EventArgs e)
