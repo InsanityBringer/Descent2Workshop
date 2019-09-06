@@ -33,12 +33,17 @@ namespace PiggyDump
 {
     public class PIGImage
     {
+        private const byte animdata = 1 | 2 | 4 | 8 | 16;
+
         public const int BM_FLAG_TRANSPARENT = 1;
         public const int BM_FLAG_SUPER_TRANSPARENT = 2;
         public const int BM_FLAG_NO_LIGHTING = 4;
         public const int BM_FLAG_RLE = 8;
         public const int BM_FLAG_PAGED_OUT = 16;
         public const int BM_FLAG_RLE_BIG = 32;
+
+        //Metaflags, not for use in the game data, but needed for managing data
+        public const int BM_META_LOADED = 1;
         /// <summary>
         /// Name of the image in the Piggy archive
         /// </summary>
@@ -64,27 +69,10 @@ namespace PiggyDump
         /// </summary>
         public int height; 
         /// <summary>
-        /// Uncompressed pixel data.
+        /// Raw image data.
         /// </summary>
         public byte[] data;
-        /// <summary>
-        /// Compressed pixel data.
-        /// </summary>
-        public byte[] compressedData;
-        /// <summary>
-        /// Sizes of each scanline for compressed images.
-        /// </summary>
-        public byte[] linesizes;
-        /// <summary>
-        /// Sizes of each scanline for big compressed images.
-        /// </summary>
-        public ushort[] linesizesl;
-        /// <summary>
-        /// Size of the image when compressed
-        /// </summary>
-        public int compressedSize;
-        public int bytes_read;
-        public float compressionratio;
+
         public byte flags;
         public byte averageIndex;
         public int offset;
@@ -92,7 +80,6 @@ namespace PiggyDump
         public Palette paletteData;
         public byte extension;
         public bool isAnimated;
-        const byte animdata = 1 | 2 | 4 | 8 | 16;
         public PIGImage(int mx, int my, byte framed, byte flag, byte average, int dataOffset, string imagename, byte extension)
         {
             baseWidth = mx; baseHeight = my; flags = flag; averageIndex = average; frameData = framed; offset = dataOffset; this.extension = extension;
@@ -105,95 +92,69 @@ namespace PiggyDump
         public void LoadData(BinaryReader br)
         {
             long curpos = br.BaseStream.Position;
-            bytes_read = 0;
             br.BaseStream.Seek(offset, SeekOrigin.Current);
-            if ((flags & BM_FLAG_RLE_BIG) != 0)
+            if ((flags & BM_FLAG_RLE) != 0)
             {
-                compressedSize = br.ReadInt32();
-                bytes_read += 4;
-                compressionratio = (float)compressedSize / (float)(width * height);
-                compressedData = new byte[compressedSize - (height * 2) - 4];
-                ushort[] locallinesizes = new ushort[height];
-                for (int row = 0; row < height; row++)
-                {
-                    locallinesizes[row] = br.ReadUInt16();
-                    bytes_read += 2;
-                }
-                linesizesl = locallinesizes;
-                for (int pos = 0; pos < (compressedSize - 4 - (height * 2)); pos++)
-                {
-                    compressedData[pos] = br.ReadByte();
-                    bytes_read++;
-                }
-                RLEEncoder RLEDecode = new RLEEncoder();
-                data = RLEDecode.DecodeImage_big(compressedData, locallinesizes, compressedSize - 4, width, height);
-            }
-            else if ((flags & BM_FLAG_RLE) != 0)
-            {
-                compressedSize = br.ReadInt32();
-                //MessageBox.Show(offset.ToString());
-                bytes_read += 4;
-                compressionratio = (float)compressedSize / (float)(width * height);
-                //compressed_data = new byte[compressed_size * sizeof(byte) - sizeof(Int32)];
-                compressedData = new byte[compressedSize - height - 4];
-                linesizes = new byte[height];
-                for (int row = 0; row < height; row++)
-                {
-                    linesizes[row] = br.ReadByte();
-                    bytes_read++;
-                }
-                for (int pos = 0; pos < (compressedSize - 4 - height); pos++)
-                {
-                    try
-                    {
-                        compressedData[pos] = br.ReadByte();
-                        bytes_read++;
-                    }
-                    catch (EndOfStreamException)
-                    {
-                        data = new byte[width * height];
-                        return;
-                    }
-                }
-                RLEEncoder RLEDecode = new RLEEncoder();
-                data = RLEDecode.DecodeImage(compressedData, linesizes, compressedSize - 5, width, height);
+                int compressedSize = br.ReadInt32();
+                data = br.ReadBytes(compressedSize);
             }
             else
             {
-                compressionratio = 1;
-                data = new byte[width *height];
+                data = new byte[width * height];
                 for (int cur = 0; cur < width * height; cur++)
                 {
                     data[cur] = br.ReadByte();
-                    bytes_read++;
                 }
             }
             br.BaseStream.Seek(curpos, SeekOrigin.Begin);
-            //return localdata;
         }
 
         public Bitmap GetPicture(Palette palette)
         {
+            int offset;
             Bitmap image = new Bitmap(width, height);
             int[] rgbData = new int[width * height];
 
-            //if ((flags & 8) == 0)
+            byte[] scanline = new byte[width];
+
+            for (int cury = 0; cury < height; cury++)
             {
+                if ((flags & BM_FLAG_RLE) != 0)
+                {
+                    if ((flags & BM_FLAG_RLE_BIG) != 0)
+                    {
+                        offset = height * 2;
+                        for (int i = 0; i < cury; i++)
+                        {
+                            offset += data[i * 2] + (data[i * 2 + 1] << 8);
+                        }
+                    }
+                    else
+                    {
+                        offset = height;
+                        for (int i = 0; i < cury; i++)
+                        {
+                            offset += data[i];
+                        }
+                    }
+                    RLEEncoder.DecodeScanline(data, scanline, offset, width);
+                }
+                else
+                {
+                    Array.Copy(data, cury * width, scanline, 0, width); //TODO: Find some way to do this without copies
+                }
                 for (int curx = 0; curx < width; curx++)
                 {
-                    for (int cury = 0; cury < height; cury++)
+                    int colorIndex = scanline[curx];
+                    byte r = palette.palette[colorIndex,0];
+                    byte g = palette.palette[colorIndex,1];
+                    byte b = palette.palette[colorIndex,2];
+                    byte a = 255;
+                    if (colorIndex == 255)
                     {
-                        int colorIndex = data[curx + cury * width];
-                        byte r = palette.palette[colorIndex,0];
-                        byte g = palette.palette[colorIndex,1];
-                        byte b = palette.palette[colorIndex,2];
-                        byte a = 255;
-                        if (colorIndex == 255)
-                        {
-                            a = 0;
-                        }
-                        rgbData[curx + cury * width] = b + (g << 8) + (r << 16) + (a << 24);
+                        a = 0;
                     }
+                    rgbData[curx + cury * width] = b + (g << 8) + (r << 16) + (a << 24);
                 }
             }
             
@@ -206,7 +167,7 @@ namespace PiggyDump
 
         public void WriteImage(BinaryWriter bw)
         {
-            if ((flags & BM_FLAG_RLE_BIG) != 0)
+            /*if ((flags & BM_FLAG_RLE_BIG) != 0)
             {
                 bw.Write(compressedSize);
                 for (int r = 0; r < height; r++)
@@ -233,7 +194,7 @@ namespace PiggyDump
                         bw.Write(data[cx + cy * width]);
                     }
                 }
-            }
+            }*/
         }
 
         public void writeImageHeader(ref int doffset, BinaryWriter bw)
@@ -256,7 +217,6 @@ namespace PiggyDump
             bw.Write(flags);
             bw.Write(averageIndex);
             bw.Write(doffset);
-            doffset += bytes_read;
         }
     }
 }

@@ -179,7 +179,7 @@
       <DependentUpon>HXMLoadDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="IElementManager.cs" />
-    <Compile Include="ImageData.cs" />
+    <Compile Include="PIGImage.cs" />
     <Compile Include="ElementLists.cs" />
     <Compile Include="ImageSelector.cs">
       <SubType>Form</SubType>

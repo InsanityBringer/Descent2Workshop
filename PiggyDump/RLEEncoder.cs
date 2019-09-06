@@ -29,24 +29,23 @@ using System.Windows.Forms;
 
 namespace PiggyDump
 {
-    class RLEEncoder
+    public class RLEEncoder
     {
-        byte[,] data;
-        //int size;
-
-        //byte isChainOfBytes = 128 | 64 | 32;
-        //byte getRepeatCount = 1 | 2 | 4 | 8 | 16;
-
-        public byte[] DecodeImage(byte[] input, byte[] linesizes, int size,int x, int y)
+        /// <summary>
+        /// Decodes an RLE scanline.
+        /// </summary>
+        /// <param name="input">Array of the conpressed data.</param>
+        /// <param name="output">Array to store the decompressed pixels in.</param>
+        /// <param name="offset">Offset into the input for the scanline's data.</param>
+        /// <param name="width">Width of the scanline.</param>
+        public static void DecodeScanline(byte[] input, byte[] output, int offset, int width)
         {
-            data = new byte[x, y];
-            byte[] tempdata = new byte[x * y];
             byte curdata = 0;
-            int position = 0;
+            int position = offset;
             byte color = 0;
             int count; 
             int linelocation = 0;
-            while (linelocation < (x * y))
+            while (linelocation < width)
             {
                 curdata = input[position++];
                 if (curdata == 0xE0)
@@ -58,69 +57,15 @@ namespace PiggyDump
                     color = input[position++];
                     for (int temp = 0; temp < count; temp++)
                     {
-                        tempdata[linelocation++] = color;
+                        output[linelocation++] = color;
+                        if (linelocation >= width) break; //Looks like we're done early?
                     }
                 }
                 else
                 {
-                    tempdata[linelocation++] = curdata;
+                    output[linelocation++] = curdata;
                 }
             }
-            /*linelocation = 0;
-            for (int cury = 0; cury < y; cury++)
-            {                
-                for (int curx = 0; curx < x; curx++)
-                {
-                    data[curx, cury] = tempdata[linelocation];
-                    linelocation++;
-                }
-            }*/
-            return tempdata;
         }
-
-        public byte[] DecodeImage_big(byte[] input, ushort[] linesizes, int size, int x, int y)
-        {
-            data = new byte[x, y];
-            byte[] tempdata = new byte[x * y];
-            byte curdata = 0;
-            int position = 0;
-            byte color = 0;
-            int count;
-            int linelocation = 0;
-            while (linelocation < (x * y))
-            {
-                curdata = input[position++];
-                if (curdata == 0xE0)
-                    continue;
-
-                if (curdata > 0xE0)
-                {
-                    count = (byte)(curdata & 0x1F);
-                    color = input[position++];
-                    for (int temp = 0; temp < count; temp++)
-                    {
-                        tempdata[linelocation++] = color;
-                    }
-                }
-                else
-                {
-                    tempdata[linelocation++] = curdata;
-                }
-            }
-            /*linelocation = 0;
-            for (int cury = 0; cury < y; cury++)
-            {
-                for (int curx = 0; curx < x; curx++)
-                {
-                    data[curx, cury] = tempdata[linelocation];
-                    linelocation++;
-                }
-            }*/
-            return tempdata;
-        }
-
-        /*public byte[] EncodeImage(byte[] raw, int x)
-        {
-        }*/
     }
 }
