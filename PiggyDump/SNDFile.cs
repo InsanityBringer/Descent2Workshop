@@ -45,7 +45,7 @@ namespace PiggyDump
         long soundptr = 0;
         public void LoadDataFile(string name)
         {
-            BinaryReader br = new BinaryReader(File.Open(name, FileMode.Open));
+            BinaryReader br = new BinaryReader(File.Open(name, FileMode.Open, FileAccess.Read, FileShare.Read));
 
             int header = br.ReadInt32();
             //48 41 4D 21
