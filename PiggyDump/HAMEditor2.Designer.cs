@@ -2708,6 +2708,7 @@
             this.cbWeaponBounce.Name = "cbWeaponBounce";
             this.cbWeaponBounce.Size = new System.Drawing.Size(100, 21);
             this.cbWeaponBounce.TabIndex = 225;
+            this.cbWeaponBounce.Tag = "15";
             this.cbWeaponBounce.SelectedIndexChanged += new System.EventHandler(this.WeaponComboBox_SelectedIndexChanged);
             // 
             // button3
