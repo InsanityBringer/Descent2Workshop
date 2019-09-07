@@ -162,6 +162,9 @@ namespace PiggyDump
 
         public byte[] GetLumpData(int id)
         {
+            if (lumps[id].offset == -1)
+                return lumps[id].data;
+
             fileStream.BaseStream.Seek(lumps[id].offset, SeekOrigin.Begin);
             return fileStream.ReadBytes(lumps[id].size);
         }

@@ -34,24 +34,29 @@ namespace PiggyDump
 {
     public partial class HOGEditor : Form
     {
-        private HOGFile mainFile;
+        private HOGFile datafile;
         private StandardUI host;
         public HOGEditor(HOGFile data, StandardUI host)
         {
             InitializeComponent();
-            mainFile = data;
+            datafile = data;
             this.host = host;
         }
 
         private void HOGEditor_Load(object sender, EventArgs e)
         {
-            for (int x = 0; x < mainFile.NumLumps; x++)
+            byte[] data;
+            LumpType type;
+            for (int x = 0; x < datafile.NumLumps; x++)
             {
-                ListViewItem lumpElement = new ListViewItem(mainFile.GetLumpHeader(x).name);
-                lumpElement.SubItems.Add(mainFile.GetLumpHeader(x).size.ToString());
+                ListViewItem lumpElement = new ListViewItem(datafile.GetLumpHeader(x).name);
+                lumpElement.SubItems.Add(datafile.GetLumpHeader(x).size.ToString());
+                data = datafile.GetLumpData(x);
+                type = HOGLump.IdentifyLump(datafile.GetLumpHeader(x).name, data);
+                lumpElement.SubItems.Add(type.ToString());
                 listView1.Items.Add(lumpElement);
             }
-            string count = string.Format("Total Elements: {0}", mainFile.NumLumps);
+            string count = string.Format("Total Elements: {0}", datafile.NumLumps);
             label1.Text = count; 
         }
 
@@ -76,7 +81,7 @@ namespace PiggyDump
                     ListViewItem lumpElement = new ListViewItem(newLump.name);
                     lumpElement.SubItems.Add(newLump.size.ToString());
                     listView1.Items.Add(lumpElement);
-                    mainFile.AddLump(newLump);
+                    datafile.AddLump(newLump);
                 }
                 catch (Exception)
                 {
@@ -91,7 +96,7 @@ namespace PiggyDump
             {
                 return;
             }
-            mainFile.DeleteLump(listView1.SelectedIndices[0]);
+            datafile.DeleteLump(listView1.SelectedIndices[0]);
             listView1.Items.RemoveAt(listView1.SelectedIndices[0]);
         }
 
@@ -142,7 +147,7 @@ namespace PiggyDump
             saveFileDialog1.Filter = "HOG Files|*.HOG";
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                int err = mainFile.SaveDataFile(saveFileDialog1.FileName);
+                int err = datafile.SaveDataFile(saveFileDialog1.FileName);
                 if (err != 0)
                 {
                     host.AppendConsole(FileUtilities.FileErrorCodeHandler(err, "write", "HOG file"));
