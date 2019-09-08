@@ -75,6 +75,13 @@ namespace PiggyDump
             {
                 //we got all the files
                 //heh
+                //i love hog
+                byte[] data;
+                for (int i = 0; i < NumLumps; i++)
+                {
+                    data = GetLumpData(i);
+                    lumps[i].type = HOGLump.IdentifyLump(lumps[i].name, data);
+                }
             }
         }
 

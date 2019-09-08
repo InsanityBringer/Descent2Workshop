@@ -46,14 +46,11 @@ namespace PiggyDump
         private void HOGEditor_Load(object sender, EventArgs e)
         {
             byte[] data;
-            LumpType type;
             for (int x = 0; x < datafile.NumLumps; x++)
             {
                 ListViewItem lumpElement = new ListViewItem(datafile.GetLumpHeader(x).name);
                 lumpElement.SubItems.Add(datafile.GetLumpHeader(x).size.ToString());
-                data = datafile.GetLumpData(x);
-                type = HOGLump.IdentifyLump(datafile.GetLumpHeader(x).name, data);
-                lumpElement.SubItems.Add(type.ToString());
+                lumpElement.SubItems.Add(datafile.GetLumpHeader(x).type.ToString());
                 listView1.Items.Add(lumpElement);
             }
             string count = string.Format("Total Elements: {0}", datafile.NumLumps);

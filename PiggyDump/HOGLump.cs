@@ -55,6 +55,7 @@ namespace PiggyDump
         public int size;
         public int offset;
         public byte[] data; //Needed for imported items
+        public LumpType type;
 
         public HOGLump(string name, int size, int offset)
         {
@@ -65,11 +66,59 @@ namespace PiggyDump
 
         public static LumpType IdentifyLump(string name, byte[] data)
         {
+            if (IsILBM(data)) return LumpType.LBMImage;
+            if (IsPCX(data)) return LumpType.PCXImage;
             if (IsFont(data)) return LumpType.Font;
             if (IsHMP(data)) return LumpType.HMP;
             if (IsOPLBank(data)) return LumpType.OPLBank;
             if (IsPalette(data)) return LumpType.Palette;
+            if (IsText(data))
+            {
+                string ext = name.Substring(name.IndexOf('.'));
+                if (ext.Equals(".txb", StringComparison.OrdinalIgnoreCase) || ext.Equals(".bin", StringComparison.OrdinalIgnoreCase)) //stupid hacks
+                    return LumpType.EncodedText;
+                return LumpType.Text;
+            }
             return LumpType.Unknown;
+        }
+
+        //This should be very low priority
+        public static bool IsText(byte[] data)
+        {
+            for (int i = 0; i < data.Length; i++)
+            {
+                if (data[i] < ' ' && data[i] != '\t' && data[i] != '\r' && data[i] != '\n' && data[i] != 0x1A ) //Check printable or formatting. Also check ASCII SUB, since it terminates many files
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public static bool IsILBM(byte[] data)
+        {
+            if (data.Length > 8)
+            {
+                if (data[0] == 'F' && data[1] == 'O' && data[2] == 'R' && data[3] == 'M')
+                {
+                    int dataLen = data[7] + (data[6] << 8) + (data[5] << 16) + (data[4] << 24);
+                    if (dataLen <= data.Length)
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool IsPCX(byte[] data)
+        {
+            if (data.Length > 128)
+            {
+                if (data[0] == 0x0A && data[1] <= 0x05 && data[2] <= 0x01 && data[3] == 0x08)
+                {
+                    return true; //Should do more validation, but given that these bytes aren't printable its hard to make a text file that would throw it off. Though maybe TXB could? Needs further testing...
+                }
+            }
+            return false;
         }
 
         public static bool IsFont(byte[] data)
@@ -80,7 +129,7 @@ namespace PiggyDump
                 if (data[0] == 0x50 && data[1] == 0x53 && data[2] == 0x46 && data[3] == 0x4E)
                 {
                     int dataLen = data[4] + (data[5] << 8) + (data[6] << 16) + (data[7] << 24);
-                    if (dataLen < data.Length)
+                    if (dataLen <= data.Length)
                         return true;
                 }
             }
