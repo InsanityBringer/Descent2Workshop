@@ -933,6 +933,8 @@ namespace PiggyDump
             SaveNamefile(bw);
             WriteOrphanedModels(bw);
             bw.Close();
+
+            this.Filename = filename;
         }
 
         private void LoadReactorGuns(Reactor reactor)

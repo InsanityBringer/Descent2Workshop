@@ -34,6 +34,8 @@ namespace PiggyDump
         private int header, version;
         private Palette palette;
         public Palette PiggyPalette { get { return palette; } }
+        public string filename;
+
         public PIGFile(Palette palette)
         {
             this.palette = palette;
@@ -95,6 +97,7 @@ namespace PiggyDump
             }
             
             br.Close();
+            filename = name;
         }
 
         public void SaveDataFile(string name)
@@ -116,6 +119,7 @@ namespace PiggyDump
             }
             bw.Flush();
             bw.Close();
+            filename = name;
         }
 
         public Bitmap GetBitmap(int id)

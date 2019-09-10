@@ -63,6 +63,7 @@ namespace PiggyDump
             datafile = data;
             this.host = host;
             modelRenderer = new ModelRenderer(datafile, host.DefaultPigFile);
+            this.Text = string.Format("{0} - HAM Editor", datafile.Filename);
         }
 
         private void HAMEditor2_Load(object sender, EventArgs e)
@@ -1955,6 +1956,7 @@ namespace PiggyDump
                 datafile.lastFilename = saveFileDialog1.FileName;
                 datafile.SaveDataFile(saveFileDialog1.FileName);
             }
+            this.Text = string.Format("{0} - HAM Editor", datafile.Filename);
         }
     }
 }

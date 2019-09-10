@@ -41,6 +41,7 @@ namespace PiggyDump
             InitializeComponent();
             datafile = data;
             this.host = host;
+            this.Text = string.Format("{0} - Hog Editor", datafile.filename);
         }
 
         private void HOGEditor_Load(object sender, EventArgs e)
@@ -148,6 +149,10 @@ namespace PiggyDump
                 if (err != 0)
                 {
                     host.AppendConsole(FileUtilities.FileErrorCodeHandler(err, "write", "HOG file"));
+                }
+                else
+                {
+                    this.Text = string.Format("{0} - Hog Editor", datafile.filename);
                 }
             }
         }

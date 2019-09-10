@@ -45,6 +45,7 @@ namespace PiggyDump
             InitializeComponent();
             this.datafile = datafile;
             this.host = host;
+            Text = string.Format("{0} - Sound Editor", datafile.filename);
         }
 
         private void SXXEditor_Load(object sender, EventArgs e)
@@ -80,7 +81,6 @@ namespace PiggyDump
                     foreach (int index in listView1.SelectedIndices)
                     {
                         string newpath = directory + Path.DirectorySeparatorChar + listView1.Items[index].Text + ".wav";
-                        lbCount.Text = newpath;
                         byte[] data = datafile.LoadSound(index);
                         WriteSoundToFile(newpath, data);
                     }

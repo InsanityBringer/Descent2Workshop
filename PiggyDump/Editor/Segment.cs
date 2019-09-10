@@ -105,6 +105,13 @@ namespace PiggyDump.Editor
             return Vector3.Cross(v1, v2);
         }
 
+        public Vector2[] GetFlattenedFace()
+        {
+            Vector2[] points = new Vector2[4];
+
+            return points;
+        }
+
         public void ProjectTexture()
         {
         }

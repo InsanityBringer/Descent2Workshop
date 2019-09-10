@@ -32,6 +32,7 @@ namespace PiggyDump
         private List<HOGLump> lumps = new List<HOGLump>();
 
         public int NumLumps { get { return lumps.Count; } }
+        public string filename;
         
         public void LoadDataFile(string name)
         {
@@ -82,6 +83,7 @@ namespace PiggyDump
                     data = GetLumpData(i);
                     lumps[i].type = HOGLump.IdentifyLump(lumps[i].name, data);
                 }
+                filename = name;
             }
         }
 
@@ -145,6 +147,7 @@ namespace PiggyDump
             File.Move(tempFilename, filename);
 
             fileStream = new BinaryReader(File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.Read));
+            this.filename = filename;
 
             return 0;
         }

@@ -41,6 +41,7 @@ namespace PiggyDump
             datafile = data;
             InitializeComponent();
             lbCount.Text = String.Format("Count: {0}", datafile.images.Count);
+            this.Text = string.Format("{0} - PIG Editor", datafile.filename);
         }
 
         private void PIGEditor_Load(object sender, EventArgs e)
@@ -98,6 +99,7 @@ namespace PiggyDump
                 if (saveFileDialog1.FileName != "")
                 {
                     datafile.SaveDataFile(saveFileDialog1.FileName);
+                    this.Text = string.Format("{0} - PIG Editor", datafile.filename);
                 }
             }
         }

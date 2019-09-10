@@ -43,6 +43,8 @@ namespace PiggyDump
         public long startptr = 0L;
         private BinaryReader stream;
         long soundptr = 0;
+        public string filename; 
+
         public void LoadDataFile(string name)
         {
             BinaryReader br = new BinaryReader(File.Open(name, FileMode.Open, FileAccess.Read, FileShare.Read));
@@ -115,6 +117,7 @@ namespace PiggyDump
 
             stream = br;
             //br.Close();
+            filename = name;
         }
 
         public byte[] LoadSound(int id)
