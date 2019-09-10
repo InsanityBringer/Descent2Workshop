@@ -50,49 +50,17 @@ namespace PiggyDump
 
         private void SXXEditor_Load(object sender, EventArgs e)
         {
-            foreach (SoundData sound in datafile.sounds)
+            SoundData sound;
+            for (int i = 0; i < datafile.sounds.Count; i++)
             {
+                sound = datafile.sounds[i];
                 ListViewItem lvi = new ListViewItem(sound.name);
                 lvi.SubItems.Add(sound.len.ToString());
                 lvi.SubItems.Add(sound.offset.ToString());
+                lvi.SubItems.Add(i.ToString());
                 //int compressionPercentage = (int)(image.compressionratio * 100f);
                 //lvi.SubItems.Add(compressionPercentage.ToString() + "%");
                 listView1.Items.Add(lvi);
-            }
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            if (listView1.SelectedIndices.Count == 0) return;
-            saveFileDialog1.Filter = "WAV Files|*.wav";
-            if (listView1.SelectedIndices.Count > 1)
-            {
-                saveFileDialog1.FileName = "ignored";
-            }
-            else
-            {
-                saveFileDialog1.FileName = listView1.Items[listView1.SelectedIndices[0]].Text;
-            }
-            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                if (listView1.SelectedIndices.Count > 1)
-                {
-                    string directory = Path.GetDirectoryName(saveFileDialog1.FileName);
-                    foreach (int index in listView1.SelectedIndices)
-                    {
-                        string newpath = directory + Path.DirectorySeparatorChar + listView1.Items[index].Text + ".wav";
-                        byte[] data = datafile.LoadSound(index);
-                        WriteSoundToFile(newpath, data);
-                    }
-                }
-                else
-                {
-                    if (saveFileDialog1.FileName != "")
-                    {
-                        byte[] data = datafile.LoadSound(listView1.SelectedIndices[0]);
-                        WriteSoundToFile(saveFileDialog1.FileName, data);
-                    }
-                }
             }
         }
 
@@ -162,6 +130,41 @@ namespace PiggyDump
         private void listView1_DoubleClick(object sender, EventArgs e)
         {
             PlaySelected();
+        }
+
+        private void ExtractMenu_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedIndices.Count == 0) return;
+            saveFileDialog1.Filter = "WAV Files|*.wav";
+            if (listView1.SelectedIndices.Count > 1)
+            {
+                saveFileDialog1.FileName = "ignored";
+            }
+            else
+            {
+                saveFileDialog1.FileName = listView1.Items[listView1.SelectedIndices[0]].Text;
+            }
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if (listView1.SelectedIndices.Count > 1)
+                {
+                    string directory = Path.GetDirectoryName(saveFileDialog1.FileName);
+                    foreach (int index in listView1.SelectedIndices)
+                    {
+                        string newpath = directory + Path.DirectorySeparatorChar + listView1.Items[index].Text + ".wav";
+                        byte[] data = datafile.LoadSound(index);
+                        WriteSoundToFile(newpath, data);
+                    }
+                }
+                else
+                {
+                    if (saveFileDialog1.FileName != "")
+                    {
+                        byte[] data = datafile.LoadSound(listView1.SelectedIndices[0]);
+                        WriteSoundToFile(saveFileDialog1.FileName, data);
+                    }
+                }
+            }
         }
     }
 }

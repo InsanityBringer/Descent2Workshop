@@ -55,10 +55,9 @@ namespace PiggyDump
                 listView1.Items.Add(lumpElement);
             }
             string count = string.Format("Total Elements: {0}", datafile.NumLumps);
-            label1.Text = count; 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void InsertMenu_Click(object sender, EventArgs e)
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
@@ -88,7 +87,7 @@ namespace PiggyDump
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void DeleteMenu_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedIndices.Count == 0)
             {
@@ -107,7 +106,7 @@ namespace PiggyDump
             bw.Close();
         }*/
 
-        private void button3_Click(object sender, EventArgs e)
+        private void ExportMenu_Click(object sender, EventArgs e)
         {
             /*if (listView1.SelectedIndices.Count == 0) return;
             saveFileDialog1.Filter = "All Files|*.*";
@@ -140,7 +139,7 @@ namespace PiggyDump
             }*/
         }
 
-        private void menuItem3_Click(object sender, EventArgs e)
+        private void SaveAsMenu_Click(object sender, EventArgs e)
         {
             saveFileDialog1.Filter = "HOG Files|*.HOG";
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
@@ -157,9 +156,13 @@ namespace PiggyDump
             }
         }
 
-        private void menuItem2_Click(object sender, EventArgs e)
+        private void SaveMenu_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("I should probably fix this, perhaps. Use Save As for now...");
+            int err = datafile.SaveDataFile(datafile.filename);
+            if (err != 0)
+            {
+                host.AppendConsole(FileUtilities.FileErrorCodeHandler(err, "write", "HOG file"));
+            }
         }
     }
 }

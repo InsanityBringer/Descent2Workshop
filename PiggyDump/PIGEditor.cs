@@ -40,7 +40,6 @@ namespace PiggyDump
         {
             datafile = data;
             InitializeComponent();
-            lbCount.Text = String.Format("Count: {0}", datafile.images.Count);
             this.Text = string.Format("{0} - PIG Editor", datafile.filename);
         }
 
@@ -50,9 +49,7 @@ namespace PiggyDump
             {
                 PIGImage image = (PIGImage)datafile.images[x];
                 ListViewItem lvi = new ListViewItem(image.name);
-                lvi.SubItems.Add(image.offset.ToString());
-                //int compressionPercentage = (int)(image.compressionratio * 100f);
-                //lvi.SubItems.Add(compressionPercentage.ToString() + "%");
+                lvi.SubItems.Add(image.GetSize().ToString());
                 if (image.isAnimated)
                 {
                     lvi.SubItems.Add(image.frame.ToString());
@@ -61,6 +58,7 @@ namespace PiggyDump
                 {
                     lvi.SubItems.Add("-1");
                 }
+                lvi.SubItems.Add(x.ToString());
                 listView1.Items.Add(lvi);
             }
         }
@@ -92,7 +90,7 @@ namespace PiggyDump
 
         }
 
-        private void menuItem3_Click(object sender, EventArgs e)
+        private void SaveAsMenu_Click(object sender, EventArgs e)
         {
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
@@ -104,7 +102,7 @@ namespace PiggyDump
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void DeleteMenu_Click(object sender, EventArgs e)
         {
             if (listView1.SelectedIndices.Count == 0) return;
             int index = listView1.SelectedIndices[0];
@@ -119,7 +117,6 @@ namespace PiggyDump
         {
             listView1.Items.RemoveAt(index);
             datafile.images.RemoveAt(index);
-            lbCount.Text = String.Format("Count: {0}", datafile.images.Count);
         }
 
         private void listView1_KeyPress(object sender, KeyPressEventArgs e)
@@ -139,7 +136,7 @@ namespace PiggyDump
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void ExportMenu_Click(object sender, EventArgs e)
         {
             saveFileDialog1.Filter = "PNG Files|*.png";
             if (listView1.SelectedIndices.Count > 1)
@@ -159,7 +156,6 @@ namespace PiggyDump
                     {
                         Bitmap img = datafile.GetBitmap(index);
                         string newpath = directory + Path.DirectorySeparatorChar + ImageFilename(index) + ".png";
-                        lbCount.Text = newpath;
                         img.Save(newpath);
                         img.Dispose();
                     }
