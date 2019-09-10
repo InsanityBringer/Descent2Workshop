@@ -37,12 +37,13 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.btnPlay = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lbCount
             // 
             this.lbCount.AutoSize = true;
-            this.lbCount.Location = new System.Drawing.Point(255, 17);
+            this.lbCount.Location = new System.Drawing.Point(12, 38);
             this.lbCount.Name = "lbCount";
             this.lbCount.Size = new System.Drawing.Size(35, 13);
             this.lbCount.TabIndex = 11;
@@ -58,12 +59,13 @@
             this.columnHeader2,
             this.columnHeader3});
             this.listView1.FullRowSelect = true;
-            this.listView1.Location = new System.Drawing.Point(12, 41);
+            this.listView1.Location = new System.Drawing.Point(12, 61);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(427, 500);
+            this.listView1.Size = new System.Drawing.Size(427, 480);
             this.listView1.TabIndex = 9;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.DoubleClick += new System.EventHandler(this.listView1_DoubleClick);
             // 
             // columnHeader1
             // 
@@ -106,11 +108,22 @@
             this.button1.Text = "Import";
             this.button1.UseVisualStyleBackColor = true;
             // 
+            // btnPlay
+            // 
+            this.btnPlay.Location = new System.Drawing.Point(255, 12);
+            this.btnPlay.Name = "btnPlay";
+            this.btnPlay.Size = new System.Drawing.Size(75, 23);
+            this.btnPlay.TabIndex = 12;
+            this.btnPlay.Text = "Play";
+            this.btnPlay.UseVisualStyleBackColor = true;
+            this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
+            // 
             // SXXEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(451, 553);
+            this.Controls.Add(this.btnPlay);
             this.Controls.Add(this.lbCount);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.button3);
@@ -136,5 +149,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.Button btnPlay;
     }
 }
