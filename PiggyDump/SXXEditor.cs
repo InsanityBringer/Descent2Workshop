@@ -30,6 +30,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Media;
 
 namespace PiggyDump
 {
@@ -81,7 +82,7 @@ namespace PiggyDump
                         string newpath = directory + Path.DirectorySeparatorChar + listView1.Items[index].Text + ".wav";
                         lbCount.Text = newpath;
                         byte[] data = datafile.LoadSound(index);
-                        WriteSound(newpath, data);
+                        WriteSoundToFile(newpath, data);
                     }
                 }
                 else
@@ -89,15 +90,41 @@ namespace PiggyDump
                     if (saveFileDialog1.FileName != "")
                     {
                         byte[] data = datafile.LoadSound(listView1.SelectedIndices[0]);
-                        WriteSound(saveFileDialog1.FileName, data);
+                        WriteSoundToFile(saveFileDialog1.FileName, data);
                     }
                 }
             }
         }
 
-        private void WriteSound(string filename, byte[] data)
+        private void btnPlay_Click(object sender, EventArgs e)
+        {
+            PlaySelected();
+        }
+
+        private void PlaySelected()
+        {
+            if (listView1.SelectedIndices.Count != 1) return;
+            byte[] sndData = datafile.LoadSound(listView1.SelectedIndices[0]);
+            byte[] buffer = new byte[sndData.Length * (isLowFi ? 8 : 4) + 44];
+
+            WriteSound(new BinaryWriter(new MemoryStream(buffer, true)), sndData);
+
+            using (MemoryStream memStream = new MemoryStream(buffer))
+            using (SoundPlayer sp = new SoundPlayer(memStream))
+            {
+                sp.Load();
+                sp.Play();
+            };
+        }
+
+        private void WriteSoundToFile(string filename, byte[] data)
         {
             BinaryWriter bw = new BinaryWriter(File.Open(filename, FileMode.Create));
+            WriteSound(bw, data);
+        }
+
+        private void WriteSound(BinaryWriter bw, byte[] data)
+        {
             bw.Write(0x46464952); //RIFF
             bw.Write(36 + data.Length);
             bw.Write(0x45564157);
@@ -115,7 +142,7 @@ namespace PiggyDump
                 bw.Write(22050);
                 bw.Write(22050);
             }
-            bw.Write((short)2);
+            bw.Write((short)1);
             bw.Write((short)8);
             bw.Write(0x61746164);
             bw.Write(data.Length);
@@ -130,6 +157,11 @@ namespace PiggyDump
             {
                 datafile.CloseDataFile();
             }
+        }
+
+        private void listView1_DoubleClick(object sender, EventArgs e)
+        {
+            PlaySelected();
         }
     }
 }
