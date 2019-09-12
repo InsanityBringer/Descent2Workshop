@@ -109,7 +109,16 @@ namespace PiggyDump
             int count = listView1.SelectedIndices.Count;
             for (int i = 0; i < count; i++)
             {
-                DeleteAt(index);
+                if (index == 0)
+                    MessageBox.Show("Cannot delete the bogus bitmap!");
+                else
+                    DeleteAt(index);
+            }
+            //Fix the indicies of all items
+            for (int i = index-1; i < listView1.Items.Count; i++)
+            {
+                ListViewItem item = listView1.Items[i];
+                item.SubItems[3].Text = i.ToString();
             }
         }
 

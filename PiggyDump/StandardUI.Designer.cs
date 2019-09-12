@@ -47,9 +47,6 @@
             this.OpenSNDMenu = new System.Windows.Forms.MenuItem();
             this.menuItem10 = new System.Windows.Forms.MenuItem();
             this.ExitMenu = new System.Windows.Forms.MenuItem();
-            this.EditMenu = new System.Windows.Forms.MenuItem();
-            this.EditPIGMenu = new System.Windows.Forms.MenuItem();
-            this.EditSNDMenu = new System.Windows.Forms.MenuItem();
             this.OptionsMenu = new System.Windows.Forms.MenuItem();
             this.SetHOGMenu = new System.Windows.Forms.MenuItem();
             this.SetPIGMenu = new System.Windows.Forms.MenuItem();
@@ -250,7 +247,6 @@
             // 
             this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.FileMenu,
-            this.EditMenu,
             this.OptionsMenu,
             this.ViewersMenu,
             this.DebugMenu});
@@ -365,27 +361,9 @@
             this.ExitMenu.Index = 11;
             this.ExitMenu.Text = "Exit";
             // 
-            // EditMenu
-            // 
-            this.EditMenu.Index = 1;
-            this.EditMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.EditPIGMenu,
-            this.EditSNDMenu});
-            this.EditMenu.Text = "Edit";
-            // 
-            // EditPIGMenu
-            // 
-            this.EditPIGMenu.Index = 0;
-            this.EditPIGMenu.Text = "Edit Graphics...";
-            // 
-            // EditSNDMenu
-            // 
-            this.EditSNDMenu.Index = 1;
-            this.EditSNDMenu.Text = "Edit Sounds...";
-            // 
             // OptionsMenu
             // 
-            this.OptionsMenu.Index = 2;
+            this.OptionsMenu.Index = 1;
             this.OptionsMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.SetHOGMenu,
             this.SetPIGMenu,
@@ -425,7 +403,7 @@
             // 
             // ViewersMenu
             // 
-            this.ViewersMenu.Index = 3;
+            this.ViewersMenu.Index = 2;
             this.ViewersMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.ViewPOFMenu,
             this.ViewFNTMenu});
@@ -445,7 +423,7 @@
             // 
             // DebugMenu
             // 
-            this.DebugMenu.Index = 4;
+            this.DebugMenu.Index = 3;
             this.DebugMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.AboutMenu});
             this.DebugMenu.Text = "Help";
@@ -2007,6 +1985,7 @@
             this.columnHeader6,
             this.columnHeader7,
             this.columnHeader8});
+            this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(11, 21);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(295, 467);
@@ -2300,9 +2279,6 @@
         private System.Windows.Forms.MenuItem OptionsMenuC;
         private System.Windows.Forms.MenuItem ViewFNTMenu;
         private System.Windows.Forms.MenuItem OpenVHAMMenu;
-        private System.Windows.Forms.MenuItem EditMenu;
-        private System.Windows.Forms.MenuItem EditPIGMenu;
-        private System.Windows.Forms.MenuItem EditSNDMenu;
         private System.Windows.Forms.MenuItem OpenHXMMenu;
         private System.Windows.Forms.MenuItem menuItem2;
     }
