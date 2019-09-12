@@ -114,6 +114,40 @@ namespace PiggyDump
             return width * height;
         }
 
+        public byte[] GetData()
+        {
+            if ((flags & BM_FLAG_RLE) != 0)
+            {
+                byte[] expand = new byte[width * height];
+                byte[] scanline = new byte[width];
+
+                for (int cury = 0; cury < height; cury++)
+                {
+                    if ((flags & BM_FLAG_RLE_BIG) != 0)
+                    {
+                        offset = height * 2;
+                        for (int i = 0; i < cury; i++)
+                        {
+                            offset += data[i * 2] + (data[i * 2 + 1] << 8);
+                        }
+                    }
+                    else
+                    {
+                        offset = height;
+                        for (int i = 0; i < cury; i++)
+                        {
+                            offset += data[i];
+                        }
+                    }
+                    RLEEncoder.DecodeScanline(data, scanline, offset, width);
+                    Array.Copy(scanline, 0, expand, cury * width, width);
+                }
+
+                return expand;
+            }
+            return data;
+        }
+
         public Bitmap GetPicture(Palette palette)
         {
             int offset;

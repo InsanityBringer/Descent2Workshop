@@ -195,7 +195,7 @@ namespace PiggyDump.Editor.Render
                 ushort texture = datafile.Textures[tex1];
                 PIGImage img = datafile.piggyFile.images[texture];
                 GL.ActiveTexture(TextureUnit.Texture0);
-                int textureID = LoadTexture(img.data, img.width, img.height);
+                int textureID = LoadTexture(img.GetData(), img.width, img.height);
                 textureMapping.Add(tex1, textureID);
             }
             GL.ActiveTexture(TextureUnit.Texture0);
@@ -211,7 +211,7 @@ namespace PiggyDump.Editor.Render
                     ushort texture = datafile.Textures[tex2];
                     PIGImage img = datafile.piggyFile.images[texture];
                     GL.ActiveTexture(TextureUnit.Texture1);
-                    int textureID = LoadTexture(img.data, img.width, img.height);
+                    int textureID = LoadTexture(img.GetData(), img.width, img.height);
                     textureMapping.Add(tex2, textureID);
                 }
                 GL.ActiveTexture(TextureUnit.Texture1);
