@@ -1098,15 +1098,25 @@ namespace PiggyDump
             if (selector.ShowDialog() == DialogResult.OK)
             {
                 int value = selector.Selection;
+                isLocked = true;
                 switch (button.Tag)
                 {
                     case "1":
                         datafile.VClips[ElementNumber].RemapVClip(value, host.DefaultPigFile);
+                        txtAnimFrameCount.Text = datafile.VClips[ElementNumber].num_frames.ToString();
+                        txtAnimFrameSpeed.Text = MakeFixedString(datafile.VClips[ElementNumber].frame_time);
+                        nudAnimFrame.Value = 0;
+                        UpdatePictureBox(datafile.piggyFile.GetBitmap(datafile.VClips[ElementNumber].frames[0]), pbAnimFramePreview);
                         break;
                     case "2":
                         datafile.EClips[ElementNumber].vc.RemapVClip(value, host.DefaultPigFile);
+                        txtEffectFrameCount.Text = datafile.EClips[ElementNumber].vc.num_frames.ToString();
+                        txtEffectFrameSpeed.Text = MakeFixedString(datafile.EClips[ElementNumber].vc.frame_time);
+                        nudEffectFrame.Value = 0;
+                        UpdatePictureBox(datafile.piggyFile.GetBitmap(datafile.EClips[ElementNumber].vc.frames[0]), pbEffectFramePreview);
                         break;
                 }
+                isLocked = false;
             }
         }
 

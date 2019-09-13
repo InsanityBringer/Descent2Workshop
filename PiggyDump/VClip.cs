@@ -66,6 +66,7 @@ namespace PiggyDump
                 }
                 this.num_frames = numFrames-1;
             }
+            frame_time = play_time / num_frames;
         }
     }
 }
