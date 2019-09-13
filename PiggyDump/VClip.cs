@@ -59,12 +59,13 @@ namespace PiggyDump
                 numFrames++;
                 while (img.frame == numFrames)
                 {
+                    if (firstFrame + numFrames + 1 >= piggyFile.images.Count) break; 
                     frames[numFrames] = (ushort)(firstFrame + numFrames);
                     img = piggyFile.images[firstFrame + numFrames + 1];
                     numFrames++;
                     nextFrame++;
                 }
-                this.num_frames = numFrames-1;
+                this.num_frames = numFrames;
             }
             frame_time = play_time / num_frames;
         }
