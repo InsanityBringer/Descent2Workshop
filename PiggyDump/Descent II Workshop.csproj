@@ -104,6 +104,7 @@
     <Compile Include="Editor\LevelTransform.cs" />
     <Compile Include="Editor\MatCenter.cs" />
     <Compile Include="Editor\Render\Camera.cs" />
+    <Compile Include="Editor\Render\LevelData.cs" />
     <Compile Include="Editor\Render\MineRender.cs" />
     <Compile Include="Editor\Render\PickBuffer.cs" />
     <Compile Include="Editor\Render\Shader.cs" />

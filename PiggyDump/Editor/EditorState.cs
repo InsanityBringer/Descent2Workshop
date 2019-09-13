@@ -19,6 +19,8 @@ namespace PiggyDump.Editor
         public List<LevelVertex> SelectedVertices { get { return selectedVertices; } }
         public float GridSize { get { return gridSize; } set { gridSize = value; } }
         public Dictionary<LevelVertex, int> SelectedVertMapping { get => selectedVertMapping; set => selectedVertMapping = value; }
+        public Level EditorLevel { get { return level; } }
+        public HAMFile EditorData { get { return dataFile; } }
 
         public EditorState(Level level, HAMFile dataFile, SharedRendererState rendererState, EditorUI host)
         {
@@ -56,7 +58,8 @@ namespace PiggyDump.Editor
                 selectedVertices.RemoveAt(index);
                 index = deleteIndex;
             }
-            rendererState.SetSelectedVert(vert, index);
+            //rendererState.SetSelectedVert(vert, index);
+            
             host.InvalidateAll();
         }
     }

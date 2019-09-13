@@ -68,7 +68,16 @@ namespace PiggyDump.Editor.Render
             shader.UseShader();
             int projectMatrix = GL.GetUniformLocation(shader.shaderID, "projectMatrix");
             GL.UniformMatrix4(projectMatrix, false, ref projection);
-            GLUtilities.ErrorCheck("Setting shader proection");
+            GLUtilities.ErrorCheck("Setting shader projection");
+
+            int cameraPos = GL.GetUniformLocation(shader.shaderID, "cameraPos");
+            int cameraOrientation = GL.GetUniformLocation(shader.shaderID, "cameraOrientation");
+            int cameraDistance = GL.GetUniformLocation(shader.shaderID, "cameraDistance");
+
+            GL.Uniform3(cameraPos, ref position);
+            GL.UniformMatrix4(cameraOrientation, false, ref orientation);
+            GL.Uniform1(cameraDistance, distance);
+            GLUtilities.ErrorCheck("Setting shader orientation");
         }
 
         public void Translate(Vector3 amount)

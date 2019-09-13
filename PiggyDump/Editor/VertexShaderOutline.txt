@@ -36,6 +36,6 @@ void main()
 	cameraLocation += vec4(0.0, 0.0, -cameraDistance, 0.0);
     
     gl_Position = projectMatrix * cameraLocation;
-	gl_Position.z -= 0.005; //pull the outline just slightly closer to the screen to make it stand on polygons
+	gl_Position.z -= 0.01; //pull the outline just slightly closer to the screen to make it stand on polygons
 	//gl_Position = vec4(0.0, 0.0, 0.5, 1.0);
 }

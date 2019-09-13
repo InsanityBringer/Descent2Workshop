@@ -36,6 +36,7 @@ namespace PiggyDump.Editor
         Rotate,
         Scale,
     }
+    //this class is bad and i should feel bad for writing it
     public class LevelTransform
     {
         private TransformType type = TransformType.None;
@@ -102,7 +103,7 @@ namespace PiggyDump.Editor
                 }
                 lastSeg++;
             }
-            sharedState.InitTransformBuffer(vertBuffer, indexBuffer);
+            //sharedState.InitTransformBuffer(vertBuffer, indexBuffer);
         }
 
         public void InitTranslation(Vector3 xAxis, Vector3 yAxis, int mouseX, int mouseY)
@@ -123,7 +124,7 @@ namespace PiggyDump.Editor
                 yAmount = -diffy * .5f;
                 Vector3 translateX = xAxis * xAmount;
                 Vector3 translateY = yAxis * yAmount;
-                sharedState.SetShadowTranslation(translateX, translateY);
+                //sharedState.SetShadowTranslation(translateX, translateY);
             }
         }
 
@@ -140,7 +141,7 @@ namespace PiggyDump.Editor
                     vert.location.Add(xVecFix);
                     vert.location.Add(yVecFix);
                 }
-                sharedState.MarkSegmentsDirty(segments);
+                //sharedState.MarkSegmentsDirty(segments);
                 segments.Clear();
             }
 

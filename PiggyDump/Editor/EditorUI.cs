@@ -41,16 +41,10 @@ namespace PiggyDump.Editor
         private EditorState state;
         private GLControl lastFocus;
         private OpenTK.GLControl gl3DView;
-        private OpenTK.GLControl glTopView;
-        private OpenTK.GLControl glFrontView;
-        private OpenTK.GLControl glSideView;
         public EditorUI(Level level, HAMFile datafile)
         {
             InitializeComponent();
             this.gl3DView = new OpenTK.GLControl();
-            this.glTopView = new OpenTK.GLControl();
-            this.glFrontView = new OpenTK.GLControl();
-            this.glSideView = new OpenTK.GLControl();
             //I love this pile of shit system that continually forgets basic things like "the GLControl is a toolbox item that exists in this project!"
             //and then you can't even actually load it from the binary because ??? so where did it load it from initally then?
             //fuck this
@@ -68,62 +62,19 @@ namespace PiggyDump.Editor
             this.gl3DView.MouseEnter += new System.EventHandler(this.gl3DView_MouseEnter);
             this.gl3DView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gl3DView_MouseMove);
             this.gl3DView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gl3DView_MouseUp);
-            this.glTopView.BackColor = System.Drawing.Color.Black;
-            this.glTopView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.glTopView.Location = new System.Drawing.Point(3, 3);
-            this.glTopView.Name = "glTopView";
-            this.glTopView.Size = new System.Drawing.Size(626, 334);
-            this.glTopView.TabIndex = 1;
-            this.glTopView.VSync = false;
-            this.glTopView.Load += new System.EventHandler(this.GLControlOrtho_Load);
-            this.glTopView.Paint += new System.Windows.Forms.PaintEventHandler(this.GLControlOrtho_Paint);
-            this.glTopView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gl3DView_KeyDown);
-            this.glTopView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gl3DView_MouseDown);
-            this.glTopView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gl3DView_MouseMove);
-            this.glTopView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gl3DView_MouseUp);
-            this.glFrontView.BackColor = System.Drawing.Color.Black;
-            this.glFrontView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.glFrontView.Location = new System.Drawing.Point(3, 343);
-            this.glFrontView.Name = "glFrontView";
-            this.glFrontView.Size = new System.Drawing.Size(626, 335);
-            this.glFrontView.TabIndex = 2;
-            this.glFrontView.VSync = false;
-            this.glFrontView.Load += new System.EventHandler(this.GLControlOrtho_Load);
-            this.glFrontView.Paint += new System.Windows.Forms.PaintEventHandler(this.GLControlOrtho_Paint);
-            this.glFrontView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gl3DView_KeyDown);
-            this.glFrontView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gl3DView_MouseDown);
-            this.glFrontView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gl3DView_MouseMove);
-            this.glFrontView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gl3DView_MouseUp);
-            this.glSideView.BackColor = System.Drawing.Color.Black;
-            this.glSideView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.glSideView.Location = new System.Drawing.Point(635, 343);
-            this.glSideView.Name = "glSideView";
-            this.glSideView.Size = new System.Drawing.Size(626, 335);
-            this.glSideView.TabIndex = 3;
-            this.glSideView.VSync = false;
-            this.glSideView.Load += new System.EventHandler(this.GLControlOrtho_Load);
-            this.glSideView.Paint += new System.Windows.Forms.PaintEventHandler(this.GLControlOrtho_Paint);
-            this.glSideView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gl3DView_KeyDown);
-            this.glSideView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gl3DView_MouseDown);
-            this.glSideView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gl3DView_MouseMove);
-            this.glSideView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gl3DView_MouseUp);
 
-            this.tableLayoutPanel1.Controls.Add(this.glTopView, 0, 0);
+            /*this.tableLayoutPanel1.Controls.Add(this.glTopView, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.gl3DView, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.glFrontView, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.glSideView, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.glSideView, 1, 1);*/
+
+            this.Controls.Add(this.gl3DView);
 
             SharedRendererState sharedState = new SharedRendererState(level);
             state = new EditorState(level, datafile, sharedState, this);
-            gl3DView.Tag = new MineRender(level, datafile, state, sharedState, gl3DView);
-            glTopView.Tag = new MineRender(level, datafile, state, sharedState, glTopView);
-            glSideView.Tag = new MineRender(level, datafile, state, sharedState, glSideView);
-            glFrontView.Tag = new MineRender(level, datafile, state, sharedState, glFrontView);
+            gl3DView.Tag = new MineRender(state, sharedState, gl3DView);
             sharedState.AddRenderer((MineRender)gl3DView.Tag);
-            sharedState.AddRenderer((MineRender)glTopView.Tag);
-            sharedState.AddRenderer((MineRender)glSideView.Tag);
-            sharedState.AddRenderer((MineRender)glFrontView.Tag);
-            sharedState.BuildWorld();
+            //sharedState.LevelData.BuildWorld();
 
         }
 
@@ -135,8 +86,8 @@ namespace PiggyDump.Editor
             MineRender controlRenderer = (MineRender)control.Tag;
             controlRenderer.Init();
             controlRenderer.MakePerpectiveCamera((float)(Math.PI / 2), (float)control.Width / control.Height);
-            controlRenderer.BuildWorld();
-            controlRenderer.BuildWorldOutline();
+            controlRenderer.LevelData.BuildWorld();
+            controlRenderer.LevelData.BuildWorldOutline();
             GL.Viewport(0, 0, control.Width, control.Height);
             GL.ClearColor(0.5f, 0.0f, 0.0f, 1.0f);
         }
@@ -147,11 +98,12 @@ namespace PiggyDump.Editor
             control.MakeCurrent();
             MineRender controlRenderer = (MineRender)control.Tag;
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            controlRenderer.DrawWorld();
+            /*controlRenderer.DrawWorld();
             controlRenderer.DrawWorldOutline();
             controlRenderer.DrawWorldPoints();
             controlRenderer.DrawSelectedPoints();
-            controlRenderer.DrawShadow();
+            controlRenderer.DrawShadow();*/
+            controlRenderer.DrawWorld();
             control.SwapBuffers();
         }
 
@@ -163,14 +115,14 @@ namespace PiggyDump.Editor
             MineRender controlRenderer = (MineRender)control.Tag;
             controlRenderer.Init();
             //TODO: Make this less shit
-            if (sender == glFrontView)
+            /*if (sender == glFrontView)
                 controlRenderer.MakeOrthoCamera(100.0f, (float)control.Width / control.Height, 0);
             else if (sender == glTopView)
                 controlRenderer.MakeOrthoCamera(100.0f, (float)control.Width / control.Height, 1);
             else if (sender == glSideView)
-                controlRenderer.MakeOrthoCamera(100.0f, (float)control.Width / control.Height, 2);
-            controlRenderer.BuildWorld();
-            controlRenderer.BuildWorldOutline();
+                controlRenderer.MakeOrthoCamera(100.0f, (float)control.Width / control.Height, 2);*/
+            //controlRenderer.BuildWorld();
+            //controlRenderer.BuildWorldOutline();
             GL.Viewport(0, 0, control.Width, control.Height);
             GL.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         }
@@ -183,10 +135,11 @@ namespace PiggyDump.Editor
             //renderer2.SetProjection(glControl2.Width, glControl2.Height, (float)(90 * Math.PI / 180.0));
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             //renderer2.DrawWorld();
-            controlRenderer.DrawWorldOutline();
+            /*controlRenderer.DrawWorldOutline();
             controlRenderer.DrawWorldPoints();
             controlRenderer.DrawSelectedPoints();
-            controlRenderer.DrawShadow();
+            controlRenderer.DrawShadow();*/
+            controlRenderer.DrawWorld();
             control.SwapBuffers();
         }
 
@@ -238,9 +191,6 @@ namespace PiggyDump.Editor
         public void InvalidateAll()
         {
             gl3DView.Invalidate();
-            glTopView.Invalidate();
-            glSideView.Invalidate();
-            glFrontView.Invalidate();
         }
     }
 }
