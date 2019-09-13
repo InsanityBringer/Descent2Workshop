@@ -78,6 +78,7 @@ namespace PiggyDump
                     HOGLump.IdentifyLump(newLump.name, newLump.data);
                     ListViewItem lumpElement = new ListViewItem(newLump.name);
                     lumpElement.SubItems.Add(newLump.size.ToString());
+                    lumpElement.SubItems.Add(newLump.type.ToString());
                     listView1.Items.Add(lumpElement);
                     datafile.AddLump(newLump);
                 }
