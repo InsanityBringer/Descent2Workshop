@@ -75,7 +75,7 @@ namespace PiggyDump
                     byte[] data = br.ReadBytes((int)br.BaseStream.Length);
                     HOGLump newLump = new HOGLump(filename, size, -1);
                     newLump.data = data;
-                    HOGLump.IdentifyLump(newLump.name, newLump.data);
+                    newLump.type = HOGLump.IdentifyLump(newLump.name, newLump.data);
                     ListViewItem lumpElement = new ListViewItem(newLump.name);
                     lumpElement.SubItems.Add(newLump.size.ToString());
                     lumpElement.SubItems.Add(newLump.type.ToString());
