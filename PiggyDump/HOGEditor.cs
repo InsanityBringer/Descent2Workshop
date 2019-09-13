@@ -75,6 +75,7 @@ namespace PiggyDump
                     byte[] data = br.ReadBytes((int)br.BaseStream.Length);
                     HOGLump newLump = new HOGLump(filename, size, -1);
                     newLump.data = data;
+                    HOGLump.IdentifyLump(newLump.name, newLump.data);
                     ListViewItem lumpElement = new ListViewItem(newLump.name);
                     lumpElement.SubItems.Add(newLump.size.ToString());
                     listView1.Items.Add(lumpElement);
@@ -98,17 +99,17 @@ namespace PiggyDump
         }
 
         //TODO WHAT THE EVERLOVING CRAP IS THIS DOING HERE
-        /*private void WriteHogLump(string filename, HOGLump lump)
+        private void WriteHogLump(string filename, int id)
         {
             BinaryWriter bw = new BinaryWriter(File.Open(filename, FileMode.Create));
-            bw.Write(lump.data);
+            bw.Write(datafile.GetLumpData(id));
             bw.Flush();
             bw.Close();
-        }*/
+        }
 
         private void ExportMenu_Click(object sender, EventArgs e)
         {
-            /*if (listView1.SelectedIndices.Count == 0) return;
+            if (listView1.SelectedIndices.Count == 0) return;
             saveFileDialog1.Filter = "All Files|*.*";
             if (listView1.SelectedIndices.Count > 1)
             {
@@ -126,17 +127,17 @@ namespace PiggyDump
                     foreach (int index in listView1.SelectedIndices)
                     {
                         string newpath = directory + Path.DirectorySeparatorChar + listView1.Items[index].Text;
-                        WriteHogLump(newpath, mainFile.lumps[index]);
+                        WriteHogLump(newpath, index);
                     }
                 }
                 else
                 {
                     if (saveFileDialog1.FileName != "")
                     {
-                        WriteHogLump(saveFileDialog1.FileName, mainFile.lumps[listView1.SelectedIndices[0]]);
+                        WriteHogLump(saveFileDialog1.FileName, listView1.SelectedIndices[0]);
                     }
                 }
-            }*/
+            }
         }
 
         private void SaveAsMenu_Click(object sender, EventArgs e)
