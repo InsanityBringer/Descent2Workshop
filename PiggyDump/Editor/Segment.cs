@@ -81,15 +81,15 @@ namespace PiggyDump.Editor
         //Matt's formula: Na . AD > 0, where ABCD are vertices on side, a is face formed by A,B,C, Na is normal from face a.
         public void SetType()
         {
-            Vector3 a = parent.vertices[Segment.SideVerts[(int)sideNum, 0]].location.GetVector3();
-            Vector3 b = parent.vertices[Segment.SideVerts[(int)sideNum, 1]].location.GetVector3();
-            Vector3 c = parent.vertices[Segment.SideVerts[(int)sideNum, 2]].location.GetVector3();
-            Vector3 d = parent.vertices[Segment.SideVerts[(int)sideNum, 3]].location.GetVector3();
-            Vector3 normal = GetFaceNormal(a, b, c);
+            FixVector a = parent.vertices[Segment.SideVerts[(int)sideNum, 0]].location;
+            FixVector b = parent.vertices[Segment.SideVerts[(int)sideNum, 1]].location;
+            FixVector c = parent.vertices[Segment.SideVerts[(int)sideNum, 2]].location;
+            FixVector d = parent.vertices[Segment.SideVerts[(int)sideNum, 3]].location;
+            FixVector normal = GetFaceNormal(a, b, c);
             //It's actually BD according to the source code? 
             //Please don't sue me parallax for referencing one line of your code
-            Vector3 AD = d - b;
-            float dot = Vector3.Dot(normal, AD);
+            FixVector AD = d - b;
+            double dot = normal.Dot(AD);
             if (Math.Abs(dot) < 0.0001) //planar?
                 type = SideType.Quad;
             else if (dot > 0)
@@ -98,11 +98,11 @@ namespace PiggyDump.Editor
                 type = SideType.Triangle13;
         }
 
-        public Vector3 GetFaceNormal(Vector3 a, Vector3 b, Vector3 c)
+        public FixVector GetFaceNormal(FixVector a, FixVector b, FixVector c)
         {
-            Vector3 v1 = b - a;
-            Vector3 v2 = c - a;
-            return Vector3.Cross(v1, v2);
+            FixVector v1 = b - a;
+            FixVector v2 = c - a;
+            return v1.Cross(v2);
         }
 
         public Vector2[] GetFlattenedFace()

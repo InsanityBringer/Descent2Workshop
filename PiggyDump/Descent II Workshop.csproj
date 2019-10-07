@@ -128,6 +128,7 @@
       <DependentUpon>ElementList.cs</DependentUpon>
     </Compile>
     <Compile Include="FileUtilities.cs" />
+    <Compile Include="Fix.cs" />
     <Compile Include="FixVector.cs" />
     <Compile Include="Font.cs" />
     <Compile Include="FontViewer.cs">
@@ -324,7 +325,7 @@
     </Compile>
     <Compile Include="TMAPInfo.cs" />
     <Compile Include="UserOptions.cs" />
-    <Compile Include="Utilites.cs" />
+    <Compile Include="Util.cs" />
     <Compile Include="VClip.cs" />
     <Compile Include="VHAMEditor.cs">
       <SubType>Form</SubType>

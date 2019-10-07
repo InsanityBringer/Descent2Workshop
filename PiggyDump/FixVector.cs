@@ -20,8 +20,6 @@
     SOFTWARE.
 */
 
-using OpenTK;
-
 namespace PiggyDump
 {
     public struct FixAngles
@@ -31,28 +29,60 @@ namespace PiggyDump
 
     public struct FixVector
     {
-        public int x;
-        public int y;
-        public int z;
+        public Fix x;
+        public Fix y;
+        public Fix z;
 
-        public FixVector(int x, int y, int z)
+        public FixVector(Fix x, Fix y, Fix z)
         {
             this.x = x; this.y = y; this.z = z;
         }
 
         public override string ToString()
         {
-            return string.Format("{0} ,{1}, {2}", x / 65536.0, y / 65536.0, z / 65536.0);
+            return string.Format("{0}, {1}, {2}", x, y, z);
         }
 
-        public void Add(FixVector other)
+        public static FixVector operator +(FixVector a)
+            => a.Scale(1);
+        public static FixVector operator -(FixVector a)
+            => a.Scale(-1);
+        public static FixVector operator +(FixVector a, FixVector b)
+            => a.Add(b);
+        public static FixVector operator -(FixVector a, FixVector b)
+            => a.Sub(b);
+        public static FixVector operator *(double d, FixVector v)
+            => v.Scale(d);
+        public static FixVector operator *(FixVector v, double d)
+            => v.Scale(d);
+
+        public FixVector Add(FixVector other)
         {
-            this.x += other.x; this.y += other.y; this.z += other.z;
+            return new FixVector(this.x + other.x, this.y + other.y, this.z + other.z);
         }
 
-        public Vector3 GetVector3()
+        public FixVector Sub(FixVector other)
         {
-            return new Vector3(x / 65536.0f, y / 65536f, z / 65536f);
+            return new FixVector(this.x - other.x, this.y - other.y, this.z - other.z);
+        }
+
+        public FixVector Scale(double scale)
+        {
+            return new FixVector(this.x * scale, this.y * scale, this.z * scale);
+        }
+
+        public double Dot(FixVector other)
+        {
+            return this.x * other.x + this.y * other.y + this.z * other.z;
+        }
+
+        public FixVector Cross(FixVector other)
+        {
+            return new FixVector(
+                this.y * other.z - this.z * other.y,
+                this.z * other.x - this.x * other.z,
+                this.x * other.y - this.y * other.x
+            );
         }
     }
 
@@ -61,5 +91,55 @@ namespace PiggyDump
         public FixVector forward;
         public FixVector up;
         public FixVector right;
+
+        public FixMatrix(FixVector forward, FixVector up, FixVector right)
+        {
+            this.forward = forward; this.up = up; this.right = right;
+        }
+
+        public static FixMatrix operator +(FixMatrix a)
+            => a.Scale(1);
+        public static FixMatrix operator -(FixMatrix a)
+            => a.Scale(-1);
+        public static FixMatrix operator +(FixMatrix a, FixMatrix b)
+            => a.Add(b);
+        public static FixMatrix operator -(FixMatrix a, FixMatrix b)
+            => a.Sub(b);
+        public static FixMatrix operator *(double d, FixMatrix v)
+            => v.Scale(d);
+        public static FixMatrix operator *(FixMatrix v, double d)
+            => v.Scale(d);
+        public static FixMatrix operator *(FixMatrix v, FixMatrix d)
+            => v.Mul(d);
+
+        public FixMatrix Add(FixMatrix other)
+        {
+            return new FixMatrix(this.forward + other.forward, this.up + other.up, this.right + other.right);
+        }
+        public FixMatrix Sub(FixMatrix other)
+        {
+            return new FixMatrix(this.forward - other.forward, this.up - other.up, this.right - other.right);
+        }
+        public FixMatrix Scale(double scale)
+        {
+            return new FixMatrix(this.forward * scale, this.up * scale, this.right * scale);
+        }
+        public FixMatrix Mul(FixMatrix other)
+        {
+            return new FixMatrix(
+                new FixVector(
+                    this.forward.x * other.forward.x + this.up.x * other.forward.y + this.right.x * other.forward.z,
+                    this.forward.x * other.up.x + this.up.x * other.up.y + this.right.x * other.up.z,
+                    this.forward.x * other.right.x + this.up.x * other.right.y + this.right.x * other.right.z),
+                new FixVector(
+                    this.forward.y * other.forward.x + this.up.y * other.forward.y + this.right.y * other.forward.z,
+                    this.forward.y * other.up.x + this.up.y * other.up.y + this.right.y * other.up.z,
+                    this.forward.y * other.right.x + this.up.y * other.right.y + this.right.y * other.right.z),
+                new FixVector(
+                    this.forward.z * other.forward.x + this.up.z * other.forward.y + this.right.z * other.forward.z,
+                    this.forward.z * other.up.x + this.up.z * other.up.y + this.right.z * other.up.z,
+                    this.forward.z * other.right.x + this.up.z * other.right.y + this.right.z * other.right.z)
+            );
+        }
     }
 }

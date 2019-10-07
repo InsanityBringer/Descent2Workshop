@@ -24,7 +24,7 @@ using System;
 
 namespace PiggyDump
 {
-    public class Utilites
+    public class Util
     {
         public static int Clamp(int x, int min, int max, ref bool changed)
         {

@@ -33,6 +33,7 @@
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.btnPlay = new System.Windows.Forms.Button();
             this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
@@ -44,10 +45,9 @@
             this.menuItem6 = new System.Windows.Forms.MenuItem();
             this.InsertMenu = new System.Windows.Forms.MenuItem();
             this.ImportMenu = new System.Windows.Forms.MenuItem();
+            this.DeleteMenu = new System.Windows.Forms.MenuItem();
             this.menuItem9 = new System.Windows.Forms.MenuItem();
             this.ExtractMenu = new System.Windows.Forms.MenuItem();
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.DeleteMenu = new System.Windows.Forms.MenuItem();
             this.SuspendLayout();
             // 
             // listView1
@@ -83,6 +83,12 @@
             // 
             this.columnHeader3.DisplayIndex = 3;
             this.columnHeader3.Text = "Offset";
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.DisplayIndex = 0;
+            this.columnHeader4.Text = "#";
+            this.columnHeader4.Width = 40;
             // 
             // btnPlay
             // 
@@ -151,6 +157,11 @@
             this.ImportMenu.Index = 1;
             this.ImportMenu.Text = "Import Over...";
             // 
+            // DeleteMenu
+            // 
+            this.DeleteMenu.Index = 2;
+            this.DeleteMenu.Text = "Delete";
+            // 
             // menuItem9
             // 
             this.menuItem9.Index = 3;
@@ -161,17 +172,6 @@
             this.ExtractMenu.Index = 4;
             this.ExtractMenu.Text = "Extract";
             this.ExtractMenu.Click += new System.EventHandler(this.ExtractMenu_Click);
-            // 
-            // columnHeader4
-            // 
-            this.columnHeader4.DisplayIndex = 0;
-            this.columnHeader4.Text = "#";
-            this.columnHeader4.Width = 40;
-            // 
-            // DeleteMenu
-            // 
-            this.DeleteMenu.Index = 2;
-            this.DeleteMenu.Text = "Delete";
             // 
             // SXXEditor
             // 

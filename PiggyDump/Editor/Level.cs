@@ -39,15 +39,14 @@ namespace PiggyDump.Editor
 
         public long GetCode()
         {
-            long xi = location.x >> 16;
-            //Shift it to just four bits. This isn't 100% correct, but it will do the job for now
-            long xf = (location.x % 65536) >> 12;
-            long yi = location.y >> 16;
-            long yf = (location.y % 65536) >> 12;
-            long zi = location.z >> 16;
-            long zf = (location.z % 65536) >> 12;
+            // one fix 16.16 takes 32b, so for 64b we can fit 3*21b (16.5)
+            // therefore we shift 11 to get a 16.5
 
-            long code = xi + (yi << 20) + (zi << 40);
+            long xi = location.x.GetRawValue() >> 11;
+            long yi = location.y.GetRawValue() >> 11;
+            long zi = location.z.GetRawValue() >> 11;
+
+            long code = xi + (yi << 21) + (zi << 42);
 
             return code;
         }

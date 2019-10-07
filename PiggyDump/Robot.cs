@@ -258,45 +258,45 @@ namespace PiggyDump
             switch (tag)
             {
                 case 1:
-                    value = Utilites.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
+                    value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
                     model = manager.GetModel(value);
                     break;
                 case 2:
-                    value = Utilites.Clamp(value, short.MinValue, short.MaxValue, ref clamped);
+                    value = Util.Clamp(value, short.MinValue, short.MaxValue, ref clamped);
                     exp1VClip = manager.GetVClip(value-1);
                     break;
                 case 3:
-                    value = Utilites.Clamp(value, short.MinValue, short.MaxValue, ref clamped);
+                    value = Util.Clamp(value, short.MinValue, short.MaxValue, ref clamped);
                     exp1_sound_num = (short)value;
                     break;
                 case 4:
-                    value = Utilites.Clamp(value, short.MinValue, short.MaxValue, ref clamped);
+                    value = Util.Clamp(value, short.MinValue, short.MaxValue, ref clamped);
                     exp2VClip = manager.GetVClip(value - 1);
                     break;
                 case 5:
-                    value = Utilites.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
+                    value = Util.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
                     weapon1 = manager.GetWeapon(value);
                     break;
                 case 6:
                     weapon2 = manager.GetWeapon(value - 1);
                     break;
                 case 7:
-                    value = Utilites.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
+                    value = Util.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
                     n_guns = (sbyte)value;
                     break;
                 case 8:
-                    value = Utilites.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
+                    value = Util.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
                     if (contains_type == 7)
                         dropPowerup = manager.GetPowerup(value);
                     else
                         dropRobot = manager.GetRobot(value);
                     break;
                 case 9:
-                    value = Utilites.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
+                    value = Util.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
                     contains_count = (sbyte)value;
                     break;
                 case 10:
-                    value = Utilites.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
+                    value = Util.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
                     contains_prob = (sbyte)value;
                     break;
                 /*case 11:
@@ -310,130 +310,130 @@ namespace PiggyDump
                         claw_sound = (byte)(value);
                     break;
                 case 13:
-                    value = Utilites.Clamp(value, short.MinValue, short.MaxValue, ref clamped);
+                    value = Util.Clamp(value, short.MinValue, short.MaxValue, ref clamped);
                     score_value = (short)value;
                     break;
                 case 14:
-                    value = Utilites.Clamp(value, byte.MinValue, byte.MaxValue, ref clamped);
+                    value = Util.Clamp(value, byte.MinValue, byte.MaxValue, ref clamped);
                     badass = (byte)value;
                     break;
                 case 15:
-                    value = Utilites.Clamp(value, byte.MinValue, byte.MaxValue, ref clamped);
+                    value = Util.Clamp(value, byte.MinValue, byte.MaxValue, ref clamped);
                     energy_drain = (byte)value;
                     break;
                 case 16:
-                    value = Utilites.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
+                    value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
                     lighting = value;
                     break;
                 case 17:
-                    value = Utilites.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
+                    value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
                     strength = value;
                     break;
                 case 18:
-                    value = Utilites.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
+                    value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
                     mass = value;
                     break;
                 case 19:
-                    value = Utilites.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
+                    value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
                     drag = value;
                     break;
                 case 20:
                     value = (int)(Math.Cos(value * Math.PI / 180.0D) * 65536.0);
-                    value = Utilites.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
+                    value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
                     field_of_view[curAI] = value;
                     break;
                 case 21:
-                    value = Utilites.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
+                    value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
                     firing_wait[curAI] = value;
                     break;
                 case 22:
-                    value = Utilites.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
+                    value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
                     firing_wait2[curAI] = value;
                     break;
                 case 23:
-                    value = Utilites.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
+                    value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
                     turn_time[curAI] = value;
                     break;
                 case 24:
-                    value = Utilites.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
+                    value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
                     max_speed[curAI] = value;
                     break;
                 case 25:
-                    value = Utilites.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
+                    value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
                     circle_distance[curAI] = value;
                     break;
                 case 26:
-                    value = Utilites.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
+                    value = Util.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
                     rapidfire_count[curAI] = (sbyte)value;
                     break;
                 case 27:
-                    value = Utilites.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
+                    value = Util.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
                     evade_speed[curAI] = (sbyte)value;
                     break;
                 case 30:
-                    value = Utilites.Clamp(value, byte.MinValue, byte.MaxValue, ref clamped);
+                    value = Util.Clamp(value, byte.MinValue, byte.MaxValue, ref clamped);
                     if (value == 0)
                         see_sound = 255;
                     else
                         see_sound = (byte)(value);
                     break;
                 case 31:
-                    value = Utilites.Clamp(value, byte.MinValue, byte.MaxValue, ref clamped);
+                    value = Util.Clamp(value, byte.MinValue, byte.MaxValue, ref clamped);
                     if (value == 0)
                         attack_sound = 255;
                     else
                         attack_sound = (byte)(value);
                     break;
                 case 33:
-                    value = Utilites.Clamp(value, byte.MinValue, byte.MaxValue, ref clamped);
+                    value = Util.Clamp(value, byte.MinValue, byte.MaxValue, ref clamped);
                     if (value == 0)
                         taunt_sound = 255;
                     else
                         taunt_sound = (byte)(value);
                     break;
                 case 34:
-                    value = Utilites.Clamp(value, byte.MinValue, byte.MaxValue, ref clamped);
+                    value = Util.Clamp(value, byte.MinValue, byte.MaxValue, ref clamped);
                     if (value == 0)
                         deathroll_sound = 255;
                     else
                         deathroll_sound = (byte)(value);
                     break;
                 case 36:
-                    value = Utilites.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
+                    value = Util.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
                     smart_blobs = (sbyte)value;
                     break;
                 case 37:
-                    value = Utilites.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
+                    value = Util.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
                     energy_blobs = (sbyte)value;
                     break;
                 case 38:
-                    value = Utilites.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
+                    value = Util.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
                     pursuit = (sbyte)value;
                     break;
                 case 39:
-                    value = Utilites.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
+                    value = Util.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
                     lightcast = (sbyte)value;
                     break;
                 case 40:
-                    value = Utilites.Clamp(value, byte.MinValue, byte.MaxValue, ref clamped);
+                    value = Util.Clamp(value, byte.MinValue, byte.MaxValue, ref clamped);
                     if (value == 0)
                         exp1_sound_num = 255;
                     else
                         exp1_sound_num = (byte)(value);
                     break;
                 case 41:
-                    value = Utilites.Clamp(value, byte.MinValue, byte.MaxValue, ref clamped);
+                    value = Util.Clamp(value, byte.MinValue, byte.MaxValue, ref clamped);
                     if (value == 0)
                         exp2_sound_num = 255;
                     else
                         exp2_sound_num = (byte)(value);
                     break;
                 case 43:
-                    value = Utilites.Clamp(value, byte.MinValue, byte.MaxValue, ref clamped);
+                    value = Util.Clamp(value, byte.MinValue, byte.MaxValue, ref clamped);
                     glow = (byte)value;
                     break;
                 case 45:
-                    value = Utilites.Clamp(value, byte.MinValue, byte.MaxValue, ref clamped);
+                    value = Util.Clamp(value, byte.MinValue, byte.MaxValue, ref clamped);
                     aim = (byte)value;
                     break;
             }

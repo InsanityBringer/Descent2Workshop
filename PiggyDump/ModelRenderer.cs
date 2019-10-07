@@ -53,11 +53,6 @@ namespace PiggyDump
         public double Pitch { get => pitch; set => pitch = value; }
         public int Frame { get => frame; set => frame = value; }
 
-        public double GetFloatFromFixed(int fixedvalue)
-        {
-            return (double)fixedvalue / 65536D;
-        }
-
         public ModelRenderer(PIGFile piggyFile)
         {
             this.piggyFile = piggyFile;
@@ -216,9 +211,9 @@ namespace PiggyDump
                     GL.Begin(PrimitiveType.TriangleFan);
                     for (int i = 0; i < face.points.Length; i++)
                     {
-                        double vx = GetFloatFromFixed(face.points[i].x);
-                        double vy = GetFloatFromFixed(face.points[i].y);
-                        double vz = GetFloatFromFixed(face.points[i].z);
+                        double vx = face.points[i].x;
+                        double vy = face.points[i].y;
+                        double vz = face.points[i].z;
 
                         GL.Vertex3(vx, vy, vz);
                     }
@@ -228,13 +223,13 @@ namespace PiggyDump
                         GL.Color3(1.0f, 1.0f, 1.0f);
                         GL.Begin(PrimitiveType.Lines);
                         {
-                            double vx = GetFloatFromFixed(face.points[0].x);
-                            double vy = GetFloatFromFixed(face.points[0].y);
-                            double vz = GetFloatFromFixed(face.points[0].z);
+                            double vx = face.points[0].x;
+                            double vy = face.points[0].y;
+                            double vz = face.points[0].z;
 
-                            double dx = GetFloatFromFixed(face.points[0].x + face.Normal.x);
-                            double dy = GetFloatFromFixed(face.points[0].y + face.Normal.y);
-                            double dz = GetFloatFromFixed(face.points[0].z + face.Normal.z);
+                            double dx = face.points[0].x + face.Normal.x;
+                            double dy = face.points[0].y + face.Normal.y;
+                            double dz = face.points[0].z + face.Normal.z;
 
                             GL.Vertex3(vx, vy, vz);
                             GL.Vertex3(dx, dy, dz);
@@ -253,12 +248,12 @@ namespace PiggyDump
                     GL.Begin(PrimitiveType.TriangleFan);
                     for (int i = 0; i < face.points.Length; i++)
                     {
-                        double u = GetFloatFromFixed(face.UVLCoords[i].x);
-                        double v = GetFloatFromFixed(face.UVLCoords[i].y);
+                        double u = face.UVLCoords[i].x;
+                        double v = face.UVLCoords[i].y;
 
-                        double vx = GetFloatFromFixed(face.points[i].x);
-                        double vy = GetFloatFromFixed(face.points[i].y);
-                        double vz = GetFloatFromFixed(face.points[i].z);
+                        double vx = face.points[i].x;
+                        double vy = face.points[i].y;
+                        double vz = face.points[i].z;
 
                         GL.TexCoord2(u, v); GL.Vertex3(vx, vy, vz);
                     }
@@ -268,13 +263,13 @@ namespace PiggyDump
                         GL.Disable(EnableCap.Texture2D);
                         GL.Begin(PrimitiveType.Lines);
                         {
-                            double vx = GetFloatFromFixed(face.points[0].x);
-                            double vy = GetFloatFromFixed(face.points[0].y);
-                            double vz = GetFloatFromFixed(face.points[0].z);
+                            double vx = face.points[0].x;
+                            double vy = face.points[0].y;
+                            double vz = face.points[0].z;
 
-                            double dx = GetFloatFromFixed(face.points[0].x + face.Normal.x);
-                            double dy = GetFloatFromFixed(face.points[0].y + face.Normal.y);
-                            double dz = GetFloatFromFixed(face.points[0].z + face.Normal.z);
+                            double dx = face.points[0].x + face.Normal.x;
+                            double dy = face.points[0].y + face.Normal.y;
+                            double dz = face.points[0].z + face.Normal.z;
 
                             GL.Vertex3(vx, vy, vz);
                             GL.Vertex3(dx, dy, dz);
@@ -282,13 +277,13 @@ namespace PiggyDump
                         GL.End();
                         GL.Begin(PrimitiveType.Lines);
                         {
-                            double vx = GetFloatFromFixed(face.points[2].x);
-                            double vy = GetFloatFromFixed(face.points[2].y);
-                            double vz = GetFloatFromFixed(face.points[2].z);
+                            double vx = face.points[2].x;
+                            double vy = face.points[2].y;
+                            double vz = face.points[2].z;
 
-                            double dx = GetFloatFromFixed((face.FaceVector.x));
-                            double dy = GetFloatFromFixed((face.FaceVector.y));
-                            double dz = GetFloatFromFixed((face.FaceVector.z));
+                            double dx = (face.FaceVector.x);
+                            double dy = (face.FaceVector.y);
+                            double dz = (face.FaceVector.z);
 
                             GL.Color3(0.0f, 0.0f, 1.0f);
                             GL.Vertex3(vx, vy, vz);
@@ -309,13 +304,13 @@ namespace PiggyDump
             //GL.Disable(EnableCap.Texture2D);
             if (showNormals)
             {
-                double nx = GetFloatFromFixed(model.Normal.x);
-                double ny = GetFloatFromFixed(model.Normal.y);
-                double nz = GetFloatFromFixed(model.Normal.z);
+                double nx = model.Normal.x;
+                double ny = model.Normal.y;
+                double nz = model.Normal.z;
 
-                double px = GetFloatFromFixed(model.Point.x);
-                double py = GetFloatFromFixed(model.Point.y);
-                double pz = GetFloatFromFixed(model.Point.z);
+                double px = model.Point.x;
+                double py = model.Point.y;
+                double pz = model.Point.z;
 
                 //Points are globally valid, so undo the translation
                 GL.PushMatrix();
