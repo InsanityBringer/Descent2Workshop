@@ -35,10 +35,14 @@ namespace PiggyDump
             value = rawValue;
         }
 
-        public static implicit operator double(Fix f)
+        public static implicit operator float(Fix f)
             => f.value / 65536.0f;
-        public static implicit operator Fix(double d)
+        public static implicit operator Fix(float d)
             => new Fix((int)(d * 65536.0f));
+        public static implicit operator double(Fix f)
+            => f.value / 65536.0;
+        public static implicit operator Fix(double d)
+            => new Fix((int)(d * 65536.0));
 
         public static Fix operator +(Fix a)
             => new Fix(a.value);
@@ -60,9 +64,17 @@ namespace PiggyDump
             return new Fix((int)quotient);
         }
 
+        public static Fix operator <<(Fix a, int shift) => new Fix(a.value << shift);
+        public static Fix operator >>(Fix a, int shift) => new Fix(a.value >> shift);
+
         public override string ToString()
         {
-            return ((double)this).ToString("0.###", System.Globalization.CultureInfo.InvariantCulture);
+            return ((double)this).ToString("0.####", System.Globalization.CultureInfo.InvariantCulture);
+        }
+
+        public int GetRawValue()
+        {
+            return value;
         }
     }
 }

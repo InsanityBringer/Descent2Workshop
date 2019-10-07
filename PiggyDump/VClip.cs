@@ -29,9 +29,9 @@ namespace PiggyDump
 {
     public class VClip : HAMElement
     {
-        public int play_time; // fix
+        public Fix play_time;
         public int num_frames;
-        public int frame_time; // fix
+        public Fix frame_time;
         public int flags;
         public short sound_num;
         public ushort[] frames = new ushort[30];

@@ -246,16 +246,16 @@ namespace PiggyDump
             Robot robot = datafile.Robots[num];
             cbRobotAttackSound.SelectedIndex = robot.attack_sound;
             cbRobotClawSound.SelectedIndex = robot.claw_sound;
-            txtRobotDrag.Text = GetFloatFromFixed(robot.drag).ToString();
+            txtRobotDrag.Text = ((float)(robot.drag)).ToString();
             txtRobotDropProb.Text = robot.contains_prob.ToString();
             txtRobotDrops.Text = robot.contains_count.ToString();
-            txtRobotLight.Text = GetFloatFromFixed(robot.lighting).ToString();
-            txtRobotMass.Text = GetFloatFromFixed(robot.mass).ToString();
+            txtRobotLight.Text = ((float)(robot.lighting)).ToString();
+            txtRobotMass.Text = ((float)(robot.mass)).ToString();
             txtRobotScore.Text = robot.score_value.ToString();
             cbRobotHitSound.SelectedIndex = robot.exp1_sound_num;
             cbRobotDeathSound.SelectedIndex = robot.exp2_sound_num;
             cbRobotSeeSound.SelectedIndex = robot.see_sound;
-            txtRobotShield.Text = GetFloatFromFixed(robot.strength).ToString();
+            txtRobotShield.Text = ((float)(robot.strength)).ToString();
             cbRobotTauntSound.SelectedIndex = robot.taunt_sound;
             txtRobotAim.Text = robot.aim.ToString();
             txtRobotBadass.Text = robot.badass.ToString();
@@ -314,13 +314,13 @@ namespace PiggyDump
         {
             Robot robot = datafile.Robots[(int)nudElementNum.Value];
 
-            txtRobotCircleDist.Text = GetFloatFromFixed(robot.circle_distance[num]).ToString();
+            txtRobotCircleDist.Text = ((float)(robot.circle_distance[num])).ToString();
             txtRobotEvadeSpeed.Text = robot.evade_speed[num].ToString();
-            txtRobotFireDelay.Text = GetFloatFromFixed(robot.firing_wait[num]).ToString();
-            txtRobotFireDelay2.Text = GetFloatFromFixed(robot.firing_wait2[num]).ToString();
-            txtRobotFOV.Text = ((int)(Math.Acos(GetFloatFromFixed(robot.field_of_view[num])) * 180 / Math.PI)).ToString();
-            txtRobotMaxSpeed.Text = GetFloatFromFixed(robot.max_speed[num]).ToString();
-            txtRobotTurnSpeed.Text = GetFloatFromFixed(robot.turn_time[num]).ToString();
+            txtRobotFireDelay.Text = ((float)(robot.firing_wait[num])).ToString();
+            txtRobotFireDelay2.Text = ((float)(robot.firing_wait2[num])).ToString();
+            txtRobotFOV.Text = ((int)(Math.Acos(((float)(robot.field_of_view[num]))) * 180 / Math.PI)).ToString();
+            txtRobotMaxSpeed.Text = ((float)(robot.max_speed[num])).ToString();
+            txtRobotTurnSpeed.Text = ((float)(robot.turn_time[num])).ToString();
             txtRobotShotCount.Text = robot.rapidfire_count[num].ToString();
         }
 
@@ -353,22 +353,22 @@ namespace PiggyDump
             cbWeaponBounce.SelectedIndex = weapon.bounce;
             txtWeaponCockpitImage.Text = weapon.picture.ToString();
             txtWeaponCockpitImageh.Text = weapon.hires_picture.ToString();
-            txtWeaponDrag.Text = GetFloatFromFixed(weapon.drag).ToString();
-            txtWeaponEnergyUsage.Text = GetFloatFromFixed(weapon.energy_usage).ToString();
-            txtWeaponExplosionSize.Text = GetFloatFromFixed(weapon.damage_radius).ToString();
-            txtWeaponFireWait.Text = GetFloatFromFixed(weapon.fire_wait).ToString();
-            txtWeaponFlashSize.Text = GetFloatFromFixed(weapon.flash_size).ToString();
-            txtWeaponImpactSize.Text = GetFloatFromFixed(weapon.impact_size).ToString();
-            txtWeaponLifetime.Text = GetFloatFromFixed(weapon.lifetime).ToString();
-            txtWeaponLight.Text = GetFloatFromFixed(weapon.light).ToString();
-            txtWeaponMass.Text = GetFloatFromFixed(weapon.mass).ToString();
-            txtWeaponMPScale.Text = GetFloatFromFixed(weapon.multi_damage_scale).ToString();
-            txtWeaponPolyLWRatio.Text = GetFloatFromFixed(weapon.po_len_to_width_ratio).ToString();
+            txtWeaponDrag.Text = ((float)(weapon.drag)).ToString();
+            txtWeaponEnergyUsage.Text = ((float)(weapon.energy_usage)).ToString();
+            txtWeaponExplosionSize.Text = ((float)(weapon.damage_radius)).ToString();
+            txtWeaponFireWait.Text = ((float)(weapon.fire_wait)).ToString();
+            txtWeaponFlashSize.Text = ((float)(weapon.flash_size)).ToString();
+            txtWeaponImpactSize.Text = ((float)(weapon.impact_size)).ToString();
+            txtWeaponLifetime.Text = ((float)(weapon.lifetime)).ToString();
+            txtWeaponLight.Text = ((float)(weapon.light)).ToString();
+            txtWeaponMass.Text = ((float)(weapon.mass)).ToString();
+            txtWeaponMPScale.Text = ((float)(weapon.multi_damage_scale)).ToString();
+            txtWeaponPolyLWRatio.Text = ((float)(weapon.po_len_to_width_ratio)).ToString();
             txtWeaponProjectileCount.Text = weapon.fire_count.ToString();
-            txtWeaponProjectileSize.Text = GetFloatFromFixed(weapon.blob_size).ToString();
+            txtWeaponProjectileSize.Text = ((float)(weapon.blob_size)).ToString();
             txtWeaponSpeedvar.Text = weapon.speedvar.ToString();
             txtWeaponStaticSprite.Text = weapon.bitmap.ToString();
-            txtWeaponThrust.Text = GetFloatFromFixed(weapon.thrust).ToString();
+            txtWeaponThrust.Text = ((float)(weapon.thrust)).ToString();
 
             cbWeaponDestroyable.Checked = weapon.destroyable != 0;
             cbWeaponHoming.Checked = weapon.homing_flag != 0;
@@ -398,8 +398,8 @@ namespace PiggyDump
         {
             Weapon weapon = datafile.Weapons[(int)nudElementNum.Value];
 
-            txtWeaponStr.Text = GetFloatFromFixed(weapon.strength[num]).ToString();
-            txtWeaponSpeed.Text = GetFloatFromFixed(weapon.speed[num]).ToString();
+            txtWeaponStr.Text = ((float)(weapon.strength[num])).ToString();
+            txtWeaponSpeed.Text = ((float)(weapon.speed[num])).ToString();
         }
 
         private void UpdateWeaponGraphicControls()
@@ -435,18 +435,18 @@ namespace PiggyDump
             Polymodel model = datafile.Models[num];
             txtModelNumModels.Text = model.n_models.ToString();
             txtModelDataSize.Text = model.model_data_size.ToString();
-            txtModelRadius.Text = GetFloatFromFixed(model.rad).ToString();
+            txtModelRadius.Text = ((float)(model.rad)).ToString();
             txtModelTextureCount.Text = model.n_textures.ToString();
             cbModelLowDetail.SelectedIndex = model.SimpleModelID + 1;
             cbModelDyingModel.SelectedIndex = model.DyingModelID + 1;
             cbModelDeadModel.SelectedIndex = model.DeadModelID + 1;
 
-            txtModelMinX.Text = GetFloatFromFixed(model.mins.x).ToString();
-            txtModelMinY.Text = GetFloatFromFixed(model.mins.y).ToString();
-            txtModelMinZ.Text = GetFloatFromFixed(model.mins.z).ToString();
-            txtModelMaxX.Text = GetFloatFromFixed(model.maxs.x).ToString();
-            txtModelMaxY.Text = GetFloatFromFixed(model.maxs.y).ToString();
-            txtModelMaxZ.Text = GetFloatFromFixed(model.maxs.z).ToString();
+            txtModelMinX.Text = ((float)(model.mins.x)).ToString();
+            txtModelMinY.Text = ((float)(model.mins.y)).ToString();
+            txtModelMinZ.Text = ((float)(model.mins.z)).ToString();
+            txtModelMaxX.Text = ((float)(model.maxs.x)).ToString();
+            txtModelMaxY.Text = ((float)(model.maxs.y)).ToString();
+            txtModelMaxZ.Text = ((float)(model.maxs.z)).ToString();
 
             txtElemName.Text = datafile.ModelNames[num];
             if (!noPMView)
@@ -553,11 +553,6 @@ namespace PiggyDump
         {
             if (noPMView) return;
             modelRenderer.SetupViewport(glControl1.Width, glControl1.Height, trackBar2.Value * 0.5d + 4.0d);
-        }
-
-        public double GetFloatFromFixed(int fixedvalue)
-        {
-            return (double)fixedvalue / 65536D;
         }
 
         public double GetFloatFromFixed88(short fixedvalue)
