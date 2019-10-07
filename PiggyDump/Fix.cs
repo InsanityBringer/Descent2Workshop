@@ -56,9 +56,8 @@ namespace PiggyDump
         }
         public static Fix operator /(Fix a, Fix b)
         {
-            Fix value = 1.0;
-            long product = (long)a.value * (long)b.value;
-            return new Fix((int)(product >> 16));
+            long quotient = ((long)a.value << 16) / (long)b.value;
+            return new Fix((int)quotient);
         }
 
         public override string ToString()
