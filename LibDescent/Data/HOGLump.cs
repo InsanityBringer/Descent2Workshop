@@ -21,11 +21,8 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace PiggyDump
+namespace LibDescent.Data
 {
     /// <summary>
     /// Enumerates the types of lump that can be viewed or edited with the HOG editor

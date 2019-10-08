@@ -24,7 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace PiggyDump
+namespace LibDescent.Data
 {
     public class VHAMFile : IElementManager
     {

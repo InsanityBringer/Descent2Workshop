@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Drawing;
 
-namespace PiggyDump
+namespace LibDescent.Data
 {
     public class PIGFile
     {

@@ -20,7 +20,7 @@
     SOFTWARE.
 */
 
-namespace PiggyDump
+namespace LibDescent.Edit
 {
     class ElementLists
     {

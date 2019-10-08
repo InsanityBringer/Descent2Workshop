@@ -21,9 +21,8 @@
 */
 
 using System.Collections.Generic;
-using System.Text;
 
-namespace PiggyDump
+namespace LibDescent.Data
 {
     /// <summary>
     /// The type of a HAM Element

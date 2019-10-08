@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace PiggyDump
+namespace LibDescent.Data
 {
     public class HAMFile : IElementManager
     {

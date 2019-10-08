@@ -20,12 +20,7 @@
     SOFTWARE.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace PiggyDump
+namespace LibDescent.Data
 {
     public class PolymodelFace
     {

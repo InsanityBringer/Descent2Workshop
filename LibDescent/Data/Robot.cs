@@ -22,7 +22,7 @@
 
 using System;
 
-namespace PiggyDump
+namespace LibDescent.Data
 {
     public class Robot : HAMElement
     {

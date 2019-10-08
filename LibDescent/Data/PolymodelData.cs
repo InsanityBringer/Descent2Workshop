@@ -22,11 +22,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
+using System.Numerics;
 
-namespace PiggyDump
+namespace LibDescent.Data
 {
     public class PolymodelPlane
     {
@@ -279,8 +278,8 @@ namespace PiggyDump
                             norm.x = br.ReadInt32();
                             norm.y = br.ReadInt32();
                             norm.z = br.ReadInt32();
-                            OpenTK.Vector3 fvector = new OpenTK.Vector3((float)vector.x / 65536f, (float)vector.y / 65536f, (float)vector.z / 65536f);
-                            OpenTK.Vector3 fnorm = new OpenTK.Vector3((float)norm.x / 65536f, (float)norm.y / 65536f, (float)norm.z / 65536f);
+                            Vector3 fvector = new Vector3((float)vector.x / 65536f, (float)vector.y / 65536f, (float)vector.z / 65536f);
+                            Vector3 fnorm = new Vector3((float)norm.x / 65536f, (float)norm.y / 65536f, (float)norm.z / 65536f);
                             short zFront = br.ReadInt16();
                             short zBack = br.ReadInt16();
                             PolymodelPlane plane = new PolymodelPlane(vector, norm);
@@ -387,8 +386,8 @@ namespace PiggyDump
                                 //host.submodels[modelnum].points[x + formerpoints] = point;
                                 if (sw != null)
                                 {
-                                    OpenTK.Vector3 vec = new OpenTK.Vector3(point.x / 65536f + positionOffset.x / 65536f, point.y / 65536f + positionOffset.y / 65536f, point.z / 65536f + positionOffset.z / 65536f);
-                                    sw.WriteLine("point {0} len from origin {1}", x + formerpoints, vec.Length);
+                                    Vector3 vec = new Vector3(point.x / 65536f + positionOffset.x / 65536f, point.y / 65536f + positionOffset.y / 65536f, point.z / 65536f + positionOffset.z / 65536f);
+                                    sw.WriteLine("point {0} len from origin {1}", x + formerpoints, vec.Length());
                                 }
                             }
                         }

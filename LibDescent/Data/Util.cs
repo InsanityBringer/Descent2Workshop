@@ -20,9 +20,7 @@
     SOFTWARE.
 */
 
-using System;
-
-namespace PiggyDump
+namespace LibDescent.Data
 {
     public class Util
     {

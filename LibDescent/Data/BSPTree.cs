@@ -22,11 +22,11 @@
 
 using System;
 using System.Collections.Generic;
-using OpenTK;
+using System.Numerics;
 
 //Horrible BSP compiler made from some online article. Ugh. Blech.
 //Its not even complete...
-namespace PiggyDump
+namespace LibDescent.Data
 {
     public enum BSPClassification
     {

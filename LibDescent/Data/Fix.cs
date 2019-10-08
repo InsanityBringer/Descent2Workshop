@@ -20,10 +20,7 @@
     SOFTWARE.
 */
 
-using System;
-using System.Globalization;
-
-namespace PiggyDump
+namespace LibDescent.Data
 {
     // implements 16.16 fixed-point numbers as used by Descent -- Parabolicus
     public struct Fix
