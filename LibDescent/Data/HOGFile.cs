@@ -87,18 +87,10 @@ namespace LibDescent.Data
             }
         }
 
-        public int SaveDataFile(string filename)
+        public void SaveDataFile(string filename)
         {
             string tempFilename = Path.ChangeExtension(filename, ".newtmp");
-            BinaryWriter bw;
-            try
-            {
-                bw = new BinaryWriter(File.Open(tempFilename, FileMode.Create));
-            }
-            catch (Exception exc)
-            {
-                return FileUtilities.GetErrorCode(exc);
-            }
+            BinaryWriter bw = new BinaryWriter(File.Open(tempFilename, FileMode.Create));
 
             bw.Write((byte)'D');
             bw.Write((byte)'H');
@@ -141,15 +133,13 @@ namespace LibDescent.Data
                 catch (Exception exc) //Can't delete the old file for whatever reason...
                 {
                     File.Delete(tempFilename); //Delete the temp file then...
-                    return -4;
+                    throw exc;
                 }
             }
             File.Move(tempFilename, filename);
 
             fileStream = new BinaryReader(File.Open(filename, FileMode.Open, FileAccess.Read, FileShare.Read));
             this.filename = filename;
-
-            return 0;
         }
 
         public int GetLumpNum(string filename)

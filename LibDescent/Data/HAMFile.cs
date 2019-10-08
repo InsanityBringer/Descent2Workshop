@@ -612,7 +612,7 @@ namespace LibDescent.Data
             }
         }
 
-        private void GenerateObjectBitmapTables()
+        private void GenerateObjectBitmapTables(bool compatObjBitmaps)
         {
             ObjBitmaps.Clear();
             ObjBitmapPointers.Clear();
@@ -621,7 +621,7 @@ namespace LibDescent.Data
             Dictionary<string, int> objectBitmapMapping = new Dictionary<string, int>();
 
             Polymodel model;
-            if (StandardUI.options.GetOption("CompatObjBitmaps", bool.FalseString) == bool.TrueString)
+            if (compatObjBitmaps)
             {
                 int lastShipmodel = PlayerShip.model_num;
                 if (PolygonModels[PlayerShip.model_num].DyingModelnum != -1)
@@ -719,7 +719,7 @@ namespace LibDescent.Data
             }
         }
 
-        public void SaveDataFile(string filename)
+        public void SaveDataFile(string filename, bool compatObjBitmaps)
         {
             //Brute force solution
             RenumberElements(HAMType.EClip);
@@ -727,7 +727,7 @@ namespace LibDescent.Data
             RenumberElements(HAMType.Robot);
             RenumberElements(HAMType.Model);
             //Science experiment
-            GenerateObjectBitmapTables();
+            GenerateObjectBitmapTables(compatObjBitmaps);
             NumRobotJoints = 0;
             Console.WriteLine("Loaded {0} joints", Joints.Count);
             Joints.Clear();
@@ -1031,9 +1031,9 @@ namespace LibDescent.Data
 
         public int CopyElement(HAMType type, int source, int destination)
         {
-            switch (type)
+            /*switch (type)
             {
-                /*case HAMType.Robot:
+                case HAMType.Robot:
                     if (source < Robots.Count && destination < Robots.Count)
                         Robots[destination].CopyDataFrom(Robots[source], this);
                     else
@@ -1046,8 +1046,8 @@ namespace LibDescent.Data
                         return -1;
                     break;
                 default:
-                    return 1;*/
-            }
+                    return 1;
+            }*/
             return 0;
         }
 

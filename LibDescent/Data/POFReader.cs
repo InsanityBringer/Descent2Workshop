@@ -26,7 +26,7 @@ namespace LibDescent.Data
 {
     public class POFReader
     {
-        public static Polymodel ReadPOFFile(string filename)
+        public static Polymodel ReadPOFFile(string filename, string traceto)
         {
             BinaryReader br = new BinaryReader(File.Open(filename, FileMode.Open));
             Polymodel model = new Polymodel();
@@ -169,15 +169,7 @@ namespace LibDescent.Data
                     model.data.GetSubmodelMinMaxs(i, model);
                 }
             }
-            if (bool.Parse(StandardUI.options.GetOption("TraceModels", bool.FalseString)))
-            {
-                string bareFilename = Path.GetFileName(filename);
-                model.data.BuildPolymodelData(0, model, StandardUI.options.GetOption("TraceDir", ".") + Path.DirectorySeparatorChar + Path.ChangeExtension(bareFilename, "txt"));
-            }
-            else
-            {
-                model.data.BuildPolymodelData(0, model, "");
-            }
+            model.data.BuildPolymodelData(0, model, traceto);
 
             br.Close();
             return model;
