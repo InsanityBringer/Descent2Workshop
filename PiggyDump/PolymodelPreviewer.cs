@@ -28,6 +28,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using LibDescent.Data;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 

@@ -29,6 +29,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using LibDescent.Data;
 
 namespace PiggyDump
 {
@@ -146,7 +147,16 @@ namespace PiggyDump
             saveFileDialog1.Filter = "HOG Files|*.HOG";
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                int err = datafile.SaveDataFile(saveFileDialog1.FileName);
+                int err = 0;
+                try
+                {
+                    datafile.SaveDataFile(saveFileDialog1.FileName);
+                }
+                catch (Exception exc)
+                {
+                    err = FileUtilities.GetErrorCode(exc);
+                }
+
                 if (err != 0)
                 {
                     host.AppendConsole(FileUtilities.FileErrorCodeHandler(err, "write", "HOG file"));
@@ -160,7 +170,16 @@ namespace PiggyDump
 
         private void SaveMenu_Click(object sender, EventArgs e)
         {
-            int err = datafile.SaveDataFile(datafile.filename);
+            int err = 0;
+            try
+            {
+                datafile.SaveDataFile(datafile.filename);
+            }
+            catch (Exception exc)
+            {
+                err = FileUtilities.GetErrorCode(exc);
+            }
+
             if (err != 0)
             {
                 host.AppendConsole(FileUtilities.FileErrorCodeHandler(err, "write", "HOG file"));

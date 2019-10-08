@@ -24,6 +24,7 @@ using System;
 using System.Windows.Forms;
 using System.IO;
 using OpenTK.Graphics;
+using LibDescent.Data;
 
 namespace PiggyDump
 {
@@ -199,7 +200,14 @@ namespace PiggyDump
             openFileDialog1.Filter = ".POF files|*.POF";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                Polymodel model = POFReader.ReadPOFFile(openFileDialog1.FileName);
+                string traceto = "";
+                if (bool.Parse(StandardUI.options.GetOption("TraceModels", bool.FalseString)))
+                {
+                    string bareFilename = Path.GetFileName(openFileDialog1.FileName);
+                    traceto = StandardUI.options.GetOption("TraceDir", ".") + Path.DirectorySeparatorChar + Path.ChangeExtension(bareFilename, "txt");
+                }
+
+                Polymodel model = POFReader.ReadPOFFile(openFileDialog1.FileName, traceto);
                 PolymodelPreviewer archiveEditor = new PolymodelPreviewer(model, this);
                 archiveEditor.Show();
             }

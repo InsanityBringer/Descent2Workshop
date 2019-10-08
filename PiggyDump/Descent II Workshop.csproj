@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PiggyDump</RootNamespace>
     <AssemblyName>PiggyDump</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>
     </StartupObject>
@@ -67,6 +67,13 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing.Common, Version=4.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Drawing.Common.4.6.0\lib\net461\System.Drawing.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.4.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -80,7 +87,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BSPTree.cs" />
     <Compile Include="ConfigDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -128,26 +134,18 @@
       <DependentUpon>ElementList.cs</DependentUpon>
     </Compile>
     <Compile Include="FileUtilities.cs" />
-    <Compile Include="Fix.cs" />
-    <Compile Include="FixVector.cs" />
-    <Compile Include="Font.cs" />
     <Compile Include="FontViewer.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FontViewer.Designer.cs">
       <DependentUpon>FontViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="HAMDataWriter.cs" />
-    <Compile Include="HAMDataReader.cs" />
     <Compile Include="HAMEditor2.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="HAMEditor2.Designer.cs">
       <DependentUpon>HAMEditor2.cs</DependentUpon>
     </Compile>
-    <Compile Include="HAMElement.cs" />
-    <Compile Include="HAMFile.cs" />
-    <Compile Include="EClip.cs" />
     <Compile Include="ElementBrowser.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -160,15 +158,12 @@
     <Compile Include="HOGEditor.Designer.cs">
       <DependentUpon>HOGEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="HOGFile.cs" />
-    <Compile Include="HOGLump.cs" />
     <Compile Include="HXMEditor.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="HXMEditor.Designer.cs">
       <DependentUpon>HXMEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="HXMFile.cs" />
     <Compile Include="VHAMLoadDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -181,9 +176,6 @@
     <Compile Include="HXMLoadDialog.Designer.cs">
       <DependentUpon>HXMLoadDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="IElementManager.cs" />
-    <Compile Include="PIGImage.cs" />
-    <Compile Include="ElementLists.cs" />
     <Compile Include="ImageSelector.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -192,27 +184,18 @@
     </Compile>
     <Compile Include="ModelRenderer.cs" />
     <Compile Include="ModelTextureManager.cs" />
-    <Compile Include="Palette.cs" />
     <Compile Include="PIGEditor.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PIGEditor.Designer.cs">
       <DependentUpon>PIGEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="PIGFile.cs" />
-    <Compile Include="POFReader.cs" />
-    <Compile Include="POFWriter.cs" />
-    <Compile Include="PolymodelFace.cs" />
     <Compile Include="PolymodelPreviewer.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PolymodelPreviewer.Designer.cs">
       <DependentUpon>PolymodelPreviewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Ship.cs" />
-    <Compile Include="Polymodel.cs" />
-    <Compile Include="PolymodelData.cs" />
-    <Compile Include="Powerup.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ConfigDialog.resx">
@@ -300,10 +283,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Reactor.cs" />
-    <Compile Include="RLEEncoder.cs" />
-    <Compile Include="Robot.cs" />
-    <Compile Include="SNDFile.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="StandardUI.cs">
       <SubType>Form</SubType>
@@ -323,19 +302,13 @@
     <Compile Include="TexturePreview.Designer.cs">
       <DependentUpon>TexturePreview.cs</DependentUpon>
     </Compile>
-    <Compile Include="TMAPInfo.cs" />
     <Compile Include="UserOptions.cs" />
-    <Compile Include="Util.cs" />
-    <Compile Include="VClip.cs" />
     <Compile Include="VHAMEditor.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="VHAMEditor.Designer.cs">
       <DependentUpon>VHAMEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="VHAMFile.cs" />
-    <Compile Include="WClip.cs" />
-    <Compile Include="Weapon.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
@@ -360,6 +333,16 @@
     <Content Include="Editor\VertexShaderOutline.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LibDescent\Data\LibDescent.Data.csproj">
+      <Project>{B53C3F82-EAD0-46EC-BCB4-65CC38178E04}</Project>
+      <Name>LibDescent.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LibDescent\Edit\LibDescent.Edit.csproj">
+      <Project>{FE0955CA-4C10-425E-9DFA-CBAFC18720A5}</Project>
+      <Name>LibDescent.Edit</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

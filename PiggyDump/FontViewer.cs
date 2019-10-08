@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LibDescent.Data;
+using System;
 using System.Windows.Forms;
 
 namespace PiggyDump
@@ -24,7 +18,7 @@ namespace PiggyDump
         {
             if (pictureBox1.Image != null)
             {
-                Image temp = pictureBox1.Image;
+                System.Drawing.Image temp = pictureBox1.Image;
                 temp.Dispose();
             }
             pictureBox1.Image = mainFont.GetCharacterBitmap((int)numericUpDown1.Value);
