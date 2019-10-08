@@ -80,7 +80,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BSPTree.cs" />
     <Compile Include="ConfigDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -128,9 +127,6 @@
       <DependentUpon>ElementList.cs</DependentUpon>
     </Compile>
     <Compile Include="FileUtilities.cs" />
-    <Compile Include="Fix.cs" />
-    <Compile Include="FixVector.cs" />
-    <Compile Include="Font.cs" />
     <Compile Include="FontViewer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -145,9 +141,6 @@
     <Compile Include="HAMEditor2.Designer.cs">
       <DependentUpon>HAMEditor2.cs</DependentUpon>
     </Compile>
-    <Compile Include="HAMElement.cs" />
-    <Compile Include="HAMFile.cs" />
-    <Compile Include="EClip.cs" />
     <Compile Include="ElementBrowser.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -160,15 +153,12 @@
     <Compile Include="HOGEditor.Designer.cs">
       <DependentUpon>HOGEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="HOGFile.cs" />
-    <Compile Include="HOGLump.cs" />
     <Compile Include="HXMEditor.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="HXMEditor.Designer.cs">
       <DependentUpon>HXMEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="HXMFile.cs" />
     <Compile Include="VHAMLoadDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -181,9 +171,6 @@
     <Compile Include="HXMLoadDialog.Designer.cs">
       <DependentUpon>HXMLoadDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="IElementManager.cs" />
-    <Compile Include="PIGImage.cs" />
-    <Compile Include="ElementLists.cs" />
     <Compile Include="ImageSelector.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -192,27 +179,18 @@
     </Compile>
     <Compile Include="ModelRenderer.cs" />
     <Compile Include="ModelTextureManager.cs" />
-    <Compile Include="Palette.cs" />
     <Compile Include="PIGEditor.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PIGEditor.Designer.cs">
       <DependentUpon>PIGEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="PIGFile.cs" />
-    <Compile Include="POFReader.cs" />
-    <Compile Include="POFWriter.cs" />
-    <Compile Include="PolymodelFace.cs" />
     <Compile Include="PolymodelPreviewer.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PolymodelPreviewer.Designer.cs">
       <DependentUpon>PolymodelPreviewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Ship.cs" />
-    <Compile Include="Polymodel.cs" />
-    <Compile Include="PolymodelData.cs" />
-    <Compile Include="Powerup.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ConfigDialog.resx">
@@ -300,10 +278,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Reactor.cs" />
-    <Compile Include="RLEEncoder.cs" />
-    <Compile Include="Robot.cs" />
-    <Compile Include="SNDFile.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="StandardUI.cs">
       <SubType>Form</SubType>
@@ -323,19 +297,13 @@
     <Compile Include="TexturePreview.Designer.cs">
       <DependentUpon>TexturePreview.cs</DependentUpon>
     </Compile>
-    <Compile Include="TMAPInfo.cs" />
     <Compile Include="UserOptions.cs" />
-    <Compile Include="Util.cs" />
-    <Compile Include="VClip.cs" />
     <Compile Include="VHAMEditor.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="VHAMEditor.Designer.cs">
       <DependentUpon>VHAMEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="VHAMFile.cs" />
-    <Compile Include="WClip.cs" />
-    <Compile Include="Weapon.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
