@@ -362,21 +362,21 @@ namespace LibDescent.Data
             }
             for (int s = 0; s < Polymodel.MAX_SUBMODELS; s++)
             {
-                model.submodels[s].Offset.x = br.ReadInt32();
-                model.submodels[s].Offset.y = br.ReadInt32();
-                model.submodels[s].Offset.z = br.ReadInt32();
+                model.submodels[s].Offset.x = new Fix(br.ReadInt32());
+                model.submodels[s].Offset.y = new Fix(br.ReadInt32());
+                model.submodels[s].Offset.z = new Fix(br.ReadInt32());
             }
             for (int s = 0; s < Polymodel.MAX_SUBMODELS; s++)
             {
-                model.submodels[s].Normal.x = br.ReadInt32();
-                model.submodels[s].Normal.y = br.ReadInt32();
-                model.submodels[s].Normal.z = br.ReadInt32();
+                model.submodels[s].Normal.x = new Fix(br.ReadInt32());
+                model.submodels[s].Normal.y = new Fix(br.ReadInt32());
+                model.submodels[s].Normal.z = new Fix(br.ReadInt32());
             }
             for (int s = 0; s < Polymodel.MAX_SUBMODELS; s++)
             {
-                model.submodels[s].Point.x = br.ReadInt32();
-                model.submodels[s].Point.y = br.ReadInt32();
-                model.submodels[s].Point.z = br.ReadInt32();
+                model.submodels[s].Point.x = new Fix(br.ReadInt32());
+                model.submodels[s].Point.y = new Fix(br.ReadInt32());
+                model.submodels[s].Point.z = new Fix(br.ReadInt32());
             }
             for (int s = 0; s < Polymodel.MAX_SUBMODELS; s++)
             {
@@ -391,22 +391,22 @@ namespace LibDescent.Data
             }
             for (int s = 0; s < Polymodel.MAX_SUBMODELS; s++)
             {
-                model.submodels[s].Mins.x = br.ReadInt32();
-                model.submodels[s].Mins.y = br.ReadInt32();
-                model.submodels[s].Mins.z = br.ReadInt32();
+                model.submodels[s].Mins.x = new Fix(br.ReadInt32());
+                model.submodels[s].Mins.y = new Fix(br.ReadInt32());
+                model.submodels[s].Mins.z = new Fix(br.ReadInt32());
             }
             for (int s = 0; s < Polymodel.MAX_SUBMODELS; s++)
             {
-                model.submodels[s].Maxs.x = br.ReadInt32();
-                model.submodels[s].Maxs.y = br.ReadInt32();
-                model.submodels[s].Maxs.z = br.ReadInt32();
+                model.submodels[s].Maxs.x = new Fix(br.ReadInt32());
+                model.submodels[s].Maxs.y = new Fix(br.ReadInt32());
+                model.submodels[s].Maxs.z = new Fix(br.ReadInt32());
             }
-            model.mins.x = br.ReadInt32();
-            model.mins.y = br.ReadInt32();
-            model.mins.z = br.ReadInt32();
-            model.maxs.x = br.ReadInt32();
-            model.maxs.y = br.ReadInt32();
-            model.maxs.z = br.ReadInt32();
+            model.mins.x = new Fix(br.ReadInt32());
+            model.mins.y = new Fix(br.ReadInt32());
+            model.mins.z = new Fix(br.ReadInt32());
+            model.maxs.x = new Fix(br.ReadInt32());
+            model.maxs.y = new Fix(br.ReadInt32());
+            model.maxs.z = new Fix(br.ReadInt32());
             model.rad = br.ReadInt32();
             model.n_textures = br.ReadByte();
             model.first_texture = br.ReadUInt16();

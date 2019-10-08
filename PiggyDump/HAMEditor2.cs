@@ -463,7 +463,7 @@ namespace PiggyDump
             txtTexID.Text = datafile.Textures[num].ToString();
             txtTexLight.Text = texture.lighting.ToString();
             txtTexDamage.Text = texture.damage.ToString();
-            cbTexEClip.SelectedIndex = texture.EClipID + 1;
+            cbTexEClip.SelectedIndex = texture.eclip_num + 1;
             txtTexSlideU.Text = GetFloatFromFixed88(texture.slide_u).ToString();
             txtTexSlideV.Text = GetFloatFromFixed88(texture.slide_v).ToString();
             txtTexDestroyed.Text = texture.destroyed.ToString();
@@ -539,12 +539,12 @@ namespace PiggyDump
             txtEffectFrameCount.Text = animation.vc.num_frames.ToString();
 
             //eclip stuff
-            cbEClipBreakEClip.SelectedIndex = animation.DestEClipID + 1;
-            cbEClipBreakVClip.SelectedIndex = animation.DestVClipID + 1;
+            cbEClipBreakEClip.SelectedIndex = animation.dest_eclip + 1;
+            cbEClipBreakVClip.SelectedIndex = animation.dest_vclip + 1;
             txtEffectExplodeSize.Text = animation.dest_size.ToString();
             txtEffectBrokenID.Text = animation.dest_bm_num.ToString();
             cbEClipBreakSound.SelectedIndex = animation.sound_num + 1;
-            cbEClipMineCritical.SelectedIndex = animation.CritClipID + 1;
+            cbEClipMineCritical.SelectedIndex = animation.crit_clip + 1;
             cbEffectCritical.Checked = (animation.flags & 1) != 0;
             cbEffectOneShot.Checked = (animation.flags & 2) != 0;
 
@@ -601,13 +601,13 @@ namespace PiggyDump
             {
                 for (int i = 0; i < datafile.Powerups.Count; i++)
                     cbRobotDropItem.Items.Add(datafile.PowerupNames[i]);
-                cbRobotDropItem.SelectedIndex = robot.dropPowerup.ID;
+                cbRobotDropItem.SelectedIndex = robot.contains_id;
             }
             else
             {
                 for (int i = 0; i < datafile.Robots.Count; i++)
                     cbRobotDropItem.Items.Add(datafile.RobotNames[i]);
-                cbRobotDropItem.SelectedIndex = robot.dropRobot.ID;
+                cbRobotDropItem.SelectedIndex = robot.contains_id;
             }
             //cbRobotDropItem.SelectedIndex = 0;
         }
@@ -653,11 +653,11 @@ namespace PiggyDump
             UpdateRobotDropTypes(dropType, robot);
             cbRobotDropType.SelectedIndex = dropType;
 
-            cbRobotHitVClip.SelectedIndex = robot.Exp1VClipID + 1;
-            cbRobotDeathVClip.SelectedIndex = robot.Exp2VClipID + 1;
-            cbRobotModel.SelectedIndex = robot.ModelID;
-            cbRobotWeapon1.SelectedIndex = robot.Weapon1ID;
-            cbRobotWeapon2.SelectedIndex = robot.Weapon2ID + 1;
+            cbRobotHitVClip.SelectedIndex = robot.exp1_vclip_num + 1;
+            cbRobotDeathVClip.SelectedIndex = robot.exp2_vclip_num + 1;
+            cbRobotModel.SelectedIndex = robot.model_num;
+            cbRobotWeapon1.SelectedIndex = robot.weapon_type;
+            cbRobotWeapon2.SelectedIndex = robot.weapon_type2 + 1;
             if (robot.behavior >= 128)
             {
                 cbRobotAI.SelectedIndex = robot.behavior - 128;
@@ -747,16 +747,16 @@ namespace PiggyDump
             cbWeaponPlacable.Checked = (weapon.flags & 1) != 0;
             cbWeaponRipper.Checked = weapon.persistent != 0;
 
-            cbWeaponChildren.SelectedIndex = weapon.ChildrenID + 1;
+            cbWeaponChildren.SelectedIndex = weapon.children + 1;
             cbWeaponFireSound.SelectedIndex = weapon.flash_sound + 1;
             cbWeaponRobotHitSound.SelectedIndex = weapon.robot_hit_sound + 1;
             cbWeaponWallHitSound.SelectedIndex = weapon.wall_hit_sound + 1;
-            cbWeaponModel1.SelectedIndex = weapon.ModelID + 1;
-            cbWeaponModel2.SelectedIndex = weapon.ModelInnerID + 1;
-            cbWeaponWallHit.SelectedIndex = weapon.WallHitVClipID + 1;
-            cbWeaponRobotHit.SelectedIndex = weapon.RobotHitVClipID + 1;
-            cbWeaponMuzzleFlash.SelectedIndex = weapon.FlashVClipID + 1;
-            cbWeaponVClip.SelectedIndex = weapon.WeaponVClipID + 1;
+            cbWeaponModel1.SelectedIndex = weapon.model_num + 1;
+            cbWeaponModel2.SelectedIndex = weapon.model_num_inner + 1;
+            cbWeaponWallHit.SelectedIndex = weapon.wall_hit_vclip + 1;
+            cbWeaponRobotHit.SelectedIndex = weapon.robot_hit_vclip + 1;
+            cbWeaponMuzzleFlash.SelectedIndex = weapon.flash_vclip + 1;
+            cbWeaponVClip.SelectedIndex = weapon.weapon_vclip + 1;
 
             nudWeaponStr.Value = 0;
             UpdateWeaponPower(0);
@@ -808,9 +808,9 @@ namespace PiggyDump
             txtModelDataSize.Text = model.model_data_size.ToString();
             txtModelRadius.Text = model.rad.ToString();
             txtModelTextureCount.Text = model.n_textures.ToString();
-            cbModelLowDetail.SelectedIndex = model.SimpleModelID + 1;
-            cbModelDyingModel.SelectedIndex = model.DyingModelID + 1;
-            cbModelDeadModel.SelectedIndex = model.DeadModelID + 1;
+            cbModelLowDetail.SelectedIndex = model.simpler_model;
+            cbModelDyingModel.SelectedIndex = model.DyingModelnum + 1;
+            cbModelDeadModel.SelectedIndex = model.DeadModelnum + 1;
 
             txtModelMinX.Text = model.mins.x.ToString();
             txtModelMinY.Text = model.mins.y.ToString();
@@ -832,7 +832,7 @@ namespace PiggyDump
         {
             Powerup powerup = datafile.Powerups[num];
             cbPowerupPickupSound.SelectedIndex = powerup.hit_sound;
-            cbPowerupSprite.SelectedIndex = powerup.VClipID;
+            cbPowerupSprite.SelectedIndex = powerup.vclip_num;
             txtPowerupSize.Text = powerup.size.ToString();
             txtPowerupLight.Text = powerup.light.ToString();
             txtElemName.Text = datafile.PowerupNames[num];
@@ -861,9 +861,9 @@ namespace PiggyDump
             nudShipTextures.Value = nudShipTextures.Minimum;
             UpdateShipTextures(0);
             //This can thereoetically null, but it never will except on deformed data that descent itself probably wouldn't like
-            cbPlayerExplosion.SelectedIndex = ship.explosion.ID;
-            cbMarkerModel.SelectedIndex = ship.marker.ID;
-            cbPlayerModel.SelectedIndex = ship.model.ID;
+            cbPlayerExplosion.SelectedIndex = ship.expl_vclip_num;
+            cbMarkerModel.SelectedIndex = ship.markerModel;
+            cbPlayerModel.SelectedIndex = ship.model_num;
 
             txtElemName.Text = "Ship";
         }
@@ -1368,10 +1368,9 @@ namespace PiggyDump
             int eclipNum = cbTexEClip.SelectedIndex - 1;
             EClip clip = datafile.GetEClip(eclipNum);
             TMAPInfo tmapInfo = datafile.TMapInfo[ElementNumber];
-            tmapInfo.ClearReferences();
             if (clip == null)
             {
-                tmapInfo.eclip = null;
+                tmapInfo.eclip_num = -1;
             }
             else
             {
@@ -1381,17 +1380,13 @@ namespace PiggyDump
                     if (MessageBox.Show("This EClip is already assigned to another wall texture, do you want to change it?", "EClip in use", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         TMAPInfo oldTMapInfo = datafile.TMapInfo[clipCurrentID];
-                        clip.ClearReferences();
-                        oldTMapInfo.ClearReferences();
-                        oldTMapInfo.eclip = null;
+                        oldTMapInfo.eclip_num = -1;
                         clip.changing_wall_texture = (short)ElementNumber;
-                        clip.AssignReferences(datafile);
-                        oldTMapInfo.AssignReferences(datafile);
+
                     }
                     else
                     {
-                        cbTexEClip.SelectedIndex = tmapInfo.EClipID + 1;
-                        tmapInfo.AssignReferences(datafile);
+                        cbTexEClip.SelectedIndex = tmapInfo.eclip_num + 1;
                         return;
                     }
                 }
@@ -1400,8 +1395,7 @@ namespace PiggyDump
                     clip.changing_wall_texture = (short)ElementNumber;
                 }*/
             }
-            tmapInfo.eclip = clip;
-            tmapInfo.AssignReferences(datafile);
+            tmapInfo.eclip_num = (short)eclipNum;
         }
 
         //---------------------------------------------------------------------
@@ -1473,23 +1467,21 @@ namespace PiggyDump
             ComboBox comboBox = (ComboBox)sender;
             EClip clip = datafile.EClips[ElementNumber];
             int value = comboBox.SelectedIndex;
-            clip.ClearReferences();
             switch (comboBox.Tag)
             {
                 case "1":
-                    clip.destEClip = datafile.GetEClip(value - 1);
+                    clip.dest_eclip = (value - 1);
                     break;
                 case "2":
-                    clip.destVClip = datafile.GetVClip(value - 1);
+                    clip.dest_vclip = (value - 1);
                     break;
                 case "3":
                     clip.sound_num = value - 1;
                     break;
                 case "4":
-                    clip.critClip = datafile.GetEClip(value - 1);
+                    clip.crit_clip = (value - 1);
                     break;
             }
-            clip.AssignReferences(datafile);
         }
 
         //---------------------------------------------------------------------
@@ -1629,20 +1621,18 @@ namespace PiggyDump
                 return;
             Polymodel model = datafile.PolygonModels[ElementNumber];
             ComboBox comboBox = (ComboBox)sender;
-            model.ClearReferences();
             switch (comboBox.Tag)
             {
                 case "1":
-                    model.simpleModel = datafile.GetModel(comboBox.SelectedIndex - 1);
+                    model.simpler_model = (byte)(comboBox.SelectedIndex - 1);
                     break;
                 case "2":
-                    model.dyingModel = datafile.GetModel(comboBox.SelectedIndex - 1);
+                    model.DyingModelnum = comboBox.SelectedIndex - 1;
                     break;
                 case "3":
-                    model.deadModel = datafile.GetModel(comboBox.SelectedIndex - 1);
+                    model.DeadModelnum = comboBox.SelectedIndex - 1;
                     break;
             }
-            model.AssignReferences(datafile);
         }
 
         //---------------------------------------------------------------------
@@ -1654,18 +1644,16 @@ namespace PiggyDump
             if (isLocked)
                 return;
             Powerup powerup = datafile.Powerups[ElementNumber];
-            powerup.ClearReferences();
             ComboBox comboBox = (ComboBox)sender;
             switch (comboBox.Tag)
             {
                 case "1":
-                    powerup.vclip = datafile.GetVClip(comboBox.SelectedIndex);
+                    powerup.vclip_num = comboBox.SelectedIndex;
                     break;
                 case "2":
                     powerup.hit_sound = comboBox.SelectedIndex;
                     break;
             }
-            powerup.AssignReferences(datafile);
         }
 
         private void PowerupTextBox_TextChanged(object sender, EventArgs e)
@@ -1697,9 +1685,7 @@ namespace PiggyDump
         {
             if (isLocked) return;
             Reactor reactor = datafile.Reactors[ElementNumber];
-            reactor.ClearReferences();
-            reactor.model = datafile.GetModel(cbReactorModel.SelectedIndex);
-            reactor.AssignReferences(datafile);
+            reactor.model_id = cbReactorModel.SelectedIndex;
         }
 
         //---------------------------------------------------------------------
@@ -1738,20 +1724,18 @@ namespace PiggyDump
         {
             if (isLocked) return;
             ComboBox comboBox = (ComboBox)sender;
-            datafile.PlayerShip.ClearReferences();
             switch (comboBox.Tag)
             {
                 case "0":
-                    datafile.PlayerShip.model = datafile.GetModel(comboBox.SelectedIndex);
+                    datafile.PlayerShip.model_num = (comboBox.SelectedIndex);
                     break;
                 case "1":
-                    datafile.PlayerShip.explosion = datafile.GetVClip(comboBox.SelectedIndex);
+                    datafile.PlayerShip.expl_vclip_num = (comboBox.SelectedIndex);
                     break;
                 case "2":
-                    datafile.PlayerShip.marker = datafile.GetModel(comboBox.SelectedIndex);
+                    datafile.PlayerShip.markerModel = (comboBox.SelectedIndex);
                     break;
             }
-            datafile.PlayerShip.AssignReferences(datafile);
         }
 
         //---------------------------------------------------------------------
@@ -1826,40 +1810,7 @@ namespace PiggyDump
 
         private void mnuFindRefs_Click(object sender, EventArgs e)
         {
-            HAMElement element = null;
-            switch (tabControl1.SelectedIndex)
-            {
-                case 1:
-                    element = datafile.VClips[ElementNumber];
-                    break;
-                case 2:
-                    element = datafile.EClips[ElementNumber];
-                    break;
-                case 4:
-                    element = datafile.Robots[ElementNumber];
-                    break;
-                case 5:
-                    element = datafile.Weapons[ElementNumber];
-                    break;
-                case 6:
-                    element = datafile.PolygonModels[ElementNumber];
-                    break;
-                case 9:
-                    element = datafile.Powerups[ElementNumber];
-                    break;
-            }
-            if (element != null)
-            {
-                host.AppendConsole("---------------------\r\n");
-                host.AppendConsole(string.Format("Users of element {0}\r\n", txtElemName.Text));
-                host.AppendConsole("i'm sorry but this feature is broken. yell at ib\r\n");
-                //host.AppendConsole(element.GetReferences(datafile));
-            }
-            else
-            {
-                host.AppendConsole("---------------------\r\n");
-                host.AppendConsole("Current element cannot be referenced.\r\n");
-            }
+            Console.WriteLine("mnuFindRefs_Click: STUB");
         }
 
         //---------------------------------------------------------------------

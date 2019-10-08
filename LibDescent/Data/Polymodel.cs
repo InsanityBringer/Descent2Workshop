@@ -39,12 +39,8 @@ namespace LibDescent.Data
         public List<PolymodelFace> faces = new List<PolymodelFace>();
         public int ID;
     }
-    public class Polymodel : HAMElement
+    public class Polymodel
     {
-        public const int PropSimpleModel = 0;
-        public const int PropDyingModel = 1;
-        public const int PropDeadModel = 1;
-        public static string[] TagNames = { "Simple model", "Dying modelnum", "Dead modelnum" };
         public const int MAX_SUBMODELS = 10;
         public const int MAX_GUNS = 8;
 
@@ -75,14 +71,6 @@ namespace LibDescent.Data
         public int replacementID;
         public int ID;
 
-        public Polymodel simpleModel;
-        public Polymodel dyingModel;
-        public Polymodel deadModel;
-
-        public int SimpleModelID { get { if (simpleModel == null) return -1; return simpleModel.ID; } }
-        public int DyingModelID { get { if (dyingModel == null) return -1; return dyingModel.ID; } }
-        public int DeadModelID { get { if (deadModel == null) return -1; return deadModel.ID; } }
-
         public Polymodel(int numSubobjects)
         {
             for (int i = 0; i < numSubobjects; i++)
@@ -91,32 +79,6 @@ namespace LibDescent.Data
             }
         }
         public Polymodel() : this(0) { }
-
-        public void InitReferences(IElementManager manager)
-        {
-            simpleModel = manager.GetModel(simpler_model - 1);
-            dyingModel = manager.GetModel(DyingModelnum);
-            deadModel = manager.GetModel(DeadModelnum);
-        }
-
-        public void AssignReferences(IElementManager manager)
-        {
-            if (simpleModel != null) simpleModel.AddReference(HAMType.Model, this, PropSimpleModel);
-            if (dyingModel != null) dyingModel.AddReference(HAMType.Model, this, PropDyingModel);
-            if (deadModel != null) deadModel.AddReference(HAMType.Model, this, PropDeadModel);
-        }
-
-        public void ClearReferences()
-        {
-            if (simpleModel != null) simpleModel.ClearReference(HAMType.Model, this, PropSimpleModel);
-            if (dyingModel != null) dyingModel.ClearReference(HAMType.Model, this, PropDyingModel);
-            if (deadModel != null) deadModel.ClearReference(HAMType.Model, this, PropDeadModel);
-        }
-
-        public static string GetTagName(int tag)
-        {
-            return TagNames[tag];
-        }
 
         public void ExpandSubmodels()
         {

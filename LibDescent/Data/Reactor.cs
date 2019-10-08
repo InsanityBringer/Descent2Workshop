@@ -22,34 +22,11 @@
 
 namespace LibDescent.Data
 {
-    public class Reactor : HAMElement
+    public class Reactor
     {
         public int model_id;
         public int n_guns;
         public FixVector[] gun_points = new FixVector[8];
         public FixVector[] gun_dirs = new FixVector[8];
-
-        public Polymodel model;
-        public int ModelID { get { if (model == null) return -1; return model.ID; } }
-
-        public void InitReferences(IElementManager manager)
-        {
-            model = manager.GetModel(model_id);
-        }
-
-        public void AssignReferences(IElementManager manager)
-        {
-            if (model != null) model.AddReference(HAMType.Reactor, this, 0);
-        }
-
-        public void ClearReferences()
-        {
-            if (model != null) model.ClearReference(HAMType.Reactor, this, 0);
-        }
-
-        public static string GetTagName(int tag)
-        {
-            return "Model";
-        }
     }
 }

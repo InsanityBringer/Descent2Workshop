@@ -22,12 +22,8 @@
 
 namespace LibDescent.Data
 {
-    public class EClip : HAMElement
+    public class EClip
     {
-        public const int PropCritClip = 0;
-        public const int PropDestVClip = 1;
-        public const int PropDestEClip = 2;
-        private static string[] TagNames = { "Critical clip", "Destroyed VClip", "Destroyed EClip" };
         public int ID; //Needed for convenience
         public VClip vc = new VClip();				//imbedded vclip
         public int time_left;		//for sequencing
@@ -43,14 +39,6 @@ namespace LibDescent.Data
         public int sound_num;		//what sound this makes
         public int segnum, sidenum;	//what seg & side, for one-shot clips
 
-        public VClip destVClip;
-        public EClip destEClip;
-        public EClip critClip;
-
-        public int DestEClipID { get { if (destEClip == null) return -1; return destEClip.ID; } }
-        public int DestVClipID { get { if (destVClip == null) return -1; return destVClip.ID; } }
-        public int CritClipID { get { if (critClip == null) return -1; return critClip.ID; } }
-
         public EClip()
         {
             dest_vclip = -1;
@@ -60,40 +48,9 @@ namespace LibDescent.Data
             sound_num = -1;
         }
 
-        public void InitReferences(IElementManager manager)
-        {
-            destVClip = manager.GetVClip(dest_vclip);
-            destEClip = manager.GetEClip(dest_eclip);
-            critClip = manager.GetEClip(crit_clip);
-        }
-
-        public void AssignReferences(IElementManager manager)
-        {
-            if (destVClip != null) destVClip.AddReference(HAMType.EClip, this, PropDestVClip);
-            if (destEClip != null) destEClip.AddReference(HAMType.EClip, this, PropDestEClip);
-            if (critClip != null) critClip.AddReference(HAMType.EClip, this, PropCritClip);
-        }
-
-        public void ClearReferences()
-        {
-            if (destVClip != null) destVClip.ClearReference(HAMType.EClip, this, PropDestVClip);
-            if (destEClip != null) destEClip.ClearReference(HAMType.EClip, this, PropDestEClip);
-            if (critClip != null) critClip.ClearReference(HAMType.EClip, this, PropCritClip);
-        }
-
         public int GetCurrentTMap()
         {
-            foreach (HAMReference reference in References)
-            {
-                if (reference.Type == HAMType.TMAPInfo)
-                    return ((TMAPInfo)reference.element).ID;
-            }
-            return -1;
-        }
-
-        public static string GetTagName(int tag)
-        {
-            return TagNames[tag];
+            return changing_wall_texture;
         }
     }
 }

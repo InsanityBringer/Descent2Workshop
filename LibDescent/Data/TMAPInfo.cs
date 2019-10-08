@@ -22,7 +22,7 @@
 
 namespace LibDescent.Data
 {
-    public class TMAPInfo : HAMElement
+    public class TMAPInfo
     {
         public const int TMI_VOLATILE = 1;//this material blows up when hit
         public const int TMI_WATER = 2;	//this material is water
@@ -39,28 +39,6 @@ namespace LibDescent.Data
         public short slide_u, slide_v;
         public ushort texture;
         public int ID;
-        public EClip eclip;
-        public int EClipID { get { if (eclip == null) return -1; return eclip.ID; } }
-
-        public void InitReferences(IElementManager manager)
-        {
-            eclip = manager.GetEClip(eclip_num);
-        }
-
-        public void AssignReferences(IElementManager manager)
-        {
-            if (eclip != null) eclip.AddReference(HAMType.TMAPInfo, this, 0);
-        }
-
-        public void ClearReferences()
-        {
-            if (eclip != null) eclip.ClearReference(HAMType.TMAPInfo, this, 0);
-        }
-
-        public static string GetTagName(int tag)
-        {
-            return "EClip";
-        }
 
         public void updateFlags(int flag, bool set)
         {

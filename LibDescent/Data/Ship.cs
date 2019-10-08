@@ -22,12 +22,8 @@
 
 namespace LibDescent.Data
 {
-    public class Ship : HAMElement
+    public class Ship
     {
-        public const int PropVClip = 0;
-        public const int PropModel = 1;
-        public const int PropMarkerModel = 2; //This isn't quite correct, but it makes life easier to treat it as if it is. It's dropped by the ship, after all. 
-        public static string[] TagNames = { "Explosion VClip", "Model", "Marker Model" };
         public int model_num;
         public int expl_vclip_num;
         public int mass, drag;
@@ -36,36 +32,6 @@ namespace LibDescent.Data
         public int max_rotthrust;
         public FixVector[] gun_points = new FixVector[8];
         public int markerModel;
-
-        public Polymodel model;
-        public Polymodel marker;
-        public VClip explosion;
-
-        public void InitReferences(IElementManager manager)
-        {
-            model = manager.GetModel(model_num);
-            marker = manager.GetModel(markerModel);
-            explosion = manager.GetVClip(expl_vclip_num);
-        }
-
-        public void AssignReferences(IElementManager manager)
-        {
-            if (model != null) model.AddReference(HAMType.Ship, this, PropModel);
-            if (marker != null) marker.AddReference(HAMType.Ship, this, PropMarkerModel);
-            if (explosion != null) explosion.AddReference(HAMType.Ship, this, PropVClip);
-        }
-
-        public void ClearReferences()
-        {
-            if (model != null) model.ClearReference(HAMType.Ship, this, PropModel);
-            if (marker != null) marker.ClearReference(HAMType.Ship, this, PropMarkerModel);
-            if (explosion != null) explosion.ClearReference(HAMType.Ship, this, PropVClip);
-        }
-
-        public static string GetTagName(int tag)
-        {
-            return TagNames[tag];
-        }
 
         public void UpdateShip(int field, int data)
         {

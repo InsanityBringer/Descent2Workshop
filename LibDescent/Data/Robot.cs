@@ -24,17 +24,10 @@ using System;
 
 namespace LibDescent.Data
 {
-    public class Robot : HAMElement
+    public class Robot
     {
-        private static string[] TagArray = { "Hit VClip", "Death VClip", "Weapon 1", "Weapon 2", "Contains Item", "Model" };
         public const int NUM_ANIMATION_STATES = 5;
         public const int NUM_DIFFICULTY_LEVELS = 5;
-        public const int PropHitVClip = 0;
-        public const int PropDeathVClip = 1;
-        public const int PropWeapon1 = 2;
-        public const int PropWeapon2 = 3;
-        public const int PropContainsItem = 4;
-        public const int PropModel = 5;
         //important crap
         public struct jointlist
         {
@@ -117,20 +110,6 @@ namespace LibDescent.Data
         public int replacementID;
         public int ID;
 
-        public VClip exp1VClip, exp2VClip;
-        public Weapon weapon1, weapon2;
-        public Robot dropRobot;
-        public Powerup dropPowerup;
-        public Polymodel model;
-
-        public int Exp1VClipID { get { if (exp1VClip == null) return -1; return exp1VClip.ID; } }
-        public int Exp2VClipID { get { if (exp2VClip == null) return -1; return exp2VClip.ID; } }
-        public int Weapon1ID { get { if (weapon1 == null) return -1; return weapon1.ID; } }
-        public int Weapon2ID { get { if (weapon2 == null) return -1; return weapon2.ID; } }
-        public int DropRobotID { get { if (contains_type != 2) return -1; return dropRobot.ID; } }
-        public int DropPowerupID { get { if (contains_type != 7) return -1; return dropPowerup.ID; } }
-        public int ModelID { get { if (model == null) return -1; return model.ID; } }
-
         public Robot()
         {
             always_0xabcd = 0xabcd;
@@ -138,132 +117,18 @@ namespace LibDescent.Data
             weapon_type2 = -1;
         }
 
-        public void InitReferences(IElementManager manager)
-        {
-            exp1VClip = manager.GetVClip(exp1_vclip_num);
-            exp2VClip = manager.GetVClip(exp2_vclip_num);
-            weapon1 = manager.GetWeapon(weapon_type);
-            weapon2 = manager.GetWeapon(weapon_type2);
-            if (contains_type == 2)
-                dropRobot = manager.GetRobot(contains_id);
-            else
-                dropPowerup = manager.GetPowerup(contains_id);
-            model = manager.GetModel(model_num);
-        }
-
-        public void AssignReferences(IElementManager manager)
-        {
-            if (exp1VClip != null) exp1VClip.AddReference(HAMType.Robot, this, PropHitVClip);
-            if (exp2VClip != null) exp2VClip.AddReference(HAMType.Robot, this, PropDeathVClip);
-            if (weapon1 != null) weapon1.AddReference(HAMType.Robot, this, PropWeapon1);
-            if (weapon2 != null) weapon2.AddReference(HAMType.Robot, this, PropWeapon2);
-            if (dropRobot != null) dropRobot.AddReference(HAMType.Robot, this, PropContainsItem);
-            if (dropPowerup != null) dropPowerup.AddReference(HAMType.Robot, this, PropContainsItem);
-            if (model != null) model.AddReference(HAMType.Robot, this, PropModel);
-        }
-
-        public void ClearReferences()
-        {
-            if (exp1VClip != null) exp1VClip.ClearReference(HAMType.Robot, this, PropHitVClip);
-            if (exp2VClip != null) exp2VClip.ClearReference(HAMType.Robot, this, PropDeathVClip);
-            if (weapon1 != null) weapon1.ClearReference(HAMType.Robot, this, PropWeapon1);
-            if (weapon2 != null) weapon2.ClearReference(HAMType.Robot, this, PropWeapon2);
-            if (dropRobot != null) dropRobot.ClearReference(HAMType.Robot, this, PropContainsItem);
-            if (dropPowerup != null) dropPowerup.ClearReference(HAMType.Robot, this, PropContainsItem);
-            if (model != null) model.ClearReference(HAMType.Robot, this, PropModel);
-        }
-
-        public static string GetTagName(int tag)
-        {
-            return TagArray[tag];
-        }
-
-        public void ClearAndUpdateDropReference(IElementManager manager, int newType)
-        {
-            ClearReferences();
-
-            contains_type = (sbyte)newType;
-            if (newType == 7)
-            {
-                dropRobot = null;
-                dropPowerup = manager.GetPowerup(0);
-            }
-            else
-            {
-                dropPowerup = null;
-                dropRobot = manager.GetRobot(0);
-            }
-            contains_id = 0;
-
-            AssignReferences(manager);
-        }
-
-        //this really bites, but it's what I get for the reference counting system
-        public void CopyDataFrom(Robot other, IElementManager manager)
-        {
-            ClearReferences();
-            model_num = other.model_num;
-            exp1_vclip_num = other.exp1_vclip_num;
-            exp1_sound_num = other.exp2_sound_num;
-            exp2_vclip_num = other.exp2_vclip_num;
-            weapon_type = other.weapon_type;
-            weapon_type2 = other.weapon_type2;
-            contains_id = other.contains_id;
-            contains_count = other.contains_count;
-            contains_type = other.contains_type;
-            contains_prob = other.contains_prob;
-            claw_sound = other.claw_sound;
-            score_value = other.score_value;
-            badass = other.badass;
-            energy_drain = other.energy_drain;
-            lighting = other.lighting;
-            strength = other.strength;
-            mass = other.mass;
-            drag = other.drag;
-            see_sound = other.see_sound;
-            attack_sound = other.attack_sound;
-            taunt_sound = other.taunt_sound;
-            deathroll_sound = other.deathroll_sound;
-            smart_blobs = other.smart_blobs;
-            energy_blobs = other.energy_blobs;
-            pursuit = other.pursuit;
-            lightcast = other.lightcast;
-            exp2_sound_num = other.exp2_sound_num;
-            glow = other.glow;
-            aim = other.aim;
-            kamikaze = other.kamikaze;
-            thief = other.thief;
-            companion = other.companion;
-            flags = other.flags;
-            attack_type = other.attack_type;
-            for (int i = 0; i < 5; i++)
-            {
-                field_of_view[i] = other.field_of_view[i];
-                firing_wait[i] = other.firing_wait[i];
-                firing_wait2[i] = other.firing_wait2[i];
-                circle_distance[i] = other.circle_distance[i];
-                max_speed[i] = other.max_speed[i];
-                turn_time[i] = other.turn_time[i];
-                evade_speed[i] = other.evade_speed[i];
-                rapidfire_count[i] = other.rapidfire_count[i];
-            }
-            behavior = other.behavior;
-            AssignReferences(manager);
-        }
-
         public bool UpdateRobot(int tag, ref int value, int curAI, int curGun, IElementManager manager)
         {
-            ClearReferences();
             bool clamped = false;
             switch (tag)
             {
                 case 1:
                     value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
-                    model = manager.GetModel(value);
+                    model_num = value;
                     break;
                 case 2:
                     value = Util.Clamp(value, short.MinValue, short.MaxValue, ref clamped);
-                    exp1VClip = manager.GetVClip(value-1);
+                    exp1_vclip_num = (short)value;
                     break;
                 case 3:
                     value = Util.Clamp(value, short.MinValue, short.MaxValue, ref clamped);
@@ -271,14 +136,14 @@ namespace LibDescent.Data
                     break;
                 case 4:
                     value = Util.Clamp(value, short.MinValue, short.MaxValue, ref clamped);
-                    exp2VClip = manager.GetVClip(value - 1);
+                    exp2_vclip_num = (short)value;
                     break;
                 case 5:
                     value = Util.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
-                    weapon1 = manager.GetWeapon(value);
+                    weapon_type = (sbyte)value;
                     break;
                 case 6:
-                    weapon2 = manager.GetWeapon(value - 1);
+                    weapon_type2 = (sbyte)(value - 1);
                     break;
                 case 7:
                     value = Util.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
@@ -286,10 +151,7 @@ namespace LibDescent.Data
                     break;
                 case 8:
                     value = Util.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
-                    if (contains_type == 7)
-                        dropPowerup = manager.GetPowerup(value);
-                    else
-                        dropRobot = manager.GetRobot(value);
+                    contains_id = (sbyte)value;
                     break;
                 case 9:
                     value = Util.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);
@@ -437,8 +299,14 @@ namespace LibDescent.Data
                     aim = (byte)value;
                     break;
             }
-            AssignReferences(manager);
             return clamped;
+        }
+
+        public void ClearAndUpdateDropReference(HAMFile datafile, int v)
+        {
+            //[ISB] this doesn't really need to exist but may as well..
+            contains_type = (sbyte)v;
+            contains_id = 0;
         }
     }
 }

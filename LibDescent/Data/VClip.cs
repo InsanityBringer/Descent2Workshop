@@ -22,7 +22,7 @@
 
 namespace LibDescent.Data
 {
-    public class VClip : HAMElement
+    public class VClip
     {
         public Fix play_time;
         public int num_frames;
@@ -33,11 +33,6 @@ namespace LibDescent.Data
         public int light_value;
 
         public int ID;
-
-        public static string GetTagName(int tag)
-        {
-            return "";
-        }
 
         public void RemapVClip(int firstFrame, PIGFile piggyFile)
         {

@@ -32,8 +32,7 @@ namespace LibDescent.Data
             bw.Write(new byte[3]);
             bw.Write(tmapinfo.lighting);
             bw.Write(tmapinfo.damage);
-            //bw.Write(tmapinfo.eclip_num);
-            bw.Write((short)tmapinfo.EClipID);
+            bw.Write(tmapinfo.eclip_num);
             bw.Write(tmapinfo.destroyed);
             bw.Write(tmapinfo.slide_u);
             bw.Write(tmapinfo.slide_v);
@@ -62,10 +61,10 @@ namespace LibDescent.Data
             bw.Write((short)clip.GetCurrentTMap());
             bw.Write(clip.changing_object_texture);
             bw.Write(clip.flags);
-            bw.Write(clip.CritClipID);
+            bw.Write(clip.crit_clip);
             bw.Write(clip.dest_bm_num);
-            bw.Write(clip.DestVClipID);
-            bw.Write(clip.DestEClipID);
+            bw.Write(clip.dest_vclip);
+            bw.Write(clip.dest_eclip);
             bw.Write(clip.dest_size);
             bw.Write(clip.sound_num);
             bw.Write(clip.segnum);
@@ -92,7 +91,7 @@ namespace LibDescent.Data
 
         public void WriteRobot(Robot robot, BinaryWriter bw)
         {
-            bw.Write(robot.ModelID);
+            bw.Write(robot.model_num);
             for (int x = 0; x < 8; x++)
             {
                 bw.Write(robot.gun_points[x].x);
@@ -103,20 +102,16 @@ namespace LibDescent.Data
             {
                 bw.Write(robot.gun_submodels[x]);
             }
-            bw.Write((short)robot.Exp1VClipID);
+            bw.Write(robot.exp1_vclip_num);
             bw.Write(robot.exp1_sound_num);
             
-            bw.Write((short)robot.Exp2VClipID);
+            bw.Write(robot.exp2_vclip_num);
             bw.Write(robot.exp2_sound_num);
             
-            bw.Write((sbyte)robot.Weapon1ID);
-            bw.Write((sbyte)robot.Weapon2ID);
+            bw.Write(robot.weapon_type);
+            bw.Write(robot.weapon_type2);
             bw.Write(robot.n_guns);
-            //bw.Write(robot.contains_id);
-            if (robot.contains_type == 2)
-                bw.Write((sbyte)robot.DropRobotID);
-            else
-                bw.Write((sbyte)robot.DropPowerupID);
+            bw.Write(robot.contains_id);
 
             bw.Write(robot.contains_count);
             bw.Write(robot.contains_prob);
@@ -206,19 +201,19 @@ namespace LibDescent.Data
         {
             bw.Write(weapon.render_type);
             bw.Write(weapon.persistent);
-            bw.Write((short)weapon.ModelID);
-            bw.Write((short)weapon.ModelInnerID);
+            bw.Write(weapon.model_num);
+            bw.Write(weapon.model_num_inner);
             
-            bw.Write((sbyte)weapon.FlashVClipID);
-            bw.Write((sbyte)weapon.RobotHitVClipID);
+            bw.Write(weapon.flash_vclip);
+            bw.Write(weapon.robot_hit_vclip);
             bw.Write(weapon.flash_sound);
 
-            bw.Write((sbyte)weapon.WallHitVClipID);
+            bw.Write(weapon.wall_hit_vclip);
             bw.Write(weapon.fire_count);
             bw.Write(weapon.robot_hit_sound);
             
             bw.Write(weapon.ammo_usage);
-            bw.Write((sbyte)weapon.WeaponVClipID);
+            bw.Write(weapon.weapon_vclip);
             bw.Write(weapon.wall_hit_sound);
 
             bw.Write(weapon.destroyable);
@@ -233,7 +228,7 @@ namespace LibDescent.Data
             bw.Write(weapon.flash);
             bw.Write(weapon.afterburner_size);
 
-            bw.Write((sbyte)weapon.ChildrenID);
+            bw.Write(weapon.children);
             
             bw.Write(weapon.energy_usage);
             bw.Write(weapon.fire_wait);
@@ -269,19 +264,19 @@ namespace LibDescent.Data
         {
             bw.Write(weapon.render_type);
             bw.Write(weapon.persistent);
-            bw.Write((short)weapon.ModelID);
-            bw.Write((short)weapon.ModelInnerID);
+            bw.Write(weapon.model_num);
+            bw.Write(weapon.model_num_inner);
 
-            bw.Write((sbyte)weapon.FlashVClipID);
-            bw.Write((sbyte)weapon.RobotHitVClipID);
+            bw.Write(weapon.flash_vclip);
+            bw.Write(weapon.robot_hit_vclip);
             bw.Write(weapon.flash_sound);
 
-            bw.Write((sbyte)weapon.WallHitVClipID);
+            bw.Write(weapon.wall_hit_vclip);
             bw.Write(weapon.fire_count);
             bw.Write(weapon.robot_hit_sound);
 
             bw.Write(weapon.ammo_usage);
-            bw.Write((sbyte)weapon.WeaponVClipID);
+            bw.Write(weapon.weapon_vclip);
             bw.Write(weapon.wall_hit_sound);
 
             bw.Write(weapon.destroyable);
@@ -379,13 +374,13 @@ namespace LibDescent.Data
             bw.Write(model.rad);
             bw.Write(model.n_textures);
             bw.Write(model.first_texture);
-            bw.Write((byte)(model.SimpleModelID+1));
+            bw.Write(model.simpler_model);
         }
 
         public void WritePlayerShip(Ship ship, BinaryWriter bw)
         {
-            bw.Write(ship.model.ID);
-            bw.Write(ship.explosion.ID);
+            bw.Write(ship.model_num);
+            bw.Write(ship.expl_vclip_num);
             bw.Write(ship.mass);
             bw.Write(ship.drag);
             bw.Write(ship.max_thrust);

@@ -22,7 +22,7 @@
 
 namespace LibDescent.Data
 {
-    public class Powerup : HAMElement
+    public class Powerup
     {
         public int vclip_num;
         public int hit_sound;
@@ -30,28 +30,5 @@ namespace LibDescent.Data
         public int light;		//	amount of light cast by this powerup, set in bitmaps.tbl
 
         public int ID;
-
-        public VClip vclip;
-        public int VClipID { get { if (vclip == null) return -1; return vclip.ID; } }
-
-        public void InitReferences(IElementManager manager)
-        {
-            vclip = manager.GetVClip(vclip_num);
-        }
-
-        public void AssignReferences(IElementManager manager)
-        {
-            if (vclip != null) vclip.AddReference(HAMType.Powerup, this, 0);
-        }
-
-        public void ClearReferences()
-        {
-            if (vclip != null) vclip.ClearReference(HAMType.Powerup, this, 0);
-        }
-
-        public static string GetTagName(int tag)
-        {
-            return "VClip";
-        }
     }
 }

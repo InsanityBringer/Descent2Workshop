@@ -123,13 +123,13 @@ namespace PiggyDump
                 GL.Disable(EnableCap.Texture2D);
 
                 //Draw the radius
-                double radius = model.rad / 65536.0;
-                double minx = model.mins.x / 65536.0;
-                double miny = model.mins.y / 65536.0;
-                double minz = model.mins.z / 65536.0;
-                double maxx = model.maxs.x / 65536.0;
-                double maxy = model.maxs.y / 65536.0;
-                double maxz = model.maxs.z / 65536.0;
+                double radius = (double)model.rad / 65536.0;
+                double minx = (double)model.mins.x;
+                double miny = (double)model.mins.y;
+                double minz = (double)model.mins.z;
+                double maxx = (double)model.maxs.x;
+                double maxy = (double)model.maxs.y;
+                double maxz = (double)model.maxs.z;
                 GL.Begin(PrimitiveType.LineLoop);
                 GL.Color3(0.0, 0.0, 1.0);
                 double radx, rady, radang;
@@ -184,7 +184,7 @@ namespace PiggyDump
         private void DrawSubobject(Polymodel mainModel, Submodel model)
         {
             GL.PushMatrix();
-            GL.Translate(model.Offset.x / 65536.0f, model.Offset.y / 65536.0f, model.Offset.z / 65536.0f);
+            GL.Translate(model.Offset.x, model.Offset.y, model.Offset.z);
             if (frame >= 0)
             {
                 GL.Rotate((mainModel.animationMatrix[model.ID, frame].b / 16384.0f) * 90.0, 0.0, 0.0, 1.0);
@@ -198,7 +198,7 @@ namespace PiggyDump
             for (int x = 0; x < model.faces.Count; x++)
             {
                 PolymodelFace face = model.faces[x];
-                norm = new Vector3(face.Normal.x / 65536.0f, face.Normal.y / 65536.0f, face.Normal.z / 65536.0f);
+                norm = new Vector3(face.Normal.x, face.Normal.y, face.Normal.z);
                 shade = Vector3.Dot(light, norm) * .25f + .75f;
                 if (!face.isTextured)
                 {
@@ -338,12 +338,12 @@ namespace PiggyDump
 
                 //Draw the radius
                 double radius = model.Radius / 65536.0;
-                double minx = model.Mins.x / 65536.0;
-                double miny = model.Mins.y / 65536.0;
-                double minz = model.Mins.z / 65536.0;
-                double maxx = model.Maxs.x / 65536.0;
-                double maxy = model.Maxs.y / 65536.0;
-                double maxz = model.Maxs.z / 65536.0;
+                double minx = model.Mins.x;
+                double miny = model.Mins.y;
+                double minz = model.Mins.z;
+                double maxx = model.Maxs.x;
+                double maxy = model.Maxs.y;
+                double maxz = model.Maxs.z;
                 //Follow the chain
                 GL.PushMatrix();
                 GL.Rotate(-pitch, 0.0, 1.0, 0.0);

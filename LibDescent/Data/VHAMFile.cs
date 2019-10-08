@@ -300,27 +300,6 @@ namespace LibDescent.Data
         //this is annoying and sucks aaa
         private void BuildReferenceLists()
         {
-            Robot robot;
-            for (int i = 0; i < Robots.Count; i++)
-            {
-                robot = Robots[i];
-                robot.InitReferences(this);
-                robot.AssignReferences(this);
-            }
-            Weapon weapon;
-            for (int i = 0; i < Weapons.Count; i++)
-            {
-                weapon = Weapons[i];
-                weapon.InitReferences(this);
-                weapon.AssignReferences(this);
-            }
-            Polymodel model;
-            for (int i = 0; i < Models.Count; i++)
-            {
-                model = Models[i];
-                model.InitReferences(this);
-                model.AssignReferences(this);
-            }
         }
 
         //Convenience members to access elements by their absolute ID, when needed

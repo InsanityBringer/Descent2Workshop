@@ -22,16 +22,8 @@
 
 namespace LibDescent.Data
 {
-    public class Weapon : HAMElement
+    public class Weapon
     {
-        public const int PropModel = 0;
-        public const int PropInnerModel = 1;
-        public const int PropFlashVClip = 2;
-        public const int PropRobotHitVClip = 3;
-        public const int PropWallHitVClip = 4;
-        public const int PropWeaponVClip = 5;
-        public const int PropChildren = 6;
-        private static string[] TagNames = { "Model", "Inner Model", "Flash VClip", "Robot Hit VClip", "Wall Hit VClip", "Weapon Sprite", "Children" };
         public byte render_type;				// How to draw 0=crash, 1=blob, 2=object, 3=vclip, 255=invis
         public byte persistent;					//	0 = dies when it hits something, 1 = continues (eg, fusion cannon)
         public short model_num;					// Model num if rendertype==2.
@@ -86,18 +78,6 @@ namespace LibDescent.Data
         public ushort picture;				// a picture of the weapon for the cockpit
         public ushort hires_picture;                // a picture of the weapon for the cockpit
 
-        public Polymodel model, modelInner;
-        public VClip flashVClip, robotHitVClip, wallHitVClip, weaponVClip;
-        public Weapon childWeapon;
-
-        public int ModelID { get { if (model == null) return -1; return model.ID; } }
-        public int ModelInnerID { get { if (modelInner == null) return -1; return modelInner.ID; } }
-        public int FlashVClipID { get { if (flashVClip == null) return -1; return flashVClip.ID; } }
-        public int RobotHitVClipID { get { if (robotHitVClip == null) return -1; return robotHitVClip.ID; } }
-        public int WallHitVClipID { get { if (wallHitVClip == null) return -1; return wallHitVClip.ID; } }
-        public int WeaponVClipID { get { if (weaponVClip == null) return -1; return weaponVClip.ID; } }
-        public int ChildrenID { get { if (childWeapon == null) return -1; return childWeapon.ID; } }
-
         public int ID;
 
         public Weapon()
@@ -111,50 +91,8 @@ namespace LibDescent.Data
             children = -1;
         }
 
-        public static string GetTagName(int tag)
-        {
-            return TagNames[tag];
-        }
-
-        public void InitReferences(IElementManager manager)
-        {
-            if (render_type == 2)
-            {
-                model = manager.GetModel(model_num);
-                modelInner = manager.GetModel(model_num_inner);
-            }
-            flashVClip = manager.GetVClip(flash_vclip);
-            robotHitVClip = manager.GetVClip(robot_hit_vclip);
-            wallHitVClip = manager.GetVClip(wall_hit_vclip);
-            weaponVClip = manager.GetVClip(weapon_vclip);
-            childWeapon = manager.GetWeapon(children);
-        }
-
-        public void AssignReferences(IElementManager manager)
-        {
-            if (model != null) model.AddReference(HAMType.Weapon, this, PropModel);
-            if (modelInner != null) modelInner.AddReference(HAMType.Weapon, this, PropInnerModel);
-            if (flashVClip != null) flashVClip.AddReference(HAMType.Weapon, this, PropFlashVClip);
-            if (robotHitVClip != null) robotHitVClip.AddReference(HAMType.Weapon, this, PropRobotHitVClip);
-            if (wallHitVClip != null) wallHitVClip.AddReference(HAMType.Weapon, this, PropWallHitVClip);
-            if (weaponVClip != null) weaponVClip.AddReference(HAMType.Weapon, this, PropWeaponVClip);
-            if (childWeapon != null) childWeapon.AddReference(HAMType.Weapon, this, PropWeaponVClip);
-        }
-
-        public void ClearReferences()
-        {
-            if (model != null) model.ClearReference(HAMType.Weapon, this, PropModel);
-            if (modelInner != null) modelInner.ClearReference(HAMType.Weapon, this, PropInnerModel);
-            if (flashVClip != null) flashVClip.ClearReference(HAMType.Weapon, this, PropFlashVClip);
-            if (robotHitVClip != null) robotHitVClip.ClearReference(HAMType.Weapon, this, PropRobotHitVClip);
-            if (wallHitVClip != null) wallHitVClip.ClearReference(HAMType.Weapon, this, PropWallHitVClip);
-            if (weaponVClip != null) weaponVClip.ClearReference(HAMType.Weapon, this, PropWeaponVClip);
-            if (childWeapon != null) childWeapon.ClearReference(HAMType.Weapon, this, PropWeaponVClip);
-        }
-
         public void CopyDataFrom(Weapon other, IElementManager manager)
         {
-            ClearReferences();
             render_type = other.render_type;
             model_num = other.model_num;
             model_num_inner = other.model_num_inner;
@@ -197,34 +135,30 @@ namespace LibDescent.Data
                 strength[i] = other.strength[i];
                 speed[i] = other.speed[i];
             }
-
-            InitReferences(manager);
-            AssignReferences(manager);
         }
 
         public void UpdateWeapon(int tag, int value, int index, IElementManager manager)
         {
-            ClearReferences();
             switch (tag)
             {
                 case 2:
-                    model = manager.GetModel(value-1);
+                    model_num = (sbyte)(value-1);
                     break;
                 case 3:
-                    modelInner = manager.GetModel(value-1);
+                    model_num_inner = (sbyte)(value-1);
                     break;
                 case 4:
-                    flashVClip = manager.GetVClip(value - 1);
+                    flash_vclip = (sbyte)(value - 1);
                     break;
                 case 5:
-                    robotHitVClip = manager.GetVClip(value - 1);
+                    robot_hit_vclip = (sbyte)(value - 1);
                     break;
                 case 6:
                     if (value == 0) flash_sound = -1;
                     else flash_sound = (short)(value - 1);
                     break;
                 case 7:
-                    wallHitVClip = manager.GetVClip(value - 1);
+                    wall_hit_vclip = (sbyte)(value - 1);
                     break;
                 case 8:
                     fire_count = (byte)value;
@@ -237,7 +171,7 @@ namespace LibDescent.Data
                     ammo_usage = (byte)value;
                     break;
                 case 11:
-                    weaponVClip = manager.GetVClip(value - 1);
+                    weapon_vclip = (byte)(value - 1);
                     break;
                 case 12:
                     if (value == 0) wall_hit_sound = -1;
@@ -256,7 +190,7 @@ namespace LibDescent.Data
                     afterburner_size = (sbyte)value;
                     break;
                 case 21:
-                    childWeapon = manager.GetWeapon(value - 1);
+                    children = (sbyte)(value - 1);
                     break;
                 case 22:
                     energy_usage = value;
@@ -313,7 +247,6 @@ namespace LibDescent.Data
                     damage_radius = value;
                     break;
             }
-            AssignReferences(manager);
         }
     }
 }

@@ -548,57 +548,8 @@ namespace LibDescent.Data
         //this is annoying and sucks aaa
         private void BuildReferenceLists()
         {
-            Robot robot;
-            for (int i = 0; i < Robots.Count; i++)
-            {
-                robot = Robots[i];
-                robot.InitReferences(this);
-                robot.AssignReferences(this);
-            }
-            Weapon weapon;
-            for (int i = 0; i < Weapons.Count; i++)
-            {
-                weapon = Weapons[i];
-                weapon.InitReferences(this);
-                weapon.AssignReferences(this);
-            }
-            EClip eclip;
-            for (int i = 0; i < EClips.Count; i++)
-            {
-                eclip = EClips[i];
-                eclip.InitReferences(this);
-                eclip.AssignReferences(this);
-            }
-            Polymodel model;
-            for (int i = 0; i < PolygonModels.Count; i++)
-            {
-                model = PolygonModels[i];
-                model.InitReferences(this);
-                model.AssignReferences(this);
-            }
-            PlayerShip.InitReferences(this);
-            PlayerShip.AssignReferences(this);
-            Reactor reactor;
-            for (int i = 0; i < Reactors.Count; i++)
-            {
-                reactor = Reactors[i];
-                reactor.InitReferences(this);
-                reactor.AssignReferences(this);
-            }
-            Powerup powerup;
-            for (int i = 0; i < Powerups.Count; i++)
-            {
-                powerup = Powerups[i];
-                powerup.InitReferences(this);
-                powerup.AssignReferences(this);
-            }
-            TMAPInfo info;
-            for (int i = 0; i < TMapInfo.Count; i++)
-            {
-                info = TMapInfo[i];
-                info.InitReferences(this);
-                info.AssignReferences(this);
-            }
+            //rip
+            //actually no you won't be missed
         }
 
         public void UpdateEClipMapping()
@@ -733,8 +684,7 @@ namespace LibDescent.Data
             Joints.Clear();
             foreach (Robot robot in Robots)
             {
-                //LoadAnimations(robot, PolygonModels[robot.model_num]);
-                LoadAnimations(robot, robot.model);
+                LoadAnimations(robot, PolygonModels[robot.model_num]);
             }
             Console.WriteLine("Constructed {0} joints", Joints.Count);
             foreach (Reactor reactor in Reactors)
@@ -840,12 +790,12 @@ namespace LibDescent.Data
             }
             for (int x = 0; x < PolygonModels.Count; x++)
             {
-                int modelnum = PolygonModels[x].DyingModelID;
+                int modelnum = PolygonModels[x].DyingModelnum;
                 bw.Write(modelnum);
             }
             for (int x = 0; x < PolygonModels.Count; x++)
             {
-                int modelnum = PolygonModels[x].DeadModelID;
+                int modelnum = PolygonModels[x].DeadModelnum;
                 bw.Write(modelnum);
             }
             bw.Write(Gauges.Count);
@@ -896,8 +846,7 @@ namespace LibDescent.Data
             for (int x = 0; x < Reactors.Count; x++)
             {
                 Reactor reactor = Reactors[x];
-                //bw.Write(reactor.model_id);
-                bw.Write(reactor.ModelID);
+                bw.Write(reactor.model_id);
                 bw.Write(reactor.n_guns);
                 for (int y = 0; y < 8; y++)
                 {
@@ -939,7 +888,7 @@ namespace LibDescent.Data
 
         private void LoadReactorGuns(Reactor reactor)
         {
-            Polymodel model = reactor.model;
+            Polymodel model = PolygonModels[reactor.model_id];
             reactor.n_guns = (byte)model.numGuns;
             for (int i = 0; i < reactor.n_guns; i++)
             {
@@ -950,7 +899,7 @@ namespace LibDescent.Data
 
         private void LoadShipGuns(Ship ship)
         {
-            Polymodel models = ship.model;
+            Polymodel models = PolygonModels[ship.model_num];
             for (int i = 0; i < 8; i++)
             {
                 ship.gun_points[i] = models.gunPoints[i];
@@ -1021,11 +970,7 @@ namespace LibDescent.Data
         {
             Polymodel model = PolygonModels[index];
             PolygonModels[index] = newModel;
-            model.ClearReferences();
             newModel.ID = index;
-            newModel.InitReferences(this);
-            newModel.AssignReferences(this);
-            RenumberElements(HAMType.Model);
             //PolymodelData[index] = newModel.data;
         }
 
@@ -1058,21 +1003,18 @@ namespace LibDescent.Data
                 case HAMType.EClip:
                     EClip eclip = new EClip();
                     eclip.ID = EClips.Count;
-                    eclip.AssignReferences(this);
                     EClips.Add(eclip);
                     EClipNames.Add(string.Format("NewEClip{0}", eclip.ID));
                     return eclip.ID;
                 case HAMType.Robot:
                     Robot robot = new Robot();
                     robot.ID = Robots.Count;
-                    robot.AssignReferences(this);
                     Robots.Add(robot);
                     RobotNames.Add(string.Format("New Robot #{0}", robot.ID));
                     return robot.ID;
                 case HAMType.Weapon:
                     Weapon weapon = new Weapon();
                     weapon.ID = Weapons.Count;
-                    weapon.AssignReferences(this);
                     Weapons.Add(weapon);
                     WeaponNames.Add(string.Format("New Weapon #{0}", weapon.ID));
                     return weapon.ID;
@@ -1092,6 +1034,8 @@ namespace LibDescent.Data
         //If you call this function, you're a masochist or don't know what you're doing tbh.
         public int DeleteElement(HAMType type, int slot)
         {
+            Console.WriteLine("DeleteElement: STUB");
+            /*
             switch (type)
             {
                 case HAMType.EClip:
@@ -1144,6 +1088,7 @@ namespace LibDescent.Data
                         return PolygonModels.Count;
                     }
             }
+            */
             return -1;
         }
 
@@ -1357,44 +1302,36 @@ namespace LibDescent.Data
 
             int numOrphaned = 0;
             Polymodel model;
-            for (int i = 0; i < PolygonModels.Count; i++)
-            {
-                if (PolygonModels[i].References.Count == 0)
-                    numOrphaned++;
-            }
             if (numOrphaned == 0)
                 return 0; //Don't write the chunk if there's no orphaned models. 
             bw.Write(0x4E50524F); //ORPH
             bw.Write(1);
-            bw.Write(numOrphaned);
+            bw.Write(PolygonModels.Count);
             for (int i = 0; i < PolygonModels.Count; i++)
             {
                 model = PolygonModels[i];
-                if (model.References.Count == 0)
+                bw.Write(i);
+                bw.Write(model.numGuns);
+                for (int j = 0; j < model.numGuns; j++)
                 {
-                    bw.Write(i);
-                    bw.Write(model.numGuns);
-                    for (int j = 0; j < model.numGuns; j++)
+                    bw.Write(model.gunSubmodels[j]);
+                    bw.Write(model.gunPoints[j].x);
+                    bw.Write(model.gunPoints[j].y);
+                    bw.Write(model.gunPoints[j].z);
+                    bw.Write(model.gunDirs[j].x);
+                    bw.Write(model.gunDirs[j].y);
+                    bw.Write(model.gunDirs[j].z);
+                }
+                bw.Write(model.isAnimated);
+                if (model.isAnimated)
+                {
+                    for (int j = 0; j < 10; j++)
                     {
-                        bw.Write(model.gunSubmodels[j]);
-                        bw.Write(model.gunPoints[j].x);
-                        bw.Write(model.gunPoints[j].y);
-                        bw.Write(model.gunPoints[j].z);
-                        bw.Write(model.gunDirs[j].x);
-                        bw.Write(model.gunDirs[j].y);
-                        bw.Write(model.gunDirs[j].z);
-                    }
-                    bw.Write(model.isAnimated);
-                    if (model.isAnimated)
-                    {
-                        for (int j = 0; j < 10; j++)
+                        for (int k = 0; k < 5; k++)
                         {
-                            for (int k = 0; k < 5; k++)
-                            {
-                                bw.Write(model.animationMatrix[j, k].p);
-                                bw.Write(model.animationMatrix[j, k].b);
-                                bw.Write(model.animationMatrix[j, k].h);
-                            }
+                            bw.Write(model.animationMatrix[j, k].p);
+                            bw.Write(model.animationMatrix[j, k].b);
+                            bw.Write(model.animationMatrix[j, k].h);
                         }
                     }
                 }

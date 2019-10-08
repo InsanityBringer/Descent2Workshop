@@ -231,13 +231,13 @@ namespace PiggyDump
             {
                 for (int i = 0; i < datafile.baseFile.Powerups.Count; i++)
                     cbRobotDropItem.Items.Add(datafile.baseFile.PowerupNames[i]);
-                cbRobotDropItem.SelectedIndex = robot.dropPowerup.ID;
+                cbRobotDropItem.SelectedIndex = robot.contains_id;
             }
             else
             {
                 for (int i = 0; i < datafile.NumRobots; i++)
                     cbRobotDropItem.Items.Add(datafile.GetRobotName(i));
-                cbRobotDropItem.SelectedIndex = robot.dropRobot.ID;
+                cbRobotDropItem.SelectedIndex = robot.contains_id;
             }
             //cbRobotDropItem.SelectedIndex = 0;
         }
@@ -283,11 +283,11 @@ namespace PiggyDump
             UpdateRobotDropTypes(dropType, robot);
             cbRobotDropType.SelectedIndex = dropType;
 
-            cbRobotHitVClip.SelectedIndex = robot.Exp1VClipID + 1;
-            cbRobotDeathVClip.SelectedIndex = robot.Exp2VClipID + 1;
-            cbRobotModel.SelectedIndex = robot.ModelID;
-            cbRobotWeapon1.SelectedIndex = robot.Weapon1ID;
-            cbRobotWeapon2.SelectedIndex = robot.Weapon2ID + 1;
+            cbRobotHitVClip.SelectedIndex = robot.exp1_vclip_num + 1;
+            cbRobotDeathVClip.SelectedIndex = robot.exp2_vclip_num + 1;
+            cbRobotModel.SelectedIndex = robot.model_num;
+            cbRobotWeapon1.SelectedIndex = robot.weapon_type;
+            cbRobotWeapon2.SelectedIndex = robot.weapon_type2 + 1;
             if (robot.behavior >= 128)
             {
                 cbRobotAI.SelectedIndex = robot.behavior - 128;
@@ -377,16 +377,16 @@ namespace PiggyDump
             cbWeaponPlacable.Checked = (weapon.flags & 1) != 0;
             cbWeaponRipper.Checked = weapon.persistent != 0;
 
-            cbWeaponChildren.SelectedIndex = weapon.ChildrenID + 1;
+            cbWeaponChildren.SelectedIndex = weapon.children + 1;
             cbWeaponFireSound.SelectedIndex = weapon.flash_sound + 1;
             cbWeaponRobotHitSound.SelectedIndex = weapon.robot_hit_sound + 1;
             cbWeaponWallHitSound.SelectedIndex = weapon.wall_hit_sound + 1;
-            cbWeaponModel1.SelectedIndex = weapon.ModelID + 1;
-            cbWeaponModel2.SelectedIndex = weapon.ModelInnerID + 1;
-            cbWeaponWallHit.SelectedIndex = weapon.WallHitVClipID + 1;
-            cbWeaponRobotHit.SelectedIndex = weapon.RobotHitVClipID + 1;
-            cbWeaponMuzzleFlash.SelectedIndex = weapon.FlashVClipID + 1;
-            cbWeaponVClip.SelectedIndex = weapon.WeaponVClipID + 1;
+            cbWeaponModel1.SelectedIndex = weapon.model_num + 1;
+            cbWeaponModel2.SelectedIndex = weapon.model_num_inner + 1;
+            cbWeaponWallHit.SelectedIndex = weapon.wall_hit_vclip + 1;
+            cbWeaponRobotHit.SelectedIndex = weapon.robot_hit_vclip + 1;
+            cbWeaponMuzzleFlash.SelectedIndex = weapon.flash_vclip + 1;
+            cbWeaponVClip.SelectedIndex = weapon.weapon_vclip + 1;
 
             nudWeaponStr.Value = 0;
             UpdateWeaponPower(0);
@@ -438,9 +438,9 @@ namespace PiggyDump
             txtModelDataSize.Text = model.model_data_size.ToString();
             txtModelRadius.Text = ((float)(model.rad)).ToString();
             txtModelTextureCount.Text = model.n_textures.ToString();
-            cbModelLowDetail.SelectedIndex = model.SimpleModelID + 1;
-            cbModelDyingModel.SelectedIndex = model.DyingModelID + 1;
-            cbModelDeadModel.SelectedIndex = model.DeadModelID + 1;
+            cbModelLowDetail.SelectedIndex = model.simpler_model + 1;
+            cbModelDyingModel.SelectedIndex = model.DyingModelnum + 1;
+            cbModelDeadModel.SelectedIndex = model.DeadModelnum + 1;
 
             txtModelMinX.Text = ((float)(model.mins.x)).ToString();
             txtModelMinY.Text = ((float)(model.mins.y)).ToString();
