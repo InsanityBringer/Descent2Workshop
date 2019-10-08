@@ -133,8 +133,6 @@
     <Compile Include="FontViewer.Designer.cs">
       <DependentUpon>FontViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="HAMDataWriter.cs" />
-    <Compile Include="HAMDataReader.cs" />
     <Compile Include="HAMEditor2.cs">
       <SubType>Form</SubType>
     </Compile>

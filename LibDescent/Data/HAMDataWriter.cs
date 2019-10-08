@@ -24,7 +24,7 @@ using System;
 using System.Text;
 using System.IO;
 
-namespace PiggyDump
+namespace LibDescent.Data
 {
     class HAMDataWriter
     {

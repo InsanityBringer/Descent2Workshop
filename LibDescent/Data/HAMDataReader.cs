@@ -22,7 +22,7 @@
 
 using System.IO;
 
-namespace PiggyDump
+namespace LibDescent.Data
 {
     class HAMDataReader
     {
