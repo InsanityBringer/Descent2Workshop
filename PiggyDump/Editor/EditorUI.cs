@@ -32,6 +32,7 @@ using System.Windows.Forms;
 using PiggyDump.Editor.Render;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using LibDescent.Data;
 
 namespace PiggyDump.Editor
 {

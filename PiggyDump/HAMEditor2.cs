@@ -26,6 +26,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
 using System.Text;
+using LibDescent.Data;
+using LibDescent.Edit;
 
 namespace PiggyDump
 {
@@ -1606,7 +1608,14 @@ namespace PiggyDump
             List<string> newTextureNames = new List<string>();
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                Polymodel model = POFReader.ReadPOFFile(openFileDialog1.FileName);
+                string traceto = "";
+                if (bool.Parse(StandardUI.options.GetOption("TraceModels", bool.FalseString)))
+                {
+                    string bareFilename = Path.GetFileName(openFileDialog1.FileName);
+                    traceto = StandardUI.options.GetOption("TraceDir", ".") + Path.DirectorySeparatorChar + Path.ChangeExtension(bareFilename, "txt");
+                }
+
+                Polymodel model = POFReader.ReadPOFFile(openFileDialog1.FileName, traceto);
                 model.ExpandSubmodels();
                 //int numTextures = model.n_textures;
                 datafile.ReplaceModel(ElementNumber, model);
@@ -1796,17 +1805,17 @@ namespace PiggyDump
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 StreamWriter sw = new StreamWriter(File.Open(saveFileDialog1.FileName, FileMode.Create));
-                sw.Write(HAMDataWriter.GenerateBitmapsTable(datafile, host.DefaultPigFile, host.DefaultSoundFile));
+                sw.Write(BitmapTableFile.GenerateBitmapsTable(datafile, host.DefaultPigFile, host.DefaultSoundFile));
                 sw.Flush();
                 sw.Close();
                 sw.Dispose();
                 string modelPath = Path.GetDirectoryName(saveFileDialog1.FileName);
                 Polymodel model;
                 //for (int i = 0; i < datafile.PolygonModels.Count; i++)
-                foreach (int i in HAMDataWriter.pofIndicies)
+                foreach (int i in BitmapTableFile.pofIndicies)
                 {
                     model = datafile.PolygonModels[i];
-                    BinaryWriter bw = new BinaryWriter(File.Open(String.Format("{0}{1}{2}", modelPath, Path.DirectorySeparatorChar, HAMDataWriter.pofNames[i]), FileMode.Create));
+                    BinaryWriter bw = new BinaryWriter(File.Open(String.Format("{0}{1}{2}", modelPath, Path.DirectorySeparatorChar, BitmapTableFile.pofNames[i]), FileMode.Create));
                     POFWriter.SerializePolymodel(bw, model, 8);
                     bw.Close();
                     bw.Dispose();
@@ -1915,7 +1924,8 @@ namespace PiggyDump
 
         private void mnuSave_Click(object sender, EventArgs e)
         {
-            datafile.SaveDataFile(datafile.lastFilename);
+            bool compatObjBitmaps = (StandardUI.options.GetOption("CompatObjBitmaps", bool.FalseString) == bool.TrueString);
+            datafile.SaveDataFile(datafile.lastFilename, compatObjBitmaps);
         }
 
         private void mnuSaveAs_Click(object sender, EventArgs e)
@@ -1924,7 +1934,8 @@ namespace PiggyDump
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 datafile.lastFilename = saveFileDialog1.FileName;
-                datafile.SaveDataFile(saveFileDialog1.FileName);
+                bool compatObjBitmaps = (StandardUI.options.GetOption("CompatObjBitmaps", bool.FalseString) == bool.TrueString);
+                datafile.SaveDataFile(saveFileDialog1.FileName, compatObjBitmaps);
             }
             this.Text = string.Format("{0} - HAM Editor", datafile.Filename);
         }

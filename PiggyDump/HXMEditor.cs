@@ -25,6 +25,7 @@ using System.Collections.Generic;
 
 using System.IO;
 using System.Windows.Forms;
+using LibDescent.Data;
 //using OpenTK.Graphics;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;

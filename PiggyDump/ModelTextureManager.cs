@@ -27,6 +27,7 @@ using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
 using OpenTK.Graphics.OpenGL;
+using LibDescent.Data;
 
 namespace PiggyDump
 {
