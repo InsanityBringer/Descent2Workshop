@@ -1,4 +1,4 @@
-﻿namespace PiggyDump.Editor
+﻿namespace Descent2Workshop.Editor
 {
     partial class EditorUI
     {

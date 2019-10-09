@@ -227,8 +227,8 @@ namespace LibDescent.Data
                 Powerup powerup = new Powerup();
                 powerup.vclip_num = br.ReadInt32();
                 powerup.hit_sound = br.ReadInt32();
-                powerup.size = br.ReadInt32();
-                powerup.light = br.ReadInt32();
+                powerup.size = new Fix(br.ReadInt32());
+                powerup.light = new Fix(br.ReadInt32());
                 powerup.ID = x;
                 Powerups.Add(powerup);
             }
@@ -286,13 +286,13 @@ namespace LibDescent.Data
             PlayerShip = new Ship();
             PlayerShip.model_num = br.ReadInt32();
             PlayerShip.expl_vclip_num = br.ReadInt32();
-            PlayerShip.mass = br.ReadInt32();
-            PlayerShip.drag = br.ReadInt32();
-            PlayerShip.max_thrust = br.ReadInt32();
-            PlayerShip.reverse_thrust = br.ReadInt32();
-            PlayerShip.brakes = br.ReadInt32();
-            PlayerShip.wiggle = br.ReadInt32();
-            PlayerShip.max_rotthrust = br.ReadInt32();
+            PlayerShip.mass = new Fix(br.ReadInt32());
+            PlayerShip.drag = new Fix(br.ReadInt32());
+            PlayerShip.max_thrust = new Fix(br.ReadInt32());
+            PlayerShip.reverse_thrust = new Fix(br.ReadInt32());
+            PlayerShip.brakes = new Fix(br.ReadInt32());
+            PlayerShip.wiggle = new Fix(br.ReadInt32());
+            PlayerShip.max_rotthrust = new Fix(br.ReadInt32());
             for (int x = 0; x < 8; x++)
             {
                 PlayerShip.gun_points[x] = new FixVector(br.ReadInt32(), br.ReadInt32(), br.ReadInt32());
@@ -775,8 +775,8 @@ namespace LibDescent.Data
                 Powerup powerup = Powerups[x];
                 bw.Write(powerup.vclip_num);
                 bw.Write(powerup.hit_sound);
-                bw.Write(powerup.size);
-                bw.Write(powerup.light);
+                bw.Write(powerup.size.GetRawValue());
+                bw.Write(powerup.light.GetRawValue());
             }
             bw.Write(PolygonModels.Count);
             for (int x = 0; x < PolygonModels.Count; x++)
@@ -850,15 +850,15 @@ namespace LibDescent.Data
                 bw.Write(reactor.n_guns);
                 for (int y = 0; y < 8; y++)
                 {
-                    bw.Write(reactor.gun_points[y].x);
-                    bw.Write(reactor.gun_points[y].y);
-                    bw.Write(reactor.gun_points[y].z);
+                    bw.Write(reactor.gun_points[y].x.GetRawValue());
+                    bw.Write(reactor.gun_points[y].y.GetRawValue());
+                    bw.Write(reactor.gun_points[y].z.GetRawValue());
                 }
                 for (int y = 0; y < 8; y++)
                 {
-                    bw.Write(reactor.gun_dirs[y].x);
-                    bw.Write(reactor.gun_dirs[y].y);
-                    bw.Write(reactor.gun_dirs[y].z);
+                    bw.Write(reactor.gun_dirs[y].x.GetRawValue());
+                    bw.Write(reactor.gun_dirs[y].y.GetRawValue());
+                    bw.Write(reactor.gun_dirs[y].z.GetRawValue());
                 }
             }
             bw.Write(PlayerShip.markerModel);

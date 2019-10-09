@@ -8,8 +8,8 @@
     <ProjectGuid>{A9CC48AF-AEDF-4A2D-86A7-9288BADBC801}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PiggyDump</RootNamespace>
-    <AssemblyName>PiggyDump</AssemblyName>
+    <RootNamespace>Descent2Workshop</RootNamespace>
+    <AssemblyName>Descent2Workshop</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>
@@ -140,11 +140,11 @@
     <Compile Include="FontViewer.Designer.cs">
       <DependentUpon>FontViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="HAMEditor2.cs">
+    <Compile Include="HAMEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="HAMEditor2.Designer.cs">
-      <DependentUpon>HAMEditor2.cs</DependentUpon>
+    <Compile Include="HAMEditor.Designer.cs">
+      <DependentUpon>HAMEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="ElementBrowser.cs">
       <SubType>Form</SubType>
@@ -218,8 +218,8 @@
     <EmbeddedResource Include="FontViewer.resx">
       <DependentUpon>FontViewer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="HAMEditor2.resx">
-      <DependentUpon>HAMEditor2.cs</DependentUpon>
+    <EmbeddedResource Include="HAMEditor.resx">
+      <DependentUpon>HAMEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="HOGEditor.resx">

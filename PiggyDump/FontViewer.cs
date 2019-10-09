@@ -2,7 +2,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace PiggyDump
+namespace Descent2Workshop
 {
     public partial class FontViewer : Form
     {

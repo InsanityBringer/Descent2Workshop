@@ -29,9 +29,9 @@ using System.Text;
 using LibDescent.Data;
 using LibDescent.Edit;
 
-namespace PiggyDump
+namespace Descent2Workshop
 {
-    public partial class HAMEditor2 : Form
+    public partial class HAMEditor : Form
     {
         private static HAMType[] typeTable = { HAMType.TMAPInfo, HAMType.VClip, HAMType.EClip, HAMType.WClip, HAMType.Robot, HAMType.Weapon,
             HAMType.Model, HAMType.Sound, HAMType.Reactor, HAMType.Powerup, HAMType.Ship, HAMType.Gauge, HAMType.Cockpit, HAMType.XLAT };
@@ -46,7 +46,7 @@ namespace PiggyDump
         private int ElementNumber { get { return (int)nudElementNum.Value; } }
         private int PageNumber { get { return tabControl1.SelectedIndex; } }
         
-        public HAMEditor2(HAMFile data, StandardUI host)
+        public HAMEditor(HAMFile data, StandardUI host)
         {
             InitializeComponent();
             this.glControl1 = new OpenTK.GLControl();
@@ -1415,12 +1415,12 @@ namespace PiggyDump
                 {
                     case "1":
                         int totalTimeFix = (int)(value * 65536);
-                        clip.play_time = totalTimeFix;
-                        clip.frame_time = totalTimeFix / clip.num_frames;
+                        clip.play_time = new Fix(totalTimeFix);
+                        clip.frame_time = new Fix(totalTimeFix / clip.num_frames);
                         txtAnimFrameSpeed.Text = clip.frame_time.ToString();
                         break;
                     case "2":
-                        clip.light_value = (int)(value * 65536);
+                        clip.light_value = new Fix((int)(value * 65536));
                         break;
                 }
             }
@@ -1443,15 +1443,15 @@ namespace PiggyDump
                 {
                     case "1":
                         int totalTimeFix = (int)(value * 65536);
-                        clip.vc.play_time = totalTimeFix;
-                        clip.vc.frame_time = totalTimeFix / clip.vc.num_frames;
+                        clip.vc.play_time = new Fix(totalTimeFix);
+                        clip.vc.frame_time = new Fix(totalTimeFix / clip.vc.num_frames);
                         txtEffectFrameSpeed.Text = clip.vc.frame_time.ToString();
                         break;
                     case "2":
-                        clip.vc.light_value = (int)(value * 65536);
+                        clip.vc.light_value = new Fix((int)(value * 65536));
                         break;
                     case "3":
-                        clip.dest_size = (int)(value * 65536);
+                        clip.dest_size = new Fix((int)(value * 65536));
                         break;
                     case "4":
                         clip.dest_bm_num = int.Parse(textBox.Text);
@@ -1540,7 +1540,7 @@ namespace PiggyDump
                 {
                     case "1":
                         int totalTimeFix = (int)(value * 65536);
-                        clip.play_time = totalTimeFix;
+                        clip.play_time = new Fix(totalTimeFix);
                         break;
                     case "2":
                         clip.filename = textBox.Text.ToCharArray();
@@ -1668,10 +1668,10 @@ namespace PiggyDump
                 switch (textBox.Tag)
                 {
                     case "3":
-                        powerup.size = (int)(value * 65536.0);
+                        powerup.size = new Fix((int)(value * 65536.0));
                         break;
                     case "4":
-                        powerup.light = (int)(value * 65536.0);
+                        powerup.light = new Fix((int)(value * 65536.0));
                         break;
                 }
             }

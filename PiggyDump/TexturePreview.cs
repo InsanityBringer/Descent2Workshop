@@ -30,7 +30,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace PiggyDump
+namespace Descent2Workshop
 {
     public partial class TexturePreview : Form
     {

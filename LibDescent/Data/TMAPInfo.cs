@@ -32,8 +32,8 @@ namespace LibDescent.Data
         public const int TMI_GOAL_HOARD = 32;		//this is used to remap the goals
         public byte flags;
         //three bytes padding
-        public int lighting;
-        public int damage;
+        public Fix lighting;
+        public Fix damage;
         public short eclip_num;
         public short destroyed;
         public short slide_u, slide_v;

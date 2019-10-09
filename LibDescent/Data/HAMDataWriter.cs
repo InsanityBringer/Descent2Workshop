@@ -30,8 +30,8 @@ namespace LibDescent.Data
         {
             bw.Write(tmapinfo.flags);
             bw.Write(new byte[3]);
-            bw.Write(tmapinfo.lighting);
-            bw.Write(tmapinfo.damage);
+            bw.Write(tmapinfo.lighting.GetRawValue());
+            bw.Write(tmapinfo.damage.GetRawValue());
             bw.Write(tmapinfo.eclip_num);
             bw.Write(tmapinfo.destroyed);
             bw.Write(tmapinfo.slide_u);
@@ -40,16 +40,16 @@ namespace LibDescent.Data
 
         public void WriteVClip(VClip clip, BinaryWriter bw)
         {
-            bw.Write(clip.play_time);
+            bw.Write(clip.play_time.GetRawValue());
             bw.Write(clip.num_frames);
-            bw.Write(clip.frame_time);
+            bw.Write(clip.frame_time.GetRawValue());
             bw.Write(clip.flags);
             bw.Write(clip.sound_num);
             for (int x = 0; x < 30; x++)
             {
                 bw.Write(clip.frames[x]);
             }
-            bw.Write(clip.light_value);
+            bw.Write(clip.light_value.GetRawValue());
         }
 
         public void WriteEClip(EClip clip, BinaryWriter bw)
@@ -57,15 +57,14 @@ namespace LibDescent.Data
             WriteVClip(clip.vc, bw);
             bw.Write(clip.time_left);
             bw.Write(clip.frame_count);
-            //bw.Write(clip.changing_wall_texture);
-            bw.Write((short)clip.GetCurrentTMap());
+            bw.Write(clip.changing_wall_texture);
             bw.Write(clip.changing_object_texture);
             bw.Write(clip.flags);
             bw.Write(clip.crit_clip);
             bw.Write(clip.dest_bm_num);
             bw.Write(clip.dest_vclip);
             bw.Write(clip.dest_eclip);
-            bw.Write(clip.dest_size);
+            bw.Write(clip.dest_size.GetRawValue());
             bw.Write(clip.sound_num);
             bw.Write(clip.segnum);
             bw.Write(clip.sidenum);
@@ -73,7 +72,7 @@ namespace LibDescent.Data
 
         public void WriteWClip(WClip clip, BinaryWriter bw)
         {
-            bw.Write(clip.play_time);
+            bw.Write(clip.play_time.GetRawValue());
             bw.Write(clip.num_frames);
             for (int x = 0; x < 50; x++)
             {
@@ -122,35 +121,35 @@ namespace LibDescent.Data
             bw.Write(robot.badass);
             bw.Write(robot.energy_drain);
             
-            bw.Write(robot.lighting);
-            bw.Write(robot.strength);
+            bw.Write(robot.lighting.GetRawValue());
+            bw.Write(robot.strength.GetRawValue());
             
-            bw.Write(robot.mass);
-            bw.Write(robot.drag);
+            bw.Write(robot.mass.GetRawValue());
+            bw.Write(robot.drag.GetRawValue());
             
             for (int x = 0; x < 5; x++)
             {
-                bw.Write(robot.field_of_view[x]);
+                bw.Write(robot.field_of_view[x].GetRawValue());
             }
             for (int x = 0; x < 5; x++)
             {
-                bw.Write(robot.firing_wait[x]);
+                bw.Write(robot.firing_wait[x].GetRawValue());
             }
             for (int x = 0; x < 5; x++)
             {
-                bw.Write(robot.firing_wait2[x]);
+                bw.Write(robot.firing_wait2[x].GetRawValue());
             }
             for (int x = 0; x < 5; x++)
             {
-                bw.Write(robot.turn_time[x]);
+                bw.Write(robot.turn_time[x].GetRawValue());
             }
             for (int x = 0; x < 5; x++)
             {
-                bw.Write(robot.max_speed[x]);
+                bw.Write(robot.max_speed[x].GetRawValue());
             }
             for (int x = 0; x < 5; x++)
             {
-                bw.Write(robot.circle_distance[x]);
+                bw.Write(robot.circle_distance[x].GetRawValue());
             }
             for (int x = 0; x < 5; x++)
             {
@@ -230,31 +229,31 @@ namespace LibDescent.Data
 
             bw.Write(weapon.children);
             
-            bw.Write(weapon.energy_usage);
-            bw.Write(weapon.fire_wait);
+            bw.Write(weapon.energy_usage.GetRawValue());
+            bw.Write(weapon.fire_wait.GetRawValue());
 
-            bw.Write(weapon.multi_damage_scale);
+            bw.Write(weapon.multi_damage_scale.GetRawValue());
             
             bw.Write(weapon.bitmap);
             
-            bw.Write(weapon.blob_size);
-            bw.Write(weapon.flash_size);
-            bw.Write(weapon.impact_size);
+            bw.Write(weapon.blob_size.GetRawValue());
+            bw.Write(weapon.flash_size.GetRawValue());
+            bw.Write(weapon.impact_size.GetRawValue());
             for (int x = 0; x < 5; x++)
             {
-                bw.Write(weapon.strength[x]);
+                bw.Write(weapon.strength[x].GetRawValue());
             }
             for (int x = 0; x < 5; x++)
             {
-                bw.Write(weapon.speed[x]);
+                bw.Write(weapon.speed[x].GetRawValue());
             }
-            bw.Write(weapon.mass);
-            bw.Write(weapon.drag);
-            bw.Write(weapon.thrust);
-            bw.Write(weapon.po_len_to_width_ratio);
-            bw.Write(weapon.light);
-            bw.Write(weapon.lifetime);
-            bw.Write(weapon.damage_radius);
+            bw.Write(weapon.mass.GetRawValue());
+            bw.Write(weapon.drag.GetRawValue());
+            bw.Write(weapon.thrust.GetRawValue());
+            bw.Write(weapon.po_len_to_width_ratio.GetRawValue());
+            bw.Write(weapon.light.GetRawValue());
+            bw.Write(weapon.lifetime.GetRawValue());
+            bw.Write(weapon.damage_radius.GetRawValue());
             
             bw.Write(weapon.picture);
             bw.Write(weapon.hires_picture);
@@ -291,29 +290,29 @@ namespace LibDescent.Data
             bw.Write(weapon.flash);
             bw.Write(weapon.afterburner_size);
 
-            bw.Write(weapon.energy_usage);
-            bw.Write(weapon.fire_wait);
+            bw.Write(weapon.energy_usage.GetRawValue());
+            bw.Write(weapon.fire_wait.GetRawValue());
 
             bw.Write(weapon.bitmap);
 
-            bw.Write(weapon.blob_size);
-            bw.Write(weapon.flash_size);
-            bw.Write(weapon.impact_size);
+            bw.Write(weapon.blob_size.GetRawValue());
+            bw.Write(weapon.flash_size.GetRawValue());
+            bw.Write(weapon.impact_size.GetRawValue());
             for (int x = 0; x < 5; x++)
             {
-                bw.Write(weapon.strength[x]);
+                bw.Write(weapon.strength[x].GetRawValue());
             }
             for (int x = 0; x < 5; x++)
             {
-                bw.Write(weapon.speed[x]);
+                bw.Write(weapon.speed[x].GetRawValue());
             }
-            bw.Write(weapon.mass);
-            bw.Write(weapon.drag);
-            bw.Write(weapon.thrust);
-            bw.Write(weapon.po_len_to_width_ratio);
-            bw.Write(weapon.light);
-            bw.Write(weapon.lifetime);
-            bw.Write(weapon.damage_radius);
+            bw.Write(weapon.mass.GetRawValue());
+            bw.Write(weapon.drag.GetRawValue());
+            bw.Write(weapon.thrust.GetRawValue());
+            bw.Write(weapon.po_len_to_width_ratio.GetRawValue());
+            bw.Write(weapon.light.GetRawValue());
+            bw.Write(weapon.lifetime.GetRawValue());
+            bw.Write(weapon.damage_radius.GetRawValue());
 
             bw.Write(weapon.picture);
         }
@@ -329,25 +328,25 @@ namespace LibDescent.Data
             }
             for (int s = 0; s < 10; s++)
             {
-                bw.Write(model.submodels[s].Offset.x);
-                bw.Write(model.submodels[s].Offset.y);
-                bw.Write(model.submodels[s].Offset.z);
+                bw.Write(model.submodels[s].Offset.x.GetRawValue());
+                bw.Write(model.submodels[s].Offset.y.GetRawValue());
+                bw.Write(model.submodels[s].Offset.z.GetRawValue());
             }
             for (int s = 0; s < 10; s++)
             {
-                bw.Write(model.submodels[s].Normal.x);
-                bw.Write(model.submodels[s].Normal.y);
-                bw.Write(model.submodels[s].Normal.z);
+                bw.Write(model.submodels[s].Normal.x.GetRawValue());
+                bw.Write(model.submodels[s].Normal.y.GetRawValue());
+                bw.Write(model.submodels[s].Normal.z.GetRawValue());
             }
             for (int s = 0; s < 10; s++)
             {
-                bw.Write(model.submodels[s].Point.x);
-                bw.Write(model.submodels[s].Point.y);
-                bw.Write(model.submodels[s].Point.z);
+                bw.Write(model.submodels[s].Point.x.GetRawValue());
+                bw.Write(model.submodels[s].Point.y.GetRawValue());
+                bw.Write(model.submodels[s].Point.z.GetRawValue());
             }
             for (int s = 0; s < 10; s++)
             {
-                bw.Write(model.submodels[s].Radius);
+                bw.Write(model.submodels[s].Radius.GetRawValue());
             }
             for (int s = 0; s < 10; s++)
             {
@@ -355,23 +354,23 @@ namespace LibDescent.Data
             }
             for (int s = 0; s < 10; s++)
             {
-                bw.Write(model.submodels[s].Mins.x);
-                bw.Write(model.submodels[s].Mins.y);
-                bw.Write(model.submodels[s].Mins.z);
+                bw.Write(model.submodels[s].Mins.x.GetRawValue());
+                bw.Write(model.submodels[s].Mins.y.GetRawValue());
+                bw.Write(model.submodels[s].Mins.z.GetRawValue());
             }
             for (int s = 0; s < 10; s++)
             {
-                bw.Write(model.submodels[s].Maxs.x);
-                bw.Write(model.submodels[s].Maxs.y);
-                bw.Write(model.submodels[s].Maxs.z);
+                bw.Write(model.submodels[s].Maxs.x.GetRawValue());
+                bw.Write(model.submodels[s].Maxs.y.GetRawValue());
+                bw.Write(model.submodels[s].Maxs.z.GetRawValue());
             }
-            bw.Write(model.mins.x);
-            bw.Write(model.mins.y);
-            bw.Write(model.mins.z);
-            bw.Write(model.maxs.x);
-            bw.Write(model.maxs.y);
-            bw.Write(model.maxs.z);
-            bw.Write(model.rad);
+            bw.Write(model.mins.x.GetRawValue());
+            bw.Write(model.mins.y.GetRawValue());
+            bw.Write(model.mins.z.GetRawValue());
+            bw.Write(model.maxs.x.GetRawValue());
+            bw.Write(model.maxs.y.GetRawValue());
+            bw.Write(model.maxs.z.GetRawValue());
+            bw.Write(model.rad.GetRawValue());
             bw.Write(model.n_textures);
             bw.Write(model.first_texture);
             bw.Write(model.simpler_model);
@@ -381,18 +380,18 @@ namespace LibDescent.Data
         {
             bw.Write(ship.model_num);
             bw.Write(ship.expl_vclip_num);
-            bw.Write(ship.mass);
-            bw.Write(ship.drag);
-            bw.Write(ship.max_thrust);
-            bw.Write(ship.reverse_thrust);
-            bw.Write(ship.brakes);
-            bw.Write(ship.wiggle);
-            bw.Write(ship.max_rotthrust);
+            bw.Write(ship.mass.GetRawValue());
+            bw.Write(ship.drag.GetRawValue());
+            bw.Write(ship.max_thrust.GetRawValue());
+            bw.Write(ship.reverse_thrust.GetRawValue());
+            bw.Write(ship.brakes.GetRawValue());
+            bw.Write(ship.wiggle.GetRawValue());
+            bw.Write(ship.max_rotthrust.GetRawValue());
             for (int x = 0; x < 8; x++)
             {
-                bw.Write(ship.gun_points[x].x);
-                bw.Write(ship.gun_points[x].y);
-                bw.Write(ship.gun_points[x].z);
+                bw.Write(ship.gun_points[x].x.GetRawValue());
+                bw.Write(ship.gun_points[x].y.GetRawValue());
+                bw.Write(ship.gun_points[x].z.GetRawValue());
             }
         }
     }

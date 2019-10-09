@@ -35,7 +35,7 @@ namespace LibDescent.Data
         public int dest_bm_num;	//use this bitmap when monitor destroyed
         public int dest_vclip;		//what vclip to play when exploding
         public int dest_eclip;		//what eclip to play when exploding
-        public int dest_size;		//3d size of explosion
+        public Fix dest_size;		//3d size of explosion
         public int sound_num;		//what sound this makes
         public int segnum, sidenum;	//what seg & side, for one-shot clips
 

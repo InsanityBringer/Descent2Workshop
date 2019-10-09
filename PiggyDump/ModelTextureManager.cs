@@ -29,7 +29,7 @@ using System.Drawing.Imaging;
 using OpenTK.Graphics.OpenGL;
 using LibDescent.Data;
 
-namespace PiggyDump
+namespace Descent2Workshop
 {
     public class ModelTextureManager
     {

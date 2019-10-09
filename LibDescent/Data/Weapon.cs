@@ -55,25 +55,25 @@ namespace LibDescent.Data
 
         public sbyte children;
 
-        public int energy_usage;				//	How much fuel is consumed to fire this weapon.
-        public int fire_wait;					//	Time until this weapon can be fired again.
+        public Fix energy_usage;				//	How much fuel is consumed to fire this weapon.
+        public Fix fire_wait;					//	Time until this weapon can be fired again.
 
-        public int multi_damage_scale;
+        public Fix multi_damage_scale;
 
         public ushort bitmap;				// Pointer to bitmap if rendertype==0 or 1.
 
-        public int blob_size;					// Size of blob if blob type
-        public int flash_size;					// How big to draw the flash
-        public int impact_size;				// How big of an impact
-        public int[] strength = new int[5];				// How much damage it can inflict
-        public int[] speed = new int[5];					// How fast it can move, difficulty level based.
-        public int mass;							// How much mass it has
-        public int drag;							// How much drag it has
-        public int thrust;						//	How much thrust it has
-        public int po_len_to_width_ratio;	// For polyobjects, the ratio of len/width. (10 maybe?)
-        public int light;						//	Amount of light this weapon casts.
-        public int lifetime;					//	Lifetime in seconds of this weapon.
-        public int damage_radius;				//	Radius of damage caused by weapon, used for missiles (not lasers) to apply to damage to things it did not hit
+        public Fix blob_size;					// Size of blob if blob type
+        public Fix flash_size;					// How big to draw the flash
+        public Fix impact_size;				// How big of an impact
+        public Fix[] strength = new Fix[5];				// How much damage it can inflict
+        public Fix[] speed = new Fix[5];					// How fast it can move, difficulty level based.
+        public Fix mass;							// How much mass it has
+        public Fix drag;							// How much drag it has
+        public Fix thrust;						//	How much thrust it has
+        public Fix po_len_to_width_ratio;	// For polyobjects, the ratio of len/width. (10 maybe?)
+        public Fix light;						//	Amount of light this weapon casts.
+        public Fix lifetime;					//	Lifetime in seconds of this weapon.
+        public Fix damage_radius;				//	Radius of damage caused by weapon, used for missiles (not lasers) to apply to damage to things it did not hit
         
         public ushort picture;				// a picture of the weapon for the cockpit
         public ushort hires_picture;                // a picture of the weapon for the cockpit
@@ -193,10 +193,10 @@ namespace LibDescent.Data
                     children = (sbyte)(value - 1);
                     break;
                 case 22:
-                    energy_usage = value;
+                    energy_usage = new Fix(value);
                     break;
                 case 23:
-                    fire_wait = value;
+                    fire_wait = new Fix(value);
                     break;
                 case 24:
                     multi_damage_scale = value;
@@ -205,37 +205,37 @@ namespace LibDescent.Data
                     bitmap = (ushort)value;
                     break;
                 case 26:
-                    blob_size = value;
+                    blob_size = new Fix(value);
                     break;
                 case 27:
-                    flash_size = value;
+                    flash_size = new Fix(value);
                     break;
                 case 28:
-                    impact_size = value;
+                    impact_size = new Fix(value);
                     break;
                 case 29:
-                    strength[index] = value;
+                    strength[index] = new Fix(value);
                     break;
                 case 30:
-                    speed[index] = value;
+                    speed[index] = new Fix(value);
                     break;
                 case 31:
-                    mass = value;
+                    mass = new Fix(value);
                     break;
                 case 32:
-                    drag = value;
+                    drag = new Fix(value);
                     break;
                 case 33:
-                    thrust = value;
+                    thrust = new Fix(value);
                     break;
                 case 34:
-                    po_len_to_width_ratio = value;
+                    po_len_to_width_ratio = new Fix(value);
                     break;
                 case 35:
-                    light = value;
+                    light = new Fix(value);
                     break;
                 case 36:
-                    lifetime = value;
+                    lifetime = new Fix(value);
                     break;
                 case 37:
                     picture = (ushort)value;
@@ -244,7 +244,7 @@ namespace LibDescent.Data
                     hires_picture = (ushort)value;
                     break;
                 case 39:
-                    damage_radius = value;
+                    damage_radius = new Fix(value);
                     break;
             }
         }

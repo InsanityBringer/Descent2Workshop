@@ -29,7 +29,7 @@ using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace PiggyDump.Editor.Render
+namespace Descent2Workshop.Editor.Render
 {
     public class MineRender : IInputEventHandler
     {

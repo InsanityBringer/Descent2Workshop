@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 using LibDescent.Data;
 using OpenTK;
 
-namespace PiggyDump.Editor
+namespace Descent2Workshop.Editor
 {
     public enum TransformType
     {

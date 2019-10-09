@@ -28,7 +28,7 @@ namespace LibDescent.Data
         public const int WCF_BLASTABLE = 2; //this is a blastable wall
         public const int WCF_TMAP1 = 4; //this uses primary tmap, not tmap2
         public const int WCF_HIDDEN = 8;		//this uses primary tmap, not tmap2
-        public int play_time; //fix
+        public Fix play_time;
         public short num_frames;
         public ushort[] frames = new ushort[50];
         public short open_sound;

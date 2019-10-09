@@ -30,7 +30,7 @@ namespace LibDescent.Data
         public int flags;
         public short sound_num;
         public ushort[] frames = new ushort[30];
-        public int light_value;
+        public Fix light_value;
 
         public int ID;
 

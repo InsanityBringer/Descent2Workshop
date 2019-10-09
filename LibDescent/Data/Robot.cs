@@ -60,18 +60,18 @@ namespace LibDescent.Data
         public byte badass;
         public byte energy_drain;
         
-        public int lighting;							// should this be here or with polygon model?
-        public int strength;							// Initial shields of robot
+        public Fix lighting;							// should this be here or with polygon model?
+        public Fix strength;							// Initial shields of robot
 
-        public int mass;										// how heavy is this thing?
-        public int drag;										// how much drag does it have?
+        public Fix mass;										// how heavy is this thing?
+        public Fix drag;										// how much drag does it have?
 
-        public int[] field_of_view = new int[NUM_DIFFICULTY_LEVELS];					// compare this value with forward_vector.dot.vector_to_player, if field_of_view <, then robot can see player
-        public int[] firing_wait = new int[NUM_DIFFICULTY_LEVELS];						//	time in seconds between shots
-        public int[] firing_wait2 = new int[NUM_DIFFICULTY_LEVELS];						//	time in seconds between shots
-        public int[] turn_time = new int[NUM_DIFFICULTY_LEVELS];						// time in seconds to rotate 360 degrees in a dimension
-        public int[] max_speed = new int[NUM_DIFFICULTY_LEVELS];						//	maximum speed attainable by this robot
-        public int[] circle_distance = new int[NUM_DIFFICULTY_LEVELS];				//	distance at which robot circles player
+        public Fix[] field_of_view = new Fix[NUM_DIFFICULTY_LEVELS];					// compare this value with forward_vector.dot.vector_to_player, if field_of_view <, then robot can see player
+        public Fix[] firing_wait = new Fix[NUM_DIFFICULTY_LEVELS];						//	time in seconds between shots
+        public Fix[] firing_wait2 = new Fix[NUM_DIFFICULTY_LEVELS];						//	time in seconds between shots
+        public Fix[] turn_time = new Fix[NUM_DIFFICULTY_LEVELS];						// time in seconds to rotate 360 degrees in a dimension
+        public Fix[] max_speed = new Fix[NUM_DIFFICULTY_LEVELS];						//	maximum speed attainable by this robot
+        public Fix[] circle_distance = new Fix[NUM_DIFFICULTY_LEVELS];				//	distance at which robot circles player
 
         public sbyte[] rapidfire_count = new sbyte[NUM_DIFFICULTY_LEVELS];				//	number of shots fired rapidly
         public sbyte[] evade_speed = new sbyte[NUM_DIFFICULTY_LEVELS];						//	rate at which robot can evade shots, 0=none, 4=very fast
@@ -185,44 +185,44 @@ namespace LibDescent.Data
                     break;
                 case 16:
                     value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
-                    lighting = value;
+                    lighting = new Fix(value);
                     break;
                 case 17:
                     value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
-                    strength = value;
+                    strength = new Fix(value);
                     break;
                 case 18:
                     value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
-                    mass = value;
+                    mass = new Fix(value);
                     break;
                 case 19:
                     value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
-                    drag = value;
+                    drag = new Fix(value);
                     break;
                 case 20:
                     value = (int)(Math.Cos(value * Math.PI / 180.0D) * 65536.0);
                     value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
-                    field_of_view[curAI] = value;
+                    field_of_view[curAI] = new Fix(value);
                     break;
                 case 21:
                     value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
-                    firing_wait[curAI] = value;
+                    firing_wait[curAI] = new Fix(value);
                     break;
                 case 22:
                     value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
-                    firing_wait2[curAI] = value;
+                    firing_wait2[curAI] = new Fix(value);
                     break;
                 case 23:
                     value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
-                    turn_time[curAI] = value;
+                    turn_time[curAI] = new Fix(value);
                     break;
                 case 24:
                     value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
-                    max_speed[curAI] = value;
+                    max_speed[curAI] = new Fix(value);
                     break;
                 case 25:
                     value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
-                    circle_distance[curAI] = value;
+                    circle_distance[curAI] = new Fix(value);
                     break;
                 case 26:
                     value = Util.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);

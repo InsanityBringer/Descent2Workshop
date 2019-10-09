@@ -33,7 +33,7 @@ using System.IO;
 using System.Media;
 using LibDescent.Data;
 
-namespace PiggyDump
+namespace Descent2Workshop
 {
     public partial class SXXEditor : Form
     {

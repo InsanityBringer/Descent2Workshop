@@ -30,7 +30,7 @@ using LibDescent.Data;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace PiggyDump
+namespace Descent2Workshop
 {
     public partial class HXMEditor : Form
     {
@@ -138,13 +138,13 @@ namespace PiggyDump
         public void UpdateRobotPanel(int num)
         {
             Robot robot = datafile.replacedRobots[num];
-            txtRobotDrag.Text = GetFloatFromFixed(robot.drag).ToString();
+            txtRobotDrag.Text = robot.drag.ToString();
             txtRobotDropProb.Text = robot.contains_prob.ToString();
             txtRobotDrops.Text = robot.contains_count.ToString();
-            txtRobotLight.Text = GetFloatFromFixed(robot.lighting).ToString();
-            txtRobotMass.Text = GetFloatFromFixed(robot.mass).ToString();
+            txtRobotLight.Text = robot.lighting.ToString();
+            txtRobotMass.Text = robot.mass.ToString();
             txtRobotScore.Text = robot.score_value.ToString();
-            txtRobotShield.Text = GetFloatFromFixed(robot.strength).ToString();
+            txtRobotShield.Text = robot.strength.ToString();
             txtRobotAim.Text = robot.aim.ToString();
             txtRobotBadass.Text = robot.badass.ToString();
             txtRobotDeathBlobs.Text = robot.smart_blobs.ToString();
@@ -194,13 +194,13 @@ namespace PiggyDump
         {
             Robot robot = datafile.replacedRobots[(int)nudElementNum.Value];
 
-            txtRobotCircleDist.Text = GetFloatFromFixed(robot.circle_distance[num]).ToString();
+            txtRobotCircleDist.Text = robot.circle_distance[num].ToString();
             txtRobotEvadeSpeed.Text = robot.evade_speed[num].ToString();
-            txtRobotFireDelay.Text = GetFloatFromFixed(robot.firing_wait[num]).ToString();
-            txtRobotFireDelay2.Text = GetFloatFromFixed(robot.firing_wait2[num]).ToString();
-            txtRobotFOV.Text = GetFloatFromFixed(robot.field_of_view[num]).ToString();
-            txtRobotMaxSpeed.Text = GetFloatFromFixed(robot.max_speed[num]).ToString();
-            txtRobotTurnSpeed.Text = GetFloatFromFixed(robot.turn_time[num]).ToString();
+            txtRobotFireDelay.Text = robot.firing_wait[num].ToString();
+            txtRobotFireDelay2.Text = robot.firing_wait2[num].ToString();
+            txtRobotFOV.Text = robot.field_of_view[num].ToString();
+            txtRobotMaxSpeed.Text = robot.max_speed[num].ToString();
+            txtRobotTurnSpeed.Text = robot.turn_time[num].ToString();
             txtRobotShotCount.Text = robot.rapidfire_count[num].ToString();
         }
 

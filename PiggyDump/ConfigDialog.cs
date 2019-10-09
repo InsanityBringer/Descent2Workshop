@@ -30,7 +30,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace PiggyDump
+namespace Descent2Workshop
 {
     public partial class ConfigDialog : Form
     {

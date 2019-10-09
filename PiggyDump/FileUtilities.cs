@@ -23,7 +23,7 @@
 using System;
 using System.IO;
 
-namespace PiggyDump
+namespace Descent2Workshop
 {
     public class FileUtilities
     {

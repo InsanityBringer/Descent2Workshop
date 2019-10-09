@@ -26,8 +26,8 @@ namespace LibDescent.Data
     {
         public int vclip_num;
         public int hit_sound;
-        public int size;			//3d size of longest dimension
-        public int light;		//	amount of light cast by this powerup, set in bitmaps.tbl
+        public Fix size;			//3d size of longest dimension
+        public Fix light;		//	amount of light cast by this powerup, set in bitmaps.tbl
 
         public int ID;
     }

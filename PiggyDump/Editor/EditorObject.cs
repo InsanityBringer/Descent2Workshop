@@ -27,7 +27,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PiggyDump.Editor
+namespace Descent2Workshop.Editor
 {
     public enum ObjectType
     {

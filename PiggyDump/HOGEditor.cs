@@ -31,7 +31,7 @@ using System.Windows.Forms;
 using System.IO;
 using LibDescent.Data;
 
-namespace PiggyDump
+namespace Descent2Workshop
 {
     public partial class HOGEditor : Form
     {

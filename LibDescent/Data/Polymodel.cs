@@ -30,7 +30,7 @@ namespace LibDescent.Data
         public FixVector Offset = new FixVector();
         public FixVector Normal = new FixVector();
         public FixVector Point = new FixVector();
-        public int Radius;
+        public Fix Radius;
         public byte Parent;
         public FixVector Mins = new FixVector();
         public FixVector Maxs = new FixVector();
@@ -49,7 +49,7 @@ namespace LibDescent.Data
         public int model_data; //ignored, was pointer
         public List<Submodel> submodels = new List<Submodel>();
         public FixVector mins = new FixVector(), maxs = new FixVector();							//min,max for whole model
-        public int rad;
+        public Fix rad;
         public byte n_textures;
         public ushort first_texture;
         public byte simpler_model;		//alternate model with less detail (0 if none, model_num+1 else)
@@ -89,7 +89,7 @@ namespace LibDescent.Data
             for (int x = numGuns; x < MAX_GUNS; x++)
             {
                 gunPoints[x] = new FixVector();
-                gunDirs[x] = new FixVector(65536, 0, 0);
+                gunDirs[x] = new FixVector(1, 0, 0);
             }
         }
     }

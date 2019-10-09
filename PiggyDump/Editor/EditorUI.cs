@@ -29,12 +29,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using PiggyDump.Editor.Render;
+using Descent2Workshop.Editor.Render;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using LibDescent.Data;
 
-namespace PiggyDump.Editor
+namespace Descent2Workshop.Editor
 {
     public partial class EditorUI : Form
     {

@@ -7,7 +7,7 @@ using LibDescent.Data;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace PiggyDump.Editor.Render
+namespace Descent2Workshop.Editor.Render
 {
     public class TextureChain
     {

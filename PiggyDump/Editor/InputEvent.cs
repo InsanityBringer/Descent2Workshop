@@ -27,7 +27,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace PiggyDump.Editor
+namespace Descent2Workshop.Editor
 {
     /// <summary>
     /// The possible input types of an input event

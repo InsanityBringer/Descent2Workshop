@@ -26,10 +26,10 @@ namespace LibDescent.Data
     {
         public int model_num;
         public int expl_vclip_num;
-        public int mass, drag;
-        public int max_thrust, reverse_thrust, brakes;		//low_thrust
-        public int wiggle;
-        public int max_rotthrust;
+        public Fix mass, drag;
+        public Fix max_thrust, reverse_thrust, brakes;		//low_thrust
+        public Fix wiggle;
+        public Fix max_rotthrust;
         public FixVector[] gun_points = new FixVector[8];
         public int markerModel;
 
@@ -44,25 +44,25 @@ namespace LibDescent.Data
                     expl_vclip_num = data;
                     break;
                 case 3:
-                    mass = data;
+                    mass = new Fix(data);
                     break;
                 case 4:
-                    drag = data;
+                    drag = new Fix(data);
                     break;
                 case 5:
-                    max_thrust = data;
+                    max_thrust = new Fix(data);
                     break;
                 case 6:
-                    reverse_thrust = data;
+                    reverse_thrust = new Fix(data);
                     break;
                 case 7:
-                    brakes = data;
+                    brakes = new Fix(data);
                     break;
                 case 8:
-                    wiggle = data;
+                    wiggle = new Fix(data);
                     break;
                 case 9:
-                    max_rotthrust = data;
+                    max_rotthrust = new Fix(data);
                     break;
             }
         }

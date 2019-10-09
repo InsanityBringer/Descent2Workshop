@@ -32,7 +32,7 @@ using LibDescent.Data;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace PiggyDump
+namespace Descent2Workshop
 {
     public partial class PolymodelPreviewer : Form
     {

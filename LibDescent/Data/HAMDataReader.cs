@@ -31,8 +31,8 @@ namespace LibDescent.Data
             TMAPInfo mapinfo = new TMAPInfo();
             mapinfo.flags = br.ReadByte();
             br.ReadBytes(3);
-            mapinfo.lighting = br.ReadInt32();
-            mapinfo.damage = br.ReadInt32();
+            mapinfo.lighting = new Fix(br.ReadInt32());
+            mapinfo.damage = new Fix(br.ReadInt32());
             mapinfo.eclip_num = br.ReadInt16();
             mapinfo.destroyed = br.ReadInt16();
             mapinfo.slide_u = br.ReadInt16();
@@ -44,16 +44,16 @@ namespace LibDescent.Data
         public VClip ReadVClip(BinaryReader br)
         {
             VClip clip = new VClip();
-            clip.play_time = br.ReadInt32();
+            clip.play_time = new Fix(br.ReadInt32());
             clip.num_frames = br.ReadInt32();
-            clip.frame_time = br.ReadInt32();
+            clip.frame_time = new Fix(br.ReadInt32());
             clip.flags = br.ReadInt32();
             clip.sound_num = br.ReadInt16();
             for (int f = 0; f < 30; f++)
             {
                 clip.frames[f] = br.ReadUInt16();
             }
-            clip.light_value = br.ReadInt32();
+            clip.light_value = new Fix(br.ReadInt32());
 
             return clip;
         }
@@ -61,16 +61,16 @@ namespace LibDescent.Data
         public EClip ReadEClip(BinaryReader br)
         {
             EClip clip = new EClip();
-            clip.vc.play_time = br.ReadInt32();
+            clip.vc.play_time = new Fix(br.ReadInt32());
             clip.vc.num_frames = br.ReadInt32();
-            clip.vc.frame_time = br.ReadInt32();
+            clip.vc.frame_time = new Fix(br.ReadInt32());
             clip.vc.flags = br.ReadInt32();
             clip.vc.sound_num = br.ReadInt16();
             for (int f = 0; f < 30; f++)
             {
                 clip.vc.frames[f] = br.ReadUInt16();
             }
-            clip.vc.light_value = br.ReadInt32();
+            clip.vc.light_value = new Fix(br.ReadInt32());
             clip.time_left = br.ReadInt32();
             clip.frame_count = br.ReadInt32();
             clip.changing_wall_texture = br.ReadInt16();
@@ -80,7 +80,7 @@ namespace LibDescent.Data
             clip.dest_bm_num = br.ReadInt32();
             clip.dest_vclip = br.ReadInt32();
             clip.dest_eclip = br.ReadInt32();
-            clip.dest_size = br.ReadInt32();
+            clip.dest_size = new Fix(br.ReadInt32());
             clip.sound_num = br.ReadInt32();
             clip.segnum = br.ReadInt32();
             clip.sidenum = br.ReadInt32();
@@ -91,7 +91,7 @@ namespace LibDescent.Data
         public WClip ReadWClip(BinaryReader br)
         {
             WClip clip = new WClip();
-            clip.play_time = br.ReadInt32();
+            clip.play_time = new Fix(br.ReadInt32());
             clip.num_frames = br.ReadInt16();
             for (int f = 0; f < 50; f++)
             {
@@ -142,34 +142,34 @@ namespace LibDescent.Data
             robot.badass = br.ReadByte();
             robot.energy_drain = br.ReadByte();
             
-            robot.lighting = br.ReadInt32();
-            robot.strength = br.ReadInt32();
+            robot.lighting = new Fix(br.ReadInt32());
+            robot.strength = new Fix(br.ReadInt32());
             
-            robot.mass = br.ReadInt32();
-            robot.drag = br.ReadInt32();
+            robot.mass = new Fix(br.ReadInt32());
+            robot.drag = new Fix(br.ReadInt32());
             for (int s = 0; s < Robot.NUM_DIFFICULTY_LEVELS; s++)
             {
-                robot.field_of_view[s] = br.ReadInt32();
+                robot.field_of_view[s] = new Fix(br.ReadInt32());
             }
             for (int s = 0; s < Robot.NUM_DIFFICULTY_LEVELS; s++)
             {
-                robot.firing_wait[s] = br.ReadInt32();
+                robot.firing_wait[s] = new Fix(br.ReadInt32());
             }
             for (int s = 0; s < Robot.NUM_DIFFICULTY_LEVELS; s++)
             {
-                robot.firing_wait2[s] = br.ReadInt32();
+                robot.firing_wait2[s] = new Fix(br.ReadInt32());
             }
             for (int s = 0; s < Robot.NUM_DIFFICULTY_LEVELS; s++)
             {
-                robot.turn_time[s] = br.ReadInt32();
+                robot.turn_time[s] = new Fix(br.ReadInt32());
             }
             for (int s = 0; s < Robot.NUM_DIFFICULTY_LEVELS; s++)
             {
-                robot.max_speed[s] = br.ReadInt32();
+                robot.max_speed[s] = new Fix(br.ReadInt32());
             }
             for (int s = 0; s < Robot.NUM_DIFFICULTY_LEVELS; s++)
             {
-                robot.circle_distance[s] = br.ReadInt32();
+                robot.circle_distance[s] = new Fix(br.ReadInt32());
             }
             for (int s = 0; s < Robot.NUM_DIFFICULTY_LEVELS; s++)
             {
@@ -252,32 +252,32 @@ namespace LibDescent.Data
 
             weapon.children = br.ReadSByte();
  
-            weapon.energy_usage = br.ReadInt32();
-            weapon.fire_wait = br.ReadInt32();
+            weapon.energy_usage = new Fix(br.ReadInt32());
+            weapon.fire_wait = new Fix(br.ReadInt32());
 
-            weapon.multi_damage_scale = br.ReadInt32();
-            
+            weapon.multi_damage_scale = new Fix(br.ReadInt32());
+
             weapon.bitmap = br.ReadUInt16();
             
-            weapon.blob_size = br.ReadInt32();
-            weapon.flash_size = br.ReadInt32();
-            weapon.impact_size = br.ReadInt32();
+            weapon.blob_size = new Fix(br.ReadInt32());
+            weapon.flash_size = new Fix(br.ReadInt32());
+            weapon.impact_size = new Fix(br.ReadInt32());
             for (int s = 0; s < 5; s++)
             {
-                weapon.strength[s] = br.ReadInt32();
+                weapon.strength[s] = new Fix(br.ReadInt32());
             }
             for (int s = 0; s < 5; s++)
             {
-                weapon.speed[s] = br.ReadInt32();
+                weapon.speed[s] = new Fix(br.ReadInt32());
             }
-            weapon.mass = br.ReadInt32();
-            weapon.drag = br.ReadInt32();
-            weapon.thrust = br.ReadInt32();
-            weapon.po_len_to_width_ratio = br.ReadInt32();
-            weapon.light = br.ReadInt32();
-            weapon.lifetime = br.ReadInt32();
-            weapon.damage_radius = br.ReadInt32();
-            
+            weapon.mass = new Fix(br.ReadInt32());
+            weapon.drag = new Fix(br.ReadInt32());
+            weapon.thrust = new Fix(br.ReadInt32());
+            weapon.po_len_to_width_ratio = new Fix(br.ReadInt32());
+            weapon.light = new Fix(br.ReadInt32());
+            weapon.lifetime = new Fix(br.ReadInt32());
+            weapon.damage_radius = new Fix(br.ReadInt32());
+
             weapon.picture = br.ReadUInt16();
             weapon.hires_picture = br.ReadUInt16();
 
@@ -318,31 +318,31 @@ namespace LibDescent.Data
 
             weapon.children = 0;
 
-            weapon.energy_usage = br.ReadInt32();
-            weapon.fire_wait = br.ReadInt32();
+            weapon.energy_usage = new Fix(br.ReadInt32());
+            weapon.fire_wait = new Fix(br.ReadInt32());
 
-            weapon.multi_damage_scale = 65536;
+            weapon.multi_damage_scale = 1;
 
             weapon.bitmap = br.ReadUInt16();
 
-            weapon.blob_size = br.ReadInt32();
-            weapon.flash_size = br.ReadInt32();
-            weapon.impact_size = br.ReadInt32();
+            weapon.blob_size = new Fix(br.ReadInt32());
+            weapon.flash_size = new Fix(br.ReadInt32());
+            weapon.impact_size = new Fix(br.ReadInt32());
             for (int s = 0; s < 5; s++)
             {
-                weapon.strength[s] = br.ReadInt32();
+                weapon.strength[s] = new Fix(br.ReadInt32());
             }
             for (int s = 0; s < 5; s++)
             {
-                weapon.speed[s] = br.ReadInt32();
+                weapon.speed[s] = new Fix(br.ReadInt32());
             }
-            weapon.mass = br.ReadInt32();
-            weapon.drag = br.ReadInt32();
-            weapon.thrust = br.ReadInt32();
-            weapon.po_len_to_width_ratio = br.ReadInt32();
-            weapon.light = br.ReadInt32();
-            weapon.lifetime = br.ReadInt32();
-            weapon.damage_radius = br.ReadInt32();
+            weapon.mass = new Fix(br.ReadInt32());
+            weapon.drag = new Fix(br.ReadInt32());
+            weapon.thrust = new Fix(br.ReadInt32());
+            weapon.po_len_to_width_ratio = new Fix(br.ReadInt32());
+            weapon.light = new Fix(br.ReadInt32());
+            weapon.lifetime = new Fix(br.ReadInt32());
+            weapon.damage_radius = new Fix(br.ReadInt32());
 
             weapon.picture = br.ReadUInt16();
             weapon.hires_picture = weapon.picture;
@@ -380,7 +380,7 @@ namespace LibDescent.Data
             }
             for (int s = 0; s < Polymodel.MAX_SUBMODELS; s++)
             {
-                model.submodels[s].Radius = br.ReadInt32();
+                model.submodels[s].Radius = new Fix(br.ReadInt32());
             }
             for (int s = 0; s < Polymodel.MAX_SUBMODELS; s++)
             {
@@ -407,7 +407,7 @@ namespace LibDescent.Data
             model.maxs.x = new Fix(br.ReadInt32());
             model.maxs.y = new Fix(br.ReadInt32());
             model.maxs.z = new Fix(br.ReadInt32());
-            model.rad = br.ReadInt32();
+            model.rad = new Fix(br.ReadInt32());
             model.n_textures = br.ReadByte();
             model.first_texture = br.ReadUInt16();
             model.simpler_model = br.ReadByte();

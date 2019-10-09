@@ -29,7 +29,7 @@ using LibDescent.Data;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace PiggyDump
+namespace Descent2Workshop
 {
     public class ModelRenderer
     {
@@ -123,7 +123,7 @@ namespace PiggyDump
                 GL.Disable(EnableCap.Texture2D);
 
                 //Draw the radius
-                double radius = (double)model.rad / 65536.0;
+                double radius = (double)model.rad;
                 double minx = (double)model.mins.x;
                 double miny = (double)model.mins.y;
                 double minz = (double)model.mins.z;
@@ -337,7 +337,7 @@ namespace PiggyDump
                 GL.Disable(EnableCap.Texture2D);
 
                 //Draw the radius
-                double radius = model.Radius / 65536.0;
+                double radius = model.Radius;
                 double minx = model.Mins.x;
                 double miny = model.Mins.y;
                 double minz = model.Mins.z;

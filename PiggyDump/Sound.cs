@@ -27,7 +27,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 
-namespace PiggyDump
+namespace Descent2Workshop
 {
     public class Sound
     {

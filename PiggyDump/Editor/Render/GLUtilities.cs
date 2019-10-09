@@ -27,7 +27,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenTK.Graphics.OpenGL;
 
-namespace PiggyDump.Editor.Render
+namespace Descent2Workshop.Editor.Render
 {
     class GLUtilities
     {

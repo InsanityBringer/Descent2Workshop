@@ -1,6 +1,6 @@
-﻿namespace PiggyDump
+﻿namespace Descent2Workshop
 {
-    partial class HAMEditor2
+    partial class HAMEditor
     {
         /// <summary>
         /// Required designer variable.

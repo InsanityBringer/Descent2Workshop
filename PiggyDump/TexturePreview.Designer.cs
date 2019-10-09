@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with Descent II Workshop.  If not, see <http://www.gnu.org/licenses/>.
 */
-namespace PiggyDump
+namespace Descent2Workshop
 {
     partial class TexturePreview
     {

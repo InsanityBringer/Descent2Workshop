@@ -26,7 +26,7 @@ using System.IO;
 using OpenTK.Graphics;
 using LibDescent.Data;
 
-namespace PiggyDump
+namespace Descent2Workshop
 {
     public partial class StandardUI : Form
     {
@@ -167,7 +167,7 @@ namespace PiggyDump
                 int res = archive.LoadDataFile(openFileDialog1.FileName);
                 if (res == 0)
                 {
-                    HAMEditor2 archiveEditor = new HAMEditor2(archive, this);
+                    HAMEditor archiveEditor = new HAMEditor(archive, this);
                     archiveEditor.Show();
                 }
                 else if (res == -1)

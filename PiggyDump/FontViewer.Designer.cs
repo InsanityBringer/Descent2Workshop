@@ -1,4 +1,4 @@
-﻿namespace PiggyDump
+﻿namespace Descent2Workshop
 {
     partial class FontViewer
     {

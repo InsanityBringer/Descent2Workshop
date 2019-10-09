@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace PiggyDump
+namespace Descent2Workshop
 {
     static class Program
     {

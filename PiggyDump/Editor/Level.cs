@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 using System.IO;
 using LibDescent.Data;
 
-namespace PiggyDump.Editor
+namespace Descent2Workshop.Editor
 {
     public class LevelVertex
     {
