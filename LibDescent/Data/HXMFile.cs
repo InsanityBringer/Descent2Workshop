@@ -143,7 +143,6 @@ namespace LibDescent.Data
             }
 
             GenerateNameTable();
-            //GenerateFullTables(); //Not needed anymore, but still V
             BuildModelTextureTables(); //fuck hxm files
             foreach (Robot robot in replacedRobots)
             {
@@ -210,38 +209,12 @@ namespace LibDescent.Data
             }
         }
 
-        private void BuildModelGunsFromShip(Ship ship)
-        {
-            Polymodel model = GetModel(ship.model_num);
-            if (model.replacementID != -1) return;
-            model.numGuns = 8;
-            for (int i = 0; i < 8; i++)
-            {
-                model.gunPoints[i] = ship.gun_points[i];
-                model.gunDirs[i] = new FixVector(65536, 0, 0);
-                model.gunSubmodels[i] = 0;
-            }
-        }
-
-        private void BuildModelGunsFromReactor(Reactor reactor)
-        {
-            if (reactor.model_id == -1) return;
-            Polymodel model = GetModel(reactor.model_id);
-            if (model.replacementID != -1) return;
-            model.numGuns = reactor.n_guns;
-            for (int i = 0; i < 8; i++)
-            {
-                model.gunPoints[i] = reactor.gun_points[i];
-                model.gunDirs[i] = reactor.gun_dirs[i];
-                model.gunSubmodels[i] = 0;
-            }
-        }
-
         private void BuildModelAnimation(Robot robot)
         {
+            int lowestJoint = int.MaxValue;
             if (robot.model_num == -1) return;
             Polymodel model = GetModel(robot.model_num);
-            if (model.replacementID != -1) return;
+            if (model.replacementID == -1) return;
             List<FixAngles> jointlist = new List<FixAngles>();
             model.numGuns = robot.n_guns;
             for (int i = 0; i < Polymodel.MAX_GUNS; i++)
@@ -259,12 +232,14 @@ namespace LibDescent.Data
                 }
             }
             int basejoint = 0;
-            for (int m = 0; m < Polymodel.MAX_GUNS + 1; m++)
+            for (int m = 0; m < robot.n_guns + 1; m++)
             {
                 for (int f = 0; f < Robot.NUM_ANIMATION_STATES; f++)
                 {
                     Robot.jointlist robotjointlist = robot.anim_states[m, f];
                     basejoint = robotjointlist.offset;
+                    if (basejoint < lowestJoint)
+                        lowestJoint = basejoint;
                     for (int j = 0; j < robotjointlist.n_joints; j++)
                     {
                         JointPos joint = GetJoint(basejoint);
@@ -289,6 +264,9 @@ namespace LibDescent.Data
                     }
                 }
             }
+
+            if (lowestJoint != int.MaxValue)
+                robot.baseJoint = lowestJoint;
         }
 
         public void GenerateNameTable()
@@ -377,6 +355,21 @@ namespace LibDescent.Data
             return baseFile.GetWClip(id);
         }
 
+        public int GetNumRobots()
+        {
+            int numRobots = baseFile.Robots.Count;
+            if (augmentFile != null)
+                numRobots += augmentFile.Robots.Count;
+            return numRobots;
+        }
+
+        public string GetRobotName(int id)
+        {
+            if (augmentFile != null && id >= VHAMFile.N_D2_ROBOT_TYPES)
+                return augmentFile.RobotNames[id - VHAMFile.N_D2_ROBOT_TYPES];
+            return baseFile.RobotNames[id];
+        }
+
         public Robot GetRobot(int id)
         {
             foreach (Robot robot in replacedRobots)
@@ -388,11 +381,41 @@ namespace LibDescent.Data
             return baseFile.GetRobot(id);
         }
 
+        public int GetNumWeapons()
+        {
+            int numWeapons = baseFile.Weapons.Count;
+            if (augmentFile != null)
+                numWeapons += augmentFile.Weapons.Count;
+            return numWeapons;
+        }
+
+        public string GetWeaponName(int id)
+        {
+            if (augmentFile != null && id >= VHAMFile.N_D2_WEAPON_TYPES)
+                return augmentFile.WeaponNames[id - VHAMFile.N_D2_WEAPON_TYPES];
+            return baseFile.WeaponNames[id];
+        }
+
         public Weapon GetWeapon(int id)
         {
             if (augmentFile != null)
                 return augmentFile.GetWeapon(id); //passes through
             return baseFile.GetWeapon(id);
+        }
+
+        public int GetNumModels()
+        {
+            int numWeapons = baseFile.PolygonModels.Count;
+            if (augmentFile != null)
+                numWeapons += augmentFile.Models.Count;
+            return numWeapons;
+        }
+
+        public string GetModelName(int id)
+        {
+            if (augmentFile != null && id >= VHAMFile.N_D2_POLYGON_MODELS)
+                return augmentFile.ModelNames[id - VHAMFile.N_D2_POLYGON_MODELS];
+            return baseFile.ModelNames[id];
         }
 
         public Polymodel GetModel(int id)

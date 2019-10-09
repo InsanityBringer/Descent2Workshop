@@ -48,12 +48,12 @@ namespace LibDescent.Data
 
         //ARGH
         //VHAM elements are loaded at fixed locations
-        const int N_D2_ROBOT_TYPES = 66;
-        const int N_D2_ROBOT_JOINTS = 1145;
-        const int N_D2_POLYGON_MODELS = 166;
-        const int N_D2_OBJBITMAPS = 422;
-        const int N_D2_OBJBITMAPPTRS = 502;
-        const int N_D2_WEAPON_TYPES = 62;
+        public const int N_D2_ROBOT_TYPES = 66;
+        public const int N_D2_ROBOT_JOINTS = 1145;
+        public const int N_D2_POLYGON_MODELS = 166;
+        public const int N_D2_OBJBITMAPS = 422;
+        public const int N_D2_OBJBITMAPPTRS = 502;
+        public const int N_D2_WEAPON_TYPES = 62;
 
         public int NumRobots { get { return Robots.Count + N_D2_ROBOT_TYPES; } }
         public int NumWeapons { get { return Weapons.Count + N_D2_WEAPON_TYPES; } }

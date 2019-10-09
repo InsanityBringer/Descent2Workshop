@@ -184,7 +184,8 @@ namespace Descent2Workshop
         private void DrawSubobject(Polymodel mainModel, Submodel model)
         {
             GL.PushMatrix();
-            GL.Translate(model.Offset.x, model.Offset.y, model.Offset.z);
+            //[ISB] shoulda realized that I'd fall in conflict if I used the header offset here rather than the offset in the SUBCALL
+            GL.Translate(model.RenderOffset.x, model.RenderOffset.y, model.RenderOffset.z);
             if (frame >= 0)
             {
                 GL.Rotate((mainModel.animationMatrix[model.ID, frame].b / 16384.0f) * 90.0, 0.0, 0.0, 1.0);

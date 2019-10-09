@@ -334,10 +334,15 @@ namespace LibDescent.Data
                             }
                             long pos = br.BaseStream.Position - 2;
                             short objnum = br.ReadInt16();
-                            FixVector offset = new FixVector();
-                            offset.x = positionOffset.x + new Fix(br.ReadInt32());
-                            offset.y = positionOffset.y + new Fix(br.ReadInt32());
-                            offset.z = positionOffset.z + new Fix(br.ReadInt32());
+                            //FixVector offset = new FixVector();
+                            host.submodels[objnum].RenderOffset.x = new Fix(br.ReadInt32());
+                            host.submodels[objnum].RenderOffset.y = new Fix(br.ReadInt32());
+                            host.submodels[objnum].RenderOffset.z = new Fix(br.ReadInt32());
+                            //offset.x = positionOffset.x + new Fix(br.ReadInt32());
+                            //offset.y = positionOffset.y + new Fix(br.ReadInt32());
+                            //offset.z = positionOffset.z + new Fix(br.ReadInt32());
+
+                            FixVector offset = positionOffset + host.submodels[objnum].RenderOffset;
                             ushort soffset = br.ReadUInt16();
                             br.ReadInt16();
                             long returnpos = br.BaseStream.Position;

@@ -66,23 +66,12 @@ namespace Descent2Workshop
             this.datafile = datafile;
             this.host = host;
             modelRenderer = new ModelRenderer(datafile.baseFile, host.DefaultPigFile);
-
-            BuildObjBitmapsTable();
-        }
-
-        public void BuildObjBitmapsTable()
-        {
-        }
-
-        public double GetFloatFromFixed(int fixedvalue)
-        {
-            return (double)fixedvalue / 65536D;
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             isLocked = true;
-            resetMaxes();
+            ResetMaxes();
             if (nudElementNum.Maximum != -1)
             {
                 nudElementNum.Value = 0;
@@ -93,14 +82,16 @@ namespace Descent2Workshop
             isLocked = false;
         }
 
-        private void resetMaxes()
+        private void ResetMaxes()
         {
             switch (tabControl1.SelectedIndex)
             {
                 case 0:
+                    InitRobotPanel();
                     nudElementNum.Maximum = (decimal)datafile.replacedRobots.Count - 1;
                     break;
                 case 1:
+                    InitModelPanel();
                     nudElementNum.Maximum = (decimal)datafile.replacedModels.Count - 1;
                     break;
             }
@@ -123,7 +114,7 @@ namespace Descent2Workshop
                 case 1:
                     if (datafile.replacedModels.Count != 0)
                     {
-                        UpdateModel(val);
+                        UpdateModelPanel(val);
                         glControl1.Invalidate();
                         tbReplacementElement.Text = datafile.replacedModels[val].replacementID.ToString();
                     }
@@ -135,16 +126,79 @@ namespace Descent2Workshop
             }
         }
 
+        private void InitRobotPanel()
+        {
+            cbRobotAttackSound.Items.Clear();
+            cbRobotClawSound.Items.Clear();
+            cbRobotDyingSound.Items.Clear();
+            cbRobotSeeSound.Items.Clear();
+            cbRobotTauntSound.Items.Clear();
+            cbRobotHitSound.Items.Clear();
+            cbRobotDeathSound.Items.Clear();
+            for (int i = 0; i < datafile.baseFile.Sounds.Count; i++)
+            {
+                cbRobotAttackSound.Items.Add(datafile.baseFile.SoundNames[i]);
+                cbRobotClawSound.Items.Add(datafile.baseFile.SoundNames[i]);
+                cbRobotDyingSound.Items.Add(datafile.baseFile.SoundNames[i]);
+                cbRobotSeeSound.Items.Add(datafile.baseFile.SoundNames[i]);
+                cbRobotTauntSound.Items.Add(datafile.baseFile.SoundNames[i]);
+                cbRobotHitSound.Items.Add(datafile.baseFile.SoundNames[i]);
+                cbRobotDeathSound.Items.Add(datafile.baseFile.SoundNames[i]);
+            }
+            cbRobotWeapon1.Items.Clear();
+            cbRobotWeapon2.Items.Clear(); cbRobotWeapon2.Items.Add("None");
+            for (int i = 0; i < datafile.GetNumWeapons(); i++)
+            {
+                cbRobotWeapon1.Items.Add(datafile.GetWeaponName(i));
+                cbRobotWeapon2.Items.Add(datafile.GetWeaponName(i));
+            }
+            cbRobotHitVClip.Items.Clear(); cbRobotHitVClip.Items.Add("None");
+            cbRobotDeathVClip.Items.Clear(); cbRobotDeathVClip.Items.Add("None");
+            for (int i = 0; i < datafile.baseFile.VClips.Count; i++)
+            {
+                cbRobotHitVClip.Items.Add(datafile.baseFile.VClipNames[i]);
+                cbRobotDeathVClip.Items.Add(datafile.baseFile.VClipNames[i]);
+            }
+            cbRobotModel.Items.Clear();
+
+            for (int i = 0; i < datafile.GetNumModels(); i++)
+                cbRobotModel.Items.Add(datafile.GetModelName(i));
+        }
+
+        private void UpdateRobotDropTypes(int dropType, Robot robot)
+        {
+            cbRobotDropItem.Items.Clear();
+            if (dropType != 1)
+            {
+                for (int i = 0; i < datafile.baseFile.Powerups.Count; i++)
+                    cbRobotDropItem.Items.Add(datafile.baseFile.PowerupNames[i]);
+                cbRobotDropItem.SelectedIndex = robot.contains_id;
+            }
+            else
+            {
+                for (int i = 0; i < datafile.GetNumRobots(); i++)
+                    cbRobotDropItem.Items.Add(datafile.GetRobotName(i));
+                cbRobotDropItem.SelectedIndex = robot.contains_id;
+            }
+            //cbRobotDropItem.SelectedIndex = 0;
+        }
+
         public void UpdateRobotPanel(int num)
         {
             Robot robot = datafile.replacedRobots[num];
+            cbRobotAttackSound.SelectedIndex = robot.attack_sound;
+            cbRobotClawSound.SelectedIndex = robot.claw_sound;
             txtRobotDrag.Text = robot.drag.ToString();
             txtRobotDropProb.Text = robot.contains_prob.ToString();
             txtRobotDrops.Text = robot.contains_count.ToString();
             txtRobotLight.Text = robot.lighting.ToString();
             txtRobotMass.Text = robot.mass.ToString();
             txtRobotScore.Text = robot.score_value.ToString();
+            cbRobotHitSound.SelectedIndex = robot.exp1_sound_num;
+            cbRobotDeathSound.SelectedIndex = robot.exp2_sound_num;
+            cbRobotSeeSound.SelectedIndex = robot.see_sound;
             txtRobotShield.Text = robot.strength.ToString();
+            cbRobotTauntSound.SelectedIndex = robot.taunt_sound;
             txtRobotAim.Text = robot.aim.ToString();
             txtRobotBadass.Text = robot.badass.ToString();
             txtRobotDeathBlobs.Text = robot.smart_blobs.ToString();
@@ -153,12 +207,9 @@ namespace Descent2Workshop
             txtRobotHitBlobs.Text = robot.energy_blobs.ToString();
             txtRobotGlow.Text = robot.glow.ToString();
             txtRobotPursuit.Text = robot.pursuit.ToString();
+            cbRobotDyingSound.SelectedIndex = robot.deathroll_sound;
             txtRobotLightcast.Text = robot.lightcast.ToString();
-            if (robot.behavior >= 128)
-            {
-                cbRobotAI.SelectedIndex = robot.behavior - 128;
-            }
-            else cbRobotAI.SelectedIndex = 0;
+
             cbRobotCompanion.Checked = robot.companion != 0;
             cbRobotClaw.Checked = robot.attack_type != 0;
             cbRobotThief.Checked = robot.thief != 0;
@@ -166,31 +217,52 @@ namespace Descent2Workshop
 
             int dropType = robot.contains_type;
             if (dropType == 2)
-            {
                 dropType = 1;
-            }
             else
-            {
                 dropType = 0;
+
+            UpdateRobotDropTypes(dropType, robot);
+            cbRobotDropType.SelectedIndex = dropType;
+
+            cbRobotHitVClip.SelectedIndex = robot.exp1_vclip_num + 1;
+            cbRobotDeathVClip.SelectedIndex = robot.exp2_vclip_num + 1;
+            cbRobotModel.SelectedIndex = robot.model_num;
+            cbRobotWeapon1.SelectedIndex = robot.weapon_type;
+            cbRobotWeapon2.SelectedIndex = robot.weapon_type2 + 1;
+            if (robot.behavior >= 128)
+            {
+                cbRobotAI.SelectedIndex = robot.behavior - 128;
             }
+            else cbRobotAI.SelectedIndex = 0;
 
             int bossMode = robot.boss_flag;
             if (bossMode > 20)
-            {
                 bossMode -= 18;
-            }
             cmRobotBoss.SelectedIndex = bossMode;
             cmRobotCloak.SelectedIndex = robot.cloak_type;
 
-            cbRobotDropType.SelectedIndex = dropType;
+            if (robot.behavior != 0)
+                cbRobotAI.SelectedIndex = robot.behavior - 0x80;
+            else
+                cbRobotAI.SelectedIndex = 0;
 
             nudRobotAI.Value = 0;
-            updateRobotAI(0);
+            UpdateRobotAI(0);
 
             tbReplacementElement.Text = robot.replacementID.ToString();
+            
+            if (datafile.GetModel(robot.model_num).isAnimated)
+            {
+                RobotAnimationCheckbox.Checked = true;
+                BaseJointSpinner.Value = (Decimal)robot.baseJoint;
+            }
+            else
+                RobotAnimationCheckbox.Checked = false;
+
+            NumJointsTextBox.Text = ( Robot.NUM_ANIMATION_STATES * (datafile.GetModel(robot.model_num).n_models - 1)).ToString();
         }
 
-        private void updateRobotAI(int num)
+        private void UpdateRobotAI(int num)
         {
             Robot robot = datafile.replacedRobots[(int)nudElementNum.Value];
 
@@ -198,16 +270,50 @@ namespace Descent2Workshop
             txtRobotEvadeSpeed.Text = robot.evade_speed[num].ToString();
             txtRobotFireDelay.Text = robot.firing_wait[num].ToString();
             txtRobotFireDelay2.Text = robot.firing_wait2[num].ToString();
-            txtRobotFOV.Text = robot.field_of_view[num].ToString();
+            txtRobotFOV.Text = ((int)(Math.Round(Math.Acos(robot.field_of_view[num]) * 180 / Math.PI, MidpointRounding.AwayFromZero))).ToString();
             txtRobotMaxSpeed.Text = robot.max_speed[num].ToString();
             txtRobotTurnSpeed.Text = robot.turn_time[num].ToString();
             txtRobotShotCount.Text = robot.rapidfire_count[num].ToString();
         }
-
-        private void UpdateModel(int num)
+        
+        private void InitModelPanel()
         {
-            Polymodel mainmodel = datafile.replacedModels[(int)nudElementNum.Value];
-            modelRenderer.SetModel(mainmodel);
+            cbModelLowDetail.Items.Clear(); cbModelLowDetail.Items.Add("None");
+            cbModelDyingModel.Items.Clear(); cbModelDyingModel.Items.Add("None");
+            cbModelDeadModel.Items.Clear(); cbModelDeadModel.Items.Add("None");
+            for (int i = 0; i < datafile.GetNumModels(); i++)
+            {
+                cbModelLowDetail.Items.Add(datafile.GetModelName(i));
+                cbModelDyingModel.Items.Add(datafile.GetModelName(i));
+                cbModelDeadModel.Items.Add(datafile.GetModelName(i));
+            }
+        }
+
+        private void UpdateModelPanel(int num)
+        {
+            Polymodel model = datafile.replacedModels[(int)nudElementNum.Value];
+            //Polymodel model = datafile.PolygonModels[num];
+            txtModelNumModels.Text = model.n_models.ToString();
+            txtModelDataSize.Text = model.model_data_size.ToString();
+            txtModelRadius.Text = model.rad.ToString();
+            txtModelTextureCount.Text = model.n_textures.ToString();
+            cbModelLowDetail.SelectedIndex = model.simpler_model;
+            cbModelDyingModel.SelectedIndex = model.DyingModelnum + 1;
+            cbModelDeadModel.SelectedIndex = model.DeadModelnum + 1;
+
+            /*txtModelMinX.Text = model.mins.x.ToString();
+            txtModelMinY.Text = model.mins.y.ToString();
+            txtModelMinZ.Text = model.mins.z.ToString();
+            txtModelMaxX.Text = model.maxs.x.ToString();
+            txtModelMaxY.Text = model.maxs.y.ToString();
+            txtModelMaxZ.Text = model.maxs.z.ToString();
+
+            txtElemName.Text = datafile.ModelNames[num];*/
+            //if (!noPMView)
+            {
+                modelRenderer.SetModel(model);
+                glControl1.Invalidate();
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -216,7 +322,7 @@ namespace Descent2Workshop
             {
                 case 0:
                     datafile.replacedRobots.Add(new Robot());
-                    resetMaxes();
+                    ResetMaxes();
                     if (nudElementNum.Value == -1)
                     {
                         nudElementNum.Value = 0;
@@ -238,7 +344,7 @@ namespace Descent2Workshop
         private void HXMEditor_Load(object sender, EventArgs e)
         {
             isLocked = true;
-            resetMaxes();
+            ResetMaxes();
             FillOutCurrentPanel(0, 0);
             isLocked = false;
         }
@@ -248,7 +354,7 @@ namespace Descent2Workshop
             if (!isLocked)
             {
                 isLocked = true;
-                updateRobotAI((int)nudRobotAI.Value);
+                UpdateRobotAI((int)nudRobotAI.Value);
                 isLocked = false;
             }
         }

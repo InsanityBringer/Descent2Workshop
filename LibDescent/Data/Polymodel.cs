@@ -28,6 +28,7 @@ namespace LibDescent.Data
     {
         public int Pointer;
         public FixVector Offset = new FixVector();
+        public FixVector RenderOffset = new FixVector();
         public FixVector Normal = new FixVector();
         public FixVector Point = new FixVector();
         public Fix Radius;
