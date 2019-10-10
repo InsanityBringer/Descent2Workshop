@@ -330,7 +330,8 @@ namespace Descent2Workshop
             int numNewTextures = datafile.CountUniqueObjBitmaps(model);
             ModelNumTextures.Text = numNewTextures.ToString();
             ModelNumPointers.Text = model.n_textures.ToString();
-            ModelBasePointerSpinner.Value = (decimal)model.first_texture;
+            ModelBasePointerSpinner.Value = model.first_texture;
+            ModelBaseTextureSpinner.Value = model.BaseTexture;
         }
 
         private void button3_Click(object sender, EventArgs e)

@@ -386,6 +386,7 @@ namespace Descent2Workshop
             cbWeaponWallHit.SelectedIndex = weapon.wall_hit_vclip + 1;
             cbWeaponRobotHit.SelectedIndex = weapon.robot_hit_vclip + 1;
             cbWeaponMuzzleFlash.SelectedIndex = weapon.flash_vclip + 1;
+            if (weapon.weapon_vclip == 255) weapon.weapon_vclip = 0; //[ISB] hack
             cbWeaponVClip.SelectedIndex = weapon.weapon_vclip + 1;
 
             nudWeaponStr.Value = 0;

@@ -92,7 +92,6 @@ namespace LibDescent.Data
                 Robot robot = data.ReadRobot(br);
                 robot.replacementID = replacementID;
                 replacedRobots.Add(robot);
-                Console.WriteLine("Added robot");
             }
             int replacedJointCount = br.ReadInt32();
             for (int x = 0; x < replacedJointCount; x++)
@@ -105,7 +104,6 @@ namespace LibDescent.Data
                 joint.angles.h = br.ReadInt16();
                 joint.replacementID = replacementID;
                 replacedJoints.Add(joint);
-                Console.WriteLine("Added joint");
             }
             int modelsToReplace = br.ReadInt32();
             for (int x = 0; x < modelsToReplace; x++)
@@ -121,7 +119,6 @@ namespace LibDescent.Data
                 replacedModelData.Add(modeldata);
                 model.DyingModelnum = br.ReadInt32();
                 model.DeadModelnum = br.ReadInt32();
-                Console.WriteLine("Added model");
             }
             int objBitmapsToReplace = br.ReadInt32();
             for (int x = 0; x < objBitmapsToReplace; x++)
@@ -130,7 +127,7 @@ namespace LibDescent.Data
                 objBitmap.replacementID = br.ReadInt32();
                 objBitmap.data = br.ReadUInt16();
                 replacedObjBitmaps.Add(objBitmap);
-                Console.WriteLine("Added object bitmap");
+                //Console.WriteLine("Loading replacement obj bitmap, replacing slot {0} with {1} ({2})", objBitmap.replacementID, objBitmap.data, baseFile.piggyFile.images[objBitmap.data].name);
             }
             int objBitmapPtrsToReplace = br.ReadInt32();
             for (int x = 0; x < objBitmapPtrsToReplace; x++)
@@ -139,7 +136,6 @@ namespace LibDescent.Data
                 objBitmap.replacementID = br.ReadInt32();
                 objBitmap.data = br.ReadUInt16();
                 replacedObjBitmapPtrs.Add(objBitmap);
-                Console.WriteLine("Added object bitmap ptr");
             }
 
             GenerateNameTable();
@@ -206,6 +202,7 @@ namespace LibDescent.Data
                     Console.Write("{0} ", texture);
                 }
                 Console.WriteLine("]");
+                model.BaseTexture = FindFirstObjBitmap(model);
             }
         }
 
@@ -478,6 +475,23 @@ namespace LibDescent.Data
                     num++;
                 }
             }
+            return num;
+        }
+
+        public int FindFirstObjBitmap(Polymodel model)
+        {
+            int num = int.MaxValue;
+            string tex;
+            for (int i = 0; i < model.n_textures; i++)
+            {
+                tex = model.textureList[i];
+                if (!baseFile.ObjBitmapMapping.ContainsKey(tex))
+                {
+                    //This texture isn't present in the base file, so it's new. Figure out where it is
+                    num = GetObjBitmapPointer(model.first_texture + i);
+                }
+            }
+            if (num == int.MaxValue) return 0;
             return num;
         }
     }
