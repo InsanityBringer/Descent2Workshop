@@ -47,6 +47,8 @@ namespace Descent2Workshop
         private OpenTK.GLControl glControl1;
         private ModelRenderer modelRenderer;
 
+        private int ElementNumber { get { return (int)nudElementNum.Value; } }
+
         public HXMEditor(HXMFile datafile, StandardUI host)
         {
             InitializeComponent();
@@ -250,7 +252,12 @@ namespace Descent2Workshop
             UpdateRobotAI(0);
 
             tbReplacementElement.Text = robot.replacementID.ToString();
-            
+
+            UpdateRobotAnimation(robot);
+        }
+
+        private void UpdateRobotAnimation(Robot robot)
+        {
             if (datafile.GetModel(robot.model_num).isAnimated)
             {
                 RobotAnimationCheckbox.Checked = true;
@@ -259,7 +266,7 @@ namespace Descent2Workshop
             else
                 RobotAnimationCheckbox.Checked = false;
 
-            NumJointsTextBox.Text = ( Robot.NUM_ANIMATION_STATES * (datafile.GetModel(robot.model_num).n_models - 1)).ToString();
+            NumJointsTextBox.Text = (Robot.NUM_ANIMATION_STATES * (datafile.GetModel(robot.model_num).n_models - 1)).ToString();
         }
 
         private void UpdateRobotAI(int num)
@@ -314,6 +321,16 @@ namespace Descent2Workshop
                 modelRenderer.SetModel(model);
                 glControl1.Invalidate();
             }
+
+            UpdateModelTexturePanel(model);
+        }
+
+        private void UpdateModelTexturePanel(Polymodel model)
+        {
+            int numNewTextures = datafile.CountUniqueObjBitmaps(model);
+            ModelNumTextures.Text = numNewTextures.ToString();
+            ModelNumPointers.Text = model.n_textures.ToString();
+            ModelBasePointerSpinner.Value = (decimal)model.first_texture;
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -404,61 +421,69 @@ namespace Descent2Workshop
             glControl1.Invalidate();
         }
 
-        #region robot updators
-        private void txtRobotModel_TextChanged(object sender, EventArgs e)
+        //---------------------------------------------------------------------
+        // ROBOT UPDATORS
+        //---------------------------------------------------------------------
+
+        private void RobotComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (isLocked)
             {
                 return;
             }
-            try
+            ComboBox sendingControl = (ComboBox)sender;
+            string tagstr = (string)sendingControl.Tag;
+            int tagvalue = Int32.Parse(tagstr);
+            int value = sendingControl.SelectedIndex;
+            Robot robot = datafile.replacedRobots[ElementNumber];
+            robot.UpdateRobot(tagvalue, ref value, (int)nudRobotAI.Value, 0, datafile);
+            //[ISB] ugly hack, show new value of joints and animation checkbox
+            isLocked = true;
+            UpdateRobotAnimation(robot);
+            isLocked = false;
+        }
+
+        private void RobotProperty_TextChanged(object sender, EventArgs e)
+        {
+            if (isLocked)
+                return;
+            TextBox textBox = (TextBox)sender;
+            int tagvalue = int.Parse((string)textBox.Tag);
+            int value;
+            if (int.TryParse(textBox.Text, out value))
             {
-                TextBox sendingControl = (TextBox)sender;
-                string tagstr = (string)sendingControl.Tag;
-                int tagvalue = Int32.Parse(tagstr);
-
-                int value = Int32.Parse(sendingControl.Text);
-
-                Robot robot = datafile.GetRobotAt((int)nudElementNum.Value);
-
-                robot.UpdateRobot(tagvalue, ref value, (int)nudRobotAI.Value, 0, null);
-
-                datafile.replacedRobots[(int)nudElementNum.Value] = robot;
-                statusBar1.Text = "data update successful!";
-            }
-            catch (Exception)
-            {
-                //silently fail, don't update data
-                statusBar1.Text = "failed to update data!";
+                Robot robot = datafile.replacedRobots[ElementNumber];
+                bool clamped = robot.UpdateRobot(tagvalue, ref value, (int)nudRobotAI.Value, 0, datafile);
+                if (clamped) //parrot back the value if it clamped
+                {
+                    isLocked = true;
+                    textBox.Text = value.ToString();
+                    isLocked = false;
+                }
             }
         }
 
-        private void fixedRobotElemChange_TextChanged(object sender, EventArgs e)
+        private void RobotPropertyFixed_TextChanged(object sender, EventArgs e)
         {
             if (isLocked)
             {
                 return;
             }
-            try
-            {
-                TextBox sendingControl = (TextBox)sender;
-                string tagstr = (string)sendingControl.Tag;
-                int tagvalue = Int32.Parse(tagstr);
+            TextBox textBox = (TextBox)sender;
+            int tagvalue = int.Parse((string)textBox.Tag);
 
-                float fvalue = Single.Parse(sendingControl.Text);
+            float fvalue;
+            if (float.TryParse(textBox.Text, out fvalue))
+            {
                 int value = (int)(fvalue * 65536f);
-
-                Robot robot = datafile.GetRobotAt((int)nudElementNum.Value);
-
-                robot.UpdateRobot(tagvalue, ref value, (int)nudRobotAI.Value, 0, null);
-
-                datafile.replacedRobots[(int)nudElementNum.Value] = robot;
-                statusBar1.Text = "data update successful!";
-            }
-            catch (Exception)
-            {
-                //silently fail, don't update data
-                statusBar1.Text = "failed to update data!";
+                Robot robot = datafile.replacedRobots[ElementNumber];
+                bool clamped = robot.UpdateRobot(tagvalue, ref value, (int)nudRobotAI.Value, 0, datafile);
+                if (clamped) //parrot back the value if it clamped
+                {
+                    isLocked = true;
+                    textBox.Text = (value / 65536d).ToString();
+                    isLocked = false;
+                }
             }
         }
 
@@ -466,51 +491,62 @@ namespace Descent2Workshop
         {
             if (isLocked)
                 return;
-            Robot robot = datafile.GetRobotAt((int)nudElementNum.Value);
+            Robot robot = datafile.replacedRobots[ElementNumber];
             robot.cloak_type = (sbyte)cmRobotCloak.SelectedIndex;
-            datafile.replacedRobots[(int)nudElementNum.Value] = robot;
-            statusBar1.Text = "data update successful!";
         }
 
         private void cmRobotBoss_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (isLocked)
                 return;
-            Robot robot = datafile.GetRobotAt((int)nudElementNum.Value);
+            Robot robot = datafile.replacedRobots[ElementNumber];
             int bosstype = cmRobotBoss.SelectedIndex;
             if (bosstype >= 3)
             {
-                bosstype += 16;
+                bosstype += 18;
             }
             robot.boss_flag = (sbyte)bosstype;
-            datafile.replacedRobots[(int)nudElementNum.Value] = robot;
-            statusBar1.Text = "data update successful!";
         }
 
         private void cbRobotAI_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            if (isLocked)
+                return;
+            Robot robot = datafile.replacedRobots[ElementNumber];
+            int bosstype = cbRobotAI.SelectedIndex;
+            robot.behavior = (byte)(bosstype + 0x80);
         }
 
-        private void cbRobotThief_CheckedChanged(object sender, EventArgs e)
+        private void cbRobotDropType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (isLocked) return;
+            Robot robot = datafile.replacedRobots[ElementNumber];
+            robot.ClearAndUpdateDropReference(null, cbRobotDropType.SelectedIndex == 1 ? 2 : 7);
+            UpdateRobotDropTypes(cbRobotDropType.SelectedIndex, robot);
+        }
+
+        private void RobotCheckBox_CheckedChange(object sender, EventArgs e)
         {
             if (isLocked)
                 return;
-            Robot robot = datafile.GetRobotAt((int)nudElementNum.Value);
-            if (cbRobotThief.Checked)
-                robot.thief = 1;
-            else robot.thief = 0;
-            datafile.replacedRobots[(int)nudElementNum.Value] = robot;
-            statusBar1.Text = "data update successful!";
+            CheckBox input = (CheckBox)sender;
+            Robot robot = datafile.replacedRobots[ElementNumber];
+            switch (input.Tag)
+            {
+                case "0":
+                    robot.thief = (sbyte)(input.Checked ? 1 : 0);
+                    break;
+                case "1":
+                    robot.kamikaze = (sbyte)(input.Checked ? 1 : 0);
+                    break;
+                case "2":
+                    robot.companion = (sbyte)(input.Checked ? 1 : 0);
+                    break;
+                case "3":
+                    robot.attack_type = (sbyte)(input.Checked ? 1 : 0);
+                    break;
+            }
         }
-
-
-        private void cbKamikaze_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        #endregion
 
         private void menuItem3_Click_1(object sender, EventArgs e)
         {
@@ -521,6 +557,20 @@ namespace Descent2Workshop
                     datafile.SaveDataFile(saveFileDialog1.FileName);
                 }
             }
+        }
+
+        private void BaseJointSpinner_ValueChanged(object sender, EventArgs e)
+        {
+            if (isLocked) return;
+            Robot robot = datafile.replacedRobots[ElementNumber];
+            robot.baseJoint = (int)BaseJointSpinner.Value;
+        }
+
+        private void RobotAnimationCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (isLocked) return;
+            Polymodel model = datafile.GetModel(datafile.replacedRobots[ElementNumber].model_num);
+            model.isAnimated = RobotAnimationCheckbox.Checked;
         }
     }
 }

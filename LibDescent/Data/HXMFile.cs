@@ -467,5 +467,18 @@ namespace LibDescent.Data
                 return augmentFile.GetObjBitmapPointer(id);
             return baseFile.ObjBitmapPointers[id];
         }
+
+        public int CountUniqueObjBitmaps(Polymodel model)
+        {
+            int num = 0;
+            foreach (string tex in model.textureList)
+            {
+                if (!baseFile.ObjBitmapMapping.ContainsKey(tex))
+                {
+                    num++;
+                }
+            }
+            return num;
+        }
     }
 }

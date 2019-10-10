@@ -139,11 +139,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.cbModelLowDetail = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button13 = new System.Windows.Forms.Button();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.ModelBaseTextureSpinner = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.trackBar3 = new System.Windows.Forms.TrackBar();
             this.trackBar2 = new System.Windows.Forms.TrackBar();
@@ -171,6 +168,12 @@
             this.RobotAnimationCheckbox = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.NumJointsTextBox = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.ModelNumTextures = new System.Windows.Forms.TextBox();
+            this.ModelNumPointers = new System.Windows.Forms.TextBox();
+            this.ModelBasePointerSpinner = new System.Windows.Forms.NumericUpDown();
+            this.label9 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -180,12 +183,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudRobotAI)).BeginInit();
             this.tabPage7.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ModelBaseTextureSpinner)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudElementNum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ModelBasePointerSpinner)).BeginInit();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -338,6 +342,7 @@
             this.BaseJointSpinner.Name = "BaseJointSpinner";
             this.BaseJointSpinner.Size = new System.Drawing.Size(50, 20);
             this.BaseJointSpinner.TabIndex = 3;
+            this.BaseJointSpinner.ValueChanged += new System.EventHandler(this.BaseJointSpinner_ValueChanged);
             // 
             // label2
             // 
@@ -357,6 +362,7 @@
             this.cbRobotModel.Size = new System.Drawing.Size(156, 21);
             this.cbRobotModel.TabIndex = 254;
             this.cbRobotModel.Tag = "1";
+            this.cbRobotModel.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
             // 
             // cbRobotDeathSound
             // 
@@ -367,6 +373,7 @@
             this.cbRobotDeathSound.Size = new System.Drawing.Size(156, 21);
             this.cbRobotDeathSound.TabIndex = 253;
             this.cbRobotDeathSound.Tag = "41";
+            this.cbRobotDeathSound.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
             // 
             // label47
             // 
@@ -386,6 +393,7 @@
             this.cbRobotHitSound.Size = new System.Drawing.Size(152, 21);
             this.cbRobotHitSound.TabIndex = 251;
             this.cbRobotHitSound.Tag = "40";
+            this.cbRobotHitSound.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
             // 
             // label46
             // 
@@ -405,6 +413,7 @@
             this.cbRobotDeathVClip.Size = new System.Drawing.Size(156, 21);
             this.cbRobotDeathVClip.TabIndex = 249;
             this.cbRobotDeathVClip.Tag = "4";
+            this.cbRobotDeathVClip.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
             // 
             // cbRobotHitVClip
             // 
@@ -415,6 +424,7 @@
             this.cbRobotHitVClip.Size = new System.Drawing.Size(156, 21);
             this.cbRobotHitVClip.TabIndex = 248;
             this.cbRobotHitVClip.Tag = "2";
+            this.cbRobotHitVClip.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
             // 
             // cbRobotWeapon2
             // 
@@ -425,6 +435,7 @@
             this.cbRobotWeapon2.Size = new System.Drawing.Size(153, 21);
             this.cbRobotWeapon2.TabIndex = 247;
             this.cbRobotWeapon2.Tag = "6";
+            this.cbRobotWeapon2.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
             // 
             // cbRobotWeapon1
             // 
@@ -435,6 +446,7 @@
             this.cbRobotWeapon1.Size = new System.Drawing.Size(153, 21);
             this.cbRobotWeapon1.TabIndex = 246;
             this.cbRobotWeapon1.Tag = "5";
+            this.cbRobotWeapon1.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
             // 
             // cbRobotDropItem
             // 
@@ -445,6 +457,7 @@
             this.cbRobotDropItem.Size = new System.Drawing.Size(155, 21);
             this.cbRobotDropItem.TabIndex = 245;
             this.cbRobotDropItem.Tag = "8";
+            this.cbRobotDropItem.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
             // 
             // cbRobotDyingSound
             // 
@@ -455,6 +468,7 @@
             this.cbRobotDyingSound.Size = new System.Drawing.Size(152, 21);
             this.cbRobotDyingSound.TabIndex = 244;
             this.cbRobotDyingSound.Tag = "34";
+            this.cbRobotDyingSound.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
             // 
             // cbRobotTauntSound
             // 
@@ -465,6 +479,7 @@
             this.cbRobotTauntSound.Size = new System.Drawing.Size(156, 21);
             this.cbRobotTauntSound.TabIndex = 243;
             this.cbRobotTauntSound.Tag = "33";
+            this.cbRobotTauntSound.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
             // 
             // cbRobotClawSound
             // 
@@ -475,6 +490,7 @@
             this.cbRobotClawSound.Size = new System.Drawing.Size(156, 21);
             this.cbRobotClawSound.TabIndex = 242;
             this.cbRobotClawSound.Tag = "12";
+            this.cbRobotClawSound.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
             // 
             // cbRobotAttackSound
             // 
@@ -485,6 +501,7 @@
             this.cbRobotAttackSound.Size = new System.Drawing.Size(152, 21);
             this.cbRobotAttackSound.TabIndex = 241;
             this.cbRobotAttackSound.Tag = "31";
+            this.cbRobotAttackSound.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
             // 
             // cbRobotSeeSound
             // 
@@ -495,6 +512,7 @@
             this.cbRobotSeeSound.Size = new System.Drawing.Size(156, 21);
             this.cbRobotSeeSound.TabIndex = 240;
             this.cbRobotSeeSound.Tag = "30";
+            this.cbRobotSeeSound.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
             // 
             // cbRobotAI
             // 
@@ -512,6 +530,7 @@
             this.cbRobotAI.Name = "cbRobotAI";
             this.cbRobotAI.Size = new System.Drawing.Size(115, 21);
             this.cbRobotAI.TabIndex = 186;
+            this.cbRobotAI.SelectedIndexChanged += new System.EventHandler(this.cbRobotAI_SelectedIndexChanged);
             // 
             // label112
             // 
@@ -529,6 +548,7 @@
             this.txtRobotGlow.Size = new System.Drawing.Size(108, 20);
             this.txtRobotGlow.TabIndex = 238;
             this.txtRobotGlow.Tag = "43";
+            this.txtRobotGlow.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // label101
             // 
@@ -555,6 +575,7 @@
             this.txtRobotLightcast.Size = new System.Drawing.Size(108, 20);
             this.txtRobotLightcast.TabIndex = 235;
             this.txtRobotLightcast.Tag = "39";
+            this.txtRobotLightcast.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // label99
             // 
@@ -572,6 +593,7 @@
             this.txtRobotPursuit.Size = new System.Drawing.Size(87, 20);
             this.txtRobotPursuit.TabIndex = 233;
             this.txtRobotPursuit.Tag = "38";
+            this.txtRobotPursuit.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // label98
             // 
@@ -589,6 +611,7 @@
             this.txtRobotAim.Size = new System.Drawing.Size(87, 20);
             this.txtRobotAim.TabIndex = 231;
             this.txtRobotAim.Tag = "45";
+            this.txtRobotAim.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // label97
             // 
@@ -606,6 +629,7 @@
             this.txtRobotDeathRolls.Size = new System.Drawing.Size(100, 20);
             this.txtRobotDeathRolls.TabIndex = 229;
             this.txtRobotDeathRolls.Tag = "40";
+            this.txtRobotDeathRolls.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // label96
             // 
@@ -623,6 +647,7 @@
             this.txtRobotDeathBlobs.Size = new System.Drawing.Size(100, 20);
             this.txtRobotDeathBlobs.TabIndex = 227;
             this.txtRobotDeathBlobs.Tag = "36";
+            this.txtRobotDeathBlobs.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // label35
             // 
@@ -640,6 +665,7 @@
             this.txtRobotHitBlobs.Size = new System.Drawing.Size(87, 20);
             this.txtRobotHitBlobs.TabIndex = 225;
             this.txtRobotHitBlobs.Tag = "37";
+            this.txtRobotHitBlobs.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // label34
             // 
@@ -657,6 +683,7 @@
             this.txtRobotEnergyDrain.Size = new System.Drawing.Size(87, 20);
             this.txtRobotEnergyDrain.TabIndex = 223;
             this.txtRobotEnergyDrain.Tag = "15";
+            this.txtRobotEnergyDrain.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // txtRobotBadass
             // 
@@ -665,6 +692,7 @@
             this.txtRobotBadass.Size = new System.Drawing.Size(100, 20);
             this.txtRobotBadass.TabIndex = 222;
             this.txtRobotBadass.Tag = "14";
+            this.txtRobotBadass.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // label20
             // 
@@ -704,6 +732,7 @@
             this.cbRobotDropType.Name = "cbRobotDropType";
             this.cbRobotDropType.Size = new System.Drawing.Size(100, 21);
             this.cbRobotDropType.TabIndex = 218;
+            this.cbRobotDropType.SelectedIndexChanged += new System.EventHandler(this.cbRobotDropType_SelectedIndexChanged);
             // 
             // label134
             // 
@@ -721,6 +750,7 @@
             this.txtRobotLight.Size = new System.Drawing.Size(108, 20);
             this.txtRobotLight.TabIndex = 205;
             this.txtRobotLight.Tag = "16";
+            this.txtRobotLight.TextChanged += new System.EventHandler(this.RobotPropertyFixed_TextChanged);
             // 
             // txtRobotDrag
             // 
@@ -729,6 +759,7 @@
             this.txtRobotDrag.Size = new System.Drawing.Size(100, 20);
             this.txtRobotDrag.TabIndex = 203;
             this.txtRobotDrag.Tag = "19";
+            this.txtRobotDrag.TextChanged += new System.EventHandler(this.RobotPropertyFixed_TextChanged);
             // 
             // txtRobotMass
             // 
@@ -737,6 +768,7 @@
             this.txtRobotMass.Size = new System.Drawing.Size(100, 20);
             this.txtRobotMass.TabIndex = 201;
             this.txtRobotMass.Tag = "18";
+            this.txtRobotMass.TextChanged += new System.EventHandler(this.RobotPropertyFixed_TextChanged);
             // 
             // txtRobotShield
             // 
@@ -745,6 +777,7 @@
             this.txtRobotShield.Size = new System.Drawing.Size(100, 20);
             this.txtRobotShield.TabIndex = 199;
             this.txtRobotShield.Tag = "17";
+            this.txtRobotShield.TextChanged += new System.EventHandler(this.RobotPropertyFixed_TextChanged);
             // 
             // txtRobotScore
             // 
@@ -753,6 +786,7 @@
             this.txtRobotScore.Size = new System.Drawing.Size(100, 20);
             this.txtRobotScore.TabIndex = 190;
             this.txtRobotScore.Tag = "13";
+            this.txtRobotScore.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // txtRobotDropProb
             // 
@@ -761,6 +795,7 @@
             this.txtRobotDropProb.Size = new System.Drawing.Size(29, 20);
             this.txtRobotDropProb.TabIndex = 189;
             this.txtRobotDropProb.Tag = "10";
+            this.txtRobotDropProb.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // txtRobotDrops
             // 
@@ -769,6 +804,7 @@
             this.txtRobotDrops.Size = new System.Drawing.Size(100, 20);
             this.txtRobotDrops.TabIndex = 188;
             this.txtRobotDrops.Tag = "9";
+            this.txtRobotDrops.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // label133
             // 
@@ -802,6 +838,7 @@
             this.cbKamikaze.Tag = "1";
             this.cbKamikaze.Text = "Kamikaze";
             this.cbKamikaze.UseVisualStyleBackColor = true;
+            this.cbKamikaze.Click += new System.EventHandler(this.RobotCheckBox_CheckedChange);
             // 
             // cbRobotThief
             // 
@@ -813,6 +850,7 @@
             this.cbRobotThief.Tag = "0";
             this.cbRobotThief.Text = "Thief Bot";
             this.cbRobotThief.UseVisualStyleBackColor = true;
+            this.cbRobotThief.Click += new System.EventHandler(this.RobotCheckBox_CheckedChange);
             // 
             // cbRobotCompanion
             // 
@@ -824,6 +862,7 @@
             this.cbRobotCompanion.Tag = "2";
             this.cbRobotCompanion.Text = "Is Companion";
             this.cbRobotCompanion.UseVisualStyleBackColor = true;
+            this.cbRobotCompanion.Click += new System.EventHandler(this.RobotCheckBox_CheckedChange);
             // 
             // cbRobotClaw
             // 
@@ -835,6 +874,8 @@
             this.cbRobotClaw.Tag = "3";
             this.cbRobotClaw.Text = "Uses claw attack";
             this.cbRobotClaw.UseVisualStyleBackColor = true;
+            this.cbRobotClaw.TextChanged += new System.EventHandler(this.RobotCheckBox_CheckedChange);
+            this.cbRobotClaw.Click += new System.EventHandler(this.RobotCheckBox_CheckedChange);
             // 
             // label95
             // 
@@ -910,6 +951,7 @@
             this.txtRobotFireDelay2.Size = new System.Drawing.Size(100, 20);
             this.txtRobotFireDelay2.TabIndex = 56;
             this.txtRobotFireDelay2.Tag = "22";
+            this.txtRobotFireDelay2.TextChanged += new System.EventHandler(this.RobotPropertyFixed_TextChanged);
             // 
             // label28
             // 
@@ -972,6 +1014,7 @@
             this.txtRobotEvadeSpeed.Size = new System.Drawing.Size(100, 20);
             this.txtRobotEvadeSpeed.TabIndex = 53;
             this.txtRobotEvadeSpeed.Tag = "27";
+            this.txtRobotEvadeSpeed.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // txtRobotShotCount
             // 
@@ -980,6 +1023,7 @@
             this.txtRobotShotCount.Size = new System.Drawing.Size(100, 20);
             this.txtRobotShotCount.TabIndex = 53;
             this.txtRobotShotCount.Tag = "26";
+            this.txtRobotShotCount.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // txtRobotCircleDist
             // 
@@ -988,6 +1032,7 @@
             this.txtRobotCircleDist.Size = new System.Drawing.Size(100, 20);
             this.txtRobotCircleDist.TabIndex = 53;
             this.txtRobotCircleDist.Tag = "25";
+            this.txtRobotCircleDist.TextChanged += new System.EventHandler(this.RobotPropertyFixed_TextChanged);
             // 
             // txtRobotMaxSpeed
             // 
@@ -996,6 +1041,7 @@
             this.txtRobotMaxSpeed.Size = new System.Drawing.Size(100, 20);
             this.txtRobotMaxSpeed.TabIndex = 53;
             this.txtRobotMaxSpeed.Tag = "24";
+            this.txtRobotMaxSpeed.TextChanged += new System.EventHandler(this.RobotPropertyFixed_TextChanged);
             // 
             // txtRobotTurnSpeed
             // 
@@ -1004,6 +1050,7 @@
             this.txtRobotTurnSpeed.Size = new System.Drawing.Size(100, 20);
             this.txtRobotTurnSpeed.TabIndex = 53;
             this.txtRobotTurnSpeed.Tag = "23";
+            this.txtRobotTurnSpeed.TextChanged += new System.EventHandler(this.RobotPropertyFixed_TextChanged);
             // 
             // txtRobotFireDelay
             // 
@@ -1012,6 +1059,7 @@
             this.txtRobotFireDelay.Size = new System.Drawing.Size(100, 20);
             this.txtRobotFireDelay.TabIndex = 53;
             this.txtRobotFireDelay.Tag = "21";
+            this.txtRobotFireDelay.TextChanged += new System.EventHandler(this.RobotPropertyFixed_TextChanged);
             // 
             // txtRobotFOV
             // 
@@ -1020,6 +1068,7 @@
             this.txtRobotFOV.Size = new System.Drawing.Size(100, 20);
             this.txtRobotFOV.TabIndex = 53;
             this.txtRobotFOV.Tag = "20";
+            this.txtRobotFOV.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // label45
             // 
@@ -1078,6 +1127,7 @@
             this.cmRobotBoss.Size = new System.Drawing.Size(115, 21);
             this.cmRobotBoss.TabIndex = 209;
             this.cmRobotBoss.Tag = "4";
+            this.cmRobotBoss.SelectedIndexChanged += new System.EventHandler(this.cmRobotBoss_SelectedIndexChanged);
             // 
             // label91
             // 
@@ -1101,6 +1151,7 @@
             this.cmRobotCloak.Size = new System.Drawing.Size(115, 21);
             this.cmRobotCloak.TabIndex = 207;
             this.cmRobotCloak.Tag = "3";
+            this.cmRobotCloak.SelectedIndexChanged += new System.EventHandler(this.cmRobotCloak_SelectedIndexChanged);
             // 
             // label90
             // 
@@ -1315,64 +1366,41 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.button13);
-            this.groupBox1.Controls.Add(this.numericUpDown1);
+            this.groupBox1.Controls.Add(this.ModelBasePointerSpinner);
+            this.groupBox1.Controls.Add(this.label9);
+            this.groupBox1.Controls.Add(this.ModelNumPointers);
+            this.groupBox1.Controls.Add(this.ModelNumTextures);
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.ModelBaseTextureSpinner);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.radioButton2);
-            this.groupBox1.Controls.Add(this.radioButton1);
             this.groupBox1.Location = new System.Drawing.Point(10, 252);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(233, 107);
+            this.groupBox1.Size = new System.Drawing.Size(362, 76);
             this.groupBox1.TabIndex = 28;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Textures";
             // 
-            // button13
+            // ModelBaseTextureSpinner
             // 
-            this.button13.Location = new System.Drawing.Point(87, 75);
-            this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(75, 23);
-            this.button13.TabIndex = 29;
-            this.button13.Text = "Browse...";
-            this.button13.UseVisualStyleBackColor = true;
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(6, 78);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(75, 20);
-            this.numericUpDown1.TabIndex = 29;
+            this.ModelBaseTextureSpinner.Location = new System.Drawing.Point(249, 13);
+            this.ModelBaseTextureSpinner.Maximum = new decimal(new int[] {
+            600,
+            0,
+            0,
+            0});
+            this.ModelBaseTextureSpinner.Name = "ModelBaseTextureSpinner";
+            this.ModelBaseTextureSpinner.Size = new System.Drawing.Size(75, 20);
+            this.ModelBaseTextureSpinner.TabIndex = 29;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 62);
+            this.label1.Location = new System.Drawing.Point(194, 16);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(49, 13);
             this.label1.TabIndex = 29;
             this.label1.Text = "Insert At:";
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(6, 42);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(138, 17);
-            this.radioButton2.TabIndex = 29;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Manually insert textures ";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            // 
-            // radioButton1
-            // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(6, 19);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(166, 17);
-            this.radioButton1.TabIndex = 29;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Automatically append textures";
-            this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // pictureBox3
             // 
@@ -1596,6 +1624,7 @@
             this.RobotAnimationCheckbox.TabIndex = 6;
             this.RobotAnimationCheckbox.Text = "Load Animations";
             this.RobotAnimationCheckbox.UseVisualStyleBackColor = true;
+            this.RobotAnimationCheckbox.CheckedChanged += new System.EventHandler(this.RobotAnimationCheckbox_CheckedChanged);
             // 
             // label3
             // 
@@ -1613,6 +1642,61 @@
             this.NumJointsTextBox.ReadOnly = true;
             this.NumJointsTextBox.Size = new System.Drawing.Size(56, 20);
             this.NumJointsTextBox.TabIndex = 7;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 16);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(122, 13);
+            this.label6.TabIndex = 30;
+            this.label6.Text = "Needed Object Bitmaps:";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 42);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(89, 13);
+            this.label8.TabIndex = 31;
+            this.label8.Text = "Needed Pointers:";
+            // 
+            // ModelNumTextures
+            // 
+            this.ModelNumTextures.Location = new System.Drawing.Point(134, 13);
+            this.ModelNumTextures.Name = "ModelNumTextures";
+            this.ModelNumTextures.ReadOnly = true;
+            this.ModelNumTextures.Size = new System.Drawing.Size(54, 20);
+            this.ModelNumTextures.TabIndex = 32;
+            // 
+            // ModelNumPointers
+            // 
+            this.ModelNumPointers.Location = new System.Drawing.Point(134, 39);
+            this.ModelNumPointers.Name = "ModelNumPointers";
+            this.ModelNumPointers.ReadOnly = true;
+            this.ModelNumPointers.Size = new System.Drawing.Size(54, 20);
+            this.ModelNumPointers.TabIndex = 33;
+            // 
+            // ModelBasePointerSpinner
+            // 
+            this.ModelBasePointerSpinner.Location = new System.Drawing.Point(249, 39);
+            this.ModelBasePointerSpinner.Maximum = new decimal(new int[] {
+            600,
+            0,
+            0,
+            0});
+            this.ModelBasePointerSpinner.Name = "ModelBasePointerSpinner";
+            this.ModelBasePointerSpinner.Size = new System.Drawing.Size(75, 20);
+            this.ModelBasePointerSpinner.TabIndex = 34;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(194, 42);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(49, 13);
+            this.label9.TabIndex = 35;
+            this.label9.Text = "Insert At:";
             // 
             // HXMEditor
             // 
@@ -1649,12 +1733,13 @@
             this.tabPage7.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ModelBaseTextureSpinner)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudElementNum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ModelBasePointerSpinner)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1694,11 +1779,8 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button button13;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown ModelBaseTextureSpinner;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.ComboBox cbModelDeadModel;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox cbModelDyingModel;
@@ -1804,5 +1886,11 @@
         private System.Windows.Forms.CheckBox RobotAnimationCheckbox;
         private System.Windows.Forms.TextBox NumJointsTextBox;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown ModelBasePointerSpinner;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox ModelNumPointers;
+        private System.Windows.Forms.TextBox ModelNumTextures;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label6;
     }
 }

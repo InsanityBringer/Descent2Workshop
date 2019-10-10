@@ -91,6 +91,8 @@ namespace LibDescent.Data
         public ushort[] multiplayerBitmaps = new ushort[14];
         //Map EClip names to their IDs, since this is important for model textures
         public Dictionary<string, EClip> EClipNameMapping = new Dictionary<string, EClip>();
+        //Map texture names to the first found ObjBitmap, for ease of finding textures
+        public Dictionary<string, int> ObjBitmapMapping = new Dictionary<string, int>();
 
         //Name information. Stored separately in a .names file
         public List<string> VClipNames = new List<string>();
@@ -503,6 +505,7 @@ namespace LibDescent.Data
                 if (clip.changing_object_texture != -1)
                 {
                     EClipNames.Add(clip.changing_object_texture, this.EClipNames[i]);
+                    ObjBitmapMapping.Add(this.EClipNames[i], clip.changing_object_texture);
                 }
             }
             ushort bitmap; string name;
@@ -515,6 +518,8 @@ namespace LibDescent.Data
                 if (!image.isAnimated)
                 {
                     TextureNames.Add(i, name);
+                    if (!ObjBitmapMapping.ContainsKey(name))
+                        ObjBitmapMapping.Add(name, i);
                 }
             }
             foreach (Polymodel model in PolygonModels)

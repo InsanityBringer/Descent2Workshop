@@ -4747,7 +4747,7 @@
             this.openFileDialog1.FileName = "openFileDialog1";
             this.openFileDialog1.Filter = "Parallax Object files|*.POF";
             // 
-            // HAMEditor2
+            // HAMEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -4764,7 +4764,7 @@
             this.Controls.Add(this.statusBar1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Menu = this.mainMenu1;
-            this.Name = "HAMEditor2";
+            this.Name = "HAMEditor";
             this.Text = "HAMEditor2";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HAMEditor2_FormClosing);
             this.Load += new System.EventHandler(this.HAMEditor2_Load);
