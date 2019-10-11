@@ -174,6 +174,7 @@
             this.ModelNumPointers = new System.Windows.Forms.TextBox();
             this.ModelBasePointerSpinner = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
+            this.AnimatedWarningLabel = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -1366,6 +1367,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.AnimatedWarningLabel);
             this.groupBox1.Controls.Add(this.ModelBasePointerSpinner);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.ModelNumPointers);
@@ -1376,7 +1378,7 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(10, 252);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(362, 76);
+            this.groupBox1.Size = new System.Drawing.Size(362, 150);
             this.groupBox1.TabIndex = 28;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Textures";
@@ -1655,7 +1657,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 42);
+            this.label8.Location = new System.Drawing.Point(6, 55);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(89, 13);
             this.label8.TabIndex = 31;
@@ -1671,7 +1673,7 @@
             // 
             // ModelNumPointers
             // 
-            this.ModelNumPointers.Location = new System.Drawing.Point(134, 39);
+            this.ModelNumPointers.Location = new System.Drawing.Point(134, 52);
             this.ModelNumPointers.Name = "ModelNumPointers";
             this.ModelNumPointers.ReadOnly = true;
             this.ModelNumPointers.Size = new System.Drawing.Size(54, 20);
@@ -1679,7 +1681,7 @@
             // 
             // ModelBasePointerSpinner
             // 
-            this.ModelBasePointerSpinner.Location = new System.Drawing.Point(249, 39);
+            this.ModelBasePointerSpinner.Location = new System.Drawing.Point(249, 52);
             this.ModelBasePointerSpinner.Maximum = new decimal(new int[] {
             600,
             0,
@@ -1692,11 +1694,21 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(194, 42);
+            this.label9.Location = new System.Drawing.Point(194, 55);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(49, 13);
             this.label9.TabIndex = 35;
             this.label9.Text = "Insert At:";
+            // 
+            // AnimatedWarningLabel
+            // 
+            this.AnimatedWarningLabel.AutoSize = true;
+            this.AnimatedWarningLabel.Location = new System.Drawing.Point(6, 36);
+            this.AnimatedWarningLabel.Name = "AnimatedWarningLabel";
+            this.AnimatedWarningLabel.Size = new System.Drawing.Size(266, 13);
+            this.AnimatedWarningLabel.TabIndex = 36;
+            this.AnimatedWarningLabel.Text = "Warning: This range conflicts with an animated texture.";
+            this.AnimatedWarningLabel.Visible = false;
             // 
             // HXMEditor
             // 
@@ -1892,5 +1904,6 @@
         private System.Windows.Forms.TextBox ModelNumTextures;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label AnimatedWarningLabel;
     }
 }

@@ -332,6 +332,17 @@ namespace Descent2Workshop
             ModelNumPointers.Text = model.n_textures.ToString();
             ModelBasePointerSpinner.Value = model.first_texture;
             ModelBaseTextureSpinner.Value = model.BaseTexture;
+
+            for (int i = 0; i < numNewTextures; i++)
+            {
+                ushort index = datafile.GetObjBitmap(i + model.BaseTexture);
+                if (datafile.baseFile.piggyFile.images[index].isAnimated)
+                {
+                    AnimatedWarningLabel.Visible = true;
+                }
+                else
+                    AnimatedWarningLabel.Visible = false;
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)
