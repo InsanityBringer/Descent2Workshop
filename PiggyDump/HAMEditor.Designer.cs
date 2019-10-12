@@ -425,6 +425,7 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.mainToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.chkSoftwareOverdraw = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -3574,6 +3575,7 @@
             // 
             // tabPage7
             // 
+            this.tabPage7.Controls.Add(this.chkSoftwareOverdraw);
             this.tabPage7.Controls.Add(this.btnExportModel);
             this.tabPage7.Controls.Add(this.glControlStandin);
             this.tabPage7.Controls.Add(this.chkWireframe);
@@ -3641,6 +3643,7 @@
             this.chkWireframe.TabIndex = 36;
             this.chkWireframe.Text = "Wireframe";
             this.chkWireframe.UseVisualStyleBackColor = true;
+            this.chkWireframe.CheckedChanged += new System.EventHandler(this.PMCheckBox_CheckChanged);
             // 
             // chkNorm
             // 
@@ -3651,6 +3654,7 @@
             this.chkNorm.TabIndex = 35;
             this.chkNorm.Text = "Show Normals";
             this.chkNorm.UseVisualStyleBackColor = true;
+            this.chkNorm.CheckedChanged += new System.EventHandler(this.PMCheckBox_CheckChanged);
             // 
             // chkShowBBs
             // 
@@ -3661,6 +3665,7 @@
             this.chkShowBBs.TabIndex = 34;
             this.chkShowBBs.Text = "Show Bounding Boxes";
             this.chkShowBBs.UseVisualStyleBackColor = true;
+            this.chkShowBBs.CheckedChanged += new System.EventHandler(this.PMCheckBox_CheckChanged);
             // 
             // chkRadius
             // 
@@ -3671,6 +3676,7 @@
             this.chkRadius.TabIndex = 33;
             this.chkRadius.Text = "Show Radius";
             this.chkRadius.UseVisualStyleBackColor = true;
+            this.chkRadius.CheckedChanged += new System.EventHandler(this.PMCheckBox_CheckChanged);
             // 
             // btnImportModel
             // 
@@ -4747,6 +4753,17 @@
             this.openFileDialog1.FileName = "openFileDialog1";
             this.openFileDialog1.Filter = "Parallax Object files|*.POF";
             // 
+            // chkSoftwareOverdraw
+            // 
+            this.chkSoftwareOverdraw.AutoSize = true;
+            this.chkSoftwareOverdraw.Location = new System.Drawing.Point(452, 420);
+            this.chkSoftwareOverdraw.Name = "chkSoftwareOverdraw";
+            this.chkSoftwareOverdraw.Size = new System.Drawing.Size(158, 17);
+            this.chkSoftwareOverdraw.TabIndex = 39;
+            this.chkSoftwareOverdraw.Text = "Emulate Software Overdraw";
+            this.chkSoftwareOverdraw.UseVisualStyleBackColor = true;
+            this.chkSoftwareOverdraw.CheckedChanged += new System.EventHandler(this.PMCheckBox_CheckChanged);
+            // 
             // HAMEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5244,5 +5261,6 @@
         private System.Windows.Forms.Panel glControlStandin;
         private System.Windows.Forms.Button btnExportModel;
         private System.Windows.Forms.ComboBox cbWeaponBounce;
+        private System.Windows.Forms.CheckBox chkSoftwareOverdraw;
     }
 }

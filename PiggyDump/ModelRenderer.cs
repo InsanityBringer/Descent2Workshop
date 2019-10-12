@@ -134,7 +134,7 @@ namespace Descent2Workshop
             lightVector.y = .707;
             lightVector.z = .707 * Math.Cos(angler + (Math.PI / 4));
 
-            Console.WriteLine("x: {0} y: {1} z: {2} angle: {3} pitch: {4}", cameraPoint.x, cameraPoint.y, cameraPoint.z, angle, pitch);
+            //Console.WriteLine("x: {0} y: {1} z: {2} angle: {3} pitch: {4}", cameraPoint.x, cameraPoint.y, cameraPoint.z, angle, pitch);
 
             Execute(model.data.InterpreterData, 0, model, model.submodels[0]);
             //DrawSubobject(model, model.submodels[0]);

@@ -38,6 +38,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.chkAnimation = new System.Windows.Forms.CheckBox();
+            this.chkSoftwareOverdraw = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
@@ -152,11 +153,23 @@
             this.chkAnimation.UseVisualStyleBackColor = true;
             this.chkAnimation.CheckedChanged += new System.EventHandler(this.chkRadius_CheckedChanged);
             // 
+            // chkSoftwareOverdraw
+            // 
+            this.chkSoftwareOverdraw.AutoSize = true;
+            this.chkSoftwareOverdraw.Location = new System.Drawing.Point(63, 476);
+            this.chkSoftwareOverdraw.Name = "chkSoftwareOverdraw";
+            this.chkSoftwareOverdraw.Size = new System.Drawing.Size(158, 17);
+            this.chkSoftwareOverdraw.TabIndex = 12;
+            this.chkSoftwareOverdraw.Text = "Emulate Software Overdraw";
+            this.chkSoftwareOverdraw.UseVisualStyleBackColor = true;
+            this.chkSoftwareOverdraw.CheckedChanged += new System.EventHandler(this.chkRadius_CheckedChanged);
+            // 
             // PolymodelPreviewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(535, 497);
+            this.Controls.Add(this.chkSoftwareOverdraw);
             this.Controls.Add(this.chkAnimation);
             this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.label1);
@@ -190,5 +203,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.CheckBox chkAnimation;
+        private System.Windows.Forms.CheckBox chkSoftwareOverdraw;
     }
 }

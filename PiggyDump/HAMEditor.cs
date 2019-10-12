@@ -1851,6 +1851,7 @@ namespace Descent2Workshop
             modelRenderer.ShowNormals = chkNorm.Checked;
             modelRenderer.Wireframe = chkWireframe.Checked;
             modelRenderer.ShowRadius = chkRadius.Checked;
+            modelRenderer.EmulateSoftware = chkSoftwareOverdraw.Checked;
 
             modelRenderer.Draw();
             glControl1.SwapBuffers();
@@ -1867,6 +1868,11 @@ namespace Descent2Workshop
             if (glContextCreated)
             {
             }
+        }
+
+        private void PMCheckBox_CheckChanged(object sender, EventArgs e)
+        {
+            glControl1.Invalidate();
         }
 
         //---------------------------------------------------------------------
