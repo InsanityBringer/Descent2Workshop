@@ -106,6 +106,7 @@ namespace Descent2Workshop
         public void Draw()
         {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            if (model.data.InterpreterData.Length == 0) return;
             GL.CullFace(CullFaceMode.Front);
             if (wireframe)
                 GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
@@ -130,9 +131,9 @@ namespace Descent2Workshop
 
             cameraPoint = new FixVector(-32.0 * Math.Sin(angler) * Math.Cos(pitchr), 32.0 * Math.Sin(pitchr) , 32.0 * Math.Cos(angler) * Math.Cos(pitchr));
 
-            lightVector.x = .707 * Math.Sin(angler + (Math.PI / 4));
+            lightVector.x = .707 * Math.Sin(-angler + (Math.PI / 4));
             lightVector.y = .707;
-            lightVector.z = .707 * Math.Cos(angler + (Math.PI / 4));
+            lightVector.z = -.707 * Math.Cos(-angler + (Math.PI / 4));
 
             //Console.WriteLine("x: {0} y: {1} z: {2} angle: {3} pitch: {4}", cameraPoint.x, cameraPoint.y, cameraPoint.z, angle, pitch);
 
@@ -382,7 +383,7 @@ namespace Descent2Workshop
                             FixVector point = GetFixVector(data, ref offset);
                             FixVector normal = GetFixVector(data, ref offset);
                             short texture = GetShort(data, ref offset);
-                            Fix shade = normal.Dot(lightVector) * .25 + .75;
+                            Fix shade = normal.Dot(lightVector) * .5 + .5;
 
                             short[] points = new short[pointc]; //TODO: seems wasteful to do all these allocations?
                             FixVector[] uvls = new FixVector[pointc];
