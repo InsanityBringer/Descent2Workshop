@@ -66,9 +66,9 @@ namespace LibDescent.Data
                         for (int x = 0; x < pointc; x++)
                         {
                             FixVector point = new FixVector();
-                            point.x = br.ReadInt32();
-                            point.y = br.ReadInt32();
-                            point.z = br.ReadInt32();
+                            point.x = new Fix(br.ReadInt32());
+                            point.y = new Fix(br.ReadInt32());
+                            point.z = new Fix(br.ReadInt32());
 
                             mins.x = Math.Min(mins.x, point.x);
                             mins.y = Math.Min(mins.y, point.y);
@@ -86,9 +86,9 @@ namespace LibDescent.Data
                         for (int x = 0; x < pointc; x++)
                         {
                             FixVector point = new FixVector();
-                            point.x = br.ReadInt32();
-                            point.y = br.ReadInt32();
-                            point.z = br.ReadInt32();
+                            point.x = new Fix(br.ReadInt32());
+                            point.y = new Fix(br.ReadInt32());
+                            point.z = new Fix(br.ReadInt32());
 
                             mins.x = Math.Min(mins.x, point.x);
                             mins.y = Math.Min(mins.y, point.y);
@@ -231,7 +231,7 @@ namespace LibDescent.Data
                             short texture = br.ReadInt16();
                             if (sw != null)
                             {
-                                sw.WriteLine("numverts {1}, texture id {0}", /*host.textureList[texture]*/texture, pointc);
+                                sw.WriteLine("numverts {1}, texture id {0}", texture, pointc);
                                 sw.Flush();
                             }
                             short[] pointindex = new short[pointc];

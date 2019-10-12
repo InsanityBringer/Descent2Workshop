@@ -411,8 +411,8 @@ namespace Descent2Workshop
             }
             glControl1.MakeCurrent();
 
-            modelRenderer.Angle = (trackBar3.Value - 8) * -22.5d;
-            modelRenderer.Pitch = (trackBar1.Value - 8) * -22.5d;
+            modelRenderer.Pitch = (trackBar3.Value - 8) * -22.5d;
+            modelRenderer.Angle = (trackBar1.Value - 8) * -22.5d;
             //modelRenderer.ShowBBs = chkShowBBs.Checked;
             //modelRenderer.ShowNormals = chkNorm.Checked;
             //modelRenderer.Wireframe = chkWireframe.Checked;

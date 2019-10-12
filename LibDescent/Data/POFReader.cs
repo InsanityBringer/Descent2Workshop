@@ -69,7 +69,7 @@ namespace LibDescent.Data
                     case 1380206671:
                         {
                             model.n_models = br.ReadInt32();
-                            model.rad = br.ReadInt32();
+                            model.rad = new Fix(br.ReadInt32());
                             model.mins = ReadVector(br);
                             model.maxs = ReadVector(br);
                             for (int i = 0; i < model.n_models; i++)
@@ -98,7 +98,7 @@ namespace LibDescent.Data
                                 submodel.Mins = ReadVector(br);
                                 submodel.Maxs = ReadVector(br);
                             }
-                            submodel.Radius = br.ReadInt32();
+                            submodel.Radius = new Fix(br.ReadInt32());
                             submodel.Pointer = br.ReadInt32();
                             model.submodels.Add(submodel);
                             if (submodel.Parent != 255)
@@ -179,9 +179,9 @@ namespace LibDescent.Data
         {
             FixVector vec = new FixVector();
 
-            vec.x = br.ReadInt32();
-            vec.y = br.ReadInt32();
-            vec.z = br.ReadInt32();
+            vec.x = new Fix(br.ReadInt32());
+            vec.y = new Fix(br.ReadInt32());
+            vec.z = new Fix(br.ReadInt32());
 
             return vec;
         }

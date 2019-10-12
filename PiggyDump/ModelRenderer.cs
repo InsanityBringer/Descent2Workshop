@@ -43,16 +43,26 @@ namespace Descent2Workshop
         private bool showRadius = false;
         private bool showBBs = false;
         private bool showNormals = false;
-        private double angle = 0;
+        private bool emulateSoftware = false;
         private double pitch = 0;
+        private double angle = 0;
+
+        private FixVector lightVector = new FixVector(0.707f, 0.707f, 0.0f);
+
+        private FixVector[] interpPoints = new FixVector[1000];
+        private FixVector cameraPoint = new FixVector(0.0, 0.0, 0.0);
+        private FixVector cameraFacing = new FixVector(0.0, 0.0, 1.0);
+
+        private FixVector currentOffset;
 
         public bool Wireframe { get => wireframe; set => wireframe = value; }
         public bool ShowRadius { get => showRadius; set => showRadius = value; }
         public bool ShowBBs { get => showBBs; set => showBBs = value; }
         public bool ShowNormals { get => showNormals; set => showNormals = value; }
-        public double Angle { get => angle; set => angle = value; }
         public double Pitch { get => pitch; set => pitch = value; }
+        public double Angle { get => angle; set => angle = value; }
         public int Frame { get => frame; set => frame = value; }
+        public bool EmulateSoftware { get => emulateSoftware; set => emulateSoftware = value; }
 
         public ModelRenderer(PIGFile piggyFile)
         {
@@ -80,7 +90,6 @@ namespace Descent2Workshop
         public void Init()
         {
             GL.Enable(EnableCap.Texture2D);
-            GL.Enable(EnableCap.DepthTest);
             GL.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
@@ -106,14 +115,29 @@ namespace Descent2Workshop
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
             GL.Disable(EnableCap.Texture2D);
-            GL.Enable(EnableCap.DepthTest);
+            if (emulateSoftware)
+                GL.Disable(EnableCap.DepthTest);
+            else
+                GL.Enable(EnableCap.DepthTest);
             GL.Enable(EnableCap.CullFace);
 
             GL.Scale(-1.0, 1.0, 1.0);
-            GL.Rotate(angle, 1.0, 0.0, 0.0);
-            GL.Rotate(pitch, 0.0, 1.0, 0.0);
+            GL.Rotate(pitch, 1.0, 0.0, 0.0);
+            GL.Rotate(angle, 0.0, 1.0, 0.0);
 
-            DrawSubobject(model, model.submodels[0]);
+            double angler = angle * Math.PI / 180.0;
+            double pitchr = pitch * Math.PI / 180.0;
+
+            cameraPoint = new FixVector(-32.0 * Math.Sin(angler) * Math.Cos(pitchr), 32.0 * Math.Sin(pitchr) , 32.0 * Math.Cos(angler) * Math.Cos(pitchr));
+
+            lightVector.x = .707 * Math.Sin(angler + (Math.PI / 4));
+            lightVector.y = .707;
+            lightVector.z = .707 * Math.Cos(angler + (Math.PI / 4));
+
+            Console.WriteLine("x: {0} y: {1} z: {2} angle: {3} pitch: {4}", cameraPoint.x, cameraPoint.y, cameraPoint.z, angle, pitch);
+
+            Execute(model.data.InterpreterData, 0, model, model.submodels[0]);
+            //DrawSubobject(model, model.submodels[0]);
 
             if (ShowRadius)
             {
@@ -143,8 +167,8 @@ namespace Descent2Workshop
                 GL.End();
 
                 //Draw the bounding box
-                GL.Rotate(angle, 1.0, 0.0, 0.0);
-                GL.Rotate(pitch, 0.0, 1.0, 0.0);
+                GL.Rotate(pitch, 1.0, 0.0, 0.0);
+                GL.Rotate(angle, 0.0, 1.0, 0.0);
                 GL.Begin(PrimitiveType.LineLoop);
                 GL.Color3(1.0, 0.0, 0.0);
 
@@ -181,224 +205,306 @@ namespace Descent2Workshop
             }
         }
 
-        private void DrawSubobject(Polymodel mainModel, Submodel model)
+        private bool CheckNormalFacing(FixVector p, FixVector norm)
         {
-            GL.PushMatrix();
-            //[ISB] shoulda realized that I'd fall in conflict if I used the header offset here rather than the offset in the SUBCALL
-            GL.Translate(model.RenderOffset.x, model.RenderOffset.y, model.RenderOffset.z);
-            if (frame >= 0)
+            FixVector t = cameraPoint - p;
+            Fix dot = t.Dot(norm);
+            return dot > 0;
+        }
+
+        private short GetShort(byte[] data, ref int offset)
+        {
+            short res = (short)(data[offset] + (data[offset + 1] << 8));
+            offset += 2;
+            return res;
+        }
+
+        private int GetInt(byte[] data, ref int offset)
+        {
+            int res = data[offset] + (data[offset + 1] << 8) + (data[offset + 2] << 16) + (data[offset + 3] << 24);
+            offset += 4;
+            return res;
+        }
+
+        private FixVector GetFixVector(byte[] data, ref int offset)
+        {
+            FixVector res;
+            res.x = new Fix(GetInt(data, ref offset));
+            res.y = new Fix(GetInt(data, ref offset));
+            res.z = new Fix(GetInt(data, ref offset));
+            return res;
+        }
+
+        private void Execute(byte[] data, int offset, Polymodel mainModel, Submodel model)
+        {
+            short instruction = GetShort(data, ref offset);
+            while (true)
             {
-                GL.Rotate((mainModel.animationMatrix[model.ID, frame].b / 16384.0f) * 90.0, 0.0, 0.0, 1.0);
-                GL.Rotate((mainModel.animationMatrix[model.ID, frame].h / 16384.0f) * 90.0, 0.0, 1.0, 0.0);
-                GL.Rotate((mainModel.animationMatrix[model.ID, frame].p / 16384.0f) * 90.0, 1.0, 0.0, 0.0);
-            }
-            double shade = 1.0;
-            Vector3 light = new Vector3(0.5f, 0.5f, 0.0f);
-            light.Normalize();
-            Vector3 norm;
-            for (int x = 0; x < model.faces.Count; x++)
-            {
-                PolymodelFace face = model.faces[x];
-                norm = new Vector3(face.Normal.x, face.Normal.y, face.Normal.z);
-                shade = Vector3.Dot(light, norm) * .25f + .75f;
-                if (!face.isTextured)
+                switch (instruction)
                 {
-                    GL.Disable(EnableCap.Texture2D);
-                    float cr = (float)face.cr / 255f;
-                    float cg = (float)face.cg / 255f;
-                    float cb = (float)face.cb / 255f;
-                    GL.Color3(cr * shade, cg * shade, cb * shade);
-
-                    //GL.Begin(BeginMode.TriangleFan);
-                    GL.Begin(PrimitiveType.TriangleFan);
-                    for (int i = 0; i < face.points.Length; i++)
-                    {
-                        double vx = face.points[i].x;
-                        double vy = face.points[i].y;
-                        double vz = face.points[i].z;
-
-                        GL.Vertex3(vx, vy, vz);
-                    }
-                    GL.End();
-                    if (showNormals)
-                    {
-                        GL.Color3(1.0f, 1.0f, 1.0f);
-                        GL.Begin(PrimitiveType.Lines);
+                    case 0: //END
+                        if (showBBs)
                         {
-                            double vx = face.points[0].x;
-                            double vy = face.points[0].y;
-                            double vz = face.points[0].z;
+                            GL.Disable(EnableCap.Texture2D);
+                            GL.Disable(EnableCap.DepthTest);
 
-                            double dx = face.points[0].x + face.Normal.x;
-                            double dy = face.points[0].y + face.Normal.y;
-                            double dz = face.points[0].z + face.Normal.z;
+                            //Draw the radius
+                            double radius = model.Radius;
+                            double minx = model.Mins.x;
+                            double miny = model.Mins.y;
+                            double minz = model.Mins.z;
+                            double maxx = model.Maxs.x;
+                            double maxy = model.Maxs.y;
+                            double maxz = model.Maxs.z;
+                            //Follow the chain
+                            GL.PushMatrix();
+                            GL.Rotate(-angle, 0.0, 1.0, 0.0);
+                            GL.Rotate(-pitch, 1.0, 0.0, 0.0);
+                            GL.Begin(PrimitiveType.LineLoop);
+                            GL.Color3(0.0, 0.0, 1.0);
+                            double radx, rady, radang;
+                            for (int i = 0; i < 32; i++)
+                            {
+                                radang = (i / 16.0) * (Math.PI);
+                                radx = Math.Cos(radang);
+                                rady = Math.Sin(radang);
+                                GL.Vertex3(radx * radius, rady * radius, 0);
+                            }
+                            GL.End();
+                            GL.PopMatrix();
 
-                            GL.Vertex3(vx, vy, vz);
-                            GL.Vertex3(dx, dy, dz);
+                            //Draw the bounding box
+                            GL.Begin(PrimitiveType.LineLoop);
+                            GL.Color3(1.0, 0.0, 0.0);
+
+                            GL.Vertex3(minx, miny, maxz);
+                            GL.Vertex3(minx, maxy, maxz);
+                            GL.Vertex3(maxx, maxy, maxz);
+                            GL.Vertex3(maxx, miny, maxz);
+
+                            GL.End();
+
+                            GL.Begin(PrimitiveType.LineLoop);
+                            GL.Color3(1.0, 0.0, 0.0);
+
+                            GL.Vertex3(minx, miny, minz);
+                            GL.Vertex3(minx, maxy, minz);
+                            GL.Vertex3(maxx, maxy, minz);
+                            GL.Vertex3(maxx, miny, minz);
+
+                            GL.End();
+
+                            GL.Begin(PrimitiveType.Lines);
+                            GL.Color3(1.0, 0.0, 0.0);
+
+                            GL.Vertex3(minx, miny, minz);
+                            GL.Vertex3(minx, miny, maxz);
+                            GL.Vertex3(minx, maxy, minz);
+                            GL.Vertex3(minx, maxy, maxz);
+                            GL.Vertex3(maxx, maxy, minz);
+                            GL.Vertex3(maxx, maxy, maxz);
+                            GL.Vertex3(maxx, miny, minz);
+                            GL.Vertex3(maxx, miny, maxz);
+
+                            GL.End();
+
+                            if (!emulateSoftware)
+                                GL.Enable(EnableCap.DepthTest);
                         }
-                        GL.End();
-                    }
-                }
-                else
-                {
-                    GL.Enable(EnableCap.Texture2D);
-                    GL.Color3(shade, shade, shade);
 
-                    int textureID = face.textureID;
-                    GL.BindTexture(TextureTarget.Texture2D, textureList[textureID]);
-
-                    GL.Begin(PrimitiveType.TriangleFan);
-                    for (int i = 0; i < face.points.Length; i++)
-                    {
-                        double u = face.UVLCoords[i].x;
-                        double v = face.UVLCoords[i].y;
-
-                        double vx = face.points[i].x;
-                        double vy = face.points[i].y;
-                        double vz = face.points[i].z;
-
-                        GL.TexCoord2(u, v); GL.Vertex3(vx, vy, vz);
-                    }
-                    GL.End();
-                    if (showNormals)
-                    {
-                        GL.Disable(EnableCap.Texture2D);
-                        GL.Begin(PrimitiveType.Lines);
+                        return;
+                    case 1: //POINTS
                         {
-                            double vx = face.points[0].x;
-                            double vy = face.points[0].y;
-                            double vz = face.points[0].z;
-
-                            double dx = face.points[0].x + face.Normal.x;
-                            double dy = face.points[0].y + face.Normal.y;
-                            double dz = face.points[0].z + face.Normal.z;
-
-                            GL.Vertex3(vx, vy, vz);
-                            GL.Vertex3(dx, dy, dz);
+                            short pointc = GetShort(data, ref offset);
+                            for (int i = 0; i < pointc; i++)
+                            {
+                                interpPoints[i] = GetFixVector(data, ref offset);
+                            }
                         }
-                        GL.End();
-                        GL.Begin(PrimitiveType.Lines);
+                        break;
+                    case 2: //FLATPOLY
                         {
-                            double vx = face.points[2].x;
-                            double vy = face.points[2].y;
-                            double vz = face.points[2].z;
+                            short pointc = GetShort(data, ref offset);
+                            FixVector point = GetFixVector(data, ref offset);
+                            FixVector normal = GetFixVector(data, ref offset);
+                            short color = GetShort(data, ref offset);
 
-                            double dx = (face.FaceVector.x);
-                            double dy = (face.FaceVector.y);
-                            double dz = (face.FaceVector.z);
+                            short[] points = new short[pointc]; //TODO: seems wasteful to do all these allocations?
+                            for (int i = 0; i < pointc; i++)
+                            {
+                                points[i] = GetShort(data, ref offset);
+                            }
+                            if (pointc % 2 == 0)
+                                GetShort(data, ref offset);
 
-                            GL.Color3(0.0f, 0.0f, 1.0f);
-                            GL.Vertex3(vx, vy, vz);
-                            GL.Color3(1.0f, 0.0f, 0.0f);
-                            GL.Vertex3(dx, dy, dz);
+                            //Draw
+                            GL.Disable(EnableCap.Texture2D); //TODO: too many state changes
+                            int cr = ((color >> 10) & 31) * 255 / 31;
+                            int cg = ((color >> 5) & 31) * 255 / 31;
+                            int cb = (color & 31) * 255 / 31;
+
+                            GL.Begin(PrimitiveType.TriangleFan);
+                            for (int i = 0; i < pointc; i++)
+                            {
+                                double vx = interpPoints[points[i]].x;
+                                double vy = interpPoints[points[i]].y;
+                                double vz = interpPoints[points[i]].z;
+
+                                GL.Color3(cr / 255.0f, cg / 255.0f, cb / 255.0f);
+                                GL.Vertex3(vx, vy, vz);
+                            }
+                            GL.End();
+
+                            if (showNormals)
+                            {
+                                normal = normal.Scale(-.0001 * mainModel.rad);
+                                GL.Color3(1.0f, 1.0f, 1.0f);
+                                GL.Begin(PrimitiveType.Lines);
+                                {
+                                    double vx = point.x;
+                                    double vy = point.y;
+                                    double vz = point.z;
+
+                                    double dx = point.x + normal.x;
+                                    double dy = point.y + normal.y;
+                                    double dz = point.z + normal.z;
+
+                                    GL.Vertex3(vx, vy, vz);
+                                    GL.Vertex3(dx, dy, dz);
+                                }
+                                GL.End();
+                            }
                         }
-                        GL.End();
-                        GL.Enable(EnableCap.Texture2D);
-                    }
+                        break;
+                    case 3: //TMAPPOLY
+                        {
+                            short pointc = GetShort(data, ref offset);
+                            FixVector point = GetFixVector(data, ref offset);
+                            FixVector normal = GetFixVector(data, ref offset);
+                            short texture = GetShort(data, ref offset);
+                            Fix shade = normal.Dot(lightVector) * .25 + .75;
+
+                            short[] points = new short[pointc]; //TODO: seems wasteful to do all these allocations?
+                            FixVector[] uvls = new FixVector[pointc];
+                            for (int i = 0; i < pointc; i++)
+                            {
+                                points[i] = GetShort(data, ref offset);
+                            }
+                            if (pointc % 2 == 0)
+                                GetShort(data, ref offset);
+
+                            for (int i = 0; i < pointc; i++)
+                            {
+                                uvls[i] = GetFixVector(data, ref offset);
+                            }
+
+                            //Draw
+                            GL.Enable(EnableCap.Texture2D); //TODO: too many state changes
+                            GL.BindTexture(TextureTarget.Texture2D, textureList[texture]);
+                            GL.Begin(PrimitiveType.TriangleFan);
+                            for (int i = 0; i < pointc; i++)
+                            {
+                                double vx = interpPoints[points[i]].x;
+                                double vy = interpPoints[points[i]].y;
+                                double vz = interpPoints[points[i]].z;
+
+                                double uvx = uvls[i].x;
+                                double uvy = uvls[i].y;
+
+                                GL.Color3(shade, shade, shade);
+                                GL.TexCoord2(uvx, uvy);
+                                GL.Vertex3(vx, vy, vz);
+                            }
+                            GL.End();
+
+                            if (showNormals)
+                            {
+                                GL.Disable(EnableCap.Texture2D); //TODO: waaaay too many state changes
+                                normal = normal.Scale(-.0001 * mainModel.rad);
+                                GL.Color3(1.0f, 1.0f, 1.0f);
+                                GL.Begin(PrimitiveType.Lines);
+                                {
+                                    double vx = point.x;
+                                    double vy = point.y;
+                                    double vz = point.z;
+
+                                    double dx = point.x + normal.x;
+                                    double dy = point.y + normal.y;
+                                    double dz = point.z + normal.z;
+
+                                    GL.Vertex3(vx, vy, vz);
+                                    GL.Vertex3(dx, dy, dz);
+                                }
+                                GL.End();
+                            }
+                        }
+                        break;
+                    case 4: //SORTNORM
+                        {
+                            int baseOffset = offset - 2;
+                            int n_points = GetShort(data, ref offset);
+                            FixVector norm = GetFixVector(data, ref offset);
+                            FixVector point = GetFixVector(data, ref offset);
+                            short backOffset = GetShort(data, ref offset);
+                            short frontOffset = GetShort(data, ref offset);
+
+                            if (CheckNormalFacing(point, norm))
+                            {
+                                Execute(data, baseOffset + frontOffset, mainModel, model);
+                                Execute(data, baseOffset + backOffset, mainModel, model);
+                            }
+                            else
+                            {
+                                Execute(data, baseOffset + backOffset, mainModel, model);
+                                Execute(data, baseOffset + frontOffset, mainModel, model);
+                            }
+                        }
+                        break;
+                    case 5: //RODBM
+                        {
+                            offset += 34;
+                        }
+                        break;
+                    case 6: //SUBCALL
+                        {
+                            int baseOffset = offset - 2;
+                            short submodelNum = GetShort(data, ref offset);
+                            FixVector submodelOffset = GetFixVector(data, ref offset);
+                            short modelOffset = GetShort(data, ref offset);
+                            offset += 2;
+
+                            Submodel newModel = mainModel.submodels[submodelNum];
+                            GL.PushMatrix();
+                            GL.Translate(submodelOffset.x, submodelOffset.y, submodelOffset.z);
+                            if (frame >= 0)
+                            {
+                                GL.Rotate((mainModel.animationMatrix[submodelNum, frame].b / 16384.0f) * 90.0, 0.0, 0.0, 1.0);
+                                GL.Rotate((mainModel.animationMatrix[submodelNum, frame].h / 16384.0f) * 90.0, 0.0, 1.0, 0.0);
+                                GL.Rotate((mainModel.animationMatrix[submodelNum, frame].p / 16384.0f) * 90.0, 1.0, 0.0, 0.0);
+                            }
+                            Execute(data, baseOffset + modelOffset, mainModel, newModel);
+                            GL.PopMatrix();
+                        }
+                        break;
+                    case 7: //DEFPSTART
+                        {
+                            short pointc = GetShort(data, ref offset);
+                            short firstPoint = GetShort(data, ref offset);
+                            offset += 2;
+                            for (int i = 0; i < pointc; i++)
+                            {
+                                interpPoints[i + firstPoint] = GetFixVector(data, ref offset);
+                            }
+                        }
+                        break;
+                    case 8:
+                        offset += 2;
+                        break;
+                    default:
+                        throw new Exception(string.Format("Unknown interpreter instruction {0} at offset {1}\n", instruction, offset));
                 }
+                instruction = GetShort(data, ref offset);
             }
-            foreach (Submodel child in model.Children)
-            {
-                DrawSubobject(mainModel, child);
-            }
-            GL.LineWidth(2);
-            GL.PointSize(3);
-            //GL.Disable(EnableCap.Texture2D);
-            if (showNormals)
-            {
-                double nx = model.Normal.x;
-                double ny = model.Normal.y;
-                double nz = model.Normal.z;
-
-                double px = model.Point.x;
-                double py = model.Point.y;
-                double pz = model.Point.z;
-
-                //Points are globally valid, so undo the translation
-                GL.PushMatrix();
-                GL.LoadIdentity();
-                GL.Rotate(angle, 1.0, 0.0, 0.0);
-                GL.Rotate(pitch, 0.0, 1.0, 0.0);
-                GL.Begin(PrimitiveType.Lines);
-                GL.Color3(0.0f, 1.0f, 0.0f);
-                GL.Vertex3(px, py, pz);
-                GL.Vertex3(px + nx, py + ny, pz + nz);
-                GL.End();
-                GL.PopMatrix();
-
-                GL.Begin(PrimitiveType.Points);
-                GL.Color3(1.0f, 1.0f, 0.0f);
-                GL.Vertex3(0, 0, 0);
-                GL.End();
-            }
-            GL.LineWidth(1);
-            if (showBBs)
-            {
-                GL.Disable(EnableCap.DepthTest);
-                GL.Disable(EnableCap.Texture2D);
-
-                //Draw the radius
-                double radius = model.Radius;
-                double minx = model.Mins.x;
-                double miny = model.Mins.y;
-                double minz = model.Mins.z;
-                double maxx = model.Maxs.x;
-                double maxy = model.Maxs.y;
-                double maxz = model.Maxs.z;
-                //Follow the chain
-                GL.PushMatrix();
-                GL.Rotate(-pitch, 0.0, 1.0, 0.0);
-                GL.Rotate(-angle, 1.0, 0.0, 0.0);
-                GL.Begin(PrimitiveType.LineLoop);
-                GL.Color3(0.0, 0.0, 1.0);
-                double radx, rady, radang;
-                for (int i = 0; i < 32; i++)
-                {
-                    radang = (i / 16.0) * (Math.PI);
-                    radx = Math.Cos(radang);
-                    rady = Math.Sin(radang);
-                    GL.Vertex3(radx * radius, rady * radius, 0);
-                }
-                GL.End();
-                GL.PopMatrix();
-
-                //Draw the bounding box
-                GL.Begin(PrimitiveType.LineLoop);
-                GL.Color3(1.0, 0.0, 0.0);
-
-                GL.Vertex3(minx, miny, maxz);
-                GL.Vertex3(minx, maxy, maxz);
-                GL.Vertex3(maxx, maxy, maxz);
-                GL.Vertex3(maxx, miny, maxz);
-
-                GL.End();
-
-                GL.Begin(PrimitiveType.LineLoop);
-                GL.Color3(1.0, 0.0, 0.0);
-
-                GL.Vertex3(minx, miny, minz);
-                GL.Vertex3(minx, maxy, minz);
-                GL.Vertex3(maxx, maxy, minz);
-                GL.Vertex3(maxx, miny, minz);
-
-                GL.End();
-
-                GL.Begin(PrimitiveType.Lines);
-                GL.Color3(1.0, 0.0, 0.0);
-
-                GL.Vertex3(minx, miny, minz);
-                GL.Vertex3(minx, miny, maxz);
-                GL.Vertex3(minx, maxy, minz);
-                GL.Vertex3(minx, maxy, maxz);
-                GL.Vertex3(maxx, maxy, minz);
-                GL.Vertex3(maxx, maxy, maxz);
-                GL.Vertex3(maxx, miny, minz);
-                GL.Vertex3(maxx, miny, maxz);
-
-                GL.End();
-                GL.Enable(EnableCap.DepthTest);
-            }
-            GL.PopMatrix();
         }
     }
 }
