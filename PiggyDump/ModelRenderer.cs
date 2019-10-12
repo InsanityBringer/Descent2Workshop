@@ -357,7 +357,7 @@ namespace Descent2Workshop
 
                             if (showNormals)
                             {
-                                normal = normal.Scale(-.0001 * mainModel.rad);
+                                normal = normal.Scale(.25 * mainModel.rad);
                                 GL.Color3(1.0f, 1.0f, 1.0f);
                                 GL.Begin(PrimitiveType.Lines);
                                 {
@@ -420,7 +420,7 @@ namespace Descent2Workshop
                             if (showNormals)
                             {
                                 GL.Disable(EnableCap.Texture2D); //TODO: waaaay too many state changes
-                                normal = normal.Scale(-.0001 * mainModel.rad);
+                                normal = normal.Scale(.25 * mainModel.rad);
                                 GL.Color3(1.0f, 1.0f, 1.0f);
                                 GL.Begin(PrimitiveType.Lines);
                                 {
