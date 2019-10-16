@@ -118,7 +118,7 @@ namespace Descent2Workshop
                     {
                         UpdateModelPanel(val);
                         glControl1.Invalidate();
-                        tbReplacementElement.Text = datafile.replacedModels[val].replacementID.ToString();
+                        ReplacedElementSpinner.Value = (int)datafile.replacedModels[val].replacementID;
                     }
                     else
                     {
@@ -251,7 +251,7 @@ namespace Descent2Workshop
             nudRobotAI.Value = 0;
             UpdateRobotAI(0);
 
-            tbReplacementElement.Text = robot.replacementID.ToString();
+            ReplacedElementSpinner.Value = (int)robot.replacementID;
 
             UpdateRobotAnimation(robot);
         }
@@ -562,6 +562,7 @@ namespace Descent2Workshop
 
         private void menuItem3_Click_1(object sender, EventArgs e)
         {
+            saveFileDialog1.Filter = "HXM Files|*.hxm";
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 if (saveFileDialog1.FileName != "")
@@ -583,6 +584,113 @@ namespace Descent2Workshop
             if (isLocked) return;
             Polymodel model = datafile.GetModel(datafile.replacedRobots[ElementNumber].model_num);
             model.isAnimated = RobotAnimationCheckbox.Checked;
+        }
+
+        //---------------------------------------------------------------------
+        // MODEL UPDATORS
+        //---------------------------------------------------------------------
+
+        private void btnImportModel_Click(object sender, EventArgs e)
+        {
+            ImportModel(datafile.replacedModels[ElementNumber]);
+        }
+
+        private void btnExportModel_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.Filter = "Parallax Object Files|*.pof";
+            saveFileDialog1.FileName = string.Format("model_{0}.pof", ElementNumber);
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                BinaryWriter bw = new BinaryWriter(File.Open(saveFileDialog1.FileName, FileMode.Create));
+                POFWriter.SerializePolymodel(bw, datafile.replacedModels[ElementNumber], short.Parse(StandardUI.options.GetOption("PMVersion", "8")));
+                bw.Close();
+                bw.Dispose();
+            }
+        }
+
+        private void ImportModel(Polymodel original)
+        {
+            int oldNumTextures = original.n_textures;
+
+            List<string> newTextureNames = new List<string>();
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                string traceto = "";
+                if (bool.Parse(StandardUI.options.GetOption("TraceModels", bool.FalseString)))
+                {
+                    string bareFilename = Path.GetFileName(openFileDialog1.FileName);
+                    traceto = StandardUI.options.GetOption("TraceDir", ".") + Path.DirectorySeparatorChar + Path.ChangeExtension(bareFilename, "txt");
+                }
+
+                Polymodel model = POFReader.ReadPOFFile(openFileDialog1.FileName, traceto);
+                model.ExpandSubmodels();
+                //int numTextures = model.n_textures;
+                datafile.ReplaceModel(ElementNumber, model);
+                UpdateModelPanel(ElementNumber);
+            }
+        }
+
+        private void ModelComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (isLocked)
+                return;
+            Polymodel model = datafile.replacedModels[ElementNumber];
+            ComboBox comboBox = (ComboBox)sender;
+            switch (comboBox.Tag)
+            {
+                case "1":
+                    model.simpler_model = (byte)comboBox.SelectedIndex;
+                    break;
+                case "2":
+                    model.DyingModelnum = comboBox.SelectedIndex - 1;
+                    break;
+                case "3":
+                    model.DeadModelnum = comboBox.SelectedIndex - 1;
+                    break;
+            }
+        }
+
+
+        private void FindPackButton_Click(object sender, EventArgs e)
+        {
+            Polymodel model = datafile.replacedModels[ElementNumber];
+            //Okay, the logic here is that we can pack new object bitmaps past 422.
+            //So long as you aren't using more than 178 entirely new textures, this
+            //should work fairly well.
+            //TODO: Needs to consider additional ObjBitmaps introduced by a V-HAM, perhaps
+            int bestFit = VHAMFile.N_D2_OBJBITMAPS;
+            int testTextures;
+            foreach (Polymodel testModel in datafile.replacedModels)
+            {
+                testTextures = testModel.BaseTexture + datafile.CountUniqueObjBitmaps(testModel);
+                if (bestFit < testTextures)
+                {
+                    bestFit = testTextures;
+                }
+            }
+            if (bestFit >= 600)
+            {
+                bestFit = 0;
+                MessageBox.Show("Cannot find a open slot beyond 422.");
+            }
+            model.BaseTexture = bestFit;
+            isLocked = true;
+            ModelBaseTextureSpinner.Value = bestFit;
+            isLocked = false;
+        }
+
+        private void ModelBaseTextureSpinner_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isLocked) return;
+            Polymodel model = datafile.replacedModels[ElementNumber];
+            model.BaseTexture = (int)ModelBaseTextureSpinner.Value;
+        }
+
+        private void ModelBasePointerSpinner_ValueChanged(object sender, EventArgs e)
+        {
+            if (!isLocked) return;
+            Polymodel model = datafile.replacedModels[ElementNumber];
+            model.first_texture = (ushort)ModelBasePointerSpinner.Value;
         }
     }
 }

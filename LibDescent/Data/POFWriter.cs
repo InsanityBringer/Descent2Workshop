@@ -85,13 +85,13 @@ namespace LibDescent.Data
             bw.Write(0x5244484F);
             bw.Write(size);
             bw.Write(model.n_models);
-            bw.Write(model.rad);
-            bw.Write(model.mins.x);
-            bw.Write(model.mins.y);
-            bw.Write(model.mins.z);
-            bw.Write(model.maxs.x);
-            bw.Write(model.maxs.y);
-            bw.Write(model.maxs.z);
+            bw.Write(model.rad.GetRawValue());
+            bw.Write(model.mins.x.GetRawValue());
+            bw.Write(model.mins.y.GetRawValue());
+            bw.Write(model.mins.z.GetRawValue());
+            bw.Write(model.maxs.x.GetRawValue());
+            bw.Write(model.maxs.y.GetRawValue());
+            bw.Write(model.maxs.z.GetRawValue());
             for (int i = 0; i < padBytes; i++)
                 bw.Write((byte)0);
         }
@@ -107,25 +107,25 @@ namespace LibDescent.Data
                 bw.Write((short)-1);
             else
                 bw.Write((short)model.Parent);
-            bw.Write(model.Normal.x);
-            bw.Write(model.Normal.y);
-            bw.Write(model.Normal.z);
-            bw.Write(model.Point.x);
-            bw.Write(model.Point.y);
-            bw.Write(model.Point.z);
-            bw.Write(model.Offset.x);
-            bw.Write(model.Offset.y);
-            bw.Write(model.Offset.z);
+            bw.Write(model.Normal.x.GetRawValue());
+            bw.Write(model.Normal.y.GetRawValue());
+            bw.Write(model.Normal.z.GetRawValue());
+            bw.Write(model.Point.x.GetRawValue());
+            bw.Write(model.Point.y.GetRawValue());
+            bw.Write(model.Point.z.GetRawValue());
+            bw.Write(model.Offset.x.GetRawValue());
+            bw.Write(model.Offset.y.GetRawValue());
+            bw.Write(model.Offset.z.GetRawValue());
             if (version >= 9)
             {
-                bw.Write(model.Mins.x);
-                bw.Write(model.Mins.y);
-                bw.Write(model.Mins.z);
-                bw.Write(model.Maxs.x);
-                bw.Write(model.Maxs.y);
-                bw.Write(model.Maxs.z);
+                bw.Write(model.Mins.x.GetRawValue());
+                bw.Write(model.Mins.y.GetRawValue());
+                bw.Write(model.Mins.z.GetRawValue());
+                bw.Write(model.Maxs.x.GetRawValue());
+                bw.Write(model.Maxs.y.GetRawValue());
+                bw.Write(model.Maxs.z.GetRawValue());
             }
-            bw.Write(model.Radius);
+            bw.Write(model.Radius.GetRawValue());
             bw.Write(model.Pointer);
         }
 
@@ -143,14 +143,14 @@ namespace LibDescent.Data
             {
                 bw.Write((short)i);
                 bw.Write((short)model.gunSubmodels[i]);
-                bw.Write(model.gunPoints[i].x);
-                bw.Write(model.gunPoints[i].y);
-                bw.Write(model.gunPoints[i].z);
+                bw.Write(model.gunPoints[i].x.GetRawValue());
+                bw.Write(model.gunPoints[i].y.GetRawValue());
+                bw.Write(model.gunPoints[i].z.GetRawValue());
                 if (version >= 7)
                 {
-                    bw.Write(model.gunDirs[i].x);
-                    bw.Write(model.gunDirs[i].y);
-                    bw.Write(model.gunDirs[i].z);
+                    bw.Write(model.gunDirs[i].x.GetRawValue());
+                    bw.Write(model.gunDirs[i].y.GetRawValue());
+                    bw.Write(model.gunDirs[i].z.GetRawValue());
                 }
             }
         }

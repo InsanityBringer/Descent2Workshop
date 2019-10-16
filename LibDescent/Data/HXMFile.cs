@@ -26,11 +26,17 @@ using System.IO;
 
 namespace LibDescent.Data
 {
+    /// <summary>
+    /// Wraps a replaced bitmap index.
+    /// </summary>
     public struct ReplacedBitmapElement
     {
         public int replacementID;
         public ushort data; 
     }
+    /// <summary>
+    /// Wraps a replaced model reference.
+    /// </summary>
     public struct ReplacedModelID
     {
         public int replacementID;
@@ -59,11 +65,20 @@ namespace LibDescent.Data
 
         private Dictionary<int, Polymodel> remappedModels = new Dictionary<int, Polymodel>();
 
+        /// <summary>
+        /// Creates a new HXM File with a parent HAM file.
+        /// </summary>
+        /// <param name="baseFile">The HAM file this HXM file will replace elements of.</param>
         public HXMFile(HAMFile baseFile)
         {
             this.baseFile = baseFile;
         }
 
+        /// <summary>
+        /// Loads an HXM file from a given filename.
+        /// </summary>
+        /// <param name="filename">The filename of the HXM file.</param>
+        /// <returns></returns>
         public int LoadDataFile(string filename)
         {
             BinaryReader br;
@@ -152,7 +167,10 @@ namespace LibDescent.Data
         //Instead, don't track them at all in the first place. Build a texture list for each model, and only
         //reconstruct the tables at the time of export
         //I dunno why i'm being as masochistic as I am with this but okay. 
-        public void BuildModelTextureTables()
+        /// <summary>
+        /// Creates the texture tables for all polygon models in this HXM file.
+        /// </summary>
+        private void BuildModelTextureTables()
         {
             //Write down unanimated texture names
             Dictionary<int, string> TextureNames = new Dictionary<int, string>();
@@ -206,6 +224,10 @@ namespace LibDescent.Data
             }
         }
 
+        /// <summary>
+        /// Creates the animation matricies for all robot's animations.
+        /// </summary>
+        /// <param name="robot">The robot to read the joints from.</param>
         private void BuildModelAnimation(Robot robot)
         {
             int lowestJoint = int.MaxValue;
@@ -266,6 +288,9 @@ namespace LibDescent.Data
                 robot.baseJoint = lowestJoint;
         }
 
+        /// <summary>
+        /// Generates a list of all robot names from the base file, with replaced robot names.
+        /// </summary>
         public void GenerateNameTable()
         {
             foreach (string name in baseFile.RobotNames)
@@ -279,10 +304,20 @@ namespace LibDescent.Data
             }
         }
 
+        /// <summary>
+        /// Saves the HXM file to a given filename.
+        /// </summary>
+        /// <param name="name">The filename to write to.</param>
         public void SaveDataFile(string name)
         {
             BinaryWriter bw = new BinaryWriter(File.Open(name, FileMode.Create));
             HAMDataWriter datawriter = new HAMDataWriter();
+
+            replacedJoints.Clear();
+            foreach (Robot robot in replacedRobots)
+            {
+                LoadAnimations(robot, GetModel(robot.model_num));
+            }
 
             bw.Write(sig);
             bw.Write(ver);
@@ -327,31 +362,126 @@ namespace LibDescent.Data
             bw.Close();
         }
 
+        /// <summary>
+        /// Generates a robot's anim_states and creates the joint elements for the robot
+        /// </summary>
+        /// <param name="robot">The robot to generate joints for.</param>
+        /// <param name="model">The model to use to generate joints.</param>
+        private void LoadAnimations(Robot robot, Polymodel model)
+        {
+            int NumRobotJoints = robot.baseJoint;
+            robot.n_guns = (sbyte)model.numGuns;
+            for (int i = 0; i < 8; i++)
+            {
+                robot.gun_points[i] = model.gunPoints[i];
+                robot.gun_submodels[i] = (byte)model.gunSubmodels[i];
+            }
+            for (int m = 0; m < 9; m++)
+            {
+                for (int f = 0; f < 5; f++)
+                {
+                    robot.anim_states[m, f].n_joints = 0;
+                    robot.anim_states[m, f].offset = 0;
+                }
+            }
+            if (!model.isAnimated) return;
+            int[] gunNums = new int[10];
+
+            for (int i = 1; i < model.n_models; i++)
+            {
+                gunNums[i] = robot.n_guns;
+            }
+            gunNums[0] = -1;
+
+            for (int g = 0; g < robot.n_guns; g++)
+            {
+                int m = robot.gun_submodels[g];
+
+                while (m != 0)
+                {
+                    gunNums[m] = g;
+                    m = model.submodels[m].Parent;
+                }
+            }
+
+            for (int g = 0; g < robot.n_guns + 1; g++)
+            {
+                for (int state = 0; state < 5; state++)
+                {
+                    robot.anim_states[g, state].n_joints = 0;
+                    robot.anim_states[g, state].offset = (short)NumRobotJoints;
+
+                    for (int m = 0; m < model.n_models; m++)
+                    {
+                        if (gunNums[m] == g)
+                        {
+                            JointPos joint = new JointPos();
+                            joint.jointnum = (short)m;
+                            joint.angles = model.animationMatrix[m, state];
+                            joint.replacementID = NumRobotJoints;
+                            replacedJoints.Add(joint);
+                            robot.anim_states[g, state].n_joints++;
+                            NumRobotJoints++;
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// i dunno tbh
+        /// </summary>
+        /// <param name="p"></param>
+        /// <returns></returns>
         public Robot GetRobotAt(int p)
         {
             return replacedRobots[p];
         }
 
+        /// <summary>
+        /// Reads a TMAPInfo from the original data file.
+        /// </summary>
+        /// <param name="id">ID of the TMAPInfo.</param>
+        /// <returns>The TMAPInfo.</returns>
         public TMAPInfo GetTMAPInfo(int id)
         {
             return baseFile.GetTMAPInfo(id);
         }
 
+        /// <summary>
+        /// Reads a VClip from the original data file.
+        /// </summary>
+        /// <param name="id">ID of the VClip.</param>
+        /// <returns>The VClip.</returns>
         public VClip GetVClip(int id)
         {
             return baseFile.GetVClip(id);
         }
 
+        /// <summary>
+        /// Reads a EClip from the original data file.
+        /// </summary>
+        /// <param name="id">ID of the EClip</param>
+        /// <returns>The EClip.</returns>
         public EClip GetEClip(int id)
         {
             return baseFile.GetEClip(id);
         }
 
+        /// <summary>
+        /// Reads a WClip from the original data file.
+        /// </summary>
+        /// <param name="id">ID of the WClip</param>
+        /// <returns>The WClip.</returns>
         public WClip GetWClip(int id)
         {
             return baseFile.GetWClip(id);
         }
 
+        /// <summary>
+        /// Counts the number of robots present in the parent HAM file and the augment V-HAM file.
+        /// </summary>
+        /// <returns>Count of all available robots.</returns>
         public int GetNumRobots()
         {
             int numRobots = baseFile.Robots.Count;
@@ -360,6 +490,11 @@ namespace LibDescent.Data
             return numRobots;
         }
 
+        /// <summary>
+        /// Gets a robot name, passing through to the HAM or VHAM files if not replaced.
+        /// </summary>
+        /// <param name="id">ID of the robot to get the name of.</param>
+        /// <returns>The robot name.</returns>
         public string GetRobotName(int id)
         {
             if (augmentFile != null && id >= VHAMFile.N_D2_ROBOT_TYPES)
@@ -367,6 +502,11 @@ namespace LibDescent.Data
             return baseFile.RobotNames[id];
         }
 
+        /// <summary>
+        /// Gets a robot definition, passing through to the HAM or VHAM files if not replaced.
+        /// </summary>
+        /// <param name="id">ID of the robot.</param>
+        /// <returns>The robot.</returns>
         public Robot GetRobot(int id)
         {
             foreach (Robot robot in replacedRobots)
@@ -465,6 +605,11 @@ namespace LibDescent.Data
             return baseFile.ObjBitmapPointers[id];
         }
 
+        /// <summary>
+        /// Counts the amount of textures present in a model that aren't present in the parent file.
+        /// </summary>
+        /// <param name="model">The model to count the textures of.</param>
+        /// <returns>The number of unique textures not found in the parent file.</returns>
         public int CountUniqueObjBitmaps(Polymodel model)
         {
             int num = 0;
@@ -478,6 +623,11 @@ namespace LibDescent.Data
             return num;
         }
 
+        /// <summary>
+        /// Looks through a model's textures, and finds the first ObjBitmap not present in the parent file.
+        /// </summary>
+        /// <param name="model">The model to check the textures of.</param>
+        /// <returns>The index of the first new texture, or 0 if there are no new textures.</returns>
         public int FindFirstObjBitmap(Polymodel model)
         {
             int num = int.MaxValue;
@@ -493,6 +643,19 @@ namespace LibDescent.Data
             }
             if (num == int.MaxValue) return 0;
             return num;
+        }
+
+        /// <summary>
+        /// Replaces the model at index with newModel.
+        /// </summary>
+        /// <param name="index">The index to replace at.</param>
+        /// <param name="newModel">The model to replace the index with.</param>
+        public void ReplaceModel(int index, Polymodel newModel)
+        {
+            Polymodel model = replacedModels[index];
+            replacedModels[index] = newModel;
+            newModel.ID = index;
+            //PolymodelData[index] = newModel.data;
         }
     }
 }

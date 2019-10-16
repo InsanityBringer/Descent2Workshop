@@ -1624,7 +1624,7 @@ namespace Descent2Workshop
             switch (comboBox.Tag)
             {
                 case "1":
-                    model.simpler_model = (byte)(comboBox.SelectedIndex - 1);
+                    model.simpler_model = (byte)comboBox.SelectedIndex;
                     break;
                 case "2":
                     model.DyingModelnum = comboBox.SelectedIndex - 1;
