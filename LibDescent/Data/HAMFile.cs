@@ -1240,12 +1240,12 @@ namespace LibDescent.Data
                     for (int j = 0; j < model.numGuns; j++)
                     {
                         model.gunSubmodels[j] = br.ReadInt32();
-                        model.gunPoints[j].x = br.ReadInt32();
-                        model.gunPoints[j].y = br.ReadInt32();
-                        model.gunPoints[j].z = br.ReadInt32();
-                        model.gunDirs[j].x = br.ReadInt32();
-                        model.gunDirs[j].y = br.ReadInt32();
-                        model.gunDirs[j].z = br.ReadInt32();
+                        model.gunPoints[j].x = new Fix(br.ReadInt32());
+                        model.gunPoints[j].y = new Fix(br.ReadInt32());
+                        model.gunPoints[j].z = new Fix(br.ReadInt32());
+                        model.gunDirs[j].x = new Fix(br.ReadInt32());
+                        model.gunDirs[j].y = new Fix(br.ReadInt32());
+                        model.gunDirs[j].z = new Fix(br.ReadInt32());
                     }
                     model.isAnimated = br.ReadBoolean();
                     if (model.isAnimated)
@@ -1305,10 +1305,7 @@ namespace LibDescent.Data
         {
             //4F 52 50 4E
 
-            int numOrphaned = 0;
             Polymodel model;
-            if (numOrphaned == 0)
-                return 0; //Don't write the chunk if there's no orphaned models. 
             bw.Write(0x4E50524F); //ORPH
             bw.Write(1);
             bw.Write(PolygonModels.Count);
@@ -1320,12 +1317,12 @@ namespace LibDescent.Data
                 for (int j = 0; j < model.numGuns; j++)
                 {
                     bw.Write(model.gunSubmodels[j]);
-                    bw.Write(model.gunPoints[j].x);
-                    bw.Write(model.gunPoints[j].y);
-                    bw.Write(model.gunPoints[j].z);
-                    bw.Write(model.gunDirs[j].x);
-                    bw.Write(model.gunDirs[j].y);
-                    bw.Write(model.gunDirs[j].z);
+                    bw.Write(model.gunPoints[j].x.GetRawValue());
+                    bw.Write(model.gunPoints[j].y.GetRawValue());
+                    bw.Write(model.gunPoints[j].z.GetRawValue());
+                    bw.Write(model.gunDirs[j].x.GetRawValue());
+                    bw.Write(model.gunDirs[j].y.GetRawValue());
+                    bw.Write(model.gunDirs[j].z.GetRawValue());
                 }
                 bw.Write(model.isAnimated);
                 if (model.isAnimated)

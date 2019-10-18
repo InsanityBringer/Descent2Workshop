@@ -88,7 +88,7 @@ namespace LibDescent.Data
                     "Bulk Destroyer", "TRN Racer", "Fox Attack Bot", "Sidearm", "Red Fatty Boss", "New Boss",
                     "Guidebot", "Mine Guard", "Evil Twin", "ITSC Bot", "ITD Bot", "PEST", "PIG", 
                     "Diamond Claw", "Hornet", "Thief Bot", "Seeker", "E-Bandit", "Fire Boss", "Water Boss",
-                    "Boarshed", "Spider", "Omega Defense Spawn", "Sidearm Modula", "LOU Guard", "Ailen 1 Boss",
+                    "Boarshead", "Spider", "Omega Defense Spawn", "Sidearm Modula", "LOU Guard", "Ailen 1 Boss",
                     "Popcorn Miniboss", "Cloaked Diamond Claw", "Cloaked Smelter", "Guppy", "Smelter Clone",
                     "Omega Defense Spawn Clone", "BPER Bot Clone", "Spider Clone", "Spawn Clone", "Ice Boss", "Spawn",
                     "Final Boss", "Mini Reactor"};
@@ -113,7 +113,7 @@ namespace LibDescent.Data
                       "Bulk Destroyer", "TRN Racer", "Fox Attack Bot", "Sidearm", "Sidearm LOD", "Red Fatty Boss", "New Boss", "Guidebot",
                       "Mine Guard", "Mine Guard LOD", "Evil Twin", "ITSC Bot", "ITD Bot", "ITD Bot LOD", "PEST Bot", "PEST LOD", 
                       "PIG", "PIG Bot LOD", "Diamond Claw", "Diamond Claw LOD", "Hornet", "Thief Bot", "Thief Bot (LD)", "Seeker",
-                      "E-Bandit", "Fire Boss", "Water Boss", "Boarshed", "Spider", "Omega Defense Spawn", "Sidearm Modula", "LOU Guard",
+                      "E-Bandit", "Fire Boss", "Water Boss", "Boarshead", "Spider", "Omega Defense Spawn", "Sidearm Modula", "LOU Guard",
                       "Alien 1 Boss", "Popcorn Miniboss", "Cloaked Diamond Claw", "Cloaked Diamond Claw LOD", "Cloaked Smelter", "Cloaked Smelter LOD",
                       "Guppy", "Smelter Clone", "Smelter Clone LOD", "Omega Defense Spawn Clone", "BPER Bot Clone", "Spider Clone", "Spawn", "Ice Boss",
                       "Spawn Clone", "Final Boss", "Mini Reactor", "Descent 1 Reactor", "Descent 1 Reactor Destroyed", "Alien Reactor", "Ailen Reactor Destroyed", 
