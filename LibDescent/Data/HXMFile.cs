@@ -497,8 +497,15 @@ namespace LibDescent.Data
         /// <returns>The robot name.</returns>
         public string GetRobotName(int id)
         {
+            //This is a horrible hack
             if (augmentFile != null && id >= VHAMFile.N_D2_ROBOT_TYPES)
+            {
+                if (id - VHAMFile.N_D2_ROBOT_TYPES >= augmentFile.RobotNames.Count)
+                    return string.Format("Unallocated #{0}", id);
                 return augmentFile.RobotNames[id - VHAMFile.N_D2_ROBOT_TYPES];
+            }
+            if (id >= baseFile.RobotNames.Count)
+                return string.Format("Unallocated #{0}", id);
             return baseFile.RobotNames[id];
         }
 
@@ -551,7 +558,13 @@ namespace LibDescent.Data
         public string GetModelName(int id)
         {
             if (augmentFile != null && id >= VHAMFile.N_D2_POLYGON_MODELS)
+            {
+                if (id - VHAMFile.N_D2_POLYGON_MODELS >= augmentFile.ModelNames.Count)
+                    return string.Format("Unallocated #{0}", id);
                 return augmentFile.ModelNames[id - VHAMFile.N_D2_POLYGON_MODELS];
+            }
+            if (id >= baseFile.ModelNames.Count)
+                return string.Format("Unallocated #{0}", id);
             return baseFile.ModelNames[id];
         }
 

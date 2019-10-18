@@ -142,6 +142,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.cbModelLowDetail = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.FindPackButton = new System.Windows.Forms.Button();
             this.AnimatedWarningLabel = new System.Windows.Forms.Label();
             this.ModelBasePointerSpinner = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
@@ -173,10 +174,8 @@
             this.button3 = new System.Windows.Forms.Button();
             this.label49 = new System.Windows.Forms.Label();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.FindPackButton = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.ReplacedElementSpinner = new System.Windows.Forms.NumericUpDown();
-            this.button2 = new System.Windows.Forms.Button();
+            this.ReplacedElementComboBox = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -193,7 +192,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudElementNum)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ReplacedElementSpinner)).BeginInit();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -1423,6 +1421,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Textures";
             // 
+            // FindPackButton
+            // 
+            this.FindPackButton.Location = new System.Drawing.Point(330, 11);
+            this.FindPackButton.Name = "FindPackButton";
+            this.FindPackButton.Size = new System.Drawing.Size(75, 23);
+            this.FindPackButton.TabIndex = 37;
+            this.FindPackButton.Text = "Find Pack";
+            this.FindPackButton.UseVisualStyleBackColor = true;
+            this.FindPackButton.Click += new System.EventHandler(this.FindPackButton_Click);
+            // 
             // AnimatedWarningLabel
             // 
             this.AnimatedWarningLabel.AutoSize = true;
@@ -1708,43 +1716,25 @@
             // 
             this.saveFileDialog1.Filter = "HXM Files|*.HXM";
             // 
-            // FindPackButton
-            // 
-            this.FindPackButton.Location = new System.Drawing.Point(330, 11);
-            this.FindPackButton.Name = "FindPackButton";
-            this.FindPackButton.Size = new System.Drawing.Size(75, 23);
-            this.FindPackButton.TabIndex = 37;
-            this.FindPackButton.Text = "Find Pack";
-            this.FindPackButton.UseVisualStyleBackColor = true;
-            this.FindPackButton.Click += new System.EventHandler(this.FindPackButton_Click);
-            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // ReplacedElementSpinner
+            // ReplacedElementComboBox
             // 
-            this.ReplacedElementSpinner.Location = new System.Drawing.Point(528, 12);
-            this.ReplacedElementSpinner.Name = "ReplacedElementSpinner";
-            this.ReplacedElementSpinner.Size = new System.Drawing.Size(62, 20);
-            this.ReplacedElementSpinner.TabIndex = 221;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(596, 10);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(38, 23);
-            this.button2.TabIndex = 222;
-            this.button2.Text = "...";
-            this.button2.UseVisualStyleBackColor = true;
+            this.ReplacedElementComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ReplacedElementComboBox.FormattingEnabled = true;
+            this.ReplacedElementComboBox.Location = new System.Drawing.Point(528, 11);
+            this.ReplacedElementComboBox.Name = "ReplacedElementComboBox";
+            this.ReplacedElementComboBox.Size = new System.Drawing.Size(205, 21);
+            this.ReplacedElementComboBox.TabIndex = 221;
             // 
             // HXMEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(856, 601);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.ReplacedElementSpinner);
+            this.Controls.Add(this.ReplacedElementComboBox);
             this.Controls.Add(this.label50);
             this.Controls.Add(this.nudElementNum);
             this.Controls.Add(this.button4);
@@ -1780,7 +1770,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudElementNum)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ReplacedElementSpinner)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1934,7 +1923,6 @@
         private System.Windows.Forms.Label AnimatedWarningLabel;
         private System.Windows.Forms.Button FindPackButton;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.NumericUpDown ReplacedElementSpinner;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.ComboBox ReplacedElementComboBox;
     }
 }

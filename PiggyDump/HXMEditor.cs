@@ -118,7 +118,7 @@ namespace Descent2Workshop
                     {
                         UpdateModelPanel(val);
                         glControl1.Invalidate();
-                        ReplacedElementSpinner.Value = (int)datafile.replacedModels[val].replacementID;
+                        ReplacedElementComboBox.SelectedIndex = datafile.replacedModels[val].replacementID;
                     }
                     else
                     {
@@ -165,6 +165,10 @@ namespace Descent2Workshop
 
             for (int i = 0; i < datafile.GetNumModels(); i++)
                 cbRobotModel.Items.Add(datafile.GetModelName(i));
+
+            ReplacedElementComboBox.Items.Clear();
+            for (int i = 0; i < 85; i++)
+                ReplacedElementComboBox.Items.Add(datafile.GetRobotName(i));
         }
 
         private void UpdateRobotDropTypes(int dropType, Robot robot)
@@ -251,7 +255,7 @@ namespace Descent2Workshop
             nudRobotAI.Value = 0;
             UpdateRobotAI(0);
 
-            ReplacedElementSpinner.Value = (int)robot.replacementID;
+            ReplacedElementComboBox.SelectedIndex = robot.replacementID;
 
             UpdateRobotAnimation(robot);
         }
@@ -294,6 +298,10 @@ namespace Descent2Workshop
                 cbModelDyingModel.Items.Add(datafile.GetModelName(i));
                 cbModelDeadModel.Items.Add(datafile.GetModelName(i));
             }
+
+            ReplacedElementComboBox.Items.Clear();
+            for (int i = 0; i < 200; i++)
+                ReplacedElementComboBox.Items.Add(datafile.GetModelName(i));
         }
 
         private void UpdateModelPanel(int num)
