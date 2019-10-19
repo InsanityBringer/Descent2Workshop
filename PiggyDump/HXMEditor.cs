@@ -448,9 +448,8 @@ namespace Descent2Workshop
         private void RobotComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (isLocked)
-            {
                 return;
-            }
+            if (datafile.replacedRobots.Count == 0) return;
             ComboBox sendingControl = (ComboBox)sender;
             string tagstr = (string)sendingControl.Tag;
             int tagvalue = Int32.Parse(tagstr);
@@ -467,6 +466,7 @@ namespace Descent2Workshop
         {
             if (isLocked)
                 return;
+            if (datafile.replacedRobots.Count == 0) return;
             TextBox textBox = (TextBox)sender;
             int tagvalue = int.Parse((string)textBox.Tag);
             int value;
@@ -486,9 +486,8 @@ namespace Descent2Workshop
         private void RobotPropertyFixed_TextChanged(object sender, EventArgs e)
         {
             if (isLocked)
-            {
                 return;
-            }
+            if (datafile.replacedRobots.Count == 0) return;
             TextBox textBox = (TextBox)sender;
             int tagvalue = int.Parse((string)textBox.Tag);
 
@@ -511,6 +510,7 @@ namespace Descent2Workshop
         {
             if (isLocked)
                 return;
+            if (datafile.replacedRobots.Count == 0) return;
             Robot robot = datafile.replacedRobots[ElementNumber];
             robot.cloak_type = (sbyte)cmRobotCloak.SelectedIndex;
         }
@@ -519,6 +519,7 @@ namespace Descent2Workshop
         {
             if (isLocked)
                 return;
+            if (datafile.replacedRobots.Count == 0) return;
             Robot robot = datafile.replacedRobots[ElementNumber];
             int bosstype = cmRobotBoss.SelectedIndex;
             if (bosstype >= 3)
@@ -532,6 +533,7 @@ namespace Descent2Workshop
         {
             if (isLocked)
                 return;
+            if (datafile.replacedRobots.Count == 0) return;
             Robot robot = datafile.replacedRobots[ElementNumber];
             int bosstype = cbRobotAI.SelectedIndex;
             robot.behavior = (byte)(bosstype + 0x80);
@@ -539,7 +541,9 @@ namespace Descent2Workshop
 
         private void cbRobotDropType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (isLocked) return;
+            if (isLocked)
+                return;
+            if (datafile.replacedRobots.Count == 0) return;
             Robot robot = datafile.replacedRobots[ElementNumber];
             robot.ClearAndUpdateDropReference(null, cbRobotDropType.SelectedIndex == 1 ? 2 : 7);
             UpdateRobotDropTypes(cbRobotDropType.SelectedIndex, robot);
@@ -549,6 +553,7 @@ namespace Descent2Workshop
         {
             if (isLocked)
                 return;
+            if (datafile.replacedRobots.Count == 0) return;
             CheckBox input = (CheckBox)sender;
             Robot robot = datafile.replacedRobots[ElementNumber];
             switch (input.Tag)
@@ -582,14 +587,18 @@ namespace Descent2Workshop
 
         private void BaseJointSpinner_ValueChanged(object sender, EventArgs e)
         {
-            if (isLocked) return;
+            if (isLocked)
+                return;
+            if (datafile.replacedRobots.Count == 0) return;
             Robot robot = datafile.replacedRobots[ElementNumber];
             robot.baseJoint = (int)BaseJointSpinner.Value;
         }
 
         private void RobotAnimationCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            if (isLocked) return;
+            if (isLocked)
+                return;
+            if (datafile.replacedModels.Count == 0) return;
             Polymodel model = datafile.GetModel(datafile.replacedRobots[ElementNumber].model_num);
             model.isAnimated = RobotAnimationCheckbox.Checked;
         }
@@ -642,6 +651,7 @@ namespace Descent2Workshop
         {
             if (isLocked)
                 return;
+            if (datafile.replacedModels.Count == 0) return;
             Polymodel model = datafile.replacedModels[ElementNumber];
             ComboBox comboBox = (ComboBox)sender;
             switch (comboBox.Tag)
@@ -661,6 +671,7 @@ namespace Descent2Workshop
 
         private void FindPackButton_Click(object sender, EventArgs e)
         {
+            if (datafile.replacedModels.Count == 0) return;
             Polymodel model = datafile.replacedModels[ElementNumber];
             //Okay, the logic here is that we can pack new object bitmaps past 422.
             //So long as you aren't using more than 178 entirely new textures, this
@@ -689,16 +700,42 @@ namespace Descent2Workshop
 
         private void ModelBaseTextureSpinner_ValueChanged(object sender, EventArgs e)
         {
-            if (!isLocked) return;
+            if (isLocked)
+                return;
+            if (datafile.replacedModels.Count == 0) return;
             Polymodel model = datafile.replacedModels[ElementNumber];
             model.BaseTexture = (int)ModelBaseTextureSpinner.Value;
         }
 
         private void ModelBasePointerSpinner_ValueChanged(object sender, EventArgs e)
         {
-            if (!isLocked) return;
+            if (isLocked)
+                return;
+            if (datafile.replacedModels.Count == 0) return;
             Polymodel model = datafile.replacedModels[ElementNumber];
             model.first_texture = (ushort)ModelBasePointerSpinner.Value;
+        }
+
+        private void ReplacedElementComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (isLocked) return;
+            switch (tabControl1.SelectedIndex)
+            {
+                case 0:
+                    {
+                        if (datafile.replacedRobots.Count == 0) return;
+                        Robot robot = datafile.replacedRobots[ElementNumber];
+                        robot.replacementID = ReplacedElementComboBox.SelectedIndex;
+                    }
+                    break;
+                case 1:
+                    {
+                        if (datafile.replacedModels.Count == 0) return;
+                        Polymodel model = datafile.replacedModels[ElementNumber];
+                        model.replacementID = ReplacedElementComboBox.SelectedIndex;
+                    }
+                    break;
+            }
         }
     }
 }

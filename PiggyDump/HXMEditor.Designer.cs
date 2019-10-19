@@ -1728,6 +1728,7 @@
             this.ReplacedElementComboBox.Name = "ReplacedElementComboBox";
             this.ReplacedElementComboBox.Size = new System.Drawing.Size(205, 21);
             this.ReplacedElementComboBox.TabIndex = 221;
+            this.ReplacedElementComboBox.SelectedIndexChanged += new System.EventHandler(this.ReplacedElementComboBox_SelectedIndexChanged);
             // 
             // HXMEditor
             // 
