@@ -20,9 +20,6 @@
     SOFTWARE.
 */
 
-using System.Drawing;
-using System.Drawing.Imaging;
-
 namespace LibDescent.Data
 {
     public class Palette
@@ -67,7 +64,7 @@ namespace LibDescent.Data
             return linearPal;
         }
 
-        public void CreateDrawingPalette(ColorPalette colorPalette)
+        /*public void CreateDrawingPalette(ColorPalette colorPalette)
         {
             //.NET's System.Drawing library seems like one of the most poorly thought out libraries of all time tbh
             for (int i = 0; i < 256; i++)
@@ -75,11 +72,12 @@ namespace LibDescent.Data
                 Color color = Color.FromArgb(palette[i, 0], palette[i, 1], palette[i, 2]);
                 colorPalette.Entries[i] = color;
             }
-        }
+        }*/
 
-        public Color GetDrawingColor(int id)
+        public int GetDrawingColorH(int id)
         {
-            return Color.FromArgb(palette[id, 0], palette[id, 1], palette[id, 2]);
+            int a = id == 255 ? 0 : 255;
+            return ((a << 24) + (palette[id, 0] << 16) + (palette[id, 1] << 8) + (palette[id, 2]));
         }
 
         public static Palette defaultPalette = new Palette();

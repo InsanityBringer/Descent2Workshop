@@ -77,11 +77,11 @@ namespace Descent2Workshop
                 temp.Dispose();
             }
             PIGImage image = datafile.images[listView1.SelectedIndices[0]];
-            pictureBox1.Image = datafile.GetBitmap(listView1.SelectedIndices[0]);
+            pictureBox1.Image = PiggyBitmapConverter.GetBitmap(datafile, listView1.SelectedIndices[0]);
             TransparentCheck.Checked = (image.flags & PIGImage.BM_FLAG_TRANSPARENT) != 0;
             SupertransparentCheck.Checked = (image.flags & PIGImage.BM_FLAG_SUPER_TRANSPARENT) != 0;
             NoLightingCheck.Checked = (image.flags & PIGImage.BM_FLAG_NO_LIGHTING) != 0;
-            Color color = datafile.PiggyPalette.GetDrawingColor(image.averageIndex);
+            Color color = Color.FromArgb(datafile.PiggyPalette.GetDrawingColorH(image.averageIndex));
             ColorPreview.BackColor = color;
             pictureBox1.Refresh();
         }
@@ -164,7 +164,7 @@ namespace Descent2Workshop
                     string directory = Path.GetDirectoryName(saveFileDialog1.FileName);
                     foreach (int index in listView1.SelectedIndices)
                     {
-                        Bitmap img = datafile.GetBitmap(index);
+                        Bitmap img = PiggyBitmapConverter.GetBitmap(datafile, index);
                         string newpath = directory + Path.DirectorySeparatorChar + ImageFilename(index) + ".png";
                         img.Save(newpath);
                         img.Dispose();
@@ -174,7 +174,7 @@ namespace Descent2Workshop
                 {
                     if (saveFileDialog1.FileName != "")
                     {
-                        Bitmap img = datafile.GetBitmap(listView1.SelectedIndices[0]);
+                        Bitmap img = PiggyBitmapConverter.GetBitmap(datafile, listView1.SelectedIndices[0]);
                         img.Save(saveFileDialog1.FileName);
                         img.Dispose();
                     }

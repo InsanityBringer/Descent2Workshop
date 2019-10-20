@@ -21,8 +21,8 @@ namespace Descent2Workshop
                 System.Drawing.Image temp = pictureBox1.Image;
                 temp.Dispose();
             }
-            pictureBox1.Image = mainFont.GetCharacterBitmap((int)numericUpDown1.Value);
-            pictureBox1.Refresh();
+            //pictureBox1.Image = mainFont.GetCharacterBitmap((int)numericUpDown1.Value);
+            //pictureBox1.Refresh();
         }
     }
 }

@@ -21,8 +21,6 @@
 */
 
 using System;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 
 namespace LibDescent.Data
@@ -142,62 +140,6 @@ namespace LibDescent.Data
                 return expand;
             }
             return data;
-        }
-
-        public Bitmap GetPicture(Palette palette)
-        {
-            int offset;
-            Bitmap image = new Bitmap(width, height);
-            int[] rgbData = new int[width * height];
-
-            byte[] scanline = new byte[width];
-
-            for (int cury = 0; cury < height; cury++)
-            {
-                if ((flags & BM_FLAG_RLE) != 0)
-                {
-                    if ((flags & BM_FLAG_RLE_BIG) != 0)
-                    {
-                        offset = height * 2;
-                        for (int i = 0; i < cury; i++)
-                        {
-                            offset += data[i * 2] + (data[i * 2 + 1] << 8);
-                        }
-                    }
-                    else
-                    {
-                        offset = height;
-                        for (int i = 0; i < cury; i++)
-                        {
-                            offset += data[i];
-                        }
-                    }
-                    RLEEncoder.DecodeScanline(data, scanline, offset, width);
-                }
-                else
-                {
-                    Array.Copy(data, cury * width, scanline, 0, width); //TODO: Find some way to do this without copies
-                }
-                for (int curx = 0; curx < width; curx++)
-                {
-                    int colorIndex = scanline[curx];
-                    byte r = palette.palette[colorIndex,0];
-                    byte g = palette.palette[colorIndex,1];
-                    byte b = palette.palette[colorIndex,2];
-                    byte a = 255;
-                    if (colorIndex == 255)
-                    {
-                        a = 0;
-                    }
-                    rgbData[curx + cury * width] = b + (g << 8) + (r << 16) + (a << 24);
-                }
-            }
-            
-            BitmapData bits = image.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-            System.Runtime.InteropServices.Marshal.Copy(rgbData, 0, bits.Scan0, width * height);
-            image.UnlockBits(bits);
-
-            return image;
         }
 
         public void WriteImage(BinaryWriter bw)
