@@ -36,6 +36,12 @@ namespace Descent2Workshop.Editor.Render
         public const int MaxSelectedVertSize = 12 * MaxSelectedVerts; //48 KB of verts
         private int lastVertex = 0;
         private int selectBufferName, selectFaceBufferName, selectVAOName, selectFaceVAOName;
+        private Shader drawShader;
+
+        public void SetDrawShader(Shader shader)
+        {
+            drawShader = shader;
+        }
 
         public void Init()
         {
@@ -57,7 +63,7 @@ namespace Descent2Workshop.Editor.Render
 
         public void AddVertex(LevelVertex vert)
         {
-            float[] data = { -vert.location.x / 65536.0f, vert.location.y / 65536.0f, vert.location.z / 65536.0f };
+            float[] data = { -vert.location.x, vert.location.y, vert.location.z };
             GL.BindVertexArray(selectVAOName);
             GL.BindBuffer(BufferTarget.ArrayBuffer, selectBufferName);
             GL.BufferSubData(BufferTarget.ArrayBuffer, (IntPtr)(lastVertex * 3 * sizeof(float)), 3 * sizeof(float), data);

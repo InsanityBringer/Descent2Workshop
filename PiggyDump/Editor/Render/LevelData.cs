@@ -26,12 +26,12 @@ namespace Descent2Workshop.Editor.Render
 
         public void AddVertex(FixVector point, FixVector uvl)
         {
-            vertBuffer[pointer++] = -point.x / 65536.0f;
-            vertBuffer[pointer++] = point.y / 65536.0f;
-            vertBuffer[pointer++] = point.z / 65536.0f;
-            vertBuffer[pointer++] = uvl.x / 65536.0f;
-            vertBuffer[pointer++] = uvl.y / 65536.0f;
-            vertBuffer[pointer++] = uvl.z / 65536.0f;
+            vertBuffer[pointer++] = -point.x;
+            vertBuffer[pointer++] = point.y;
+            vertBuffer[pointer++] = point.z;
+            vertBuffer[pointer++] = uvl.x;
+            vertBuffer[pointer++] = uvl.y;
+            vertBuffer[pointer++] = uvl.z;
         }
     }
 
@@ -100,6 +100,7 @@ namespace Descent2Workshop.Editor.Render
         private int outlineBuffer, outlineIndexBuffer, outlineCount, outlinePoints;
 
         private TransformBuffer transformBuffer = new TransformBuffer();
+        public PickBuffer pickBuffer = new PickBuffer();
 
         public float[] VertBuffer { get => vertBuffer; set => vertBuffer = value; }
 
@@ -133,6 +134,7 @@ namespace Descent2Workshop.Editor.Render
             InitPalette(baseRenderer.State.EditorData.piggyFile.PiggyPalette.GetLinear());
 
             transformBuffer.Init();
+            pickBuffer.Init();
         }
 
         public void InitPalette(byte[] palette)
@@ -220,9 +222,9 @@ namespace Descent2Workshop.Editor.Render
             for (int i = 0; i < numVerts; i++)
             {
                 vec = baseRenderer.State.EditorLevel.Verts[i].location;
-                vertBuffer[i * 4 + 0] = -vec.x / 65536.0f;
-                vertBuffer[i * 4 + 1] = vec.y / 65536.0f;
-                vertBuffer[i * 4 + 2] = vec.z / 65536.0f;
+                vertBuffer[i * 4 + 0] = -vec.x;
+                vertBuffer[i * 4 + 1] = vec.y;
+                vertBuffer[i * 4 + 2] = vec.z;
                 //TODO: make this integer. 
                 vertBuffer[i * 4 + 3] = i;
             }
@@ -272,9 +274,9 @@ namespace Descent2Workshop.Editor.Render
             for (int i = 0; i < numVerts; i++)
             {
                 vec = baseRenderer.State.EditorLevel.Verts[i].location;
-                vertBuffer[i * 4 + 0] = -vec.x / 65536.0f;
-                vertBuffer[i * 4 + 1] = vec.y / 65536.0f;
-                vertBuffer[i * 4 + 2] = vec.z / 65536.0f;
+                vertBuffer[i * 4 + 0] = -vec.x;
+                vertBuffer[i * 4 + 1] = vec.y;
+                vertBuffer[i * 4 + 2] = vec.z;
                 //TODO: make this integer. 
                 vertBuffer[i * 4 + 3] = i;
             }
@@ -526,6 +528,7 @@ namespace Descent2Workshop.Editor.Render
             {
                 DrawWorldOutline();
             }
+            DrawSelectedPoints();
         }
 
         public void DrawWorld()
@@ -570,7 +573,7 @@ namespace Descent2Workshop.Editor.Render
             GLUtilities.ErrorCheck("Drawing vertexes");
         }
 
-        /*public void DrawSelectedPoints()
+        public void DrawSelectedPoints()
         {
             GL.PointSize(10.0f);
             outlineShader.UseShader();
@@ -580,7 +583,7 @@ namespace Descent2Workshop.Editor.Render
             GLUtilities.ErrorCheck("Setting vertex color");
             pickBuffer.DrawSelectedPoints();
             GL.Enable(EnableCap.DepthTest);
-        }*/
+        }
 
         public void DrawShadow()
         {

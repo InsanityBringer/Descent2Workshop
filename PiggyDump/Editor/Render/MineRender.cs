@@ -36,7 +36,7 @@ namespace Descent2Workshop.Editor.Render
         private EditorState state;
         private SharedRendererState sharedState;
         private LevelData levelData;
-        private PickBuffer pickBuffer = new PickBuffer();
+        //private PickBuffer pickBuffer = new PickBuffer();
         private Camera camera;
         private GLControl host;
         private bool orbiting, translating;
@@ -62,7 +62,7 @@ namespace Descent2Workshop.Editor.Render
             Console.WriteLine("Renderer init");
             GL.Enable(EnableCap.PrimitiveRestart);
             GL.PrimitiveRestartIndex(32767);
-            pickBuffer.Init();
+            //pickBuffer.Init();
             levelData.Init();
             //transformBuffer.Init();
         }
@@ -109,13 +109,13 @@ namespace Descent2Workshop.Editor.Render
         public void AddSelectedVert(LevelVertex vert)
         {
             host.MakeCurrent();
-            pickBuffer.AddVertex(vert);
+            levelData.pickBuffer.AddVertex(vert);
         }
 
         public void RemoveSelectedVertAt(int index)
         {
             host.MakeCurrent();
-            pickBuffer.RemoveVertAt(index);
+            levelData.pickBuffer.RemoveVertAt(index);
         }
 
         public void MakeHostCurrent()
@@ -126,10 +126,10 @@ namespace Descent2Workshop.Editor.Render
         //TODO: make this considerably less ass
         public void RegenerateSelectedPoints(List<LevelVertex> verts)
         {
-            pickBuffer.ClearVerts();
+            levelData.pickBuffer.ClearVerts();
             foreach (LevelVertex vert in verts)
             {
-                pickBuffer.AddVertex(vert);
+                levelData.pickBuffer.AddVertex(vert);
             }
         }
 
