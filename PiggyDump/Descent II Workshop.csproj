@@ -109,6 +109,7 @@
     <Compile Include="Editor\Level.cs" />
     <Compile Include="Editor\LevelTransform.cs" />
     <Compile Include="Editor\MatCenter.cs" />
+    <Compile Include="Editor\Operation.cs" />
     <Compile Include="Editor\Render\Camera.cs" />
     <Compile Include="Editor\Render\LevelData.cs" />
     <Compile Include="Editor\Render\MineRender.cs" />
@@ -118,6 +119,8 @@
     <Compile Include="Editor\Render\TransformBuffer.cs" />
     <Compile Include="Editor\Segment.cs" />
     <Compile Include="Editor\SharedRendererState.cs" />
+    <Compile Include="Editor\Tool.cs" />
+    <Compile Include="Editor\Tools\GrabTool.cs" />
     <Compile Include="Editor\Trigger.cs" />
     <Compile Include="Editor\VertMatcher.cs" />
     <Compile Include="Editor\Wall.cs" />
@@ -344,6 +347,9 @@
       <Project>{FE0955CA-4C10-425E-9DFA-CBAFC18720A5}</Project>
       <Name>LibDescent.Edit</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Editor\Operations\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
