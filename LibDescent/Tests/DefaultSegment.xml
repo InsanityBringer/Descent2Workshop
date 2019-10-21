@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Segment>
+  <Vertices>
+    <Vertex x="10" y="10" z="10"/>
+    <Vertex/>
+    <Vertex/>
+    <Vertex/>
+    <Vertex/>
+    <Vertex/>
+    <Vertex/>
+    <Vertex/>
+  </Vertices>
+  <Sides>
+    <Side/>
+    <Side/>
+    <Side/>
+    <Side/>
+    <Side/>
+    <Side/>
+  </Sides>
+</Segment>
