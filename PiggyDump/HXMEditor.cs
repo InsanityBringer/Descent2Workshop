@@ -92,10 +92,14 @@ namespace Descent2Workshop
                 case 0:
                     InitRobotPanel();
                     nudElementNum.Maximum = (decimal)datafile.replacedRobots.Count - 1;
+                    if (datafile.replacedRobots.Count == 0) nudElementNum.Minimum = -1;
+                    else nudElementNum.Minimum = 0;
                     break;
                 case 1:
                     InitModelPanel();
                     nudElementNum.Maximum = (decimal)datafile.replacedModels.Count - 1;
+                    if (datafile.replacedModels.Count == 0) nudElementNum.Minimum = -1;
+                    else nudElementNum.Minimum = 0;
                     break;
             }
         }

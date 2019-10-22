@@ -205,6 +205,10 @@ namespace LibDescent.Data
                     {
                         model.textureList.Add(TextureNames[pointer]);
                     }
+                    else
+                    {
+                        model.textureList.Add("bogus");
+                    }
                 }
                 Console.Write("Model texture list: [");
                 foreach (string texture in model.textureList)
