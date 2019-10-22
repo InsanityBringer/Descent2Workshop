@@ -68,6 +68,7 @@ namespace Descent2Workshop
             this.datafile = datafile;
             this.host = host;
             modelRenderer = new ModelRenderer(datafile.baseFile, host.DefaultPigFile);
+            this.Text = string.Format("{0} - HXM Editor", datafile.filename);
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -573,18 +574,6 @@ namespace Descent2Workshop
             }
         }
 
-        private void menuItem3_Click_1(object sender, EventArgs e)
-        {
-            saveFileDialog1.Filter = "HXM Files|*.hxm";
-            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                if (saveFileDialog1.FileName != "")
-                {
-                    datafile.SaveDataFile(saveFileDialog1.FileName);
-                }
-            }
-        }
-
         private void BaseJointSpinner_ValueChanged(object sender, EventArgs e)
         {
             if (isLocked)
@@ -736,6 +725,24 @@ namespace Descent2Workshop
                     }
                     break;
             }
+        }
+
+        private void menuItem3_Click_1(object sender, EventArgs e)
+        {
+            saveFileDialog1.Filter = "HXM Files|*.hxm";
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if (saveFileDialog1.FileName != "")
+                {
+                    datafile.SaveDataFile(saveFileDialog1.FileName);
+                    this.Text = string.Format("{0} - HXM Editor", datafile.filename);
+                }
+            }
+        }
+
+        private void MenuItem2_Click(object sender, EventArgs e)
+        {
+            datafile.SaveDataFile(datafile.filename);
         }
     }
 }

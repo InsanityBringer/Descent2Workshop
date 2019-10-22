@@ -176,6 +176,8 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.ReplacedElementComboBox = new System.Windows.Forms.ComboBox();
+            this.menuItem4 = new System.Windows.Forms.MenuItem();
+            this.menuItem5 = new System.Windows.Forms.MenuItem();
             this.tabControl1.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -204,18 +206,21 @@
             this.menuItem1.Index = 0;
             this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuItem2,
-            this.menuItem3});
+            this.menuItem3,
+            this.menuItem4,
+            this.menuItem5});
             this.menuItem1.Text = "File";
             // 
             // menuItem2
             // 
             this.menuItem2.Index = 0;
             this.menuItem2.Text = "Save";
+            this.menuItem2.Click += new System.EventHandler(this.MenuItem2_Click);
             // 
             // menuItem3
             // 
             this.menuItem3.Index = 1;
-            this.menuItem3.Text = "Save Copy...";
+            this.menuItem3.Text = "Save As...";
             this.menuItem3.Click += new System.EventHandler(this.menuItem3_Click_1);
             // 
             // tabControl1
@@ -1730,6 +1735,16 @@
             this.ReplacedElementComboBox.TabIndex = 221;
             this.ReplacedElementComboBox.SelectedIndexChanged += new System.EventHandler(this.ReplacedElementComboBox_SelectedIndexChanged);
             // 
+            // menuItem4
+            // 
+            this.menuItem4.Index = 2;
+            this.menuItem4.Text = "-";
+            // 
+            // menuItem5
+            // 
+            this.menuItem5.Index = 3;
+            this.menuItem5.Text = "Close Window";
+            // 
             // HXMEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1925,5 +1940,7 @@
         private System.Windows.Forms.Button FindPackButton;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.ComboBox ReplacedElementComboBox;
+        private System.Windows.Forms.MenuItem menuItem4;
+        private System.Windows.Forms.MenuItem menuItem5;
     }
 }

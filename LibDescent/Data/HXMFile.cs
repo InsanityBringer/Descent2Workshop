@@ -34,18 +34,11 @@ namespace LibDescent.Data
         public int replacementID;
         public ushort data; 
     }
-    /// <summary>
-    /// Wraps a replaced model reference.
-    /// </summary>
-    public struct ReplacedModelID
-    {
-        public int replacementID;
-        public int data;
-    }
     public class HXMFile : IElementManager
     {
         public HAMFile baseFile;
         public VHAMFile augmentFile;
+        public string filename;
         public List<string> RobotNames = new List<string>();
         public List<string> ModelNames = new List<string>();
         public int sig, ver;
@@ -53,8 +46,6 @@ namespace LibDescent.Data
         public List<JointPos> replacedJoints = new List<JointPos>();
         public List<Polymodel> replacedModels = new List<Polymodel>();
         public List<PolymodelData> replacedModelData = new List<PolymodelData>();
-        public List<ReplacedModelID> replacedDyingModelnums = new List<ReplacedModelID>();
-        public List<ReplacedModelID> replacedDeadModelnums = new List<ReplacedModelID>();
         public List<ReplacedBitmapElement> replacedObjBitmaps = new List<ReplacedBitmapElement>();
         public List<ReplacedBitmapElement> replacedObjBitmapPtrs = new List<ReplacedBitmapElement>();
 
@@ -160,6 +151,7 @@ namespace LibDescent.Data
                 BuildModelAnimation(robot);
             }
             br.Close();
+            this.filename = filename;
             return 0;
         }
 
@@ -318,6 +310,7 @@ namespace LibDescent.Data
             {
                 LoadAnimations(robot, GetModel(robot.model_num));
             }
+            LoadModelTextures();
 
             bw.Write(sig);
             bw.Write(ver);
@@ -343,8 +336,8 @@ namespace LibDescent.Data
                 bw.Write(replacedModels[x].replacementID);
                 datawriter.WritePolymodel(replacedModels[x], bw);
                 bw.Write(replacedModels[x].data.InterpreterData);
-                bw.Write(replacedDyingModelnums[x].data);
-                bw.Write(replacedDeadModelnums[x].data);
+                bw.Write(replacedModels[x].DyingModelnum);
+                bw.Write(replacedModels[x].DeadModelnum);
             }
             bw.Write(replacedObjBitmaps.Count);
             for (int x = 0; x < replacedObjBitmaps.Count; x++)
@@ -360,6 +353,104 @@ namespace LibDescent.Data
             }
 
             bw.Close();
+            filename = name;
+        }
+
+        /// <summary>
+        /// Generates all model's needed ObjBitmaps and ObjBitmapPointers
+        /// </summary>
+        private void LoadModelTextures()
+        {
+            Dictionary<string, int> textureMapping = new Dictionary<string, int>();
+            PIGImage img;
+            EClip clip;
+            ReplacedBitmapElement bm;
+            //Add base file ObjBitmaps to this mess
+            for (int i = 0; i < baseFile.ObjBitmaps.Count; i++)
+            {
+                img = baseFile.piggyFile.GetImage(baseFile.ObjBitmaps[i]);
+                if (!img.isAnimated && !textureMapping.ContainsKey(img.name))
+                    textureMapping.Add(img.name, i);
+            }
+            //Add EClip names
+            for (int i = 0; i < baseFile.EClips.Count; i++)
+            {
+                clip = baseFile.EClips[i];
+                if (clip.changing_object_texture != -1)
+                    textureMapping.Add(baseFile.EClipNames[i], clip.changing_object_texture);
+            }
+            //If augment file, add augment obj bitmaps
+            if (augmentFile != null)
+            {
+                for (int i = 0; i < augmentFile.ObjBitmaps.Count; i++)
+                {
+                    img = baseFile.piggyFile.GetImage(augmentFile.ObjBitmaps[i]);
+                    if (!textureMapping.ContainsKey(img.name))
+                        textureMapping.Add(img.name, i + VHAMFile.N_D2_OBJBITMAPS);
+                }
+            }
+
+            //Nuke the old replaced ObjBitmaps and ObjBitmapPointers because they aren't needed anymore
+            replacedObjBitmaps.Clear();
+            replacedObjBitmapPtrs.Clear();
+
+            //Generate the new elements
+            Polymodel model;
+            int replacedNum;
+            List<int> newTextures = new List<int>();
+            string texName;
+            for (int i = 0; i < replacedModels.Count; i++)
+            {
+                model = replacedModels[i];
+                replacedNum = model.BaseTexture;
+
+                //Find the unique textures in this model
+                for (int j = 0; j < model.textureList.Count; j++)
+                {
+                    texName = model.textureList[j];
+                    if (!textureMapping.ContainsKey(texName))
+                        newTextures.Add(baseFile.piggyFile.GetBitmapIDFromName(texName));
+                }
+                //Generate the new ObjBitmaps
+                foreach (int newID in newTextures)
+                {
+                    ReplacedBitmapElement elem;
+                    elem.data = (ushort)newID;
+                    elem.replacementID = replacedNum;
+                    replacedObjBitmaps.Add(elem);
+                    replacedNum++;
+                }
+
+                newTextures.Clear();
+            }
+
+            //Finally augment things with our own images
+            for (int i = 0; i < replacedObjBitmaps.Count; i++)
+            {
+                bm = replacedObjBitmaps[i];
+                img = baseFile.piggyFile.GetImage(bm.data);
+                if (!textureMapping.ContainsKey(img.name))
+                    textureMapping.Add(img.name, bm.replacementID);
+            }
+
+            //Final stage: generate new ObjBitmapPointers
+            for (int i = 0; i < replacedModels.Count; i++)
+            {
+                model = replacedModels[i];
+                replacedNum = model.first_texture;
+
+                foreach (string texture in model.textureList)
+                {
+                    ReplacedBitmapElement elem;
+                    if (textureMapping.ContainsKey(texture))
+                        elem.data = (ushort)textureMapping[texture];
+                    else
+                        elem.data = 0;
+                    elem.replacementID = replacedNum;
+                    replacedObjBitmapPtrs.Add(elem);
+                    replacedNum++;
+                }
+            }
         }
 
         /// <summary>

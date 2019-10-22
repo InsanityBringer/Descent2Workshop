@@ -146,6 +146,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "VHAMLoadDialog";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Open V-HAM";
             this.ResumeLayout(false);
             this.PerformLayout();
