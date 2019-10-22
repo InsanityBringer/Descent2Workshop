@@ -33,6 +33,8 @@
             this.menuItem1 = new System.Windows.Forms.MenuItem();
             this.menuItem2 = new System.Windows.Forms.MenuItem();
             this.menuItem3 = new System.Windows.Forms.MenuItem();
+            this.menuItem4 = new System.Windows.Forms.MenuItem();
+            this.menuItem5 = new System.Windows.Forms.MenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -169,15 +171,13 @@
             this.statusBar1 = new System.Windows.Forms.StatusBar();
             this.label50 = new System.Windows.Forms.Label();
             this.nudElementNum = new System.Windows.Forms.NumericUpDown();
-            this.button4 = new System.Windows.Forms.Button();
+            this.DeleteButton = new System.Windows.Forms.Button();
             this.label48 = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
+            this.InsertButton = new System.Windows.Forms.Button();
             this.label49 = new System.Windows.Forms.Label();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.ReplacedElementComboBox = new System.Windows.Forms.ComboBox();
-            this.menuItem4 = new System.Windows.Forms.MenuItem();
-            this.menuItem5 = new System.Windows.Forms.MenuItem();
             this.tabControl1.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -222,6 +222,16 @@
             this.menuItem3.Index = 1;
             this.menuItem3.Text = "Save As...";
             this.menuItem3.Click += new System.EventHandler(this.menuItem3_Click_1);
+            // 
+            // menuItem4
+            // 
+            this.menuItem4.Index = 2;
+            this.menuItem4.Text = "-";
+            // 
+            // menuItem5
+            // 
+            this.menuItem5.Index = 3;
+            this.menuItem5.Text = "Close Window";
             // 
             // tabControl1
             // 
@@ -1680,14 +1690,14 @@
             this.nudElementNum.TabIndex = 215;
             this.nudElementNum.ValueChanged += new System.EventHandler(this.nudElementNum_ValueChanged);
             // 
-            // button4
+            // DeleteButton
             // 
-            this.button4.Location = new System.Drawing.Point(342, 9);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 219;
-            this.button4.Text = "Delete";
-            this.button4.UseVisualStyleBackColor = true;
+            this.DeleteButton.Location = new System.Drawing.Point(342, 9);
+            this.DeleteButton.Name = "DeleteButton";
+            this.DeleteButton.Size = new System.Drawing.Size(75, 23);
+            this.DeleteButton.TabIndex = 219;
+            this.DeleteButton.Text = "Delete";
+            this.DeleteButton.UseVisualStyleBackColor = true;
             // 
             // label48
             // 
@@ -1698,15 +1708,15 @@
             this.label48.TabIndex = 216;
             this.label48.Text = "Element Number:";
             // 
-            // button3
+            // InsertButton
             // 
-            this.button3.Location = new System.Drawing.Point(261, 9);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 218;
-            this.button3.Text = "Insert";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.InsertButton.Location = new System.Drawing.Point(261, 9);
+            this.InsertButton.Name = "InsertButton";
+            this.InsertButton.Size = new System.Drawing.Size(75, 23);
+            this.InsertButton.TabIndex = 218;
+            this.InsertButton.Text = "Insert";
+            this.InsertButton.UseVisualStyleBackColor = true;
+            this.InsertButton.Click += new System.EventHandler(this.InsertButton_Click);
             // 
             // label49
             // 
@@ -1735,16 +1745,6 @@
             this.ReplacedElementComboBox.TabIndex = 221;
             this.ReplacedElementComboBox.SelectedIndexChanged += new System.EventHandler(this.ReplacedElementComboBox_SelectedIndexChanged);
             // 
-            // menuItem4
-            // 
-            this.menuItem4.Index = 2;
-            this.menuItem4.Text = "-";
-            // 
-            // menuItem5
-            // 
-            this.menuItem5.Index = 3;
-            this.menuItem5.Text = "Close Window";
-            // 
             // HXMEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1753,9 +1753,9 @@
             this.Controls.Add(this.ReplacedElementComboBox);
             this.Controls.Add(this.label50);
             this.Controls.Add(this.nudElementNum);
-            this.Controls.Add(this.button4);
+            this.Controls.Add(this.DeleteButton);
             this.Controls.Add(this.label48);
-            this.Controls.Add(this.button3);
+            this.Controls.Add(this.InsertButton);
             this.Controls.Add(this.label49);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.statusBar1);
@@ -1816,9 +1816,9 @@
         private System.Windows.Forms.StatusBar statusBar1;
         private System.Windows.Forms.Label label50;
         private System.Windows.Forms.NumericUpDown nudElementNum;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button DeleteButton;
         private System.Windows.Forms.Label label48;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button InsertButton;
         private System.Windows.Forms.Label label49;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.PictureBox pictureBox3;

@@ -354,21 +354,6 @@ namespace Descent2Workshop
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            switch (tabControl1.SelectedIndex)
-            {
-                case 0:
-                    datafile.replacedRobots.Add(new Robot());
-                    ResetMaxes();
-                    if (nudElementNum.Value == -1)
-                    {
-                        nudElementNum.Value = 0;
-                    }
-                    break;
-            }
-        }
-
         private void nudElementNum_ValueChanged(object sender, EventArgs e)
         {
             if (!isLocked)
@@ -621,6 +606,7 @@ namespace Descent2Workshop
             int oldNumTextures = original.n_textures;
 
             List<string> newTextureNames = new List<string>();
+            openFileDialog1.Filter = "Parallax Object Files|*.pof";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 string traceto = "";
@@ -707,6 +693,9 @@ namespace Descent2Workshop
             model.first_texture = (ushort)ModelBasePointerSpinner.Value;
         }
 
+        //---------------------------------------------------------------------
+        // GENERIC FUNCTIONS
+        //---------------------------------------------------------------------
         private void ReplacedElementComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (isLocked) return;
@@ -729,6 +718,34 @@ namespace Descent2Workshop
             }
         }
 
+        private void InsertButton_Click(object sender, EventArgs e)
+        {
+            switch (tabControl1.SelectedIndex)
+            {
+                case 0:
+                    datafile.replacedRobots.Add(new Robot());
+                    ResetMaxes();
+                    if (nudElementNum.Value == -1)
+                        nudElementNum.Value = 0;
+                    else
+                        nudElementNum.Value = datafile.replacedRobots.Count - 1;
+                    break;
+                case 1:
+                    Polymodel model = new Polymodel();
+                    model.data = new PolymodelData(0);
+                    datafile.replacedModels.Add(model);
+                    ResetMaxes();
+                    if (nudElementNum.Value == -1)
+                        nudElementNum.Value = 0;
+                    else
+                        nudElementNum.Value = datafile.replacedModels.Count - 1;
+                    break;
+            }
+        }
+
+        //---------------------------------------------------------------------
+        // MENU FUNCTIONS
+        //---------------------------------------------------------------------
         private void menuItem3_Click_1(object sender, EventArgs e)
         {
             saveFileDialog1.Filter = "HXM Files|*.hxm";
