@@ -759,6 +759,7 @@ namespace LibDescent.Data
             Polymodel model = replacedModels[index];
             replacedModels[index] = newModel;
             newModel.ID = index;
+            newModel.BaseTexture = FindFirstObjBitmap(newModel);
             //PolymodelData[index] = newModel.data;
         }
     }
