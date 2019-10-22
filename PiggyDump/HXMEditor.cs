@@ -598,11 +598,13 @@ namespace Descent2Workshop
 
         private void btnImportModel_Click(object sender, EventArgs e)
         {
+            if (datafile.replacedModels.Count == 0) return;
             ImportModel(datafile.replacedModels[ElementNumber]);
         }
 
         private void btnExportModel_Click(object sender, EventArgs e)
         {
+            if (datafile.replacedModels.Count == 0) return;
             saveFileDialog1.Filter = "Parallax Object Files|*.pof";
             saveFileDialog1.FileName = string.Format("model_{0}.pof", ElementNumber);
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
