@@ -71,11 +71,9 @@ namespace Descent2Workshop.Editor
 
             this.Controls.Add(this.gl3DView);
 
-            SharedRendererState sharedState = new SharedRendererState(level);
             state = new EditorState(level, datafile, this);
-            gl3DView.Tag = new MineRender(state, sharedState, gl3DView);
+            gl3DView.Tag = new MineRender(state, gl3DView);
             state.AttachRenderer((MineRender)gl3DView.Tag);
-            sharedState.AddRenderer((MineRender)gl3DView.Tag);
             //sharedState.LevelData.BuildWorld();
 
         }

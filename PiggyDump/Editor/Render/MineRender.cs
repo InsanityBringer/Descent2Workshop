@@ -34,7 +34,6 @@ namespace Descent2Workshop.Editor.Render
     public class MineRender : IInputEventHandler
     {
         private EditorState state;
-        private SharedRendererState sharedState;
         private LevelData levelData;
         //private PickBuffer pickBuffer = new PickBuffer();
         private Camera camera;
@@ -47,9 +46,8 @@ namespace Descent2Workshop.Editor.Render
         public EditorState State { get => state; set => state = value; }
         public LevelData LevelData { get => levelData; set => levelData = value; }
 
-        public MineRender(EditorState state, SharedRendererState sharedState, GLControl host)
+        public MineRender(EditorState state, GLControl host)
         {
-            this.sharedState = sharedState;
             this.state = state;
             camera = new Camera();
             this.host = host;
@@ -115,12 +113,12 @@ namespace Descent2Workshop.Editor.Render
                 levelData.BuildWorldOutline();
 
                 //Selected verts needs to be rebuilt if the world changed
-                levelData.pickBuffer.BuildPickBuffer(state.SelectedVertices);
+                levelData.pickBuffer.Generate(state.SelectedVertices);
             }
             else
             {
                 if ((flags & UpdateFlags.Selected) != 0)
-                    levelData.pickBuffer.BuildPickBuffer(state.SelectedVertices);
+                    levelData.pickBuffer.Generate(state.SelectedVertices);
             }
         }
 

@@ -110,6 +110,7 @@
     <Compile Include="Editor\LevelTransform.cs" />
     <Compile Include="Editor\MatCenter.cs" />
     <Compile Include="Editor\Operation.cs" />
+    <Compile Include="Editor\Operations\TranslateOperation.cs" />
     <Compile Include="Editor\Render\Camera.cs" />
     <Compile Include="Editor\Render\LevelData.cs" />
     <Compile Include="Editor\Render\MineRender.cs" />
@@ -118,7 +119,6 @@
     <Compile Include="Editor\Render\GLUtilities.cs" />
     <Compile Include="Editor\Render\TransformBuffer.cs" />
     <Compile Include="Editor\Segment.cs" />
-    <Compile Include="Editor\SharedRendererState.cs" />
     <Compile Include="Editor\Tool.cs" />
     <Compile Include="Editor\Tools\GrabTool.cs" />
     <Compile Include="Editor\Trigger.cs" />
@@ -348,9 +348,7 @@
       <Name>LibDescent.Edit</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Editor\Operations\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

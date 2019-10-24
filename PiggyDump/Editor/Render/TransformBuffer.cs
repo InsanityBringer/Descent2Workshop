@@ -53,6 +53,50 @@ namespace Descent2Workshop.Editor.Render
             GL.VertexAttribPointer(1, 1, VertexAttribPointerType.Float, false, sizeof(float) * 4, sizeof(float) * 3);
         }
 
+        public void Generate(List<LevelVertex> selectedVerts)
+        {
+            Clear();
+            HashSet<Segment> segments = new HashSet<Segment>();
+            foreach (LevelVertex vert in selectedVerts)
+            {
+                foreach (Segment seg in vert.connectedSegs)
+                {
+                    segments.Add(seg);
+                }
+            }
+            //TODO: Each seg gets its own 8 verts for rendering the shadow. This can be optimized with more involved code. 
+            int numVerts = segments.Count * 8;
+            int lastVertex = 0;
+            int lastIndex = 0;
+            int lastSeg = 0;
+            float[] vertBuffer = new float[numVerts * 4];
+            int[] indexBuffer = new int[segments.Count * Segment.MaxSegmentSides * 5];
+            foreach (Segment seg in segments)
+            {
+                foreach (LevelVertex vert in seg.vertices)
+                {
+                    vertBuffer[lastVertex * 4 + 0] = -vert.location.x / 65536.0f;
+                    vertBuffer[lastVertex * 4 + 1] = vert.location.y / 65536.0f;
+                    vertBuffer[lastVertex * 4 + 2] = vert.location.z / 65536.0f;
+                    if (vert.selected)
+                        vertBuffer[lastVertex * 4 + 3] = 1.0f;
+                    else
+                        vertBuffer[lastVertex * 4 + 3] = 0.0f;
+                    lastVertex++;
+                }
+                for (int i = 0; i < Segment.MaxSegmentSides; i++)
+                {
+                    indexBuffer[lastIndex++] = Segment.SideVerts[i, 0] + (lastSeg * Segment.MaxSegmentVerts);
+                    indexBuffer[lastIndex++] = Segment.SideVerts[i, 1] + (lastSeg * Segment.MaxSegmentVerts);
+                    indexBuffer[lastIndex++] = Segment.SideVerts[i, 2] + (lastSeg * Segment.MaxSegmentVerts);
+                    indexBuffer[lastIndex++] = Segment.SideVerts[i, 3] + (lastSeg * Segment.MaxSegmentVerts);
+                    indexBuffer[lastIndex++] = 32767;
+                }
+                lastSeg++;
+            }
+            Fill(vertBuffer, indexBuffer);
+        }
+
         public void Fill(float[] vertbuffer, int[] indexbuffer)
         {
             GL.BindVertexArray(transformVAOName);

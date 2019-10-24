@@ -10,9 +10,21 @@ namespace Descent2Workshop.Editor
     [Flags]
     public enum UpdateFlags
     {
+        /// <summary>
+        /// No updates pending.
+        /// </summary>
         None = 0,
+        /// <summary>
+        /// World has changed.
+        /// </summary>
         World = 1,
+        /// <summary>
+        /// Selected elements have changed.
+        /// </summary>
         Selected = 2,
+        /// <summary>
+        /// Update shadow has changed.
+        /// </summary>
         Shadow = 4,
     }
 
@@ -34,6 +46,8 @@ namespace Descent2Workshop.Editor
         /// </summary>
         public UpdateFlags updateFlags = (UpdateFlags)0x7fffffff;
 
+        private Render.Camera workingCamera;
+
         public List<LevelVertex> SelectedVertices { get { return selectedVertices; } }
         public float GridSize { get { return gridSize; } set { gridSize = value; } }
         public Dictionary<LevelVertex, int> SelectedVertMapping { get => selectedVertMapping; set => selectedVertMapping = value; }
@@ -47,6 +61,16 @@ namespace Descent2Workshop.Editor
             this.host = host;
             //rendererState.state = this;
             //this.rendererState = rendererState;
+        }
+
+        /// <summary>
+        /// This function is a bit of a hack. Tools need to know the properties of the viewport they're in, 
+        /// so this is called before handling events to ensure that the state knows the current viewport.
+        /// </summary>
+        /// <param name="camera">The camera of the viewport.</param>
+        public void SetViewportProperties(Render.Camera camera)
+        {
+            workingCamera = camera;
         }
 
         public void AttachRenderer(Render.MineRender renderer)
@@ -68,7 +92,6 @@ namespace Descent2Workshop.Editor
                 index = selectedVertices.Count;
                 selectedVertMapping.Add(vert, index);
                 selectedVertices.Add(vert);
-                //rendererState.AddSelectedVert(vert);
             }
             else
             {
@@ -81,9 +104,7 @@ namespace Descent2Workshop.Editor
                 selectedVertices[deleteIndex] = lastVert;
                 selectedVertices.RemoveAt(index);
                 index = deleteIndex;
-                //rendererState.RemoveSelectedVertAt(deleteIndex);
             }
-            //rendererState.SetSelectedVert(vert, index);
 
             updateFlags |= UpdateFlags.Selected;
             host.InvalidateAll();

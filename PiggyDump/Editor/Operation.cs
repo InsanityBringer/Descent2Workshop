@@ -9,6 +9,6 @@ namespace Descent2Workshop.Editor
     public abstract class Operation
     {
         public abstract Operation GenerateCounterOperation();
-        public abstract void Apply();
+        public abstract void Apply(EditorState context);
     }
 }

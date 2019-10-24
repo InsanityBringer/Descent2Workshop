@@ -45,7 +45,6 @@ namespace Descent2Workshop.Editor
         private float xAmount, yAmount;
         //Mouse coordinates for implementing this transform. 
         private int startx, starty;
-        private SharedRendererState sharedState;
         private Level level;
 
         public TransformType Type { get { return type; } }
@@ -54,10 +53,9 @@ namespace Descent2Workshop.Editor
         HashSet<Segment> segments = new HashSet<Segment>();
         List<LevelVertex> operatedVerts;
 
-        public LevelTransform(Level level, SharedRendererState sharedState)
+        public LevelTransform(Level level)
         {
             this.level = level;
-            this.sharedState = sharedState;
         }
 
         /// <summary>

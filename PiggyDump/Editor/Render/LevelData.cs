@@ -422,14 +422,6 @@ namespace Descent2Workshop.Editor.Render
                     chain.chainDirty = false;
                 }
 
-                /*foreach (Render.MineRender renderer in renderers)
-                {
-                    renderer.MakeHostCurrent();
-                    renderer.ClearShadow();
-                    renderer.UpdateWorldOutline();
-                    renderer.RegenerateSelectedPoints(state.SelectedVertices);
-                    renderer.UpdateChains(dirtyChains);
-                }*/
                 ClearShadow();
                 UpdateWorldOutline();
                 //TODO
@@ -495,11 +487,6 @@ namespace Descent2Workshop.Editor.Render
             BuildWorld(true);
         }
 
-        public void InitTransformBuffer(float[] vertbuffer, int[] indexbuffer)
-        {
-            transformBuffer.Fill(vertbuffer, indexbuffer);
-        }
-
         public void SetShadowTranslation(Vector3 xAxis, Vector3 yAxis)
         {
             shadowShader.UseShader();
@@ -540,7 +527,7 @@ namespace Descent2Workshop.Editor.Render
             GL.Enable(EnableCap.CullFace);
             GL.CullFace(CullFaceMode.Front);
             mineShader.UseShader();
-            Console.WriteLine("Redrawing all chains");
+            //Console.WriteLine("Redrawing all chains");
             foreach (InternalChain chain in currentChains)
             {
                 BindChainTextures(chain);
@@ -598,50 +585,6 @@ namespace Descent2Workshop.Editor.Render
             GL.Disable(EnableCap.DepthTest);
             transformBuffer.DrawTransform();
             GL.Enable(EnableCap.DepthTest);
-        }
-
-        public void InitTransform(List<LevelVertex> selectedVertices)
-        {
-            HashSet<Segment> segments = new HashSet<Segment>();
-            foreach (LevelVertex vert in selectedVertices)
-            {
-                foreach (Segment seg in vert.connectedSegs)
-                {
-                    segments.Add(seg);
-                }
-            }
-            //TODO: Each seg gets its own 8 verts for rendering the shadow. This can be optimized with more involved code. 
-            int numVerts = segments.Count * 8;
-            int lastVertex = 0;
-            int lastIndex = 0;
-            int lastSeg = 0;
-            float[] vertBuffer = new float[numVerts * 4];
-            int[] indexBuffer = new int[segments.Count * Segment.MaxSegmentSides * 5];
-            foreach (Segment seg in segments)
-            {
-                foreach (LevelVertex vert in seg.vertices)
-                {
-                    vertBuffer[lastVertex * 4 + 0] = -vert.location.x / 65536.0f;
-                    vertBuffer[lastVertex * 4 + 1] = vert.location.y / 65536.0f;
-                    vertBuffer[lastVertex * 4 + 2] = vert.location.z / 65536.0f;
-                    if (vert.selected)
-                        vertBuffer[lastVertex * 4 + 3] = 1.0f;
-                    else
-                        vertBuffer[lastVertex * 4 + 3] = 0.0f;
-                    lastVertex++;
-                }
-                for (int i = 0; i < Segment.MaxSegmentSides; i++)
-                {
-                    indexBuffer[lastIndex++] = Segment.SideVerts[i, 0] + (lastSeg * Segment.MaxSegmentVerts);
-                    indexBuffer[lastIndex++] = Segment.SideVerts[i, 1] + (lastSeg * Segment.MaxSegmentVerts);
-                    indexBuffer[lastIndex++] = Segment.SideVerts[i, 2] + (lastSeg * Segment.MaxSegmentVerts);
-                    indexBuffer[lastIndex++] = Segment.SideVerts[i, 3] + (lastSeg * Segment.MaxSegmentVerts);
-                    indexBuffer[lastIndex++] = 32767;
-                }
-                lastSeg++;
-            }
-            transformBuffer.Fill(vertBuffer, indexBuffer);
-            //sharedState.InitTransformBuffer(vertBuffer, indexBuffer);
         }
     }
 }
