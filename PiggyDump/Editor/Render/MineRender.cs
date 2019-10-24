@@ -101,35 +101,26 @@ namespace Descent2Workshop.Editor.Render
             camera.UpdateShader(shadowShader);*/
         }
 
-        public void GetCameraUpSide(out Vector3 up, out Vector3 side)
-        {
-            camera.GetUpSide(out up, out side);
-        }
-
-        public void AddSelectedVert(LevelVertex vert)
-        {
-            host.MakeCurrent();
-            levelData.pickBuffer.AddVertex(vert);
-        }
-
-        public void RemoveSelectedVertAt(int index)
-        {
-            host.MakeCurrent();
-            levelData.pickBuffer.RemoveVertAt(index);
-        }
-
         public void MakeHostCurrent()
         {
             host.MakeCurrent();
         }
 
-        //TODO: make this considerably less ass
-        public void RegenerateSelectedPoints(List<LevelVertex> verts)
+        public void UpdateWorld()
         {
-            levelData.pickBuffer.ClearVerts();
-            foreach (LevelVertex vert in verts)
+            UpdateFlags flags = state.updateFlags;
+            if ((flags & UpdateFlags.World) != 0)
             {
-                levelData.pickBuffer.AddVertex(vert);
+                levelData.BuildWorld();
+                levelData.BuildWorldOutline();
+
+                //Selected verts needs to be rebuilt if the world changed
+                levelData.pickBuffer.BuildPickBuffer(state.SelectedVertices);
+            }
+            else
+            {
+                if ((flags & UpdateFlags.Selected) != 0)
+                    levelData.pickBuffer.BuildPickBuffer(state.SelectedVertices);
             }
         }
 

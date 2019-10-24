@@ -7,6 +7,15 @@ using System.Threading.Tasks;
 
 namespace Descent2Workshop.Editor
 {
+    [Flags]
+    public enum UpdateFlags
+    {
+        None = 0,
+        World = 1,
+        Selected = 2,
+        Shadow = 4,
+    }
+
     public class EditorState : IInputEventHandler
     {
         private Level level;
@@ -17,6 +26,13 @@ namespace Descent2Workshop.Editor
         private List<LevelVertex> selectedVertices = new List<LevelVertex>();
         private Dictionary<LevelVertex, int> selectedVertMapping = new Dictionary<LevelVertex, int>();
         private float gridSize = 1;
+
+        //This could be done better
+        //Update everything first time around
+        /// <summary>
+        /// Flags of all objects to update at the beginning of a frame. 
+        /// </summary>
+        public UpdateFlags updateFlags = (UpdateFlags)0x7fffffff;
 
         public List<LevelVertex> SelectedVertices { get { return selectedVertices; } }
         public float GridSize { get { return gridSize; } set { gridSize = value; } }
@@ -52,7 +68,7 @@ namespace Descent2Workshop.Editor
                 index = selectedVertices.Count;
                 selectedVertMapping.Add(vert, index);
                 selectedVertices.Add(vert);
-                rendererState.AddSelectedVert(vert);
+                //rendererState.AddSelectedVert(vert);
             }
             else
             {
@@ -65,10 +81,11 @@ namespace Descent2Workshop.Editor
                 selectedVertices[deleteIndex] = lastVert;
                 selectedVertices.RemoveAt(index);
                 index = deleteIndex;
-                rendererState.RemoveSelectedVertAt(deleteIndex);
+                //rendererState.RemoveSelectedVertAt(deleteIndex);
             }
             //rendererState.SetSelectedVert(vert, index);
-            
+
+            updateFlags |= UpdateFlags.Selected;
             host.InvalidateAll();
         }
     }

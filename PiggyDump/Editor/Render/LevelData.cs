@@ -433,7 +433,7 @@ namespace Descent2Workshop.Editor.Render
                 ClearShadow();
                 UpdateWorldOutline();
                 //TODO
-                baseRenderer.RegenerateSelectedPoints(baseRenderer.State.SelectedVertices);
+                //baseRenderer.RegenerateSelectedPoints(baseRenderer.State.SelectedVertices);
                 UpdateInternalChains(dirtyChains);
                 dirtyChains.Clear();
             }

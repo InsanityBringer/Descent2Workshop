@@ -49,22 +49,5 @@ namespace Descent2Workshop.Editor
             renderers.Add(renderer);
         }
 
-        public void SetSelectedVert(LevelVertex vert, int index)
-        {
-            if (vert.selected)
-            {
-                foreach (Render.MineRender renderer in renderers)
-                {
-                    renderer.AddSelectedVert(vert);
-                }
-            }
-            else
-            {
-                foreach (Render.MineRender renderer in renderers)
-                {
-                    renderer.RemoveSelectedVertAt(index);
-                }
-            }
-        }
     }
 }

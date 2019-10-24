@@ -88,8 +88,8 @@ namespace Descent2Workshop.Editor
             MineRender controlRenderer = (MineRender)control.Tag;
             controlRenderer.Init();
             controlRenderer.MakePerpectiveCamera((float)(Math.PI / 2), (float)control.Width / control.Height);
-            controlRenderer.LevelData.BuildWorld();
-            controlRenderer.LevelData.BuildWorldOutline();
+            //controlRenderer.LevelData.BuildWorld();
+            //controlRenderer.LevelData.BuildWorldOutline();
             GL.Viewport(0, 0, control.Width, control.Height);
             GL.ClearColor(0.5f, 0.0f, 0.0f, 1.0f);
         }
@@ -100,12 +100,9 @@ namespace Descent2Workshop.Editor
             control.MakeCurrent();
             MineRender controlRenderer = (MineRender)control.Tag;
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            /*controlRenderer.DrawWorld();
-            controlRenderer.DrawWorldOutline();
-            controlRenderer.DrawWorldPoints();
-            controlRenderer.DrawSelectedPoints();
-            controlRenderer.DrawShadow();*/
+            controlRenderer.UpdateWorld();
             controlRenderer.DrawWorld();
+            state.updateFlags = UpdateFlags.None;
             control.SwapBuffers();
         }
 

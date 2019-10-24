@@ -61,6 +61,15 @@ namespace Descent2Workshop.Editor.Render
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
         }
 
+        public void BuildPickBuffer(List<LevelVertex> selectedVerts)
+        {
+            ClearVerts();
+            foreach (LevelVertex vert in selectedVerts)
+            {
+                AddVertex(vert);
+            }
+        }
+
         public void AddVertex(LevelVertex vert)
         {
             float[] data = { -vert.location.x, vert.location.y, vert.location.z };
