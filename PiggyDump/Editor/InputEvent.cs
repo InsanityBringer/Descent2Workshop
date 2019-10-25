@@ -46,20 +46,23 @@ namespace Descent2Workshop.Editor
     {
         public EventType type;
         public Keys key;
+        public Keys modifiers;
         public MouseButtons mouseButton;
         public bool down;
         public int x, y;
         public int w, h;
+        public int deltaX, deltaY;
 
         /// <summary>
         /// Creates a new Keyboard event.
         /// </summary>
         /// <param name="key">The keycode pressed.</param>
         /// <param name="down">True if the button was being pushed, or False if it is being released.</param>
-        public InputEvent(Keys key, bool down)
+        public InputEvent(Keys key, Keys modifiers, bool down)
         {
             this.down = down;
             this.key = key;
+            this.modifiers = modifiers;
             type = EventType.Key;
         }
 
@@ -79,6 +82,11 @@ namespace Descent2Workshop.Editor
         {
             type = EventType.MouseMove;
             this.x = x; this.y = y;
+        }
+
+        public void SetDelta(int dx, int dy)
+        {
+            deltaX = dx; deltaY = dy;
         }
     }
 

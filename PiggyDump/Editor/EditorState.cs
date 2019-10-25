@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenTK;
 
 namespace Descent2Workshop.Editor
 {
@@ -38,6 +39,9 @@ namespace Descent2Workshop.Editor
         private List<LevelVertex> selectedVertices = new List<LevelVertex>();
         private Dictionary<LevelVertex, int> selectedVertMapping = new Dictionary<LevelVertex, int>();
         private float gridSize = 1;
+        private Tool currentTool;
+
+        public ShadowProperties shadow = new ShadowProperties();
 
         //This could be done better
         //Update everything first time around
@@ -47,6 +51,7 @@ namespace Descent2Workshop.Editor
         public UpdateFlags updateFlags = (UpdateFlags)0x7fffffff;
 
         private Render.Camera workingCamera;
+        private int viewportX, viewportY;
 
         public List<LevelVertex> SelectedVertices { get { return selectedVertices; } }
         public float GridSize { get { return gridSize; } set { gridSize = value; } }
@@ -68,9 +73,10 @@ namespace Descent2Workshop.Editor
         /// so this is called before handling events to ensure that the state knows the current viewport.
         /// </summary>
         /// <param name="camera">The camera of the viewport.</param>
-        public void SetViewportProperties(Render.Camera camera)
+        public void SetViewportProperties(Render.Camera camera, int w, int h)
         {
             workingCamera = camera;
+            viewportX = w; viewportY = h;
         }
 
         public void AttachRenderer(Render.MineRender renderer)
@@ -78,8 +84,39 @@ namespace Descent2Workshop.Editor
             rendererState = renderer;
         }
 
+        public void StatusMessage(string msg)
+        {
+            host.StatusMessage(msg);
+        }
+
         public bool HandleEvent(InputEvent ev)
         {
+            if (currentTool != null)
+            {
+                bool ret = currentTool.HandleEvent(ev);
+                if (ret) return true;
+            }
+            if (ev.type == EventType.Key)
+            {
+                if (ev.key == System.Windows.Forms.Keys.G)
+                {
+                    if (selectedVertices.Count == 0)
+                    {
+                        StatusMessage("No elements selected.");
+                    }
+                    else
+                    {
+                        Vector3 upVector, sideVector;
+                        workingCamera.GetUpSide(out upVector, out sideVector);
+                        Vector4 hack = workingCamera.TransformPoint(new Vector3(SelectedVertices[0].location.x, SelectedVertices[0].location.y, SelectedVertices[0].location.z));
+                        Console.WriteLine("z {0} w {1}", hack.Z, hack.W);
+                        Tools.GrabTool grabTool = new Tools.GrabTool(this, sideVector, upVector, selectedVertices);
+                        grabTool.SetGrabScale(hack.Z / viewportX * 2, hack.Z / viewportY * 2);
+                        currentTool = grabTool;
+                    }
+                    return true;
+                }
+            }
             return false;
         }
 

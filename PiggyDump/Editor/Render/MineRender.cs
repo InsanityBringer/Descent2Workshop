@@ -86,17 +86,11 @@ namespace Descent2Workshop.Editor.Render
             float ang = (float)(dx * .25 * Math.PI / 180.0);
             float pitch = (float)(dy * .25 * Math.PI / 180.0);
             camera.Rotate(-ang, -pitch);
-            /*camera.UpdateShader(mineShader);
-            camera.UpdateShader(outlineShader);
-            camera.UpdateShader(shadowShader);*/
         }
 
         private void TranslateCamera(int dx, int dy)
         {
             camera.Translate(new Vector3(-dx / 5.0f, dy / 5.0f, 0.0f));
-            /*camera.UpdateShader(mineShader);
-            camera.UpdateShader(outlineShader);
-            camera.UpdateShader(shadowShader);*/
         }
 
         public void MakeHostCurrent()
@@ -120,11 +114,16 @@ namespace Descent2Workshop.Editor.Render
                 if ((flags & UpdateFlags.Selected) != 0)
                     levelData.pickBuffer.Generate(state.SelectedVertices);
             }
+
+            if ((flags & UpdateFlags.Shadow) != 0)
+            {
+                levelData.transformBuffer.Generate(state.shadow);
+            }
         }
 
         public void DrawWorld()
         {
-            levelData.DrawLevel(camera, true, true, false);
+            levelData.DrawLevel(camera, true, true, true);
         }
 
         public bool HandleEvent(InputEvent ev)

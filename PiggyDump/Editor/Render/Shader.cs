@@ -101,5 +101,10 @@ namespace Descent2Workshop.Editor.Render
                 isValid = true;
             }
         }
+
+        public int GetUniformLocation(string name)
+        {
+            return GL.GetUniformLocation(shaderid, name);
+        }
     }
 }

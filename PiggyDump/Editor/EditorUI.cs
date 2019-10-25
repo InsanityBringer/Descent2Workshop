@@ -148,8 +148,10 @@ namespace Descent2Workshop.Editor
             ev.x = e.X; ev.y = e.Y;
             ev.w = sendingControl.Width; ev.h = sendingControl.Height;
 
-            if (state.HandleEvent(ev)) return;
-            if (((IInputEventHandler)sendingControl.Tag).HandleEvent(ev)) return;
+            bool ret = state.HandleEvent(ev);
+            if (!ret) ret = ((IInputEventHandler)sendingControl.Tag).HandleEvent(ev);
+
+            if (state.updateFlags != 0) gl3DView.Invalidate();
         }
 
         private void gl3DView_MouseUp(object sender, MouseEventArgs e)
@@ -160,8 +162,10 @@ namespace Descent2Workshop.Editor
             ev.x = e.X; ev.y = e.Y;
             ev.w = sendingControl.Width; ev.h = sendingControl.Height;
 
-            if (state.HandleEvent(ev)) return;
-            if (((IInputEventHandler)sendingControl.Tag).HandleEvent(ev)) return;
+            bool ret = state.HandleEvent(ev);
+            if (!ret) ret = ((IInputEventHandler)control.Tag).HandleEvent(ev);
+
+            if (state.updateFlags != 0) gl3DView.Invalidate();
         }
 
         private void gl3DView_MouseEnter(object sender, EventArgs e)
@@ -171,23 +175,52 @@ namespace Descent2Workshop.Editor
         private void gl3DView_KeyDown(object sender, KeyEventArgs e)
         {
             Console.WriteLine("{0} got a KeyDown", sender);
-            //need to set up key up before doing event
+            Control sendingControl = (Control)sender;
+            MineRender renderer = (MineRender)sendingControl.Tag;
+            state.SetViewportProperties(renderer.ViewCamera, sendingControl.Width, sendingControl.Height);
+            InputEvent ev = new InputEvent(e.KeyCode, e.Modifiers, true);
+
+            bool ret = state.HandleEvent(ev);
+            if (!ret) ret = ((IInputEventHandler)sendingControl.Tag).HandleEvent(ev);
+
+            if (state.updateFlags != 0) gl3DView.Invalidate();
         }
+
+        //[ISB] TODO: Massive hack
+        int lastX = 0, lastY = 0;
 
         private void gl3DView_MouseMove(object sender, MouseEventArgs e)
         {
             GLControl control = (GLControl)sender;
             control.MakeCurrent();
             InputEvent ev = new InputEvent(e.X, e.Y);
+            ev.SetDelta(e.X - lastX, e.Y - lastY);
             ev.w = control.Width; ev.h = control.Height;
+            lastX = e.X; lastY = e.Y;
 
-            if (state.HandleEvent(ev)) return;
-            if (((IInputEventHandler)control.Tag).HandleEvent(ev)) return;
+            bool ret = state.HandleEvent(ev);
+            if (!ret) ret = ((IInputEventHandler)control.Tag).HandleEvent(ev);
+
+            if (state.updateFlags != 0) gl3DView.Invalidate();
         }
 
         public void InvalidateAll()
         {
             gl3DView.Invalidate();
+        }
+
+        public void StatusMessage(string msg)
+        {
+            InfoStatusBar.Text = msg;
+            if (StatusTimer.Enabled)
+                StatusTimer.Stop();
+            StatusTimer.Start();
+        }
+
+        private void StatusTimer_Tick(object sender, EventArgs e)
+        {
+            InfoStatusBar.Text = "";
+            StatusTimer.Stop();
         }
     }
 }

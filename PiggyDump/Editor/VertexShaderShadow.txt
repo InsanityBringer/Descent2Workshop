@@ -27,15 +27,14 @@ uniform mat4 cameraOrientation;
 uniform float cameraDistance;
 uniform mat4 projectMatrix;
 
-uniform vec3 translateX;
-uniform vec3 translateY;
+uniform vec3 translation;
 
 layout(location=0) in vec3 position;
 layout(location=1) in float weight;
 
 void main()
 {
-	vec4 cameraLocation = vec4(position.xyz + (translateX * weight) + (translateY * weight), 1.0) + vec4(cameraPos.xyz, 0.0);
+	vec4 cameraLocation = vec4(position.xyz + (translation * weight), 1.0) + vec4(cameraPos.xyz, 0.0);
     cameraLocation = cameraOrientation * cameraLocation;
 	cameraLocation += vec4(0.0, 0.0, -cameraDistance, 0.0);
     

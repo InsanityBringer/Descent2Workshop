@@ -22,9 +22,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+//using System.Linq;
+//using System.Text;
+//using System.Threading.Tasks;
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace Descent2Workshop.Editor.Render
@@ -36,8 +37,9 @@ namespace Descent2Workshop.Editor.Render
         private int numVerts = 0;
         private int numLines = 0;
         private int transformBufferName, transformElemBufferName, transformVAOName;
+        private Shader shadowShader;
 
-        public void Init()
+        public void Init(Shader shadowShader)
         {
             transformVAOName = GL.GenVertexArray();
             GL.BindVertexArray(transformVAOName);
@@ -51,11 +53,30 @@ namespace Descent2Workshop.Editor.Render
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, sizeof(float) * 4, 0);
             GL.EnableVertexAttribArray(1); //weight
             GL.VertexAttribPointer(1, 1, VertexAttribPointerType.Float, false, sizeof(float) * 4, sizeof(float) * 3);
+            this.shadowShader = shadowShader;
         }
 
-        public void Generate(List<LevelVertex> selectedVerts)
+        public void Generate(ShadowProperties shadow)
         {
             Clear();
+            if (shadow.shadowVertices != null && shadow.shadowVertices.Count > 0)
+            {
+                GenerateGeometry(shadow.shadowVertices);
+                SetShadowTranslation(shadow.translation);
+            }
+        }
+
+        public void SetShadowTranslation(Vector3 vector)
+        {
+            shadowShader.UseShader();
+            int translationLocation = shadowShader.GetUniformLocation("translation");
+            GL.Uniform3(translationLocation, vector);
+            GLUtilities.ErrorCheck("Set shadow translation");
+        }
+
+        public void GenerateGeometry(List<LevelVertex> selectedVerts)
+        {
+            if (selectedVerts.Count == 0) return;
             HashSet<Segment> segments = new HashSet<Segment>();
             foreach (LevelVertex vert in selectedVerts)
             {
@@ -75,9 +96,9 @@ namespace Descent2Workshop.Editor.Render
             {
                 foreach (LevelVertex vert in seg.vertices)
                 {
-                    vertBuffer[lastVertex * 4 + 0] = -vert.location.x / 65536.0f;
-                    vertBuffer[lastVertex * 4 + 1] = vert.location.y / 65536.0f;
-                    vertBuffer[lastVertex * 4 + 2] = vert.location.z / 65536.0f;
+                    vertBuffer[lastVertex * 4 + 0] = -vert.location.x;
+                    vertBuffer[lastVertex * 4 + 1] = vert.location.y;
+                    vertBuffer[lastVertex * 4 + 2] = vert.location.z;
                     if (vert.selected)
                         vertBuffer[lastVertex * 4 + 3] = 1.0f;
                     else

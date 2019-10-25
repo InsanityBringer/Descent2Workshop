@@ -99,7 +99,7 @@ namespace Descent2Workshop.Editor.Render
         private int mineVAO;
         private int outlineBuffer, outlineIndexBuffer, outlineCount, outlinePoints;
 
-        private TransformBuffer transformBuffer = new TransformBuffer();
+        public TransformBuffer transformBuffer = new TransformBuffer();
         public PickBuffer pickBuffer = new PickBuffer();
 
         public float[] VertBuffer { get => vertBuffer; set => vertBuffer = value; }
@@ -133,7 +133,7 @@ namespace Descent2Workshop.Editor.Render
 
             InitPalette(baseRenderer.State.EditorData.piggyFile.PiggyPalette.GetLinear());
 
-            transformBuffer.Init();
+            transformBuffer.Init(shadowShader);
             pickBuffer.Init();
         }
 

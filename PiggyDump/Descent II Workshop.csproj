@@ -119,6 +119,7 @@
     <Compile Include="Editor\Render\GLUtilities.cs" />
     <Compile Include="Editor\Render\TransformBuffer.cs" />
     <Compile Include="Editor\Segment.cs" />
+    <Compile Include="Editor\ShadowProperties.cs" />
     <Compile Include="Editor\Tool.cs" />
     <Compile Include="Editor\Tools\GrabTool.cs" />
     <Compile Include="Editor\Trigger.cs" />
