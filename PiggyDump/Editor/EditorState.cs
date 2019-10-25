@@ -111,7 +111,7 @@ namespace Descent2Workshop.Editor
                         Vector4 hack = workingCamera.TransformPoint(new Vector3(SelectedVertices[0].location.x, SelectedVertices[0].location.y, SelectedVertices[0].location.z));
                         Console.WriteLine("z {0} w {1}", hack.Z, hack.W);
                         Tools.GrabTool grabTool = new Tools.GrabTool(this, sideVector, upVector, selectedVertices);
-                        grabTool.SetGrabScale(hack.Z / viewportX * 2, hack.Z / viewportY * 2);
+                        grabTool.SetGrabScale(hack.W * 2 / Math.Min(viewportY, viewportX));
                         currentTool = grabTool;
                     }
                     return true;

@@ -184,7 +184,7 @@ namespace Descent2Workshop.Editor.Render
             Vector3 bestVec = new Vector3(0, 0, 0);
             for (int i = 0; i < numVerts; i++)
             {
-                vec.X = verts[i * 4 + 0];
+                vec.X = -verts[i * 4 + 0];
                 vec.Y = verts[i * 4 + 1];
                 vec.Z = verts[i * 4 + 2];
                 if (camera.CameraFacingPoint(vec))

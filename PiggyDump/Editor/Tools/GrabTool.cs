@@ -13,17 +13,19 @@ namespace Descent2Workshop.Editor.Tools
         List<LevelVertex> verts;
         Vector3 xVector, yVector;
         float xAmount, yAmount;
-        float xScale = 1.0f, yScale = 1.0f;
+        float scale = 1.0f;
         public GrabTool(EditorState state, Vector3 xVector, Vector3 yVector, List<LevelVertex> verts) : base(state)
         {
             this.xVector = xVector; this.yVector = yVector; this.verts = verts;
             state.shadow.shadowVertices = verts;
             state.shadow.translation = new Vector3(0, 0, 0);
+
+            Console.WriteLine("{0} {1}", xVector.Length, yVector.Length);
         }
 
-        public void SetGrabScale(float xScale, float yScale)
+        public void SetGrabScale(float scale)
         {
-            this.xScale = xScale; this.yScale = yScale;
+            this.scale = scale;
         }
 
         public override Operation GenerateOperation()
@@ -39,8 +41,8 @@ namespace Descent2Workshop.Editor.Tools
         {
             if (ev.type == EventType.MouseMove)
             {
-                xAmount += ev.deltaX * xScale;
-                yAmount += -ev.deltaY * yScale;
+                xAmount += ev.deltaX * scale;
+                yAmount += -ev.deltaY * scale;
 
                 Vector3 translation = xVector * xAmount + yVector * yAmount;
                 state.shadow.translation = translation;

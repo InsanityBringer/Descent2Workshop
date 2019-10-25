@@ -120,7 +120,8 @@ namespace Descent2Workshop.Editor.Render
 
         public bool CameraFacingPoint(Vector3 point)
         {
-            Vector4 cameraPosition = new Vector4(point + position, 1.0f);
+            Vector3 localPoint = new Vector3(-point.X, point.Y, point.Z);
+            Vector4 cameraPosition = new Vector4(localPoint + position, 1.0f);
             cameraPosition = Vector4.Transform(cameraPosition, orientation);
             cameraPosition += new Vector4(0.0f, 0.0f, -distance, 0.0f);
             Vector4 diff = Vector4.Transform(cameraPosition, projection);
@@ -134,12 +135,12 @@ namespace Descent2Workshop.Editor.Render
 
         public Vector4 TransformPoint(Vector3 point)
         {
-            Vector4 cameraDistance = new Vector4(0.0f, 0.0f, -distance, 0.0f);
-            Vector4 cameraPos = new Vector4(point + position, 1.0f);
-            cameraPos = Vector4.Transform(cameraPos, orientation);
-            cameraPos += cameraDistance;
-            cameraPos = Vector4.Transform(cameraPos, projection);
-            return cameraPos;
+            Vector3 localPoint = new Vector3(-point.X, point.Y, point.Z);
+            Vector4 cameraPosition = new Vector4(localPoint + position, 1.0f);
+            cameraPosition = Vector4.Transform(cameraPosition, orientation);
+            cameraPosition += new Vector4(0.0f, 0.0f, -distance, 0.0f);
+            cameraPosition = Vector4.Transform(cameraPosition, projection);
+            return cameraPosition;
         }
 
         public void UpdateShader(Shader shader)
