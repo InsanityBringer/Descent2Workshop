@@ -15,5 +15,7 @@ namespace Descent2Workshop.Editor
         }
         public abstract bool HandleEvent(InputEvent ev);
         public abstract Operation GenerateOperation();
+
+        public abstract void EndTool();
     }
 }

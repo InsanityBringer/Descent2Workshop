@@ -47,8 +47,23 @@ namespace Descent2Workshop.Editor.Tools
                 Vector3 translation = xVector * xAmount + yVector * yAmount;
                 state.shadow.translation = translation;
             }
+            if (ev.type == EventType.MouseButton)
+            {
+                if (ev.down)
+                {
+                    if (ev.mouseButton == System.Windows.Forms.MouseButtons.Left)
+                        state.ApplyTool();
+                }
+            }
             state.updateFlags |= UpdateFlags.Shadow;
             return true;
+        }
+
+        public override void EndTool()
+        {
+            //Destroy shadow
+            state.shadow.shadowVertices = null;
+            state.updateFlags |= UpdateFlags.Shadow;
         }
     }
 }

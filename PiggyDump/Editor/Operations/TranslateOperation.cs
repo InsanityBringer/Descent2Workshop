@@ -25,7 +25,7 @@ namespace Descent2Workshop.Editor.Operations
         {
             foreach (LevelVertex vert in vertset)
             {
-                vert.location.x += translation.X;
+                vert.location.x -= translation.X;
                 vert.location.y += translation.Y;
                 vert.location.z += translation.Z;
             }

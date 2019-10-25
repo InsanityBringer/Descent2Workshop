@@ -120,6 +120,17 @@ namespace Descent2Workshop.Editor
             return false;
         }
 
+        public void ApplyTool()
+        {
+            if (currentTool != null)
+            {
+                Operation op = currentTool.GenerateOperation();
+                op.Apply(this);
+                currentTool.EndTool();
+                currentTool = null;
+            }
+        }
+
         public void ToggleSelectedVert(LevelVertex vert)
         {
             int index;
