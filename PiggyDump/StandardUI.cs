@@ -337,6 +337,7 @@ namespace Descent2Workshop
             {
                 defaultHOG.LoadDataFile(filename);
                 AppendConsole("Loaded default HOG file!\r\n");
+                options.SetOption("HOGFile", filename);
             }
             catch (Exception exc)
             {
@@ -361,6 +362,7 @@ namespace Descent2Workshop
             {
                 defaultPIG.LoadDataFile(filename);
                 AppendConsole("Loaded default PIG file!\r\n");
+                options.SetOption("PIGFile", filename);
             }
             catch (Exception exc)
             {
@@ -380,6 +382,7 @@ namespace Descent2Workshop
                 AppendConsole("Loaded default SND file!\r\n");
                 if (defaultSoundFile != null)
                     defaultSoundFile.CloseDataFile();
+                options.SetOption("SNDFile", filename);
             }
             catch (Exception exc)
             {
