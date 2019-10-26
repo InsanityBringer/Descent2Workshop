@@ -673,6 +673,11 @@ namespace LibDescent.Edit
 
         private static void WriteModel(HAMFile datafile, StringBuilder stringBuilder, int id, bool hack = false)
         {
+            if (id < 0)
+            {
+                stringBuilder.Append("fixme.pof ");
+                return;
+            }
             Polymodel model = datafile.PolygonModels[id];
             //stringBuilder.AppendFormat("model{0}.pof ", id);
             stringBuilder.AppendFormat("{0} ", pofNames[id]);
