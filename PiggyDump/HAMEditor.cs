@@ -281,7 +281,7 @@ namespace Descent2Workshop
             SetElementControl(true, false);
             cbTexEClip.Items.Clear(); cbTexEClip.Items.Add("None");
             for (int i = 0; i < datafile.EClips.Count; i++)
-                cbTexEClip.Items.Add(datafile.EClipNames[i]);
+                cbTexEClip.Items.Add(datafile.EClipNames[i] + " #" + i);
         }
 
         private void InitVClipPanel()
