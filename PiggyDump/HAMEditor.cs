@@ -1795,16 +1795,18 @@ namespace Descent2Workshop
                 sw.Dispose();
                 string modelPath = Path.GetDirectoryName(saveFileDialog1.FileName);
                 Polymodel model;
-                //for (int i = 0; i < datafile.PolygonModels.Count; i++)
-                foreach (int i in BitmapTableFile.pofIndicies)
+                if (datafile.PolygonModels.Count >= 160)
                 {
-                    model = datafile.PolygonModels[i];
-                    BinaryWriter bw = new BinaryWriter(File.Open(String.Format("{0}{1}{2}", modelPath, Path.DirectorySeparatorChar, BitmapTableFile.pofNames[i]), FileMode.Create));
-                    POFWriter.SerializePolymodel(bw, model, 8);
-                    bw.Close();
-                    bw.Dispose();
+                    //for (int i = 0; i < datafile.PolygonModels.Count; i++)
+                    foreach (int i in BitmapTableFile.pofIndicies)
+                    {
+                        model = datafile.PolygonModels[i];
+                        BinaryWriter bw = new BinaryWriter(File.Open(String.Format("{0}{1}{2}", modelPath, Path.DirectorySeparatorChar, BitmapTableFile.pofNames[i]), FileMode.Create));
+                        POFWriter.SerializePolymodel(bw, model, 8);
+                        bw.Close();
+                        bw.Dispose();
+                    }
                 }
-
             }
         }
 
