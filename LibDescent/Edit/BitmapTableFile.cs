@@ -664,8 +664,7 @@ namespace LibDescent.Edit
                 stringBuilder.Append("big_radius=1 ");
             if (robot.aim != 255)
             {
-                Fix aimval = robot.aim / 255.0f;
-                stringBuilder.AppendFormat("aim={0} ", aimval);
+                stringBuilder.AppendFormat("aim={0:F2} ", robot.aim / 255.0f);
             }
             if (robot.behavior >= 0x80 && robot.behavior != 0x81)
                 stringBuilder.AppendFormat("behavior={0} ", AIBehaviors[robot.behavior - 0x80]);
