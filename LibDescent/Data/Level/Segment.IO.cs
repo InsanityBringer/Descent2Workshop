@@ -25,6 +25,11 @@ namespace LibDescent.Data
             {
                 var uvls = s.Element("Uvls").Elements("Uvl");
                 var side = new Side((uint)uvls.Count());
+                uvls.ToList().ConvertAll(uvl => new FixVector(
+                    double.Parse(uvl.Attribute("u").Value),
+                    double.Parse(uvl.Attribute("v").Value),
+                    double.Parse(uvl.Attribute("l").Value))
+                ).CopyTo(side.Uvls);
                 return side;
             }).CopyTo(segment.Sides);
 
