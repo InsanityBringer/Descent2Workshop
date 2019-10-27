@@ -155,5 +155,11 @@ namespace Descent2Workshop.Editor.Render
             GL.Uniform1(cameraDistance, distance);
             GLUtilities.ErrorCheck("Setting shader camera");
         }
+
+        public void Dolly(float amount)
+        {
+            distance += amount;
+            if (distance < 0) distance = 0;
+        }
     }
 }

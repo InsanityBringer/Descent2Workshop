@@ -36,7 +36,8 @@ namespace Descent2Workshop.Editor
     {
         Key,
         MouseButton,
-        MouseMove
+        MouseMove,
+        MouseWheel
     }
 
     /// <summary>
@@ -52,6 +53,7 @@ namespace Descent2Workshop.Editor
         public int x, y;
         public int w, h;
         public int deltaX, deltaY;
+        public float wheelDelta;
 
         /// <summary>
         /// Creates a new Keyboard event.
@@ -82,6 +84,12 @@ namespace Descent2Workshop.Editor
         {
             type = EventType.MouseMove;
             this.x = x; this.y = y;
+        }
+
+        public InputEvent(float wheelDelta)
+        {
+            type = EventType.MouseWheel;
+            this.wheelDelta = wheelDelta;
         }
 
         public void SetDelta(int dx, int dy)

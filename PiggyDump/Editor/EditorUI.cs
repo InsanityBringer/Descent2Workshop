@@ -63,6 +63,7 @@ namespace Descent2Workshop.Editor
             this.gl3DView.MouseEnter += new System.EventHandler(this.gl3DView_MouseEnter);
             this.gl3DView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gl3DView_MouseMove);
             this.gl3DView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gl3DView_MouseUp);
+            this.gl3DView.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.gl3DView_MouseWheel);
 
             /*this.tableLayoutPanel1.Controls.Add(this.glTopView, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.gl3DView, 1, 0);
@@ -161,6 +162,18 @@ namespace Descent2Workshop.Editor
             InputEvent ev = new InputEvent(e.Button, false);
             ev.x = e.X; ev.y = e.Y;
             ev.w = sendingControl.Width; ev.h = sendingControl.Height;
+
+            bool ret = state.HandleEvent(ev);
+            if (!ret) ret = ((IInputEventHandler)control.Tag).HandleEvent(ev);
+
+            if (state.updateFlags != 0) gl3DView.Invalidate();
+        }
+
+        private void gl3DView_MouseWheel(object sender, MouseEventArgs e)
+        {
+            GLControl control = (GLControl)sender;
+            Control sendingControl = (Control)sender;
+            InputEvent ev = new InputEvent(e.Delta / 120.0f);
 
             bool ret = state.HandleEvent(ev);
             if (!ret) ret = ((IInputEventHandler)control.Tag).HandleEvent(ev);

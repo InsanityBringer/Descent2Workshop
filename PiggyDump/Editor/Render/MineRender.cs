@@ -155,6 +155,12 @@ namespace Descent2Workshop.Editor.Render
                     return true;
                 }
             }
+            else if (ev.type == EventType.MouseWheel)
+            {
+                camera.Dolly(ev.wheelDelta * -4);
+                host.Invalidate();
+                return true;
+            }
             else if (ev.type == EventType.MouseMove)
             {
                 if (orbiting)
