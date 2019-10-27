@@ -14,13 +14,17 @@ namespace Descent2Workshop.Editor.Tools
         Vector3 xVector, yVector;
         float xAmount, yAmount;
         float scale = 1.0f;
+
+        bool fixAxis = false;
+        Vector3 fixedAxis;
+        float xScale = 1.0f, yScale = 1.0f;
         public GrabTool(EditorState state, Vector3 xVector, Vector3 yVector, List<LevelVertex> verts) : base(state)
         {
             this.xVector = xVector; this.yVector = yVector; this.verts = verts;
             state.shadow.shadowVertices = verts;
             state.shadow.translation = new Vector3(0, 0, 0);
 
-            Console.WriteLine("{0} {1}", xVector.Length, yVector.Length);
+            Console.WriteLine("{0}", Vector3.Dot(xVector, new Vector3(1.0f, 0.0f, 0.0f)));
         }
 
         public void SetGrabScale(float scale)
@@ -28,10 +32,26 @@ namespace Descent2Workshop.Editor.Tools
             this.scale = scale;
         }
 
+        private Vector3 GetTranslation()
+        {
+            Vector3 translation;
+            if (!fixAxis)
+            {
+                translation = xVector * xAmount + yVector * yAmount;
+                state.shadow.translation = translation;
+            }
+            else
+            {
+                translation = (fixedAxis * xAmount * xScale) + (fixedAxis * yAmount * yScale);
+                state.shadow.translation = translation;
+            }
+            return translation;
+        }
+
         public override Operation GenerateOperation()
         {
             TranslateOperation newOp = new TranslateOperation();
-            newOp.SetTranslation((xVector * xAmount) + (yVector * yAmount));
+            newOp.SetTranslation(GetTranslation());
             newOp.SetVerts(verts);
             state.updateFlags |= UpdateFlags.Shadow;
             return newOp;
@@ -39,13 +59,42 @@ namespace Descent2Workshop.Editor.Tools
 
         public override bool HandleEvent(InputEvent ev)
         {
+            if (ev.type == EventType.Key)
+            {
+                if (ev.down)
+                {
+                    if (ev.key == System.Windows.Forms.Keys.X)
+                    {
+                        fixAxis = true;
+                        fixedAxis = new Vector3(1.0f, 0.0f, 0.0f);
+                        xScale = Vector3.Dot(xVector, fixedAxis);
+                        yScale = Vector3.Dot(yVector, fixedAxis);
+                    }
+                    else if (ev.key == System.Windows.Forms.Keys.Y)
+                    {
+                        fixAxis = true;
+                        fixedAxis = new Vector3(0.0f, 1.0f, 0.0f);
+                        xScale = Vector3.Dot(xVector, fixedAxis);
+                        yScale = Vector3.Dot(yVector, fixedAxis);
+                    }
+                    else if (ev.key == System.Windows.Forms.Keys.Z)
+                    {
+                        fixAxis = true;
+                        fixedAxis = new Vector3(0.0f, 0.0f, 1.0f);
+                        xScale = Vector3.Dot(xVector, fixedAxis);
+                        yScale = Vector3.Dot(yVector, fixedAxis);
+                    }
+                    else if (ev.key == System.Windows.Forms.Keys.Escape)
+                    {
+                        state.AbortTool();
+                    }
+                }
+            }
             if (ev.type == EventType.MouseMove)
             {
                 xAmount += ev.deltaX * scale;
                 yAmount += -ev.deltaY * scale;
-
-                Vector3 translation = xVector * xAmount + yVector * yAmount;
-                state.shadow.translation = translation;
+                state.shadow.translation = GetTranslation();
             }
             if (ev.type == EventType.MouseButton)
             {
