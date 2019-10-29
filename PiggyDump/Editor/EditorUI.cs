@@ -64,6 +64,7 @@ namespace Descent2Workshop.Editor
             this.gl3DView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gl3DView_MouseMove);
             this.gl3DView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gl3DView_MouseUp);
             this.gl3DView.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.gl3DView_MouseWheel);
+            this.gl3DView.Resize += new System.EventHandler(this.gl3DView_Resize);
 
             /*this.tableLayoutPanel1.Controls.Add(this.glTopView, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.gl3DView, 1, 0);
@@ -215,6 +216,13 @@ namespace Descent2Workshop.Editor
             if (!ret) ret = ((IInputEventHandler)control.Tag).HandleEvent(ev);
 
             if (state.updateFlags != 0) gl3DView.Invalidate();
+        }
+
+        private void gl3DView_Resize(object sender, EventArgs e)
+        {
+            GLControl control = (GLControl)sender;
+            control.MakeCurrent();
+            GL.Viewport(0, 0, control.Width, control.Height);
         }
 
         public void InvalidateAll()
