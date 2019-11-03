@@ -20,6 +20,8 @@
     SOFTWARE.
 */
 
+using System;
+
 namespace LibDescent.Data
 {
     public enum SegSide
@@ -47,10 +49,16 @@ namespace LibDescent.Data
         public FixVector[] Vertices { get; }
         public MatCenter MatCenter { get; set; }
 
+        #region Read-only convenience properties
+        public FixVector Center { get; }
+        #endregion
+
         public Segment(uint numSides = MaxSegmentSides, uint numVertices = MaxSegmentVerts)
         {
             Sides = new Side[numSides];
             Vertices = new FixVector[numVertices];
         }
+
+        public Side GetSide(SegSide side) => Sides[(int)side];
     }
 }
