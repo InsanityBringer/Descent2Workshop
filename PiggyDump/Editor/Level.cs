@@ -54,7 +54,7 @@ namespace Descent2Workshop.Editor
 
         public string GetMatchCode()
         {
-            return string.Format("{0:N3}-{1:N3}-{2:N3}", location.x / 65536.0d, location.y / 65536.0d, location.z / 65536.0d);
+            return string.Format("{0:N3}-{1:N3}-{2:N3}", location.x, location.y, location.z);
         }
     }
     public class Level

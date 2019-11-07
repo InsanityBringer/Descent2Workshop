@@ -116,6 +116,14 @@ namespace Descent2Workshop.Editor
         public void ProjectTexture()
         {
         }
+
+        public bool AreVertsSelected()
+        {
+            return parent.vertices[Segment.SideVerts[(int)sideNum, 0]].selected
+                && parent.vertices[Segment.SideVerts[(int)sideNum, 1]].selected
+                && parent.vertices[Segment.SideVerts[(int)sideNum, 2]].selected
+                && parent.vertices[Segment.SideVerts[(int)sideNum, 3]].selected;
+        }
     }
     public class Segment
     {
