@@ -142,10 +142,10 @@ namespace LibDescent.Data
             switch (tag)
             {
                 case 2:
-                    model_num = (sbyte)(value-1);
+                    model_num = (short)(value-1);
                     break;
                 case 3:
-                    model_num_inner = (sbyte)(value-1);
+                    model_num_inner = (short)(value-1);
                     break;
                 case 4:
                     flash_vclip = (sbyte)(value - 1);
