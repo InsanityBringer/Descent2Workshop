@@ -49,6 +49,7 @@ namespace Descent2Workshop
 
         //I still don't get the VS toolbox. Ugh
         RobotPanel robotPanel;
+        WeaponPanel weaponPanel;
         
         public HAMEditor(HAMFile data, StandardUI host)
         {
@@ -66,7 +67,10 @@ namespace Descent2Workshop
 
             robotPanel = new RobotPanel();
             robotPanel.Dock = DockStyle.Fill;
+            weaponPanel = new WeaponPanel();
+            weaponPanel.Dock = DockStyle.Fill;
             RobotTabPage.Controls.Add(robotPanel);
+            WeaponTabPage.Controls.Add(weaponPanel);
 
             if (!noPMView)
                 this.ModelTabPage.Controls.Add(this.glControl1);
@@ -333,36 +337,7 @@ namespace Descent2Workshop
         private void InitWeaponPanel()
         {
             SetElementControl(true, true);
-            cbWeaponFireSound.Items.Clear(); cbWeaponFireSound.Items.Add("None");
-            cbWeaponRobotHitSound.Items.Clear(); cbWeaponRobotHitSound.Items.Add("None");
-            cbWeaponWallHitSound.Items.Clear(); cbWeaponWallHitSound.Items.Add("None");
-            for (int i = 0; i < datafile.Sounds.Count; i++)
-            {
-                cbWeaponFireSound.Items.Add(datafile.SoundNames[i]);
-                cbWeaponRobotHitSound.Items.Add(datafile.SoundNames[i]);
-                cbWeaponWallHitSound.Items.Add(datafile.SoundNames[i]);
-            }
-            cbWeaponMuzzleFlash.Items.Clear(); cbWeaponMuzzleFlash.Items.Add("None");
-            cbWeaponWallHit.Items.Clear(); cbWeaponWallHit.Items.Add("None");
-            cbWeaponRobotHit.Items.Clear(); cbWeaponRobotHit.Items.Add("None");
-            cbWeaponVClip.Items.Clear(); cbWeaponVClip.Items.Add("None");
-            for (int i = 0; i < datafile.VClips.Count; i++)
-            {
-                cbWeaponMuzzleFlash.Items.Add(datafile.VClipNames[i]);
-                cbWeaponWallHit.Items.Add(datafile.VClipNames[i]);
-                cbWeaponRobotHit.Items.Add(datafile.VClipNames[i]);
-                cbWeaponVClip.Items.Add(datafile.VClipNames[i]);
-            }
-            cbWeaponChildren.Items.Clear(); cbWeaponChildren.Items.Add("None"); //this will be fun since my own size can change. ugh
-            for (int i = 0; i < datafile.Weapons.Count; i++)
-                cbWeaponChildren.Items.Add(datafile.WeaponNames[i]);
-            cbWeaponModel1.Items.Clear(); cbWeaponModel1.Items.Add("None");
-            cbWeaponModel2.Items.Clear(); cbWeaponModel2.Items.Add("None");
-            for (int i = 0; i < datafile.PolygonModels.Count; i++)
-            {
-                cbWeaponModel1.Items.Add(datafile.ModelNames[i]);
-                cbWeaponModel2.Items.Add(datafile.ModelNames[i]);
-            }
+            weaponPanel.Init(datafile.SoundNames, datafile.VClipNames, datafile.WeaponNames, datafile.ModelNames, host.DefaultPigFile);
         }
 
         private void InitRobotPanel()
@@ -579,97 +554,8 @@ namespace Descent2Workshop
         public void UpdateWeaponPanel(int num)
         {
             Weapon weapon = datafile.Weapons[num];
-
-            int rendernum = weapon.render_type;
-
-            if (rendernum == 255)
-            {
-                rendernum = 4;
-            }
-
-            cbWeaponRenderMode.SelectedIndex = rendernum;
-
-            txtWeaponABSize.Text = weapon.afterburner_size.ToString();
-            txtWeaponAmmoUse.Text = weapon.ammo_usage.ToString();
-            txtWeaponBlindSize.Text = weapon.flash.ToString();
-            cbWeaponBounce.SelectedIndex = weapon.bounce;
-            txtWeaponCockpitImage.Text = weapon.picture.ToString();
-            txtWeaponCockpitImageh.Text = weapon.hires_picture.ToString();
-            txtWeaponDrag.Text = weapon.drag.ToString();
-            txtWeaponEnergyUsage.Text = weapon.energy_usage.ToString();
-            txtWeaponExplosionSize.Text = weapon.damage_radius.ToString();
-            txtWeaponFireWait.Text = weapon.fire_wait.ToString();
-            txtWeaponFlashSize.Text = weapon.flash_size.ToString();
-            txtWeaponImpactSize.Text = weapon.impact_size.ToString();
-            txtWeaponLifetime.Text = weapon.lifetime.ToString();
-            txtWeaponLight.Text = weapon.light.ToString();
-            txtWeaponMass.Text = weapon.mass.ToString();
-            txtWeaponMPScale.Text = weapon.multi_damage_scale.ToString();
-            txtWeaponPolyLWRatio.Text = weapon.po_len_to_width_ratio.ToString();
-            txtWeaponProjectileCount.Text = weapon.fire_count.ToString();
-            txtWeaponProjectileSize.Text = weapon.blob_size.ToString();
-            txtWeaponSpeedvar.Text = weapon.speedvar.ToString();
-            txtWeaponStaticSprite.Text = weapon.bitmap.ToString();
-            txtWeaponThrust.Text = weapon.thrust.ToString();
-
-            cbWeaponDestroyable.Checked = weapon.destroyable != 0;
-            cbWeaponHoming.Checked = weapon.homing_flag != 0;
-            cbWeaponIsMatter.Checked = weapon.matter != 0;
-            cbWeaponPlacable.Checked = (weapon.flags & 1) != 0;
-            cbWeaponRipper.Checked = weapon.persistent != 0;
-
-            cbWeaponChildren.SelectedIndex = weapon.children + 1;
-            cbWeaponFireSound.SelectedIndex = weapon.flash_sound + 1;
-            cbWeaponRobotHitSound.SelectedIndex = weapon.robot_hit_sound + 1;
-            cbWeaponWallHitSound.SelectedIndex = weapon.wall_hit_sound + 1;
-            cbWeaponModel1.SelectedIndex = weapon.model_num + 1;
-            cbWeaponModel2.SelectedIndex = weapon.model_num_inner + 1;
-            cbWeaponWallHit.SelectedIndex = weapon.wall_hit_vclip + 1;
-            cbWeaponRobotHit.SelectedIndex = weapon.robot_hit_vclip + 1;
-            cbWeaponMuzzleFlash.SelectedIndex = weapon.flash_vclip + 1;
-            cbWeaponVClip.SelectedIndex = weapon.weapon_vclip + 1;
-
-            nudWeaponStr.Value = 0;
-            UpdateWeaponPower(0);
+            weaponPanel.Update(weapon);
             txtElemName.Text = datafile.WeaponNames[num];
-
-            UpdateWeaponGraphicControls();
-        }
-
-        private void nudWeaponStr_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isLocked)
-            {
-                isLocked = true;
-                UpdateWeaponPower((int)nudWeaponStr.Value);
-                isLocked = false;
-            }
-        }
-
-        private void UpdateWeaponPower(int num)
-        {
-            Weapon weapon = datafile.Weapons[(int)nudElementNum.Value];
-
-            txtWeaponStr.Text = weapon.strength[num].ToString();
-            txtWeaponSpeed.Text = weapon.speed[num].ToString();
-        }
-
-        private void UpdateWeaponGraphicControls()
-        {
-            cbWeaponModel1.Visible = cbWeaponModel2.Visible = cbWeaponVClip.Visible = txtWeaponStaticSprite.Visible = false;
-            lbSprite.Visible = lbModelNum.Visible = lbModelNumInner.Visible = btnRemapWeaponSprite.Visible = false;
-            if (cbWeaponRenderMode.SelectedIndex == 0 || cbWeaponRenderMode.SelectedIndex == 1 || cbWeaponRenderMode.SelectedIndex == 4)
-            {
-                lbSprite.Visible = txtWeaponStaticSprite.Visible = btnRemapWeaponSprite.Visible = true;
-            }
-            else if (cbWeaponRenderMode.SelectedIndex == 3)
-            {
-                lbSprite.Visible = cbWeaponVClip.Visible = true;
-            }
-            else if (cbWeaponRenderMode.SelectedIndex == 2)
-            {
-                lbModelNum.Visible = lbModelNumInner.Visible = cbWeaponModel1.Visible = cbWeaponModel2.Visible = true;
-            }
         }
 
         private void UpdateModelPanel(int num)
@@ -882,10 +768,6 @@ namespace Descent2Workshop
                         UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, value), pbAnimFramePreview);
                         txtEffectFrameNum.Text = (value).ToString();
                         break;
-                    case "4":
-                        datafile.Weapons[ElementNumber].bitmap = (ushort)(value);
-                        txtWeaponStaticSprite.Text = (value).ToString();
-                        break;
                     case "5":
                         shipvalue = (int)nudShipTextures.Value - 2;
                         datafile.multiplayerBitmaps[shipvalue * 2 + 1] = (ushort)(value);
@@ -910,14 +792,6 @@ namespace Descent2Workshop
                         txtCockpitID.Text = (value).ToString();
                         datafile.Cockpits[ElementNumber] = (ushort)(value);
                         UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, value), pbCockpit);
-                        break;
-                    case "10":
-                        txtWeaponCockpitImage.Text = (value).ToString();
-                        datafile.Weapons[ElementNumber].picture = (ushort)value;
-                        break;
-                    case "11":
-                        txtWeaponCockpitImageh.Text = (value).ToString();
-                        datafile.Weapons[ElementNumber].hires_picture = (ushort)value;
                         break;
                 }
                 isLocked = false;
@@ -949,111 +823,6 @@ namespace Descent2Workshop
                         UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, datafile.EClips[ElementNumber].vc.frames[0]), pbEffectFramePreview);
                         break;
                 }
-                isLocked = false;
-            }
-        }
-
-        //---------------------------------------------------------------------
-        // WEAPON UPDATORS
-        //---------------------------------------------------------------------
-
-        private void txtWeaponBounce_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-            {
-                return;
-            }
-            TextBox textBox = (TextBox)sender;
-            int tagvalue = int.Parse((string)textBox.Tag);
-
-            int value = int.MinValue;
-            if (int.TryParse(textBox.Text, out value))
-            {
-                Weapon weapon = datafile.Weapons[ElementNumber];
-                weapon.UpdateWeapon(tagvalue, value, (int)nudWeaponStr.Value, datafile);
-            }
-        }
-
-        private void fixedWeaponElemChange_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-            {
-                return;
-            }
-            TextBox textBox = (TextBox)sender;
-            string tagstr = (string)textBox.Tag;
-            int tagvalue = Int32.Parse(tagstr);
-
-            float fvalue = 0.0f;
-            if (float.TryParse(textBox.Text, out fvalue))
-            {
-                int value = (int)(fvalue * 65536f);
-                Weapon weapon = datafile.Weapons[ElementNumber];
-                weapon.UpdateWeapon(tagvalue, value, (int)nudWeaponStr.Value, datafile);
-            }
-        }
-
-        private void WeaponCheckBox_CheckChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            Weapon weapon = datafile.Weapons[ElementNumber];
-            CheckBox checkBox = (CheckBox)sender;
-
-            switch (checkBox.Tag)
-            {
-                case "1":
-                    weapon.destroyable = (byte)(checkBox.Checked ? 1 : 0);
-                    break;
-                case "2":
-                    weapon.persistent = (byte)(checkBox.Checked ? 1 : 0);
-                    break;
-                case "3":
-                    weapon.matter = (byte)(checkBox.Checked ? 1 : 0);
-                    break;
-                case "4":
-                    weapon.homing_flag = (byte)(checkBox.Checked ? 1 : 0);
-                    break;
-                case "5":
-                    weapon.flags = (byte)(checkBox.Checked ? 1 : 0);
-                    break;
-            }
-        }
-
-        private void cbWeaponRenderMode_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            Weapon weapon = datafile.Weapons[ElementNumber];
-            int weapontype = cbWeaponRenderMode.SelectedIndex;
-            if (weapontype > 3)
-            {
-                weapontype = 255;
-            }
-            weapon.render_type = (byte)weapontype;
-            UpdateWeaponGraphicControls();
-        }
-
-        private void WeaponComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked) return;
-            ComboBox comboBox = (ComboBox)sender;
-            Weapon weapon = datafile.Weapons[(int)nudElementNum.Value];
-            weapon.UpdateWeapon(int.Parse((string)comboBox.Tag), comboBox.SelectedIndex, (int)nudWeaponStr.Value, datafile);
-        }
-
-        private void btnCalculateLW_Click(object sender, EventArgs e)
-        {
-            Weapon weapon = datafile.Weapons[ElementNumber];
-            if (weapon.render_type == 2)
-            {
-                Polymodel model = datafile.PolygonModels[weapon.model_num];
-                double width = Math.Abs(model.mins.x / 65536.0d) + Math.Abs(model.maxs.x / 65536.0d);
-                double len = Math.Abs(model.mins.z / 65536.0d) + Math.Abs(model.maxs.z / 65536.0d);
-                double ratio = len / width;
-                weapon.po_len_to_width_ratio = (int)(ratio * 65536.0d);
-                isLocked = true;
-                txtWeaponPolyLWRatio.Text = ratio.ToString();
                 isLocked = false;
             }
         }

@@ -137,7 +137,7 @@ namespace LibDescent.Data
             }
         }
 
-        public void UpdateWeapon(int tag, int value, int index, IElementManager manager)
+        public void UpdateWeapon(int tag, int value, int index)
         {
             switch (tag)
             {

@@ -60,33 +60,33 @@ namespace Descent2Workshop.EditorPanels
             cbRobotTauntSound.Items.Clear();
             cbRobotHitSound.Items.Clear();
             cbRobotDeathSound.Items.Clear();
-            for (int i = 0; i < SoundNames.Count; i++)
+            //for (int i = 0; i < SoundNames.Count; i++)
             {
-                cbRobotAttackSound.Items.Add(SoundNames[i]);
-                cbRobotClawSound.Items.Add(SoundNames[i]);
-                cbRobotDyingSound.Items.Add(SoundNames[i]);
-                cbRobotSeeSound.Items.Add(SoundNames[i]);
-                cbRobotTauntSound.Items.Add(SoundNames[i]);
-                cbRobotHitSound.Items.Add(SoundNames[i]);
-                cbRobotDeathSound.Items.Add(SoundNames[i]);
+                cbRobotAttackSound.Items.AddRange(SoundNames.ToArray<string>());
+                cbRobotClawSound.Items.AddRange(SoundNames.ToArray<string>());
+                cbRobotDyingSound.Items.AddRange(SoundNames.ToArray<string>());
+                cbRobotSeeSound.Items.AddRange(SoundNames.ToArray<string>());
+                cbRobotTauntSound.Items.AddRange(SoundNames.ToArray<string>());
+                cbRobotHitSound.Items.AddRange(SoundNames.ToArray<string>());
+                cbRobotDeathSound.Items.AddRange(SoundNames.ToArray<string>());
             }
             cbRobotWeapon1.Items.Clear();
             cbRobotWeapon2.Items.Clear(); cbRobotWeapon2.Items.Add("None");
-            for (int i = 0; i < WeaponNames.Count; i++)
+            //for (int i = 0; i < WeaponNames.Count; i++)
             {
-                cbRobotWeapon1.Items.Add(WeaponNames[i]);
-                cbRobotWeapon2.Items.Add(WeaponNames[i]);
+                cbRobotWeapon1.Items.AddRange(WeaponNames.ToArray<string>());
+                cbRobotWeapon2.Items.AddRange(WeaponNames.ToArray<string>());
             }
             cbRobotHitVClip.Items.Clear(); cbRobotHitVClip.Items.Add("None");
             cbRobotDeathVClip.Items.Clear(); cbRobotDeathVClip.Items.Add("None");
-            for (int i = 0; i < VClipNames.Count; i++)
+            //for (int i = 0; i < VClipNames.Count; i++)
             {
-                cbRobotHitVClip.Items.Add(VClipNames[i]);
-                cbRobotDeathVClip.Items.Add(VClipNames[i]);
+                cbRobotHitVClip.Items.AddRange(VClipNames.ToArray<string>());
+                cbRobotDeathVClip.Items.AddRange(VClipNames.ToArray<string>());
             }
             cbRobotModel.Items.Clear();
-            for (int i = 0; i < ModelNames.Count; i++)
-                cbRobotModel.Items.Add(ModelNames[i]);
+            //for (int i = 0; i < ModelNames.Count; i++)
+                cbRobotModel.Items.AddRange(ModelNames.ToArray<string>());
         }
 
         //Fillers

@@ -99,6 +99,12 @@
     <Compile Include="EditorPanels\RobotPanel.Designer.cs">
       <DependentUpon>RobotPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="EditorPanels\WeaponPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorPanels\WeaponPanel.Designer.cs">
+      <DependentUpon>WeaponPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Editor\ControlCenter.cs" />
     <Compile Include="Editor\ConvertToOverload.cs" />
     <Compile Include="Editor\DynamicLight.cs" />
@@ -213,6 +219,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EditorPanels\RobotPanel.resx">
       <DependentUpon>RobotPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorPanels\WeaponPanel.resx">
+      <DependentUpon>WeaponPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editor\EditorUI.resx">
       <DependentUpon>EditorUI.cs</DependentUpon>
