@@ -445,7 +445,7 @@ namespace Descent2Workshop
             int tagvalue = Int32.Parse(tagstr);
             int value = sendingControl.SelectedIndex;
             Robot robot = datafile.replacedRobots[ElementNumber];
-            robot.UpdateRobot(tagvalue, ref value, (int)nudRobotAI.Value, 0, datafile);
+            robot.UpdateRobot(tagvalue, ref value, (int)nudRobotAI.Value, 0);
             //[ISB] ugly hack, show new value of joints and animation checkbox
             isLocked = true;
             UpdateRobotAnimation(robot);
@@ -463,7 +463,7 @@ namespace Descent2Workshop
             if (int.TryParse(textBox.Text, out value))
             {
                 Robot robot = datafile.replacedRobots[ElementNumber];
-                bool clamped = robot.UpdateRobot(tagvalue, ref value, (int)nudRobotAI.Value, 0, datafile);
+                bool clamped = robot.UpdateRobot(tagvalue, ref value, (int)nudRobotAI.Value, 0);
                 if (clamped) //parrot back the value if it clamped
                 {
                     isLocked = true;
@@ -486,7 +486,7 @@ namespace Descent2Workshop
             {
                 int value = (int)(fvalue * 65536f);
                 Robot robot = datafile.replacedRobots[ElementNumber];
-                bool clamped = robot.UpdateRobot(tagvalue, ref value, (int)nudRobotAI.Value, 0, datafile);
+                bool clamped = robot.UpdateRobot(tagvalue, ref value, (int)nudRobotAI.Value, 0);
                 if (clamped) //parrot back the value if it clamped
                 {
                     isLocked = true;
@@ -535,7 +535,7 @@ namespace Descent2Workshop
                 return;
             if (datafile.replacedRobots.Count == 0) return;
             Robot robot = datafile.replacedRobots[ElementNumber];
-            robot.ClearAndUpdateDropReference(null, cbRobotDropType.SelectedIndex == 1 ? 2 : 7);
+            robot.ClearAndUpdateDropReference(cbRobotDropType.SelectedIndex == 1 ? 2 : 7);
             UpdateRobotDropTypes(cbRobotDropType.SelectedIndex, robot);
         }
 

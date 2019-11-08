@@ -28,6 +28,7 @@ using System.IO;
 using System.Text;
 using LibDescent.Data;
 using LibDescent.Edit;
+using Descent2Workshop.EditorPanels;
 
 namespace Descent2Workshop
 {
@@ -45,6 +46,9 @@ namespace Descent2Workshop
 
         private int ElementNumber { get { return (int)nudElementNum.Value; } }
         private int PageNumber { get { return tabControl1.SelectedIndex; } }
+
+        //I still don't get the VS toolbox. Ugh
+        RobotPanel robotPanel;
         
         public HAMEditor(HAMFile data, StandardUI host)
         {
@@ -60,8 +64,12 @@ namespace Descent2Workshop
             this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
             this.glControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl1_Paint);
 
+            robotPanel = new RobotPanel();
+            robotPanel.Dock = DockStyle.Fill;
+            RobotTabPage.Controls.Add(robotPanel);
+
             if (!noPMView)
-                this.tabPage7.Controls.Add(this.glControl1);
+                this.ModelTabPage.Controls.Add(this.glControl1);
             datafile = data;
             this.host = host;
             modelRenderer = new ModelRenderer(datafile, host.DefaultPigFile);
@@ -360,40 +368,7 @@ namespace Descent2Workshop
         private void InitRobotPanel()
         {
             SetElementControl(true, true);
-            cbRobotAttackSound.Items.Clear();
-            cbRobotClawSound.Items.Clear();
-            cbRobotDyingSound.Items.Clear();
-            cbRobotSeeSound.Items.Clear();
-            cbRobotTauntSound.Items.Clear();
-            cbRobotHitSound.Items.Clear();
-            cbRobotDeathSound.Items.Clear();
-            for (int i = 0; i < datafile.Sounds.Count; i++)
-            {
-                cbRobotAttackSound.Items.Add(datafile.SoundNames[i]);
-                cbRobotClawSound.Items.Add(datafile.SoundNames[i]);
-                cbRobotDyingSound.Items.Add(datafile.SoundNames[i]);
-                cbRobotSeeSound.Items.Add(datafile.SoundNames[i]);
-                cbRobotTauntSound.Items.Add(datafile.SoundNames[i]);
-                cbRobotHitSound.Items.Add(datafile.SoundNames[i]);
-                cbRobotDeathSound.Items.Add(datafile.SoundNames[i]);
-            }
-            cbRobotWeapon1.Items.Clear();
-            cbRobotWeapon2.Items.Clear(); cbRobotWeapon2.Items.Add("None");
-            for (int i = 0; i < datafile.Weapons.Count; i++)
-            {
-                cbRobotWeapon1.Items.Add(datafile.WeaponNames[i]);
-                cbRobotWeapon2.Items.Add(datafile.WeaponNames[i]);
-            }
-            cbRobotHitVClip.Items.Clear(); cbRobotHitVClip.Items.Add("None");
-            cbRobotDeathVClip.Items.Clear(); cbRobotDeathVClip.Items.Add("None");
-            for (int i = 0; i < datafile.VClips.Count; i++)
-            {
-                cbRobotHitVClip.Items.Add(datafile.VClipNames[i]);
-                cbRobotDeathVClip.Items.Add(datafile.VClipNames[i]);
-            }
-            cbRobotModel.Items.Clear();
-            for (int i = 0; i < datafile.PolygonModels.Count; i++)
-                cbRobotModel.Items.Add(datafile.ModelNames[i]);
+            robotPanel.Init(datafile.VClipNames, datafile.SoundNames, datafile.RobotNames, datafile.WeaponNames, datafile.PowerupNames, datafile.ModelNames);
         }
 
         private void InitSoundPanel()
@@ -594,115 +569,11 @@ namespace Descent2Workshop
             }
         }
 
-        private void UpdateRobotDropTypes(int dropType, Robot robot)
-        {
-            cbRobotDropItem.Items.Clear();
-            if (dropType != 1)
-            {
-                for (int i = 0; i < datafile.Powerups.Count; i++)
-                    cbRobotDropItem.Items.Add(datafile.PowerupNames[i]);
-                cbRobotDropItem.SelectedIndex = robot.contains_id;
-            }
-            else
-            {
-                for (int i = 0; i < datafile.Robots.Count; i++)
-                    cbRobotDropItem.Items.Add(datafile.RobotNames[i]);
-                cbRobotDropItem.SelectedIndex = robot.contains_id;
-            }
-            //cbRobotDropItem.SelectedIndex = 0;
-        }
-
         public void UpdateRobotPanel(int num)
         {
             Robot robot = datafile.Robots[num];
-            cbRobotAttackSound.SelectedIndex = robot.attack_sound;
-            cbRobotClawSound.SelectedIndex = robot.claw_sound;
-            txtRobotDrag.Text = robot.drag.ToString();
-            txtRobotDropProb.Text = robot.contains_prob.ToString();
-            txtRobotDrops.Text = robot.contains_count.ToString();
-            txtRobotLight.Text = robot.lighting.ToString();
-            txtRobotMass.Text = robot.mass.ToString();
-            txtRobotScore.Text = robot.score_value.ToString();
-            cbRobotHitSound.SelectedIndex = robot.exp1_sound_num;
-            cbRobotDeathSound.SelectedIndex = robot.exp2_sound_num;
-            cbRobotSeeSound.SelectedIndex = robot.see_sound;
-            txtRobotShield.Text = robot.strength.ToString();
-            cbRobotTauntSound.SelectedIndex = robot.taunt_sound;
-            txtRobotAim.Text = robot.aim.ToString();
-            txtRobotBadass.Text = robot.badass.ToString();
-            txtRobotDeathBlobs.Text = robot.smart_blobs.ToString();
-            txtRobotDeathRolls.Text = robot.death_roll.ToString();
-            txtRobotEnergyDrain.Text = robot.energy_drain.ToString();
-            txtRobotHitBlobs.Text = robot.energy_blobs.ToString();
-            txtRobotGlow.Text = robot.glow.ToString();
-            txtRobotPursuit.Text = robot.pursuit.ToString();
-            cbRobotDyingSound.SelectedIndex = robot.deathroll_sound;
-            txtRobotLightcast.Text = robot.lightcast.ToString();
-
-            cbRobotCompanion.Checked = robot.companion != 0;
-            cbRobotClaw.Checked = robot.attack_type != 0;
-            cbRobotThief.Checked = robot.thief != 0;
-            cbKamikaze.Checked = robot.kamikaze != 0;
-
-            int dropType = robot.contains_type;
-            if (dropType == 2)
-                dropType = 1;
-            else
-                dropType = 0;
-
-            UpdateRobotDropTypes(dropType, robot);
-            cbRobotDropType.SelectedIndex = dropType;
-
-            cbRobotHitVClip.SelectedIndex = robot.exp1_vclip_num + 1;
-            cbRobotDeathVClip.SelectedIndex = robot.exp2_vclip_num + 1;
-            cbRobotModel.SelectedIndex = robot.model_num;
-            cbRobotWeapon1.SelectedIndex = robot.weapon_type;
-            cbRobotWeapon2.SelectedIndex = robot.weapon_type2 + 1;
-            if (robot.behavior >= 128)
-            {
-                cbRobotAI.SelectedIndex = robot.behavior - 128;
-            }
-            else cbRobotAI.SelectedIndex = 0;
-
-            int bossMode = robot.boss_flag;
-            if (bossMode > 20)
-                bossMode -= 18;
-            cmRobotBoss.SelectedIndex = bossMode;
-            cmRobotCloak.SelectedIndex = robot.cloak_type;
-
-            if (robot.behavior != 0)
-                cbRobotAI.SelectedIndex = robot.behavior - 0x80;
-            else
-                cbRobotAI.SelectedIndex = 0;
-
-            nudRobotAI.Value = 0;
-            UpdateRobotAI(0);
-
+            robotPanel.Update(robot);
             txtElemName.Text = datafile.RobotNames[num];
-        }
-
-        private void nudRobotAI_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isLocked)
-            {
-                isLocked = true;
-                UpdateRobotAI((int)nudRobotAI.Value);
-                isLocked = false;
-            }
-        }
-
-        private void UpdateRobotAI(int num)
-        {
-            Robot robot = datafile.Robots[(int)nudElementNum.Value];
-
-            txtRobotCircleDist.Text = robot.circle_distance[num].ToString();
-            txtRobotEvadeSpeed.Text = robot.evade_speed[num].ToString();
-            txtRobotFireDelay.Text = robot.firing_wait[num].ToString();
-            txtRobotFireDelay2.Text = robot.firing_wait2[num].ToString();
-            txtRobotFOV.Text = ((int)(Math.Round(Math.Acos(robot.field_of_view[num]) * 180 / Math.PI, MidpointRounding.AwayFromZero))).ToString();
-            txtRobotMaxSpeed.Text = robot.max_speed[num].ToString();
-            txtRobotTurnSpeed.Text = robot.turn_time[num].ToString();
-            txtRobotShotCount.Text = robot.rapidfire_count[num].ToString();
         }
 
         public void UpdateWeaponPanel(int num)
@@ -1079,129 +950,6 @@ namespace Descent2Workshop
                         break;
                 }
                 isLocked = false;
-            }
-        }
-
-        //---------------------------------------------------------------------
-        // ROBOT UPDATORS
-        //---------------------------------------------------------------------
-
-        private void RobotComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-            {
-                return;
-            }
-            ComboBox sendingControl = (ComboBox)sender;
-            string tagstr = (string)sendingControl.Tag;
-            int tagvalue = Int32.Parse(tagstr);
-            int value = sendingControl.SelectedIndex;
-            Robot robot = datafile.Robots[ElementNumber];
-            robot.UpdateRobot(tagvalue, ref value, (int)nudRobotAI.Value, 0, datafile);
-        }
-
-        private void RobotProperty_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            TextBox textBox = (TextBox)sender;
-            int tagvalue = int.Parse((string)textBox.Tag);
-            int value;
-            if (int.TryParse(textBox.Text, out value))
-            {
-                Robot robot = datafile.Robots[ElementNumber];
-                bool clamped = robot.UpdateRobot(tagvalue, ref value, (int)nudRobotAI.Value, 0, datafile);
-                if (clamped) //parrot back the value if it clamped
-                {
-                    isLocked = true;
-                    textBox.Text = value.ToString();
-                    isLocked = false;
-                }
-            }
-        }
-
-        private void RobotPropertyFixed_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-            {
-                return;
-            }
-            TextBox textBox = (TextBox)sender;
-            int tagvalue = int.Parse((string)textBox.Tag);
-
-            float fvalue;
-            if (float.TryParse(textBox.Text, out fvalue))
-            {
-                int value = (int)(fvalue * 65536f);
-                Robot robot = datafile.Robots[ElementNumber];
-                bool clamped = robot.UpdateRobot(tagvalue, ref value, (int)nudRobotAI.Value, 0, datafile);
-                if (clamped) //parrot back the value if it clamped
-                {
-                    isLocked = true;
-                    textBox.Text = (value / 65536d).ToString();
-                    isLocked = false;
-                }
-            }
-        }
-
-        private void cmRobotCloak_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            Robot robot = datafile.Robots[ElementNumber];
-            robot.cloak_type = (sbyte)cmRobotCloak.SelectedIndex;
-        }
-
-        private void cmRobotBoss_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            Robot robot = datafile.Robots[ElementNumber];
-            int bosstype = cmRobotBoss.SelectedIndex;
-            if (bosstype >= 3)
-            {
-                bosstype += 18;
-            }
-            robot.boss_flag = (sbyte)bosstype;
-        }
-
-        private void cbRobotAI_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            Robot robot = datafile.Robots[ElementNumber];
-            int bosstype = cbRobotAI.SelectedIndex;
-            robot.behavior = (byte)(bosstype + 0x80);
-        }
-
-        private void cbRobotDropType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked) return;
-            Robot robot = datafile.Robots[ElementNumber];
-            robot.ClearAndUpdateDropReference(datafile, cbRobotDropType.SelectedIndex == 1 ? 2 : 7);
-            UpdateRobotDropTypes(cbRobotDropType.SelectedIndex, robot);
-        }
-
-        private void RobotCheckBox_CheckedChange(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            CheckBox input = (CheckBox)sender;
-            Robot robot = datafile.Robots[ElementNumber];
-            switch (input.Tag)
-            {
-                case "0":
-                    robot.thief = (sbyte)(input.Checked ? 1 : 0);
-                    break;
-                case "1":
-                    robot.kamikaze = (sbyte)(input.Checked ? 1 : 0);
-                    break;
-                case "2":
-                    robot.companion = (sbyte)(input.Checked ? 1 : 0);
-                    break;
-                case "3":
-                    robot.attack_type = (sbyte)(input.Checked ? 1 : 0);
-                    break;
             }
         }
 
