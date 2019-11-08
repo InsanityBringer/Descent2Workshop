@@ -349,9 +349,6 @@ namespace LibDescent.Data
                 sounddata = br.ReadBytes(dataToRead);
             }
 
-            //string nameFilename = Path.ChangeExtension(filename, ".names");
-            //if (ReadNamefile(nameFilename) != 0)
-
             int chunkName;
             while (br.BaseStream.Position <= br.BaseStream.Length - 4) //Still room for some chunks
             {
@@ -403,7 +400,8 @@ namespace LibDescent.Data
             BuildModelGunsFromShip(PlayerShip);
             BuildModelTextureTables();
             UpdateEClipMapping();
-            BuildReferenceLists();
+
+            ValidateReferences();
 
             br.Close();
             hasRead = true;
@@ -411,6 +409,107 @@ namespace LibDescent.Data
             return 0;
         }
 
+        public void ValidateReferences()
+        {
+            foreach (TMAPInfo info in TMapInfo)
+            {
+                if (info.eclip_num < -1 || info.eclip_num >= EClips.Count)
+                    info.eclip_num = -1;
+            }
+            foreach (VClip clip in VClips)
+            {
+                if (clip.sound_num < -1 || clip.sound_num >= Sounds.Count)
+                    clip.sound_num = -1;
+            }
+            foreach (EClip clip in EClips)
+            {
+                if (clip.sound_num < -1 || clip.sound_num >= Sounds.Count)
+                    clip.sound_num = -1;
+                if (clip.dest_eclip < -1 || clip.dest_eclip >= EClips.Count)
+                    clip.dest_eclip = -1;
+                if (clip.dest_vclip < -1 || clip.dest_vclip >= VClips.Count)
+                    clip.dest_vclip = -1;
+                if (clip.crit_clip < -1 || clip.crit_clip >= EClips.Count)
+                    clip.crit_clip = -1;
+            }
+            foreach (WClip clip in WClips)
+            {
+                if (clip.open_sound < -1 || clip.open_sound >= Sounds.Count)
+                    clip.open_sound = -1;
+                if (clip.close_sound < -1 || clip.close_sound >= Sounds.Count)
+                    clip.close_sound = -1;
+                for (int i = 0; i < 50; i++)
+                {
+                    if (clip.frames[i] >= Textures.Count)
+                        clip.frames[i] = 0;
+                }
+            }
+            foreach (Robot robot in Robots)
+            {
+                if (robot.exp1_sound_num < -1 || robot.exp1_sound_num >= Sounds.Count)
+                    robot.exp1_sound_num = -1;
+                if (robot.exp1_vclip_num < -1 || robot.exp1_vclip_num >= VClips.Count)
+                    robot.exp1_vclip_num = -1;
+                if (robot.exp2_sound_num < -1 || robot.exp2_sound_num >= Sounds.Count)
+                    robot.exp2_sound_num = -1;
+                if (robot.exp2_vclip_num < -1 || robot.exp2_vclip_num >= VClips.Count)
+                    robot.exp2_vclip_num = -1;
+                if (robot.weapon_type < 0 || robot.weapon_type >= Weapons.Count)
+                    robot.weapon_type = 10; //10 is close enough to the "default weapon" tbh
+                if (robot.weapon_type2 < -1 || robot.weapon_type2 >= Weapons.Count)
+                    robot.weapon_type2 = -1;
+                if (robot.contains_type != 2 && robot.contains_type != 7)
+                {
+                    robot.contains_type = 7; //Makes them drop extra lives
+                    robot.contains_id = 0;
+                }
+                else if (robot.contains_type == 2)
+                {
+                    if (robot.contains_id < 0 || robot.contains_id > Robots.Count)
+                        robot.contains_id = 0;
+                }
+                else
+                {
+                    if (robot.contains_id < 0 || robot.contains_id > Powerups.Count)
+                        robot.contains_id = 0;
+                }
+                if (robot.see_sound < 0 || robot.see_sound >= Sounds.Count)
+                    robot.see_sound = 0;
+                if (robot.attack_sound < 0 || robot.attack_sound >= Sounds.Count)
+                    robot.attack_sound = 0;
+                if (robot.claw_sound < 0 || robot.claw_sound >= Sounds.Count)
+                    robot.claw_sound = 0;
+                if (robot.taunt_sound < 0 || robot.taunt_sound >= Sounds.Count)
+                    robot.taunt_sound = 0;
+                if (robot.deathroll_sound < 0 || robot.deathroll_sound >= Sounds.Count)
+                    robot.deathroll_sound = 0;
+                if (robot.behavior != 0 && (robot.behavior < 0x80 || robot.behavior > 0x86)) //0 required for demo data
+                    robot.behavior = 0x80;
+                if (robot.boss_flag < 0 || (robot.boss_flag >= 2 && robot.boss_flag < 20) || robot.boss_flag >= 28)
+                    robot.boss_flag = 0;
+            }
+            foreach (Weapon weapon in Weapons)
+            {
+                if (weapon.flash_vclip < -1 || weapon.flash_vclip >= VClips.Count)
+                    weapon.flash_vclip = -1;
+                if (weapon.robot_hit_vclip < -1 || weapon.robot_hit_vclip >= VClips.Count)
+                    weapon.robot_hit_vclip = -1;
+                if (weapon.wall_hit_vclip < -1 || weapon.wall_hit_vclip >= VClips.Count)
+                    weapon.wall_hit_vclip = -1;
+                if (weapon.weapon_vclip < -1 || weapon.weapon_vclip >= VClips.Count)
+                    weapon.weapon_vclip = -1;
+
+                if (weapon.flash_sound < -1 || weapon.flash_sound >= Sounds.Count)
+                    weapon.flash_sound = -1;
+                if (weapon.robot_hit_sound < -1 || weapon.robot_hit_sound >= Sounds.Count)
+                    weapon.robot_hit_sound = -1;
+                if (weapon.wall_hit_sound < -1 || weapon.wall_hit_sound >= Sounds.Count)
+                    weapon.wall_hit_sound = -1;
+
+                if (weapon.children < -1 || weapon.children >= Weapons.Count)
+                    weapon.children = -1;
+            }
+        }
         private void BuildModelGunsFromShip(Ship ship)
         {
             Polymodel model = PolygonModels[ship.model_num];
@@ -546,15 +645,6 @@ namespace LibDescent.Data
                 }
                 Console.WriteLine("]");
             }
-        }
-
-        //Reference counting. When adding and deleting elements, we must check that nothing is actually referencing
-        //an element being deleted, to avoid baaad problem.
-        //this is annoying and sucks aaa
-        private void BuildReferenceLists()
-        {
-            //rip
-            //actually no you won't be missed
         }
 
         public void UpdateEClipMapping()

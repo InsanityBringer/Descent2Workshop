@@ -38,7 +38,7 @@ namespace LibDescent.Data
         public short robot_hit_sound;			// What sound for impact with robot
        
         public byte ammo_usage;					//	How many units of ammunition it uses.
-        public byte weapon_vclip;				//	Vclip to render for the weapon, itself.
+        public sbyte weapon_vclip;				//	Vclip to render for the weapon, itself.
         public short wall_hit_sound;			// What sound for impact with wall
         
         public byte destroyable;				//	If !0, this weapon can be destroyed by another weapon.
@@ -171,7 +171,7 @@ namespace LibDescent.Data
                     ammo_usage = (byte)value;
                     break;
                 case 11:
-                    weapon_vclip = (byte)(value - 1);
+                    weapon_vclip = (sbyte)(value - 1);
                     break;
                 case 12:
                     if (value == 0) wall_hit_sound = -1;
