@@ -39,57 +39,8 @@
             this.mnuExportTable = new System.Windows.Forms.MenuItem();
             this.EditorTabs = new System.Windows.Forms.TabControl();
             this.TextureTabPage = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.button2 = new System.Windows.Forms.Button();
-            this.cbVClipSound = new System.Windows.Forms.ComboBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.txtAnimLight = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.txtAnimTotalTime = new System.Windows.Forms.TextBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.btnRemapVCFrame = new System.Windows.Forms.Button();
-            this.nudAnimFrame = new System.Windows.Forms.NumericUpDown();
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtAnimFrameNum = new System.Windows.Forms.TextBox();
-            this.pbAnimFramePreview = new System.Windows.Forms.PictureBox();
-            this.txtAnimFrameCount = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtAnimFrameSpeed = new System.Windows.Forms.TextBox();
-            this.groupBoxAnimFlags = new System.Windows.Forms.GroupBox();
-            this.cbAnimRod = new System.Windows.Forms.CheckBox();
+            this.VClipTabPage = new System.Windows.Forms.TabPage();
             this.EffectsTabPage = new System.Windows.Forms.TabPage();
-            this.btnRemapEClip = new System.Windows.Forms.Button();
-            this.cbEClipMineCritical = new System.Windows.Forms.ComboBox();
-            this.cbEClipBreakSound = new System.Windows.Forms.ComboBox();
-            this.cbEClipBreakVClip = new System.Windows.Forms.ComboBox();
-            this.cbEClipBreakEClip = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label33 = new System.Windows.Forms.Label();
-            this.label32 = new System.Windows.Forms.Label();
-            this.label31 = new System.Windows.Forms.Label();
-            this.label30 = new System.Windows.Forms.Label();
-            this.label29 = new System.Windows.Forms.Label();
-            this.txtEffectBrokenID = new System.Windows.Forms.TextBox();
-            this.txtEffectExplodeSize = new System.Windows.Forms.TextBox();
-            this.txtEffectLight = new System.Windows.Forms.TextBox();
-            this.txtEffectTotalTime = new System.Windows.Forms.TextBox();
-            this.txtEffectFrameSpeed = new System.Windows.Forms.TextBox();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.cbEffectOneShot = new System.Windows.Forms.CheckBox();
-            this.cbEffectCritical = new System.Windows.Forms.CheckBox();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.btnRemapECFrame = new System.Windows.Forms.Button();
-            this.nudEffectFrame = new System.Windows.Forms.NumericUpDown();
-            this.label8 = new System.Windows.Forms.Label();
-            this.txtEffectFrameNum = new System.Windows.Forms.TextBox();
-            this.pbEffectFramePreview = new System.Windows.Forms.PictureBox();
-            this.txtEffectFrameCount = new System.Windows.Forms.TextBox();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
             this.DoorTabPage = new System.Windows.Forms.TabPage();
             this.cbWallCloseSound = new System.Windows.Forms.ComboBox();
             this.cbWallOpenSound = new System.Windows.Forms.ComboBox();
@@ -232,16 +183,6 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.mainToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.EditorTabs.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudAnimFrame)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbAnimFramePreview)).BeginInit();
-            this.groupBoxAnimFlags.SuspendLayout();
-            this.EffectsTabPage.SuspendLayout();
-            this.groupBox6.SuspendLayout();
-            this.groupBox5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudEffectFrame)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbEffectFramePreview)).BeginInit();
             this.DoorTabPage.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -326,7 +267,7 @@
             // EditorTabs
             // 
             this.EditorTabs.Controls.Add(this.TextureTabPage);
-            this.EditorTabs.Controls.Add(this.tabPage2);
+            this.EditorTabs.Controls.Add(this.VClipTabPage);
             this.EditorTabs.Controls.Add(this.EffectsTabPage);
             this.EditorTabs.Controls.Add(this.DoorTabPage);
             this.EditorTabs.Controls.Add(this.RobotTabPage);
@@ -357,544 +298,24 @@
             this.TextureTabPage.Text = "Textures";
             this.TextureTabPage.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
+            // VClipTabPage
             // 
-            this.tabPage2.Controls.Add(this.button2);
-            this.tabPage2.Controls.Add(this.cbVClipSound);
-            this.tabPage2.Controls.Add(this.label13);
-            this.tabPage2.Controls.Add(this.label14);
-            this.tabPage2.Controls.Add(this.label15);
-            this.tabPage2.Controls.Add(this.txtAnimLight);
-            this.tabPage2.Controls.Add(this.label16);
-            this.tabPage2.Controls.Add(this.txtAnimTotalTime);
-            this.tabPage2.Controls.Add(this.groupBox2);
-            this.tabPage2.Controls.Add(this.txtAnimFrameSpeed);
-            this.tabPage2.Controls.Add(this.groupBoxAnimFlags);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(846, 513);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "VClips";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(85, 114);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(139, 23);
-            this.button2.TabIndex = 61;
-            this.button2.Tag = "1";
-            this.button2.Text = "Change Animation...";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.RemapMultiImage_Click);
-            // 
-            // cbVClipSound
-            // 
-            this.cbVClipSound.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbVClipSound.FormattingEnabled = true;
-            this.cbVClipSound.Location = new System.Drawing.Point(85, 86);
-            this.cbVClipSound.Name = "cbVClipSound";
-            this.cbVClipSound.Size = new System.Drawing.Size(139, 21);
-            this.cbVClipSound.TabIndex = 60;
-            this.cbVClipSound.SelectedIndexChanged += new System.EventHandler(this.cbVClipSound_SelectedIndexChanged);
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(8, 11);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(71, 13);
-            this.label13.TabIndex = 48;
-            this.label13.Text = "Frame speed:";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(23, 37);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(56, 13);
-            this.label14.TabIndex = 50;
-            this.label14.Text = "Total time:";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(17, 63);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(62, 13);
-            this.label15.TabIndex = 52;
-            this.label15.Text = "Light value:";
-            // 
-            // txtAnimLight
-            // 
-            this.txtAnimLight.Location = new System.Drawing.Point(85, 60);
-            this.txtAnimLight.Name = "txtAnimLight";
-            this.txtAnimLight.Size = new System.Drawing.Size(76, 20);
-            this.txtAnimLight.TabIndex = 53;
-            this.txtAnimLight.Tag = "2";
-            this.txtAnimLight.TextChanged += new System.EventHandler(this.VClipProperty_TextChanged);
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(38, 89);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(41, 13);
-            this.label16.TabIndex = 54;
-            this.label16.Text = "Sound:";
-            // 
-            // txtAnimTotalTime
-            // 
-            this.txtAnimTotalTime.Location = new System.Drawing.Point(85, 34);
-            this.txtAnimTotalTime.Name = "txtAnimTotalTime";
-            this.txtAnimTotalTime.Size = new System.Drawing.Size(76, 20);
-            this.txtAnimTotalTime.TabIndex = 51;
-            this.txtAnimTotalTime.Tag = "1";
-            this.txtAnimTotalTime.TextChanged += new System.EventHandler(this.VClipProperty_TextChanged);
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.groupBox2.Controls.Add(this.btnRemapVCFrame);
-            this.groupBox2.Controls.Add(this.nudAnimFrame);
-            this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Controls.Add(this.txtAnimFrameNum);
-            this.groupBox2.Controls.Add(this.pbAnimFramePreview);
-            this.groupBox2.Controls.Add(this.txtAnimFrameCount);
-            this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Location = new System.Drawing.Point(11, 143);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(336, 327);
-            this.groupBox2.TabIndex = 56;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Frames";
-            // 
-            // btnRemapVCFrame
-            // 
-            this.btnRemapVCFrame.Location = new System.Drawing.Point(189, 69);
-            this.btnRemapVCFrame.Name = "btnRemapVCFrame";
-            this.btnRemapVCFrame.Size = new System.Drawing.Size(36, 23);
-            this.btnRemapVCFrame.TabIndex = 27;
-            this.btnRemapVCFrame.Tag = "2";
-            this.btnRemapVCFrame.Text = "...";
-            this.btnRemapVCFrame.UseVisualStyleBackColor = true;
-            this.btnRemapVCFrame.Click += new System.EventHandler(this.RemapSingleImage_Click);
-            // 
-            // nudAnimFrame
-            // 
-            this.nudAnimFrame.Location = new System.Drawing.Point(269, 19);
-            this.nudAnimFrame.Maximum = new decimal(new int[] {
-            29,
-            0,
-            0,
-            0});
-            this.nudAnimFrame.Name = "nudAnimFrame";
-            this.nudAnimFrame.Size = new System.Drawing.Size(61, 20);
-            this.nudAnimFrame.TabIndex = 26;
-            this.nudAnimFrame.ValueChanged += new System.EventHandler(this.nudAnimFrame_ValueChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 74);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(71, 13);
-            this.label1.TabIndex = 25;
-            this.label1.Text = "Bitmap Index:";
-            // 
-            // txtAnimFrameNum
-            // 
-            this.txtAnimFrameNum.Location = new System.Drawing.Point(83, 71);
-            this.txtAnimFrameNum.Name = "txtAnimFrameNum";
-            this.txtAnimFrameNum.Size = new System.Drawing.Size(100, 20);
-            this.txtAnimFrameNum.TabIndex = 24;
-            // 
-            // pbAnimFramePreview
-            // 
-            this.pbAnimFramePreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pbAnimFramePreview.Location = new System.Drawing.Point(6, 97);
-            this.pbAnimFramePreview.Name = "pbAnimFramePreview";
-            this.pbAnimFramePreview.Size = new System.Drawing.Size(320, 200);
-            this.pbAnimFramePreview.TabIndex = 19;
-            this.pbAnimFramePreview.TabStop = false;
-            // 
-            // txtAnimFrameCount
-            // 
-            this.txtAnimFrameCount.Location = new System.Drawing.Point(56, 25);
-            this.txtAnimFrameCount.Name = "txtAnimFrameCount";
-            this.txtAnimFrameCount.Size = new System.Drawing.Size(77, 20);
-            this.txtAnimFrameCount.TabIndex = 23;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 28);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(44, 13);
-            this.label2.TabIndex = 22;
-            this.label2.Text = "Frames:";
-            // 
-            // txtAnimFrameSpeed
-            // 
-            this.txtAnimFrameSpeed.Location = new System.Drawing.Point(85, 8);
-            this.txtAnimFrameSpeed.Name = "txtAnimFrameSpeed";
-            this.txtAnimFrameSpeed.ReadOnly = true;
-            this.txtAnimFrameSpeed.Size = new System.Drawing.Size(76, 20);
-            this.txtAnimFrameSpeed.TabIndex = 49;
-            // 
-            // groupBoxAnimFlags
-            // 
-            this.groupBoxAnimFlags.Controls.Add(this.cbAnimRod);
-            this.groupBoxAnimFlags.Location = new System.Drawing.Point(230, 8);
-            this.groupBoxAnimFlags.Name = "groupBoxAnimFlags";
-            this.groupBoxAnimFlags.Size = new System.Drawing.Size(117, 114);
-            this.groupBoxAnimFlags.TabIndex = 59;
-            this.groupBoxAnimFlags.TabStop = false;
-            this.groupBoxAnimFlags.Text = "Flags";
-            // 
-            // cbAnimRod
-            // 
-            this.cbAnimRod.AutoSize = true;
-            this.cbAnimRod.Location = new System.Drawing.Point(6, 19);
-            this.cbAnimRod.Name = "cbAnimRod";
-            this.cbAnimRod.Size = new System.Drawing.Size(83, 17);
-            this.cbAnimRod.TabIndex = 18;
-            this.cbAnimRod.Text = "Draw as rod";
-            this.cbAnimRod.UseVisualStyleBackColor = true;
+            this.VClipTabPage.Location = new System.Drawing.Point(4, 22);
+            this.VClipTabPage.Name = "VClipTabPage";
+            this.VClipTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.VClipTabPage.Size = new System.Drawing.Size(846, 513);
+            this.VClipTabPage.TabIndex = 1;
+            this.VClipTabPage.Text = "VClips";
+            this.VClipTabPage.UseVisualStyleBackColor = true;
             // 
             // EffectsTabPage
             // 
-            this.EffectsTabPage.Controls.Add(this.btnRemapEClip);
-            this.EffectsTabPage.Controls.Add(this.cbEClipMineCritical);
-            this.EffectsTabPage.Controls.Add(this.cbEClipBreakSound);
-            this.EffectsTabPage.Controls.Add(this.cbEClipBreakVClip);
-            this.EffectsTabPage.Controls.Add(this.cbEClipBreakEClip);
-            this.EffectsTabPage.Controls.Add(this.label5);
-            this.EffectsTabPage.Controls.Add(this.label33);
-            this.EffectsTabPage.Controls.Add(this.label32);
-            this.EffectsTabPage.Controls.Add(this.label31);
-            this.EffectsTabPage.Controls.Add(this.label30);
-            this.EffectsTabPage.Controls.Add(this.label29);
-            this.EffectsTabPage.Controls.Add(this.txtEffectBrokenID);
-            this.EffectsTabPage.Controls.Add(this.txtEffectExplodeSize);
-            this.EffectsTabPage.Controls.Add(this.txtEffectLight);
-            this.EffectsTabPage.Controls.Add(this.txtEffectTotalTime);
-            this.EffectsTabPage.Controls.Add(this.txtEffectFrameSpeed);
-            this.EffectsTabPage.Controls.Add(this.groupBox6);
-            this.EffectsTabPage.Controls.Add(this.groupBox5);
-            this.EffectsTabPage.Controls.Add(this.label21);
-            this.EffectsTabPage.Controls.Add(this.label22);
-            this.EffectsTabPage.Controls.Add(this.label23);
             this.EffectsTabPage.Location = new System.Drawing.Point(4, 22);
             this.EffectsTabPage.Name = "EffectsTabPage";
             this.EffectsTabPage.Size = new System.Drawing.Size(846, 513);
             this.EffectsTabPage.TabIndex = 2;
             this.EffectsTabPage.Text = "Effects";
             this.EffectsTabPage.UseVisualStyleBackColor = true;
-            // 
-            // btnRemapEClip
-            // 
-            this.btnRemapEClip.Location = new System.Drawing.Point(85, 86);
-            this.btnRemapEClip.Name = "btnRemapEClip";
-            this.btnRemapEClip.Size = new System.Drawing.Size(139, 23);
-            this.btnRemapEClip.TabIndex = 85;
-            this.btnRemapEClip.Tag = "2";
-            this.btnRemapEClip.Text = "Change Animation...";
-            this.btnRemapEClip.UseVisualStyleBackColor = true;
-            this.btnRemapEClip.Click += new System.EventHandler(this.RemapMultiImage_Click);
-            // 
-            // cbEClipMineCritical
-            // 
-            this.cbEClipMineCritical.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbEClipMineCritical.FormattingEnabled = true;
-            this.cbEClipMineCritical.Location = new System.Drawing.Point(459, 143);
-            this.cbEClipMineCritical.Name = "cbEClipMineCritical";
-            this.cbEClipMineCritical.Size = new System.Drawing.Size(100, 21);
-            this.cbEClipMineCritical.TabIndex = 84;
-            this.cbEClipMineCritical.Tag = "4";
-            this.cbEClipMineCritical.SelectedIndexChanged += new System.EventHandler(this.EClipComboBox_SelectedIndexChanged);
-            // 
-            // cbEClipBreakSound
-            // 
-            this.cbEClipBreakSound.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbEClipBreakSound.FormattingEnabled = true;
-            this.cbEClipBreakSound.Location = new System.Drawing.Point(459, 116);
-            this.cbEClipBreakSound.Name = "cbEClipBreakSound";
-            this.cbEClipBreakSound.Size = new System.Drawing.Size(100, 21);
-            this.cbEClipBreakSound.TabIndex = 83;
-            this.cbEClipBreakSound.Tag = "3";
-            this.cbEClipBreakSound.SelectedIndexChanged += new System.EventHandler(this.EClipComboBox_SelectedIndexChanged);
-            // 
-            // cbEClipBreakVClip
-            // 
-            this.cbEClipBreakVClip.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbEClipBreakVClip.FormattingEnabled = true;
-            this.cbEClipBreakVClip.Location = new System.Drawing.Point(459, 37);
-            this.cbEClipBreakVClip.Name = "cbEClipBreakVClip";
-            this.cbEClipBreakVClip.Size = new System.Drawing.Size(100, 21);
-            this.cbEClipBreakVClip.TabIndex = 82;
-            this.cbEClipBreakVClip.Tag = "2";
-            this.cbEClipBreakVClip.SelectedIndexChanged += new System.EventHandler(this.EClipComboBox_SelectedIndexChanged);
-            // 
-            // cbEClipBreakEClip
-            // 
-            this.cbEClipBreakEClip.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbEClipBreakEClip.FormattingEnabled = true;
-            this.cbEClipBreakEClip.Location = new System.Drawing.Point(459, 10);
-            this.cbEClipBreakEClip.Name = "cbEClipBreakEClip";
-            this.cbEClipBreakEClip.Size = new System.Drawing.Size(100, 21);
-            this.cbEClipBreakEClip.TabIndex = 81;
-            this.cbEClipBreakEClip.Tag = "1";
-            this.cbEClipBreakEClip.SelectedIndexChanged += new System.EventHandler(this.EClipComboBox_SelectedIndexChanged);
-            // 
-            // label5
-            // 
-            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(357, 146);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(96, 13);
-            this.label5.TabIndex = 80;
-            this.label5.Text = "Mine critical effect:";
-            // 
-            // label33
-            // 
-            this.label33.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(360, 93);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(93, 13);
-            this.label33.TabIndex = 76;
-            this.label33.Text = "Broken texture ID:";
-            // 
-            // label32
-            // 
-            this.label32.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(373, 119);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(80, 13);
-            this.label32.TabIndex = 75;
-            this.label32.Text = "Ambient sound:";
-            // 
-            // label31
-            // 
-            this.label31.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(364, 67);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(89, 13);
-            this.label31.TabIndex = 78;
-            this.label31.Text = "Size of explosion:";
-            // 
-            // label30
-            // 
-            this.label30.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(373, 40);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(80, 13);
-            this.label30.TabIndex = 77;
-            this.label30.Text = "Break particles:";
-            // 
-            // label29
-            // 
-            this.label29.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(385, 13);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(68, 13);
-            this.label29.TabIndex = 74;
-            this.label29.Text = "Break effect:";
-            // 
-            // txtEffectBrokenID
-            // 
-            this.txtEffectBrokenID.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtEffectBrokenID.Location = new System.Drawing.Point(459, 90);
-            this.txtEffectBrokenID.Name = "txtEffectBrokenID";
-            this.txtEffectBrokenID.Size = new System.Drawing.Size(100, 20);
-            this.txtEffectBrokenID.TabIndex = 72;
-            this.txtEffectBrokenID.Tag = "4";
-            this.txtEffectBrokenID.TextChanged += new System.EventHandler(this.EClipProperty_TextChanged);
-            // 
-            // txtEffectExplodeSize
-            // 
-            this.txtEffectExplodeSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtEffectExplodeSize.Location = new System.Drawing.Point(459, 64);
-            this.txtEffectExplodeSize.Name = "txtEffectExplodeSize";
-            this.txtEffectExplodeSize.Size = new System.Drawing.Size(100, 20);
-            this.txtEffectExplodeSize.TabIndex = 68;
-            this.txtEffectExplodeSize.Tag = "3";
-            this.txtEffectExplodeSize.TextChanged += new System.EventHandler(this.EClipProperty_TextChanged);
-            // 
-            // txtEffectLight
-            // 
-            this.txtEffectLight.Location = new System.Drawing.Point(85, 60);
-            this.txtEffectLight.Name = "txtEffectLight";
-            this.txtEffectLight.Size = new System.Drawing.Size(76, 20);
-            this.txtEffectLight.TabIndex = 56;
-            this.txtEffectLight.Tag = "2";
-            this.txtEffectLight.TextChanged += new System.EventHandler(this.EClipProperty_TextChanged);
-            // 
-            // txtEffectTotalTime
-            // 
-            this.txtEffectTotalTime.Location = new System.Drawing.Point(85, 34);
-            this.txtEffectTotalTime.Name = "txtEffectTotalTime";
-            this.txtEffectTotalTime.Size = new System.Drawing.Size(76, 20);
-            this.txtEffectTotalTime.TabIndex = 54;
-            this.txtEffectTotalTime.Tag = "1";
-            this.txtEffectTotalTime.TextChanged += new System.EventHandler(this.EClipProperty_TextChanged);
-            // 
-            // txtEffectFrameSpeed
-            // 
-            this.txtEffectFrameSpeed.Location = new System.Drawing.Point(85, 8);
-            this.txtEffectFrameSpeed.Name = "txtEffectFrameSpeed";
-            this.txtEffectFrameSpeed.ReadOnly = true;
-            this.txtEffectFrameSpeed.Size = new System.Drawing.Size(76, 20);
-            this.txtEffectFrameSpeed.TabIndex = 52;
-            // 
-            // groupBox6
-            // 
-            this.groupBox6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox6.Controls.Add(this.cbEffectOneShot);
-            this.groupBox6.Controls.Add(this.cbEffectCritical);
-            this.groupBox6.Location = new System.Drawing.Point(358, 170);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(201, 114);
-            this.groupBox6.TabIndex = 63;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Extra EClip flags";
-            // 
-            // cbEffectOneShot
-            // 
-            this.cbEffectOneShot.AutoSize = true;
-            this.cbEffectOneShot.Location = new System.Drawing.Point(6, 42);
-            this.cbEffectOneShot.Name = "cbEffectOneShot";
-            this.cbEffectOneShot.Size = new System.Drawing.Size(100, 17);
-            this.cbEffectOneShot.TabIndex = 18;
-            this.cbEffectOneShot.Text = "Plays only once";
-            this.cbEffectOneShot.UseVisualStyleBackColor = true;
-            // 
-            // cbEffectCritical
-            // 
-            this.cbEffectCritical.AutoSize = true;
-            this.cbEffectCritical.Location = new System.Drawing.Point(6, 19);
-            this.cbEffectCritical.Name = "cbEffectCritical";
-            this.cbEffectCritical.Size = new System.Drawing.Size(76, 17);
-            this.cbEffectCritical.TabIndex = 18;
-            this.cbEffectCritical.Text = "Critical clip";
-            this.cbEffectCritical.UseVisualStyleBackColor = true;
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.groupBox5.Controls.Add(this.btnRemapECFrame);
-            this.groupBox5.Controls.Add(this.nudEffectFrame);
-            this.groupBox5.Controls.Add(this.label8);
-            this.groupBox5.Controls.Add(this.txtEffectFrameNum);
-            this.groupBox5.Controls.Add(this.pbEffectFramePreview);
-            this.groupBox5.Controls.Add(this.txtEffectFrameCount);
-            this.groupBox5.Controls.Add(this.label17);
-            this.groupBox5.Location = new System.Drawing.Point(11, 143);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(336, 316);
-            this.groupBox5.TabIndex = 59;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Frames";
-            // 
-            // btnRemapECFrame
-            // 
-            this.btnRemapECFrame.Location = new System.Drawing.Point(189, 69);
-            this.btnRemapECFrame.Name = "btnRemapECFrame";
-            this.btnRemapECFrame.Size = new System.Drawing.Size(36, 23);
-            this.btnRemapECFrame.TabIndex = 28;
-            this.btnRemapECFrame.Tag = "3";
-            this.btnRemapECFrame.Text = "...";
-            this.btnRemapECFrame.UseVisualStyleBackColor = true;
-            // 
-            // nudEffectFrame
-            // 
-            this.nudEffectFrame.Location = new System.Drawing.Point(269, 19);
-            this.nudEffectFrame.Maximum = new decimal(new int[] {
-            29,
-            0,
-            0,
-            0});
-            this.nudEffectFrame.Name = "nudEffectFrame";
-            this.nudEffectFrame.Size = new System.Drawing.Size(61, 20);
-            this.nudEffectFrame.TabIndex = 27;
-            this.nudEffectFrame.ValueChanged += new System.EventHandler(this.nudEffectFrame_ValueChanged);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 74);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(71, 13);
-            this.label8.TabIndex = 25;
-            this.label8.Text = "Bitmap Index:";
-            // 
-            // txtEffectFrameNum
-            // 
-            this.txtEffectFrameNum.Location = new System.Drawing.Point(83, 71);
-            this.txtEffectFrameNum.Name = "txtEffectFrameNum";
-            this.txtEffectFrameNum.Size = new System.Drawing.Size(100, 20);
-            this.txtEffectFrameNum.TabIndex = 24;
-            // 
-            // pbEffectFramePreview
-            // 
-            this.pbEffectFramePreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pbEffectFramePreview.Location = new System.Drawing.Point(6, 97);
-            this.pbEffectFramePreview.Name = "pbEffectFramePreview";
-            this.pbEffectFramePreview.Size = new System.Drawing.Size(320, 200);
-            this.pbEffectFramePreview.TabIndex = 19;
-            this.pbEffectFramePreview.TabStop = false;
-            // 
-            // txtEffectFrameCount
-            // 
-            this.txtEffectFrameCount.Location = new System.Drawing.Point(56, 25);
-            this.txtEffectFrameCount.Name = "txtEffectFrameCount";
-            this.txtEffectFrameCount.Size = new System.Drawing.Size(77, 20);
-            this.txtEffectFrameCount.TabIndex = 23;
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(6, 28);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(44, 13);
-            this.label17.TabIndex = 22;
-            this.label17.Text = "Frames:";
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(17, 63);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(62, 13);
-            this.label21.TabIndex = 55;
-            this.label21.Text = "Light value:";
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(23, 37);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(56, 13);
-            this.label22.TabIndex = 53;
-            this.label22.Text = "Total time:";
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(8, 11);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(71, 13);
-            this.label23.TabIndex = 51;
-            this.label23.Text = "Frame speed:";
             // 
             // DoorTabPage
             // 
@@ -2354,22 +1775,6 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HAMEditor2_FormClosing);
             this.Load += new System.EventHandler(this.HAMEditor2_Load);
             this.EditorTabs.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudAnimFrame)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbAnimFramePreview)).EndInit();
-            this.groupBoxAnimFlags.ResumeLayout(false);
-            this.groupBoxAnimFlags.PerformLayout();
-            this.EffectsTabPage.ResumeLayout(false);
-            this.EffectsTabPage.PerformLayout();
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudEffectFrame)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbEffectFramePreview)).EndInit();
             this.DoorTabPage.ResumeLayout(false);
             this.DoorTabPage.PerformLayout();
             this.groupBox8.ResumeLayout(false);
@@ -2419,48 +1824,8 @@
         private System.Windows.Forms.MenuItem menuItem1;
         private System.Windows.Forms.TabControl EditorTabs;
         private System.Windows.Forms.TabPage TextureTabPage;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.TextBox txtAnimLight;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.TextBox txtAnimTotalTime;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.NumericUpDown nudAnimFrame;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtAnimFrameNum;
-        private System.Windows.Forms.PictureBox pbAnimFramePreview;
-        private System.Windows.Forms.TextBox txtAnimFrameCount;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtAnimFrameSpeed;
-        private System.Windows.Forms.GroupBox groupBoxAnimFlags;
-        private System.Windows.Forms.CheckBox cbAnimRod;
+        private System.Windows.Forms.TabPage VClipTabPage;
         private System.Windows.Forms.TabPage EffectsTabPage;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label33;
-        private System.Windows.Forms.Label label32;
-        private System.Windows.Forms.Label label31;
-        private System.Windows.Forms.Label label30;
-        private System.Windows.Forms.Label label29;
-        private System.Windows.Forms.TextBox txtEffectBrokenID;
-        private System.Windows.Forms.TextBox txtEffectExplodeSize;
-        private System.Windows.Forms.TextBox txtEffectLight;
-        private System.Windows.Forms.TextBox txtEffectTotalTime;
-        private System.Windows.Forms.TextBox txtEffectFrameSpeed;
-        private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.CheckBox cbEffectOneShot;
-        private System.Windows.Forms.CheckBox cbEffectCritical;
-        private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.NumericUpDown nudEffectFrame;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox txtEffectFrameNum;
-        private System.Windows.Forms.PictureBox pbEffectFramePreview;
-        private System.Windows.Forms.TextBox txtEffectFrameCount;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.Label label23;
         private System.Windows.Forms.TabPage DoorTabPage;
         private System.Windows.Forms.TextBox txtWallFilename;
         private System.Windows.Forms.TextBox txtWallTotalTime;
@@ -2584,23 +1949,14 @@
         private System.Windows.Forms.CheckBox chkNorm;
         private System.Windows.Forms.CheckBox chkShowBBs;
         private System.Windows.Forms.MenuItem mnuExportTable;
-        private System.Windows.Forms.ComboBox cbEClipMineCritical;
-        private System.Windows.Forms.ComboBox cbEClipBreakSound;
-        private System.Windows.Forms.ComboBox cbEClipBreakVClip;
-        private System.Windows.Forms.ComboBox cbEClipBreakEClip;
-        private System.Windows.Forms.ComboBox cbVClipSound;
         private System.Windows.Forms.ComboBox cbWallCloseSound;
         private System.Windows.Forms.ComboBox cbWallOpenSound;
         private System.Windows.Forms.ComboBox cbPlayerExplosion;
         private System.Windows.Forms.ComboBox cbPlayerModel;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button btnRemapVCFrame;
         private System.Windows.Forms.MenuItem mnuFindRefs;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.ComboBox cbMarkerModel;
         private System.Windows.Forms.CheckBox chkWireframe;
-        private System.Windows.Forms.Button btnRemapEClip;
-        private System.Windows.Forms.Button btnRemapECFrame;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button btnRemapWeaponTex;
         private System.Windows.Forms.Button btnRemapWingTex;

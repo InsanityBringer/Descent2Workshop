@@ -49,6 +49,8 @@ namespace Descent2Workshop
 
         //I still don't get the VS toolbox. Ugh
         TMAPInfoPanel texturePanel;
+        VClipPanel vclipPanel;
+        EClipPanel eclipPanel;
         RobotPanel robotPanel;
         WeaponPanel weaponPanel;
         
@@ -66,13 +68,19 @@ namespace Descent2Workshop
             this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
             this.glControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl1_Paint);
 
-            texturePanel = new TMAPInfoPanel();
+            texturePanel = new TMAPInfoPanel(); components.Add(texturePanel);
             texturePanel.Dock = DockStyle.Fill;
-            robotPanel = new RobotPanel();
+            vclipPanel = new VClipPanel(); components.Add(vclipPanel);
+            vclipPanel.Dock = DockStyle.Fill;
+            eclipPanel = new EClipPanel(); components.Add(eclipPanel);
+            eclipPanel.Dock = DockStyle.Fill;
+            robotPanel = new RobotPanel(); components.Add(robotPanel);
             robotPanel.Dock = DockStyle.Fill;
-            weaponPanel = new WeaponPanel();
+            weaponPanel = new WeaponPanel(); components.Add(weaponPanel);
             weaponPanel.Dock = DockStyle.Fill;
             TextureTabPage.Controls.Add(texturePanel);
+            VClipTabPage.Controls.Add(vclipPanel);
+            EffectsTabPage.Controls.Add(eclipPanel);
             RobotTabPage.Controls.Add(robotPanel);
             WeaponTabPage.Controls.Add(weaponPanel);
 
@@ -105,6 +113,9 @@ namespace Descent2Workshop
 
         private void ElementListInit()
         {
+            //Hacks aaaa
+            vclipPanel.Stop();
+            eclipPanel.Stop();
             switch (EditorTabs.SelectedIndex)
             {
                 case 0:
@@ -278,6 +289,7 @@ namespace Descent2Workshop
                     nudElementNum.Value = elementList.ElementNumber;
                 }
             }
+            elementList.Dispose();
         }
 
         private void ElemName_TextChanged(object sender, EventArgs e)
@@ -301,27 +313,13 @@ namespace Descent2Workshop
         private void InitVClipPanel()
         {
             SetElementControl(true, true);
-            cbVClipSound.Items.Clear(); cbVClipSound.Items.Add("None");
-            for (int i = 0; i < datafile.Sounds.Count; i++)
-                cbVClipSound.Items.Add(datafile.SoundNames[i]);
+            vclipPanel.Init(datafile.SoundNames);
         }
 
         private void InitEClipPanel()
         {
             SetElementControl(true, true);
-            cbEClipBreakEClip.Items.Clear(); cbEClipBreakEClip.Items.Add("None");
-            cbEClipMineCritical.Items.Clear(); cbEClipMineCritical.Items.Add("None");
-            cbEClipBreakVClip.Items.Clear(); cbEClipBreakVClip.Items.Add("None");
-            cbEClipBreakSound.Items.Clear(); cbEClipBreakSound.Items.Add("None");
-            for (int i = 0; i < datafile.EClips.Count; i++)
-            {
-                cbEClipBreakEClip.Items.Add(datafile.EClipNames[i]);
-                cbEClipMineCritical.Items.Add(datafile.EClipNames[i]);
-            }
-            for (int i = 0; i < datafile.VClips.Count; i++)
-                cbEClipBreakVClip.Items.Add(datafile.VClipNames[i]);
-            for (int i = 0; i < datafile.Sounds.Count; i++)
-                cbEClipBreakSound.Items.Add(datafile.SoundNames[i]);
+            eclipPanel.Init(datafile.VClipNames, datafile.EClipNames, datafile.SoundNames);
         }
 
         private void InitWallPanel()
@@ -442,64 +440,18 @@ namespace Descent2Workshop
 
         public void UpdateVClipPanel(int num)
         {
-            VClip animation = datafile.VClips[num];
-            txtAnimFrameSpeed.Text = animation.frame_time.ToString();
-            txtAnimTotalTime.Text = animation.play_time.ToString();
-            txtAnimLight.Text = animation.light_value.ToString();
-            cbVClipSound.SelectedIndex = animation.sound_num + 1;
-            txtAnimFrameCount.Text = animation.num_frames.ToString();
-            cbAnimRod.Checked = ((animation.flags & 1) == 1);
-
-            nudAnimFrame.Value = 0;
-            UpdateAnimationFrame(0);
-
+            vclipPanel.Stop();
+            VClip clip = datafile.VClips[num];
+            vclipPanel.Update(clip, datafile.piggyFile);
             txtElemName.Text = datafile.VClipNames[num];
-        }
-
-        private void nudAnimFrame_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isLocked)
-            {
-                isLocked = true;
-                UpdateAnimationFrame((int)nudAnimFrame.Value);
-                isLocked = false;
-            }
         }
 
         public void UpdateEClipPanel(int num)
         {
-            EClip animation = datafile.EClips[num];
-
-            //vclip specific data
-            txtEffectFrameSpeed.Text = animation.vc.frame_time.ToString();
-            txtEffectTotalTime.Text = animation.vc.play_time.ToString();
-            txtEffectLight.Text = animation.vc.light_value.ToString();
-            txtEffectFrameCount.Text = animation.vc.num_frames.ToString();
-
-            //eclip stuff
-            cbEClipBreakEClip.SelectedIndex = animation.dest_eclip + 1;
-            cbEClipBreakVClip.SelectedIndex = animation.dest_vclip + 1;
-            txtEffectExplodeSize.Text = animation.dest_size.ToString();
-            txtEffectBrokenID.Text = animation.dest_bm_num.ToString();
-            cbEClipBreakSound.SelectedIndex = animation.sound_num + 1;
-            cbEClipMineCritical.SelectedIndex = animation.crit_clip + 1;
-            cbEffectCritical.Checked = (animation.flags & 1) != 0;
-            cbEffectOneShot.Checked = (animation.flags & 2) != 0;
-
-            nudEffectFrame.Value = 0;
-            UpdateEffectFrame(0);
-
+            eclipPanel.Stop();
+            EClip clip = datafile.EClips[num];
+            eclipPanel.Update(clip, datafile.piggyFile);
             txtElemName.Text = datafile.EClipNames[num];
-        }
-
-        private void nudEffectFrame_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isLocked)
-            {
-                isLocked = true;
-                UpdateEffectFrame((int)nudEffectFrame.Value);
-                isLocked = false;
-            }
         }
 
         public void UpdateWClipPanel(int num)
@@ -624,34 +576,6 @@ namespace Descent2Workshop
             UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, datafile.multiplayerBitmaps[id * 2 + 1]), pbWingTex);
         }
 
-        private void UpdateAnimationFrame(int frame)
-        {
-            VClip animation = datafile.VClips[(int)nudElementNum.Value];
-            txtAnimFrameNum.Text = animation.frames[frame].ToString();
-
-            if (pbAnimFramePreview.Image != null)
-            {
-                Bitmap temp = (Bitmap)pbAnimFramePreview.Image;
-                pbAnimFramePreview.Image = null;
-                temp.Dispose();
-            }
-            pbAnimFramePreview.Image = PiggyBitmapConverter.GetBitmap(datafile.piggyFile, animation.frames[frame]);
-        }
-
-        private void UpdateEffectFrame(int frame)
-        {
-            EClip animation = datafile.EClips[(int)nudElementNum.Value];
-            txtEffectFrameNum.Text = animation.vc.frames[frame].ToString();
-
-            if (pbEffectFramePreview.Image != null)
-            {
-                Bitmap temp = (Bitmap)pbEffectFramePreview.Image;
-                pbEffectFramePreview.Image = null;
-                temp.Dispose();
-            }
-            pbEffectFramePreview.Image = PiggyBitmapConverter.GetBitmap(datafile.piggyFile, animation.vc.frames[frame]);
-        }
-
         private void UpdateWallFrame(int frame)
         {
             WClip animation = datafile.WClips[(int)nudElementNum.Value];
@@ -741,16 +665,6 @@ namespace Descent2Workshop
                 int shipvalue = 0;
                 switch (button.Tag)
                 {
-                    case "2":
-                        datafile.VClips[ElementNumber].frames[(int)nudAnimFrame.Value] = (ushort)(value);
-                        UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, value), pbAnimFramePreview);
-                        txtAnimFrameNum.Text = (value).ToString();
-                        break;
-                    case "3":
-                        datafile.EClips[ElementNumber].vc.frames[(int)nudAnimFrame.Value] = (ushort)(value);
-                        UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, value), pbAnimFramePreview);
-                        txtEffectFrameNum.Text = (value).ToString();
-                        break;
                     case "5":
                         shipvalue = (int)nudShipTextures.Value - 2;
                         datafile.multiplayerBitmaps[shipvalue * 2 + 1] = (ushort)(value);
@@ -781,121 +695,6 @@ namespace Descent2Workshop
             }
         }
 
-        private void RemapMultiImage_Click(object sender, EventArgs e)
-        {
-            Button button = (Button)sender;
-            ImageSelector selector = new ImageSelector(host.DefaultPigFile, true);
-            if (selector.ShowDialog() == DialogResult.OK)
-            {
-                int value = selector.Selection;
-                isLocked = true;
-                switch (button.Tag)
-                {
-                    case "1":
-                        datafile.VClips[ElementNumber].RemapVClip(value, host.DefaultPigFile);
-                        txtAnimFrameCount.Text = datafile.VClips[ElementNumber].num_frames.ToString();
-                        txtAnimFrameSpeed.Text = datafile.VClips[ElementNumber].frame_time.ToString();
-                        nudAnimFrame.Value = 0;
-                        UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, datafile.VClips[ElementNumber].frames[0]), pbAnimFramePreview);
-                        break;
-                    case "2":
-                        datafile.EClips[ElementNumber].vc.RemapVClip(value, host.DefaultPigFile);
-                        txtEffectFrameCount.Text = datafile.EClips[ElementNumber].vc.num_frames.ToString();
-                        txtEffectFrameSpeed.Text = datafile.EClips[ElementNumber].vc.frame_time.ToString();
-                        nudEffectFrame.Value = 0;
-                        UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, datafile.EClips[ElementNumber].vc.frames[0]), pbEffectFramePreview);
-                        break;
-                }
-                isLocked = false;
-            }
-        }
-
-        //---------------------------------------------------------------------
-        // VCLIP UPDATORS
-        //---------------------------------------------------------------------
-
-        private void VClipProperty_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            TextBox textBox = (TextBox)sender;
-            VClip clip = datafile.VClips[ElementNumber];
-            double value;
-            if (double.TryParse(textBox.Text, out value))
-            {
-                switch (textBox.Tag)
-                {
-                    case "1":
-                        int totalTimeFix = (int)(value * 65536);
-                        clip.play_time = new Fix(totalTimeFix);
-                        clip.frame_time = new Fix(totalTimeFix / clip.num_frames);
-                        txtAnimFrameSpeed.Text = clip.frame_time.ToString();
-                        break;
-                    case "2":
-                        clip.light_value = new Fix((int)(value * 65536));
-                        break;
-                }
-            }
-        }
-
-        //---------------------------------------------------------------------
-        // ECLIP UPDATORS
-        //---------------------------------------------------------------------
-
-        private void EClipProperty_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            TextBox textBox = (TextBox)sender;
-            EClip clip = datafile.EClips[ElementNumber];
-            double value;
-            if (double.TryParse(textBox.Text, out value))
-            {
-                switch (textBox.Tag)
-                {
-                    case "1":
-                        int totalTimeFix = (int)(value * 65536);
-                        clip.vc.play_time = new Fix(totalTimeFix);
-                        clip.vc.frame_time = new Fix(totalTimeFix / clip.vc.num_frames);
-                        txtEffectFrameSpeed.Text = clip.vc.frame_time.ToString();
-                        break;
-                    case "2":
-                        clip.vc.light_value = new Fix((int)(value * 65536));
-                        break;
-                    case "3":
-                        clip.dest_size = new Fix((int)(value * 65536));
-                        break;
-                    case "4":
-                        clip.dest_bm_num = int.Parse(textBox.Text);
-                        break;
-                }
-            }
-        }
-
-        private void EClipComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            ComboBox comboBox = (ComboBox)sender;
-            EClip clip = datafile.EClips[ElementNumber];
-            int value = comboBox.SelectedIndex;
-            switch (comboBox.Tag)
-            {
-                case "1":
-                    clip.dest_eclip = (value - 1);
-                    break;
-                case "2":
-                    clip.dest_vclip = (value - 1);
-                    break;
-                case "3":
-                    clip.sound_num = value - 1;
-                    break;
-                case "4":
-                    clip.crit_clip = (value - 1);
-                    break;
-            }
-        }
-
         //---------------------------------------------------------------------
         // WALL UPDATORS
         //---------------------------------------------------------------------
@@ -915,15 +714,6 @@ namespace Descent2Workshop
                     clip.close_sound = (short)(comboBox.SelectedIndex - 1);
                     break;
             }
-        }
-
-        private void cbVClipSound_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            ComboBox comboBox = (ComboBox)sender;
-            VClip clip = datafile.VClips[ElementNumber];
-            clip.sound_num = (short)(comboBox.SelectedIndex - 1);
         }
 
         private void WallFlag_CheckedChanged(object sender, EventArgs e)

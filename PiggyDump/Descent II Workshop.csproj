@@ -93,6 +93,12 @@
     <Compile Include="ConfigDialog.Designer.cs">
       <DependentUpon>ConfigDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="EditorPanels\EClipPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorPanels\EClipPanel.Designer.cs">
+      <DependentUpon>EClipPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="EditorPanels\RobotPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -104,6 +110,12 @@
     </Compile>
     <Compile Include="EditorPanels\TMAPInfoPanel.Designer.cs">
       <DependentUpon>TMAPInfoPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorPanels\VClipPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorPanels\VClipPanel.Designer.cs">
+      <DependentUpon>VClipPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="EditorPanels\WeaponPanel.cs">
       <SubType>UserControl</SubType>
@@ -223,11 +235,17 @@
     <EmbeddedResource Include="ConfigDialog.resx">
       <DependentUpon>ConfigDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="EditorPanels\EClipPanel.resx">
+      <DependentUpon>EClipPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EditorPanels\RobotPanel.resx">
       <DependentUpon>RobotPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EditorPanels\TMAPInfoPanel.resx">
       <DependentUpon>TMAPInfoPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorPanels\VClipPanel.resx">
+      <DependentUpon>VClipPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EditorPanels\WeaponPanel.resx">
       <DependentUpon>WeaponPanel.cs</DependentUpon>
