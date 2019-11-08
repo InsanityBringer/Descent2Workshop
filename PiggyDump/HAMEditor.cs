@@ -327,11 +327,8 @@ namespace Descent2Workshop
             SetElementControl(true, false);
             cbWallCloseSound.Items.Clear(); cbWallCloseSound.Items.Add("None");
             cbWallOpenSound.Items.Clear(); cbWallOpenSound.Items.Add("None");
-            for (int i = 0; i < datafile.Sounds.Count; i++)
-            {
-                cbWallOpenSound.Items.Add(datafile.SoundNames[i]);
-                cbWallCloseSound.Items.Add(datafile.SoundNames[i]);
-            }
+            cbWallOpenSound.Items.AddRange(datafile.SoundNames.ToArray());
+            cbWallCloseSound.Items.AddRange(datafile.SoundNames.ToArray());
         }
 
         private void InitWeaponPanel()
@@ -353,8 +350,7 @@ namespace Descent2Workshop
             cbLowMemSound.Items.Clear();
             cbSoundSNDid.Items.Add("None");
             cbLowMemSound.Items.Add("None");
-            for (int i = 0; i < datafile.Sounds.Count; i++)
-                cbLowMemSound.Items.Add(datafile.SoundNames[i]);
+            cbLowMemSound.Items.AddRange(datafile.SoundNames.ToArray());
             foreach (SoundData sound in host.DefaultSoundFile.sounds)
                 cbSoundSNDid.Items.Add(sound.name);
         }
@@ -364,10 +360,8 @@ namespace Descent2Workshop
             SetElementControl(true, true);
             cbPowerupPickupSound.Items.Clear();
             cbPowerupSprite.Items.Clear();
-            for (int i = 0; i < datafile.Sounds.Count; i++)
-                cbPowerupPickupSound.Items.Add(datafile.SoundNames[i]);
-            for (int i = 0; i < datafile.VClips.Count; i++)
-                cbPowerupSprite.Items.Add(datafile.VClipNames[i]);
+            cbPowerupPickupSound.Items.AddRange(datafile.SoundNames.ToArray());
+            cbPowerupSprite.Items.AddRange(datafile.VClipNames.ToArray());
         }
 
         private void InitModelPanel()
@@ -376,20 +370,16 @@ namespace Descent2Workshop
             cbModelLowDetail.Items.Clear(); cbModelLowDetail.Items.Add("None");
             cbModelDyingModel.Items.Clear(); cbModelDyingModel.Items.Add("None");
             cbModelDeadModel.Items.Clear(); cbModelDeadModel.Items.Add("None");
-            for (int i = 0; i < datafile.PolygonModels.Count; i++)
-            {
-                cbModelLowDetail.Items.Add(datafile.ModelNames[i]);
-                cbModelDyingModel.Items.Add(datafile.ModelNames[i]);
-                cbModelDeadModel.Items.Add(datafile.ModelNames[i]);
-            }
+            cbModelLowDetail.Items.AddRange(datafile.ModelNames.ToArray());
+            cbModelDyingModel.Items.AddRange(datafile.ModelNames.ToArray());
+            cbModelDeadModel.Items.AddRange(datafile.ModelNames.ToArray());
         }
 
         private void InitReactorPanel()
         {
             SetElementControl(true, true);
             cbReactorModel.Items.Clear();
-            for (int i = 0; i < datafile.PolygonModels.Count; i++)
-                cbReactorModel.Items.Add(datafile.ModelNames[i]);
+            cbReactorModel.Items.AddRange(datafile.ModelNames.ToArray());
         }
 
         //---------------------------------------------------------------------
