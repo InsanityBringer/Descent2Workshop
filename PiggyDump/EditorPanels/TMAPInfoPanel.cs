@@ -94,6 +94,7 @@ namespace Descent2Workshop.EditorPanels
                 {
                     case "0":
                         datafile.Textures[textureID] = ushort.Parse(textBox.Text);
+                        UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, datafile.Textures[textureID]), pbTexPrev);
                         break;
                     case "1":
                         info.lighting = double.Parse(textBox.Text);
