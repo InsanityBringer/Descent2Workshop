@@ -99,6 +99,12 @@
     <Compile Include="EditorPanels\RobotPanel.Designer.cs">
       <DependentUpon>RobotPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="EditorPanels\TMAPInfoPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorPanels\TMAPInfoPanel.Designer.cs">
+      <DependentUpon>TMAPInfoPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="EditorPanels\WeaponPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -219,6 +225,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EditorPanels\RobotPanel.resx">
       <DependentUpon>RobotPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorPanels\TMAPInfoPanel.resx">
+      <DependentUpon>TMAPInfoPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EditorPanels\WeaponPanel.resx">
       <DependentUpon>WeaponPanel.cs</DependentUpon>

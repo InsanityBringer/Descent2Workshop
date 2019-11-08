@@ -37,32 +37,8 @@
             this.menuItem5 = new System.Windows.Forms.MenuItem();
             this.mnuFindRefs = new System.Windows.Forms.MenuItem();
             this.mnuExportTable = new System.Windows.Forms.MenuItem();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.btnRemapTexture = new System.Windows.Forms.Button();
-            this.cbTexEClip = new System.Windows.Forms.ComboBox();
-            this.txtTexDestroyed = new System.Windows.Forms.TextBox();
-            this.label107 = new System.Windows.Forms.Label();
-            this.txtTexSlideV = new System.Windows.Forms.TextBox();
-            this.txtTexSlideU = new System.Windows.Forms.TextBox();
-            this.txtTexDamage = new System.Windows.Forms.TextBox();
-            this.txtTexLight = new System.Windows.Forms.TextBox();
-            this.txtTexID = new System.Windows.Forms.TextBox();
-            this.label130 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.cbTexHoardGoal = new System.Windows.Forms.CheckBox();
-            this.cbTexRedGoal = new System.Windows.Forms.CheckBox();
-            this.cbTexBlueGoal = new System.Windows.Forms.CheckBox();
-            this.cbTexForcefield = new System.Windows.Forms.CheckBox();
-            this.cbTexWater = new System.Windows.Forms.CheckBox();
-            this.cbTexLava = new System.Windows.Forms.CheckBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.pbTexPrev = new System.Windows.Forms.PictureBox();
+            this.EditorTabs = new System.Windows.Forms.TabControl();
+            this.TextureTabPage = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.button2 = new System.Windows.Forms.Button();
             this.cbVClipSound = new System.Windows.Forms.ComboBox();
@@ -83,7 +59,7 @@
             this.txtAnimFrameSpeed = new System.Windows.Forms.TextBox();
             this.groupBoxAnimFlags = new System.Windows.Forms.GroupBox();
             this.cbAnimRod = new System.Windows.Forms.CheckBox();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.EffectsTabPage = new System.Windows.Forms.TabPage();
             this.btnRemapEClip = new System.Windows.Forms.Button();
             this.cbEClipMineCritical = new System.Windows.Forms.ComboBox();
             this.cbEClipBreakSound = new System.Windows.Forms.ComboBox();
@@ -114,7 +90,7 @@
             this.label21 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.DoorTabPage = new System.Windows.Forms.TabPage();
             this.cbWallCloseSound = new System.Windows.Forms.ComboBox();
             this.cbWallOpenSound = new System.Windows.Forms.ComboBox();
             this.txtWallFilename = new System.Windows.Forms.TextBox();
@@ -173,16 +149,16 @@
             this.txtModelNumModels = new System.Windows.Forms.TextBox();
             this.label103 = new System.Windows.Forms.Label();
             this.label102 = new System.Windows.Forms.Label();
-            this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.SoundTabPage = new System.Windows.Forms.TabPage();
             this.cbSoundSNDid = new System.Windows.Forms.ComboBox();
             this.cbLowMemSound = new System.Windows.Forms.ComboBox();
             this.label144 = new System.Windows.Forms.Label();
             this.label143 = new System.Windows.Forms.Label();
-            this.tabPage9 = new System.Windows.Forms.TabPage();
+            this.ReactorTabPage = new System.Windows.Forms.TabPage();
             this.label151 = new System.Windows.Forms.Label();
             this.cbReactorModel = new System.Windows.Forms.ComboBox();
             this.label78 = new System.Windows.Forms.Label();
-            this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.PowerupTabPage = new System.Windows.Forms.TabPage();
             this.txtPowerupLight = new System.Windows.Forms.TextBox();
             this.txtPowerupSize = new System.Windows.Forms.TextBox();
             this.cbPowerupPickupSound = new System.Windows.Forms.ComboBox();
@@ -191,7 +167,7 @@
             this.label147 = new System.Windows.Forms.Label();
             this.label146 = new System.Windows.Forms.Label();
             this.label132 = new System.Windows.Forms.Label();
-            this.tabPage11 = new System.Windows.Forms.TabPage();
+            this.ShipTabPage = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnRemapWeaponTex = new System.Windows.Forms.Button();
             this.btnRemapWingTex = new System.Windows.Forms.Button();
@@ -221,7 +197,7 @@
             this.label115 = new System.Windows.Forms.Label();
             this.label114 = new System.Windows.Forms.Label();
             this.label113 = new System.Windows.Forms.Label();
-            this.tabPage14 = new System.Windows.Forms.TabPage();
+            this.GaugesTabPage = new System.Windows.Forms.TabPage();
             this.btnRemapGaugeHires = new System.Windows.Forms.Button();
             this.btnRemapGauge = new System.Windows.Forms.Button();
             this.pbGagueHires = new System.Windows.Forms.PictureBox();
@@ -231,13 +207,13 @@
             this.label123 = new System.Windows.Forms.Label();
             this.txtGagueLores = new System.Windows.Forms.TextBox();
             this.label122 = new System.Windows.Forms.Label();
-            this.tabPage15 = new System.Windows.Forms.TabPage();
+            this.CockpitTabPage = new System.Windows.Forms.TabPage();
             this.btnRemapCockpit = new System.Windows.Forms.Button();
             this.pbCockpit = new System.Windows.Forms.PictureBox();
             this.label131 = new System.Windows.Forms.Label();
             this.txtCockpitID = new System.Windows.Forms.TextBox();
             this.label129 = new System.Windows.Forms.Label();
-            this.tabPage16 = new System.Windows.Forms.TabPage();
+            this.XLATTabPage = new System.Windows.Forms.TabPage();
             this.pbBitmapDest = new System.Windows.Forms.PictureBox();
             this.pbBitmapSrc = new System.Windows.Forms.PictureBox();
             this.label128 = new System.Windows.Forms.Label();
@@ -255,21 +231,18 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.mainToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbTexPrev)).BeginInit();
+            this.EditorTabs.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudAnimFrame)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbAnimFramePreview)).BeginInit();
             this.groupBoxAnimFlags.SuspendLayout();
-            this.tabPage3.SuspendLayout();
+            this.EffectsTabPage.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudEffectFrame)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbEffectFramePreview)).BeginInit();
-            this.tabPage4.SuspendLayout();
+            this.DoorTabPage.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudWFrame)).BeginInit();
@@ -278,20 +251,20 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
-            this.tabPage8.SuspendLayout();
-            this.tabPage9.SuspendLayout();
-            this.tabPage10.SuspendLayout();
-            this.tabPage11.SuspendLayout();
+            this.SoundTabPage.SuspendLayout();
+            this.ReactorTabPage.SuspendLayout();
+            this.PowerupTabPage.SuspendLayout();
+            this.ShipTabPage.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudShipTextures)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbWeaponTexture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbWingTex)).BeginInit();
-            this.tabPage14.SuspendLayout();
+            this.GaugesTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbGagueHires)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbGagueLores)).BeginInit();
-            this.tabPage15.SuspendLayout();
+            this.CockpitTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCockpit)).BeginInit();
-            this.tabPage16.SuspendLayout();
+            this.XLATTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbBitmapDest)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBitmapSrc)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudElementNum)).BeginInit();
@@ -350,302 +323,39 @@
             this.mnuExportTable.Text = "Generate BITMAPS.TBL...";
             this.mnuExportTable.Click += new System.EventHandler(this.menuItem6_Click);
             // 
-            // tabControl1
+            // EditorTabs
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage4);
-            this.tabControl1.Controls.Add(this.RobotTabPage);
-            this.tabControl1.Controls.Add(this.WeaponTabPage);
-            this.tabControl1.Controls.Add(this.ModelTabPage);
-            this.tabControl1.Controls.Add(this.tabPage8);
-            this.tabControl1.Controls.Add(this.tabPage9);
-            this.tabControl1.Controls.Add(this.tabPage10);
-            this.tabControl1.Controls.Add(this.tabPage11);
-            this.tabControl1.Controls.Add(this.tabPage14);
-            this.tabControl1.Controls.Add(this.tabPage15);
-            this.tabControl1.Controls.Add(this.tabPage16);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tabControl1.Location = new System.Drawing.Point(0, 40);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(854, 539);
-            this.tabControl1.TabIndex = 1;
-            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
+            this.EditorTabs.Controls.Add(this.TextureTabPage);
+            this.EditorTabs.Controls.Add(this.tabPage2);
+            this.EditorTabs.Controls.Add(this.EffectsTabPage);
+            this.EditorTabs.Controls.Add(this.DoorTabPage);
+            this.EditorTabs.Controls.Add(this.RobotTabPage);
+            this.EditorTabs.Controls.Add(this.WeaponTabPage);
+            this.EditorTabs.Controls.Add(this.ModelTabPage);
+            this.EditorTabs.Controls.Add(this.SoundTabPage);
+            this.EditorTabs.Controls.Add(this.ReactorTabPage);
+            this.EditorTabs.Controls.Add(this.PowerupTabPage);
+            this.EditorTabs.Controls.Add(this.ShipTabPage);
+            this.EditorTabs.Controls.Add(this.GaugesTabPage);
+            this.EditorTabs.Controls.Add(this.CockpitTabPage);
+            this.EditorTabs.Controls.Add(this.XLATTabPage);
+            this.EditorTabs.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.EditorTabs.Location = new System.Drawing.Point(0, 40);
+            this.EditorTabs.Name = "EditorTabs";
+            this.EditorTabs.SelectedIndex = 0;
+            this.EditorTabs.Size = new System.Drawing.Size(854, 539);
+            this.EditorTabs.TabIndex = 1;
+            this.EditorTabs.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
-            // tabPage1
+            // TextureTabPage
             // 
-            this.tabPage1.Controls.Add(this.btnRemapTexture);
-            this.tabPage1.Controls.Add(this.cbTexEClip);
-            this.tabPage1.Controls.Add(this.txtTexDestroyed);
-            this.tabPage1.Controls.Add(this.label107);
-            this.tabPage1.Controls.Add(this.txtTexSlideV);
-            this.tabPage1.Controls.Add(this.txtTexSlideU);
-            this.tabPage1.Controls.Add(this.txtTexDamage);
-            this.tabPage1.Controls.Add(this.txtTexLight);
-            this.tabPage1.Controls.Add(this.txtTexID);
-            this.tabPage1.Controls.Add(this.label130);
-            this.tabPage1.Controls.Add(this.groupBox1);
-            this.tabPage1.Controls.Add(this.label12);
-            this.tabPage1.Controls.Add(this.label11);
-            this.tabPage1.Controls.Add(this.label10);
-            this.tabPage1.Controls.Add(this.label9);
-            this.tabPage1.Controls.Add(this.label4);
-            this.tabPage1.Controls.Add(this.label3);
-            this.tabPage1.Controls.Add(this.pbTexPrev);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(846, 513);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Textures";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // btnRemapTexture
-            // 
-            this.btnRemapTexture.Location = new System.Drawing.Point(194, 7);
-            this.btnRemapTexture.Name = "btnRemapTexture";
-            this.btnRemapTexture.Size = new System.Drawing.Size(43, 23);
-            this.btnRemapTexture.TabIndex = 46;
-            this.btnRemapTexture.Tag = "1";
-            this.btnRemapTexture.Text = "...";
-            this.btnRemapTexture.UseVisualStyleBackColor = true;
-            this.btnRemapTexture.Click += new System.EventHandler(this.RemapSingleImage_Click);
-            // 
-            // cbTexEClip
-            // 
-            this.cbTexEClip.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbTexEClip.FormattingEnabled = true;
-            this.cbTexEClip.Location = new System.Drawing.Point(88, 87);
-            this.cbTexEClip.Name = "cbTexEClip";
-            this.cbTexEClip.Size = new System.Drawing.Size(149, 21);
-            this.cbTexEClip.TabIndex = 45;
-            this.cbTexEClip.SelectedIndexChanged += new System.EventHandler(this.cbTexEClip_SelectedIndexChanged);
-            // 
-            // txtTexDestroyed
-            // 
-            this.txtTexDestroyed.Location = new System.Drawing.Point(88, 139);
-            this.txtTexDestroyed.Name = "txtTexDestroyed";
-            this.txtTexDestroyed.Size = new System.Drawing.Size(100, 20);
-            this.txtTexDestroyed.TabIndex = 44;
-            this.txtTexDestroyed.Tag = "6";
-            this.txtTexDestroyed.TextChanged += new System.EventHandler(this.TextureProperty_TextChanged);
-            // 
-            // label107
-            // 
-            this.label107.AutoSize = true;
-            this.label107.Location = new System.Drawing.Point(10, 142);
-            this.label107.Name = "label107";
-            this.label107.Size = new System.Drawing.Size(72, 13);
-            this.label107.TabIndex = 43;
-            this.label107.Text = "Destroyed ID:";
-            // 
-            // txtTexSlideV
-            // 
-            this.txtTexSlideV.Location = new System.Drawing.Point(243, 113);
-            this.txtTexSlideV.Name = "txtTexSlideV";
-            this.txtTexSlideV.Size = new System.Drawing.Size(100, 20);
-            this.txtTexSlideV.TabIndex = 42;
-            this.txtTexSlideV.Tag = "5";
-            this.txtTexSlideV.TextChanged += new System.EventHandler(this.TextureProperty_TextChanged);
-            // 
-            // txtTexSlideU
-            // 
-            this.txtTexSlideU.Location = new System.Drawing.Point(88, 113);
-            this.txtTexSlideU.Name = "txtTexSlideU";
-            this.txtTexSlideU.Size = new System.Drawing.Size(100, 20);
-            this.txtTexSlideU.TabIndex = 37;
-            this.txtTexSlideU.Tag = "4";
-            this.txtTexSlideU.TextChanged += new System.EventHandler(this.TextureProperty_TextChanged);
-            // 
-            // txtTexDamage
-            // 
-            this.txtTexDamage.Location = new System.Drawing.Point(88, 61);
-            this.txtTexDamage.Name = "txtTexDamage";
-            this.txtTexDamage.Size = new System.Drawing.Size(100, 20);
-            this.txtTexDamage.TabIndex = 33;
-            this.txtTexDamage.Tag = "2";
-            this.txtTexDamage.TextChanged += new System.EventHandler(this.TextureProperty_TextChanged);
-            // 
-            // txtTexLight
-            // 
-            this.txtTexLight.Location = new System.Drawing.Point(88, 35);
-            this.txtTexLight.Name = "txtTexLight";
-            this.txtTexLight.Size = new System.Drawing.Size(100, 20);
-            this.txtTexLight.TabIndex = 31;
-            this.txtTexLight.Tag = "1";
-            this.txtTexLight.TextChanged += new System.EventHandler(this.TextureProperty_TextChanged);
-            // 
-            // txtTexID
-            // 
-            this.txtTexID.Location = new System.Drawing.Point(88, 9);
-            this.txtTexID.Name = "txtTexID";
-            this.txtTexID.Size = new System.Drawing.Size(100, 20);
-            this.txtTexID.TabIndex = 29;
-            this.txtTexID.Tag = "0";
-            this.txtTexID.TextChanged += new System.EventHandler(this.TextureProperty_TextChanged);
-            // 
-            // label130
-            // 
-            this.label130.AutoSize = true;
-            this.label130.Location = new System.Drawing.Point(194, 116);
-            this.label130.Name = "label130";
-            this.label130.Size = new System.Drawing.Size(43, 13);
-            this.label130.TabIndex = 41;
-            this.label130.Text = "Slide V:";
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.cbTexHoardGoal);
-            this.groupBox1.Controls.Add(this.cbTexRedGoal);
-            this.groupBox1.Controls.Add(this.cbTexBlueGoal);
-            this.groupBox1.Controls.Add(this.cbTexForcefield);
-            this.groupBox1.Controls.Add(this.cbTexWater);
-            this.groupBox1.Controls.Add(this.cbTexLava);
-            this.groupBox1.Location = new System.Drawing.Point(11, 170);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(177, 162);
-            this.groupBox1.TabIndex = 38;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Flags";
-            // 
-            // cbTexHoardGoal
-            // 
-            this.cbTexHoardGoal.AutoSize = true;
-            this.cbTexHoardGoal.Location = new System.Drawing.Point(6, 134);
-            this.cbTexHoardGoal.Name = "cbTexHoardGoal";
-            this.cbTexHoardGoal.Size = new System.Drawing.Size(80, 17);
-            this.cbTexHoardGoal.TabIndex = 23;
-            this.cbTexHoardGoal.Tag = "5";
-            this.cbTexHoardGoal.Text = "Hoard Goal";
-            this.cbTexHoardGoal.UseVisualStyleBackColor = true;
-            this.cbTexHoardGoal.CheckedChanged += new System.EventHandler(this.TextureFlagCheckbox_CheckedChanged);
-            // 
-            // cbTexRedGoal
-            // 
-            this.cbTexRedGoal.AutoSize = true;
-            this.cbTexRedGoal.Location = new System.Drawing.Point(6, 111);
-            this.cbTexRedGoal.Name = "cbTexRedGoal";
-            this.cbTexRedGoal.Size = new System.Drawing.Size(71, 17);
-            this.cbTexRedGoal.TabIndex = 22;
-            this.cbTexRedGoal.Tag = "4";
-            this.cbTexRedGoal.Text = "Red Goal";
-            this.cbTexRedGoal.UseVisualStyleBackColor = true;
-            this.cbTexRedGoal.CheckedChanged += new System.EventHandler(this.TextureFlagCheckbox_CheckedChanged);
-            // 
-            // cbTexBlueGoal
-            // 
-            this.cbTexBlueGoal.AutoSize = true;
-            this.cbTexBlueGoal.Location = new System.Drawing.Point(6, 88);
-            this.cbTexBlueGoal.Name = "cbTexBlueGoal";
-            this.cbTexBlueGoal.Size = new System.Drawing.Size(72, 17);
-            this.cbTexBlueGoal.TabIndex = 21;
-            this.cbTexBlueGoal.Tag = "3";
-            this.cbTexBlueGoal.Text = "Blue Goal";
-            this.cbTexBlueGoal.UseVisualStyleBackColor = true;
-            this.cbTexBlueGoal.CheckedChanged += new System.EventHandler(this.TextureFlagCheckbox_CheckedChanged);
-            // 
-            // cbTexForcefield
-            // 
-            this.cbTexForcefield.AutoSize = true;
-            this.cbTexForcefield.Location = new System.Drawing.Point(6, 65);
-            this.cbTexForcefield.Name = "cbTexForcefield";
-            this.cbTexForcefield.Size = new System.Drawing.Size(78, 17);
-            this.cbTexForcefield.TabIndex = 20;
-            this.cbTexForcefield.Tag = "2";
-            this.cbTexForcefield.Text = "Force Field";
-            this.cbTexForcefield.UseVisualStyleBackColor = true;
-            this.cbTexForcefield.CheckedChanged += new System.EventHandler(this.TextureFlagCheckbox_CheckedChanged);
-            // 
-            // cbTexWater
-            // 
-            this.cbTexWater.AutoSize = true;
-            this.cbTexWater.Location = new System.Drawing.Point(6, 42);
-            this.cbTexWater.Name = "cbTexWater";
-            this.cbTexWater.Size = new System.Drawing.Size(55, 17);
-            this.cbTexWater.TabIndex = 19;
-            this.cbTexWater.Tag = "1";
-            this.cbTexWater.Text = "Water";
-            this.cbTexWater.UseVisualStyleBackColor = true;
-            this.cbTexWater.CheckedChanged += new System.EventHandler(this.TextureFlagCheckbox_CheckedChanged);
-            // 
-            // cbTexLava
-            // 
-            this.cbTexLava.AutoSize = true;
-            this.cbTexLava.Location = new System.Drawing.Point(6, 19);
-            this.cbTexLava.Name = "cbTexLava";
-            this.cbTexLava.Size = new System.Drawing.Size(108, 17);
-            this.cbTexLava.TabIndex = 18;
-            this.cbTexLava.Tag = "0";
-            this.cbTexLava.Text = "Volatile (like lava)";
-            this.cbTexLava.UseVisualStyleBackColor = true;
-            this.cbTexLava.CheckedChanged += new System.EventHandler(this.TextureFlagCheckbox_CheckedChanged);
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(38, 116);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(44, 13);
-            this.label12.TabIndex = 36;
-            this.label12.Text = "Slide U:";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(44, 90);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(38, 13);
-            this.label11.TabIndex = 34;
-            this.label11.Text = "Effect:";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(32, 64);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(50, 13);
-            this.label10.TabIndex = 32;
-            this.label10.Text = "Damage:";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(35, 38);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(47, 13);
-            this.label9.TabIndex = 30;
-            this.label9.Text = "Lighting:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(22, 12);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(60, 13);
-            this.label4.TabIndex = 28;
-            this.label4.Text = "Texture ID:";
-            // 
-            // label3
-            // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(515, 9);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(80, 13);
-            this.label3.TabIndex = 27;
-            this.label3.Text = "Image Preview:";
-            // 
-            // pbTexPrev
-            // 
-            this.pbTexPrev.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbTexPrev.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pbTexPrev.Location = new System.Drawing.Point(518, 25);
-            this.pbTexPrev.Name = "pbTexPrev";
-            this.pbTexPrev.Size = new System.Drawing.Size(320, 200);
-            this.pbTexPrev.TabIndex = 26;
-            this.pbTexPrev.TabStop = false;
+            this.TextureTabPage.Location = new System.Drawing.Point(4, 22);
+            this.TextureTabPage.Name = "TextureTabPage";
+            this.TextureTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.TextureTabPage.Size = new System.Drawing.Size(846, 513);
+            this.TextureTabPage.TabIndex = 0;
+            this.TextureTabPage.Text = "Textures";
+            this.TextureTabPage.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
@@ -854,35 +564,35 @@
             this.cbAnimRod.Text = "Draw as rod";
             this.cbAnimRod.UseVisualStyleBackColor = true;
             // 
-            // tabPage3
+            // EffectsTabPage
             // 
-            this.tabPage3.Controls.Add(this.btnRemapEClip);
-            this.tabPage3.Controls.Add(this.cbEClipMineCritical);
-            this.tabPage3.Controls.Add(this.cbEClipBreakSound);
-            this.tabPage3.Controls.Add(this.cbEClipBreakVClip);
-            this.tabPage3.Controls.Add(this.cbEClipBreakEClip);
-            this.tabPage3.Controls.Add(this.label5);
-            this.tabPage3.Controls.Add(this.label33);
-            this.tabPage3.Controls.Add(this.label32);
-            this.tabPage3.Controls.Add(this.label31);
-            this.tabPage3.Controls.Add(this.label30);
-            this.tabPage3.Controls.Add(this.label29);
-            this.tabPage3.Controls.Add(this.txtEffectBrokenID);
-            this.tabPage3.Controls.Add(this.txtEffectExplodeSize);
-            this.tabPage3.Controls.Add(this.txtEffectLight);
-            this.tabPage3.Controls.Add(this.txtEffectTotalTime);
-            this.tabPage3.Controls.Add(this.txtEffectFrameSpeed);
-            this.tabPage3.Controls.Add(this.groupBox6);
-            this.tabPage3.Controls.Add(this.groupBox5);
-            this.tabPage3.Controls.Add(this.label21);
-            this.tabPage3.Controls.Add(this.label22);
-            this.tabPage3.Controls.Add(this.label23);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(846, 513);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Effects";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.EffectsTabPage.Controls.Add(this.btnRemapEClip);
+            this.EffectsTabPage.Controls.Add(this.cbEClipMineCritical);
+            this.EffectsTabPage.Controls.Add(this.cbEClipBreakSound);
+            this.EffectsTabPage.Controls.Add(this.cbEClipBreakVClip);
+            this.EffectsTabPage.Controls.Add(this.cbEClipBreakEClip);
+            this.EffectsTabPage.Controls.Add(this.label5);
+            this.EffectsTabPage.Controls.Add(this.label33);
+            this.EffectsTabPage.Controls.Add(this.label32);
+            this.EffectsTabPage.Controls.Add(this.label31);
+            this.EffectsTabPage.Controls.Add(this.label30);
+            this.EffectsTabPage.Controls.Add(this.label29);
+            this.EffectsTabPage.Controls.Add(this.txtEffectBrokenID);
+            this.EffectsTabPage.Controls.Add(this.txtEffectExplodeSize);
+            this.EffectsTabPage.Controls.Add(this.txtEffectLight);
+            this.EffectsTabPage.Controls.Add(this.txtEffectTotalTime);
+            this.EffectsTabPage.Controls.Add(this.txtEffectFrameSpeed);
+            this.EffectsTabPage.Controls.Add(this.groupBox6);
+            this.EffectsTabPage.Controls.Add(this.groupBox5);
+            this.EffectsTabPage.Controls.Add(this.label21);
+            this.EffectsTabPage.Controls.Add(this.label22);
+            this.EffectsTabPage.Controls.Add(this.label23);
+            this.EffectsTabPage.Location = new System.Drawing.Point(4, 22);
+            this.EffectsTabPage.Name = "EffectsTabPage";
+            this.EffectsTabPage.Size = new System.Drawing.Size(846, 513);
+            this.EffectsTabPage.TabIndex = 2;
+            this.EffectsTabPage.Text = "Effects";
+            this.EffectsTabPage.UseVisualStyleBackColor = true;
             // 
             // btnRemapEClip
             // 
@@ -1186,24 +896,24 @@
             this.label23.TabIndex = 51;
             this.label23.Text = "Frame speed:";
             // 
-            // tabPage4
+            // DoorTabPage
             // 
-            this.tabPage4.Controls.Add(this.cbWallCloseSound);
-            this.tabPage4.Controls.Add(this.cbWallOpenSound);
-            this.tabPage4.Controls.Add(this.txtWallFilename);
-            this.tabPage4.Controls.Add(this.txtWallTotalTime);
-            this.tabPage4.Controls.Add(this.label40);
-            this.tabPage4.Controls.Add(this.groupBox8);
-            this.tabPage4.Controls.Add(this.label38);
-            this.tabPage4.Controls.Add(this.label37);
-            this.tabPage4.Controls.Add(this.label36);
-            this.tabPage4.Controls.Add(this.groupBox7);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(846, 513);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Doors";
-            this.tabPage4.UseVisualStyleBackColor = true;
+            this.DoorTabPage.Controls.Add(this.cbWallCloseSound);
+            this.DoorTabPage.Controls.Add(this.cbWallOpenSound);
+            this.DoorTabPage.Controls.Add(this.txtWallFilename);
+            this.DoorTabPage.Controls.Add(this.txtWallTotalTime);
+            this.DoorTabPage.Controls.Add(this.label40);
+            this.DoorTabPage.Controls.Add(this.groupBox8);
+            this.DoorTabPage.Controls.Add(this.label38);
+            this.DoorTabPage.Controls.Add(this.label37);
+            this.DoorTabPage.Controls.Add(this.label36);
+            this.DoorTabPage.Controls.Add(this.groupBox7);
+            this.DoorTabPage.Location = new System.Drawing.Point(4, 22);
+            this.DoorTabPage.Name = "DoorTabPage";
+            this.DoorTabPage.Size = new System.Drawing.Size(846, 513);
+            this.DoorTabPage.TabIndex = 3;
+            this.DoorTabPage.Text = "Doors";
+            this.DoorTabPage.UseVisualStyleBackColor = true;
             // 
             // cbWallCloseSound
             // 
@@ -1797,18 +1507,18 @@
             this.label102.TabIndex = 1;
             this.label102.Text = "Preview:";
             // 
-            // tabPage8
+            // SoundTabPage
             // 
-            this.tabPage8.Controls.Add(this.cbSoundSNDid);
-            this.tabPage8.Controls.Add(this.cbLowMemSound);
-            this.tabPage8.Controls.Add(this.label144);
-            this.tabPage8.Controls.Add(this.label143);
-            this.tabPage8.Location = new System.Drawing.Point(4, 22);
-            this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Size = new System.Drawing.Size(846, 513);
-            this.tabPage8.TabIndex = 7;
-            this.tabPage8.Text = "Sounds";
-            this.tabPage8.UseVisualStyleBackColor = true;
+            this.SoundTabPage.Controls.Add(this.cbSoundSNDid);
+            this.SoundTabPage.Controls.Add(this.cbLowMemSound);
+            this.SoundTabPage.Controls.Add(this.label144);
+            this.SoundTabPage.Controls.Add(this.label143);
+            this.SoundTabPage.Location = new System.Drawing.Point(4, 22);
+            this.SoundTabPage.Name = "SoundTabPage";
+            this.SoundTabPage.Size = new System.Drawing.Size(846, 513);
+            this.SoundTabPage.TabIndex = 7;
+            this.SoundTabPage.Text = "Sounds";
+            this.SoundTabPage.UseVisualStyleBackColor = true;
             // 
             // cbSoundSNDid
             // 
@@ -1850,18 +1560,18 @@
             this.label143.TabIndex = 0;
             this.label143.Text = "Sound ID:";
             // 
-            // tabPage9
+            // ReactorTabPage
             // 
-            this.tabPage9.Controls.Add(this.label151);
-            this.tabPage9.Controls.Add(this.cbReactorModel);
-            this.tabPage9.Controls.Add(this.label78);
-            this.tabPage9.Location = new System.Drawing.Point(4, 22);
-            this.tabPage9.Name = "tabPage9";
-            this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage9.Size = new System.Drawing.Size(846, 513);
-            this.tabPage9.TabIndex = 8;
-            this.tabPage9.Text = "Reactors";
-            this.tabPage9.UseVisualStyleBackColor = true;
+            this.ReactorTabPage.Controls.Add(this.label151);
+            this.ReactorTabPage.Controls.Add(this.cbReactorModel);
+            this.ReactorTabPage.Controls.Add(this.label78);
+            this.ReactorTabPage.Location = new System.Drawing.Point(4, 22);
+            this.ReactorTabPage.Name = "ReactorTabPage";
+            this.ReactorTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.ReactorTabPage.Size = new System.Drawing.Size(846, 513);
+            this.ReactorTabPage.TabIndex = 8;
+            this.ReactorTabPage.Text = "Reactors";
+            this.ReactorTabPage.UseVisualStyleBackColor = true;
             // 
             // label151
             // 
@@ -1891,23 +1601,23 @@
             this.label78.TabIndex = 0;
             this.label78.Text = "Model:";
             // 
-            // tabPage10
+            // PowerupTabPage
             // 
-            this.tabPage10.Controls.Add(this.txtPowerupLight);
-            this.tabPage10.Controls.Add(this.txtPowerupSize);
-            this.tabPage10.Controls.Add(this.cbPowerupPickupSound);
-            this.tabPage10.Controls.Add(this.cbPowerupSprite);
-            this.tabPage10.Controls.Add(this.label148);
-            this.tabPage10.Controls.Add(this.label147);
-            this.tabPage10.Controls.Add(this.label146);
-            this.tabPage10.Controls.Add(this.label132);
-            this.tabPage10.Location = new System.Drawing.Point(4, 22);
-            this.tabPage10.Name = "tabPage10";
-            this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage10.Size = new System.Drawing.Size(846, 513);
-            this.tabPage10.TabIndex = 9;
-            this.tabPage10.Text = "Powerups";
-            this.tabPage10.UseVisualStyleBackColor = true;
+            this.PowerupTabPage.Controls.Add(this.txtPowerupLight);
+            this.PowerupTabPage.Controls.Add(this.txtPowerupSize);
+            this.PowerupTabPage.Controls.Add(this.cbPowerupPickupSound);
+            this.PowerupTabPage.Controls.Add(this.cbPowerupSprite);
+            this.PowerupTabPage.Controls.Add(this.label148);
+            this.PowerupTabPage.Controls.Add(this.label147);
+            this.PowerupTabPage.Controls.Add(this.label146);
+            this.PowerupTabPage.Controls.Add(this.label132);
+            this.PowerupTabPage.Location = new System.Drawing.Point(4, 22);
+            this.PowerupTabPage.Name = "PowerupTabPage";
+            this.PowerupTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.PowerupTabPage.Size = new System.Drawing.Size(846, 513);
+            this.PowerupTabPage.TabIndex = 9;
+            this.PowerupTabPage.Text = "Powerups";
+            this.PowerupTabPage.UseVisualStyleBackColor = true;
             // 
             // txtPowerupLight
             // 
@@ -1984,36 +1694,36 @@
             this.label132.TabIndex = 0;
             this.label132.Text = "Sprite";
             // 
-            // tabPage11
+            // ShipTabPage
             // 
-            this.tabPage11.Controls.Add(this.groupBox3);
-            this.tabPage11.Controls.Add(this.label24);
-            this.tabPage11.Controls.Add(this.cbMarkerModel);
-            this.tabPage11.Controls.Add(this.cbPlayerExplosion);
-            this.tabPage11.Controls.Add(this.cbPlayerModel);
-            this.tabPage11.Controls.Add(this.label121);
-            this.tabPage11.Controls.Add(this.label120);
-            this.tabPage11.Controls.Add(this.txtShipMaxRotThrust);
-            this.tabPage11.Controls.Add(this.txtShipWiggle);
-            this.tabPage11.Controls.Add(this.label119);
-            this.tabPage11.Controls.Add(this.label118);
-            this.tabPage11.Controls.Add(this.label117);
-            this.tabPage11.Controls.Add(this.txtShipBrakes);
-            this.tabPage11.Controls.Add(this.txtShipRevThrust);
-            this.tabPage11.Controls.Add(this.txtShipThrust);
-            this.tabPage11.Controls.Add(this.label116);
-            this.tabPage11.Controls.Add(this.txtShipDrag);
-            this.tabPage11.Controls.Add(this.txtShipMass);
-            this.tabPage11.Controls.Add(this.label115);
-            this.tabPage11.Controls.Add(this.label114);
-            this.tabPage11.Controls.Add(this.label113);
-            this.tabPage11.Location = new System.Drawing.Point(4, 22);
-            this.tabPage11.Name = "tabPage11";
-            this.tabPage11.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage11.Size = new System.Drawing.Size(846, 513);
-            this.tabPage11.TabIndex = 10;
-            this.tabPage11.Text = "Ship";
-            this.tabPage11.UseVisualStyleBackColor = true;
+            this.ShipTabPage.Controls.Add(this.groupBox3);
+            this.ShipTabPage.Controls.Add(this.label24);
+            this.ShipTabPage.Controls.Add(this.cbMarkerModel);
+            this.ShipTabPage.Controls.Add(this.cbPlayerExplosion);
+            this.ShipTabPage.Controls.Add(this.cbPlayerModel);
+            this.ShipTabPage.Controls.Add(this.label121);
+            this.ShipTabPage.Controls.Add(this.label120);
+            this.ShipTabPage.Controls.Add(this.txtShipMaxRotThrust);
+            this.ShipTabPage.Controls.Add(this.txtShipWiggle);
+            this.ShipTabPage.Controls.Add(this.label119);
+            this.ShipTabPage.Controls.Add(this.label118);
+            this.ShipTabPage.Controls.Add(this.label117);
+            this.ShipTabPage.Controls.Add(this.txtShipBrakes);
+            this.ShipTabPage.Controls.Add(this.txtShipRevThrust);
+            this.ShipTabPage.Controls.Add(this.txtShipThrust);
+            this.ShipTabPage.Controls.Add(this.label116);
+            this.ShipTabPage.Controls.Add(this.txtShipDrag);
+            this.ShipTabPage.Controls.Add(this.txtShipMass);
+            this.ShipTabPage.Controls.Add(this.label115);
+            this.ShipTabPage.Controls.Add(this.label114);
+            this.ShipTabPage.Controls.Add(this.label113);
+            this.ShipTabPage.Location = new System.Drawing.Point(4, 22);
+            this.ShipTabPage.Name = "ShipTabPage";
+            this.ShipTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.ShipTabPage.Size = new System.Drawing.Size(846, 513);
+            this.ShipTabPage.TabIndex = 10;
+            this.ShipTabPage.Text = "Ship";
+            this.ShipTabPage.UseVisualStyleBackColor = true;
             // 
             // groupBox3
             // 
@@ -2314,24 +2024,24 @@
             this.label113.TabIndex = 1;
             this.label113.Text = "Model number:";
             // 
-            // tabPage14
+            // GaugesTabPage
             // 
-            this.tabPage14.Controls.Add(this.btnRemapGaugeHires);
-            this.tabPage14.Controls.Add(this.btnRemapGauge);
-            this.tabPage14.Controls.Add(this.pbGagueHires);
-            this.tabPage14.Controls.Add(this.pbGagueLores);
-            this.tabPage14.Controls.Add(this.txtGagueHires);
-            this.tabPage14.Controls.Add(this.label124);
-            this.tabPage14.Controls.Add(this.label123);
-            this.tabPage14.Controls.Add(this.txtGagueLores);
-            this.tabPage14.Controls.Add(this.label122);
-            this.tabPage14.Location = new System.Drawing.Point(4, 22);
-            this.tabPage14.Name = "tabPage14";
-            this.tabPage14.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage14.Size = new System.Drawing.Size(846, 513);
-            this.tabPage14.TabIndex = 13;
-            this.tabPage14.Text = "Gagues";
-            this.tabPage14.UseVisualStyleBackColor = true;
+            this.GaugesTabPage.Controls.Add(this.btnRemapGaugeHires);
+            this.GaugesTabPage.Controls.Add(this.btnRemapGauge);
+            this.GaugesTabPage.Controls.Add(this.pbGagueHires);
+            this.GaugesTabPage.Controls.Add(this.pbGagueLores);
+            this.GaugesTabPage.Controls.Add(this.txtGagueHires);
+            this.GaugesTabPage.Controls.Add(this.label124);
+            this.GaugesTabPage.Controls.Add(this.label123);
+            this.GaugesTabPage.Controls.Add(this.txtGagueLores);
+            this.GaugesTabPage.Controls.Add(this.label122);
+            this.GaugesTabPage.Location = new System.Drawing.Point(4, 22);
+            this.GaugesTabPage.Name = "GaugesTabPage";
+            this.GaugesTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.GaugesTabPage.Size = new System.Drawing.Size(846, 513);
+            this.GaugesTabPage.TabIndex = 13;
+            this.GaugesTabPage.Text = "Gauges";
+            this.GaugesTabPage.UseVisualStyleBackColor = true;
             // 
             // btnRemapGaugeHires
             // 
@@ -2414,22 +2124,22 @@
             this.label122.Name = "label122";
             this.label122.Size = new System.Drawing.Size(95, 13);
             this.label122.TabIndex = 0;
-            this.label122.Text = "Gague Texture ID:";
+            this.label122.Text = "Gauge Texture ID:";
             // 
-            // tabPage15
+            // CockpitTabPage
             // 
-            this.tabPage15.Controls.Add(this.btnRemapCockpit);
-            this.tabPage15.Controls.Add(this.pbCockpit);
-            this.tabPage15.Controls.Add(this.label131);
-            this.tabPage15.Controls.Add(this.txtCockpitID);
-            this.tabPage15.Controls.Add(this.label129);
-            this.tabPage15.Location = new System.Drawing.Point(4, 22);
-            this.tabPage15.Name = "tabPage15";
-            this.tabPage15.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage15.Size = new System.Drawing.Size(846, 513);
-            this.tabPage15.TabIndex = 14;
-            this.tabPage15.Text = "Cockpit";
-            this.tabPage15.UseVisualStyleBackColor = true;
+            this.CockpitTabPage.Controls.Add(this.btnRemapCockpit);
+            this.CockpitTabPage.Controls.Add(this.pbCockpit);
+            this.CockpitTabPage.Controls.Add(this.label131);
+            this.CockpitTabPage.Controls.Add(this.txtCockpitID);
+            this.CockpitTabPage.Controls.Add(this.label129);
+            this.CockpitTabPage.Location = new System.Drawing.Point(4, 22);
+            this.CockpitTabPage.Name = "CockpitTabPage";
+            this.CockpitTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.CockpitTabPage.Size = new System.Drawing.Size(846, 513);
+            this.CockpitTabPage.TabIndex = 14;
+            this.CockpitTabPage.Text = "Cockpit";
+            this.CockpitTabPage.UseVisualStyleBackColor = true;
             // 
             // btnRemapCockpit
             // 
@@ -2475,19 +2185,19 @@
             this.label129.TabIndex = 0;
             this.label129.Text = "ID:";
             // 
-            // tabPage16
+            // XLATTabPage
             // 
-            this.tabPage16.Controls.Add(this.pbBitmapDest);
-            this.tabPage16.Controls.Add(this.pbBitmapSrc);
-            this.tabPage16.Controls.Add(this.label128);
-            this.tabPage16.Controls.Add(this.txtXLATDest);
-            this.tabPage16.Controls.Add(this.label127);
-            this.tabPage16.Location = new System.Drawing.Point(4, 22);
-            this.tabPage16.Name = "tabPage16";
-            this.tabPage16.Size = new System.Drawing.Size(846, 513);
-            this.tabPage16.TabIndex = 15;
-            this.tabPage16.Text = "XLAT";
-            this.tabPage16.UseVisualStyleBackColor = true;
+            this.XLATTabPage.Controls.Add(this.pbBitmapDest);
+            this.XLATTabPage.Controls.Add(this.pbBitmapSrc);
+            this.XLATTabPage.Controls.Add(this.label128);
+            this.XLATTabPage.Controls.Add(this.txtXLATDest);
+            this.XLATTabPage.Controls.Add(this.label127);
+            this.XLATTabPage.Location = new System.Drawing.Point(4, 22);
+            this.XLATTabPage.Name = "XLATTabPage";
+            this.XLATTabPage.Size = new System.Drawing.Size(846, 513);
+            this.XLATTabPage.TabIndex = 15;
+            this.XLATTabPage.Text = "XLAT";
+            this.XLATTabPage.UseVisualStyleBackColor = true;
             // 
             // pbBitmapDest
             // 
@@ -2629,7 +2339,7 @@
             this.ClientSize = new System.Drawing.Size(854, 601);
             this.Controls.Add(this.txtElemName);
             this.Controls.Add(this.btnList);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.EditorTabs);
             this.Controls.Add(this.label50);
             this.Controls.Add(this.nudElementNum);
             this.Controls.Add(this.btnDeleteElem);
@@ -2643,12 +2353,7 @@
             this.Text = "HAMEditor2";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HAMEditor2_FormClosing);
             this.Load += new System.EventHandler(this.HAMEditor2_Load);
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbTexPrev)).EndInit();
+            this.EditorTabs.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -2657,16 +2362,16 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbAnimFramePreview)).EndInit();
             this.groupBoxAnimFlags.ResumeLayout(false);
             this.groupBoxAnimFlags.PerformLayout();
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
+            this.EffectsTabPage.ResumeLayout(false);
+            this.EffectsTabPage.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudEffectFrame)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbEffectFramePreview)).EndInit();
-            this.tabPage4.ResumeLayout(false);
-            this.tabPage4.PerformLayout();
+            this.DoorTabPage.ResumeLayout(false);
+            this.DoorTabPage.PerformLayout();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
             this.groupBox7.ResumeLayout(false);
@@ -2678,28 +2383,28 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
-            this.tabPage8.ResumeLayout(false);
-            this.tabPage8.PerformLayout();
-            this.tabPage9.ResumeLayout(false);
-            this.tabPage9.PerformLayout();
-            this.tabPage10.ResumeLayout(false);
-            this.tabPage10.PerformLayout();
-            this.tabPage11.ResumeLayout(false);
-            this.tabPage11.PerformLayout();
+            this.SoundTabPage.ResumeLayout(false);
+            this.SoundTabPage.PerformLayout();
+            this.ReactorTabPage.ResumeLayout(false);
+            this.ReactorTabPage.PerformLayout();
+            this.PowerupTabPage.ResumeLayout(false);
+            this.PowerupTabPage.PerformLayout();
+            this.ShipTabPage.ResumeLayout(false);
+            this.ShipTabPage.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudShipTextures)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbWeaponTexture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbWingTex)).EndInit();
-            this.tabPage14.ResumeLayout(false);
-            this.tabPage14.PerformLayout();
+            this.GaugesTabPage.ResumeLayout(false);
+            this.GaugesTabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbGagueHires)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbGagueLores)).EndInit();
-            this.tabPage15.ResumeLayout(false);
-            this.tabPage15.PerformLayout();
+            this.CockpitTabPage.ResumeLayout(false);
+            this.CockpitTabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbCockpit)).EndInit();
-            this.tabPage16.ResumeLayout(false);
-            this.tabPage16.PerformLayout();
+            this.XLATTabPage.ResumeLayout(false);
+            this.XLATTabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbBitmapDest)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBitmapSrc)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudElementNum)).EndInit();
@@ -2712,28 +2417,8 @@
 
         private System.Windows.Forms.MainMenu mainMenu1;
         private System.Windows.Forms.MenuItem menuItem1;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TextBox txtTexSlideV;
-        private System.Windows.Forms.TextBox txtTexSlideU;
-        private System.Windows.Forms.TextBox txtTexDamage;
-        private System.Windows.Forms.TextBox txtTexLight;
-        private System.Windows.Forms.TextBox txtTexID;
-        private System.Windows.Forms.Label label130;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.CheckBox cbTexHoardGoal;
-        private System.Windows.Forms.CheckBox cbTexRedGoal;
-        private System.Windows.Forms.CheckBox cbTexBlueGoal;
-        private System.Windows.Forms.CheckBox cbTexForcefield;
-        private System.Windows.Forms.CheckBox cbTexWater;
-        private System.Windows.Forms.CheckBox cbTexLava;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.PictureBox pbTexPrev;
+        private System.Windows.Forms.TabControl EditorTabs;
+        private System.Windows.Forms.TabPage TextureTabPage;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
@@ -2751,7 +2436,7 @@
         private System.Windows.Forms.TextBox txtAnimFrameSpeed;
         private System.Windows.Forms.GroupBox groupBoxAnimFlags;
         private System.Windows.Forms.CheckBox cbAnimRod;
-        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage EffectsTabPage;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.Label label32;
@@ -2776,7 +2461,7 @@
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.TabPage DoorTabPage;
         private System.Windows.Forms.TextBox txtWallFilename;
         private System.Windows.Forms.TextBox txtWallTotalTime;
         private System.Windows.Forms.Label label40;
@@ -2798,10 +2483,10 @@
         private System.Windows.Forms.TabPage RobotTabPage;
         private System.Windows.Forms.TabPage WeaponTabPage;
         private System.Windows.Forms.TabPage ModelTabPage;
-        private System.Windows.Forms.TabPage tabPage8;
+        private System.Windows.Forms.TabPage SoundTabPage;
         private System.Windows.Forms.Label label144;
         private System.Windows.Forms.Label label143;
-        private System.Windows.Forms.TabPage tabPage9;
+        private System.Windows.Forms.TabPage ReactorTabPage;
         private System.Windows.Forms.Button btnList;
         private System.Windows.Forms.Label label50;
         private System.Windows.Forms.Button btnDeleteElem;
@@ -2809,7 +2494,7 @@
         private System.Windows.Forms.Label label49;
         private System.Windows.Forms.Label label48;
         private System.Windows.Forms.NumericUpDown nudElementNum;
-        private System.Windows.Forms.TabPage tabPage10;
+        private System.Windows.Forms.TabPage PowerupTabPage;
         private System.Windows.Forms.TextBox txtElemName;
         private System.Windows.Forms.StatusBar statusBar1;
         private System.Windows.Forms.MenuItem menuItem2;
@@ -2840,7 +2525,7 @@
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.TrackBar trackBar2;
         private System.Windows.Forms.TrackBar trackBar3;
-        private System.Windows.Forms.TabPage tabPage11;
+        private System.Windows.Forms.TabPage ShipTabPage;
         private System.Windows.Forms.Label label113;
         private System.Windows.Forms.Label label114;
         private System.Windows.Forms.Label label115;
@@ -2857,8 +2542,8 @@
         private System.Windows.Forms.Label label120;
         private System.Windows.Forms.TextBox txtShipMaxRotThrust;
         private System.Windows.Forms.TextBox txtShipWiggle;
-        private System.Windows.Forms.TabPage tabPage14;
-        private System.Windows.Forms.TabPage tabPage15;
+        private System.Windows.Forms.TabPage GaugesTabPage;
+        private System.Windows.Forms.TabPage CockpitTabPage;
         private System.Windows.Forms.PictureBox pbGagueHires;
         private System.Windows.Forms.PictureBox pbGagueLores;
         private System.Windows.Forms.TextBox txtGagueHires;
@@ -2866,7 +2551,7 @@
         private System.Windows.Forms.Label label123;
         private System.Windows.Forms.TextBox txtGagueLores;
         private System.Windows.Forms.Label label122;
-        private System.Windows.Forms.TabPage tabPage16;
+        private System.Windows.Forms.TabPage XLATTabPage;
         private System.Windows.Forms.TextBox txtXLATDest;
         private System.Windows.Forms.Label label127;
         private System.Windows.Forms.PictureBox pbBitmapDest;
@@ -2899,9 +2584,6 @@
         private System.Windows.Forms.CheckBox chkNorm;
         private System.Windows.Forms.CheckBox chkShowBBs;
         private System.Windows.Forms.MenuItem mnuExportTable;
-        private System.Windows.Forms.ComboBox cbTexEClip;
-        private System.Windows.Forms.TextBox txtTexDestroyed;
-        private System.Windows.Forms.Label label107;
         private System.Windows.Forms.ComboBox cbEClipMineCritical;
         private System.Windows.Forms.ComboBox cbEClipBreakSound;
         private System.Windows.Forms.ComboBox cbEClipBreakVClip;
@@ -2911,7 +2593,6 @@
         private System.Windows.Forms.ComboBox cbWallOpenSound;
         private System.Windows.Forms.ComboBox cbPlayerExplosion;
         private System.Windows.Forms.ComboBox cbPlayerModel;
-        private System.Windows.Forms.Button btnRemapTexture;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button btnRemapVCFrame;
         private System.Windows.Forms.MenuItem mnuFindRefs;

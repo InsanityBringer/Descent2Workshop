@@ -45,9 +45,10 @@ namespace Descent2Workshop
         private bool noPMView = false;
 
         private int ElementNumber { get { return (int)nudElementNum.Value; } }
-        private int PageNumber { get { return tabControl1.SelectedIndex; } }
+        private int PageNumber { get { return EditorTabs.SelectedIndex; } }
 
         //I still don't get the VS toolbox. Ugh
+        TMAPInfoPanel texturePanel;
         RobotPanel robotPanel;
         WeaponPanel weaponPanel;
         
@@ -65,10 +66,13 @@ namespace Descent2Workshop
             this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
             this.glControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl1_Paint);
 
+            texturePanel = new TMAPInfoPanel();
+            texturePanel.Dock = DockStyle.Fill;
             robotPanel = new RobotPanel();
             robotPanel.Dock = DockStyle.Fill;
             weaponPanel = new WeaponPanel();
             weaponPanel.Dock = DockStyle.Fill;
+            TextureTabPage.Controls.Add(texturePanel);
             RobotTabPage.Controls.Add(robotPanel);
             WeaponTabPage.Controls.Add(weaponPanel);
 
@@ -101,7 +105,7 @@ namespace Descent2Workshop
 
         private void ElementListInit()
         {
-            switch (tabControl1.SelectedIndex)
+            switch (EditorTabs.SelectedIndex)
             {
                 case 0:
                     nudElementNum.Maximum = datafile.TMapInfo.Count - 1;
@@ -167,7 +171,7 @@ namespace Descent2Workshop
             isLocked = true;
             ElementListInit();
             nudElementNum.Value = 0;
-            FillOutCurrentPanel(tabControl1.SelectedIndex, 0);
+            FillOutCurrentPanel(EditorTabs.SelectedIndex, 0);
             isLocked = false;
         }
 
@@ -176,7 +180,7 @@ namespace Descent2Workshop
             if (!isLocked)
             {
                 isLocked = true;
-                FillOutCurrentPanel(tabControl1.SelectedIndex, (int)nudElementNum.Value);
+                FillOutCurrentPanel(EditorTabs.SelectedIndex, (int)nudElementNum.Value);
                 isLocked = false;
             }
         }
@@ -233,7 +237,7 @@ namespace Descent2Workshop
 
         private void InsertElem_Click(object sender, EventArgs e)
         {
-            HAMType type = typeTable[tabControl1.SelectedIndex];
+            HAMType type = typeTable[EditorTabs.SelectedIndex];
             int newID = datafile.AddElement(type);
             if (newID != -1)
             {
@@ -245,7 +249,7 @@ namespace Descent2Workshop
 
         private void DeleteElem_Click(object sender, EventArgs e)
         {
-            HAMType type = typeTable[tabControl1.SelectedIndex];
+            HAMType type = typeTable[EditorTabs.SelectedIndex];
             int returnv = datafile.DeleteElement(type, ElementNumber);
             if (returnv >= 0)
             {
@@ -254,7 +258,7 @@ namespace Descent2Workshop
                 isLocked = true;
                 if (nudElementNum.Value >= returnv)
                     nudElementNum.Value = returnv - 1;
-                FillOutCurrentPanel(tabControl1.SelectedIndex, ElementNumber);
+                FillOutCurrentPanel(EditorTabs.SelectedIndex, ElementNumber);
                 isLocked = false;
             }
             else
@@ -279,7 +283,7 @@ namespace Descent2Workshop
         private void ElemName_TextChanged(object sender, EventArgs e)
         {
             if (isLocked) return;
-            datafile.UpdateName(typeTable[tabControl1.SelectedIndex], ElementNumber, txtElemName.Text);
+            datafile.UpdateName(typeTable[EditorTabs.SelectedIndex], ElementNumber, txtElemName.Text);
         }
 
         //---------------------------------------------------------------------
@@ -291,9 +295,7 @@ namespace Descent2Workshop
         private void InitTexturePanel()
         {
             SetElementControl(true, false);
-            cbTexEClip.Items.Clear(); cbTexEClip.Items.Add("None");
-            for (int i = 0; i < datafile.EClips.Count; i++)
-                cbTexEClip.Items.Add(datafile.EClipNames[i] + " #" + i);
+            texturePanel.Init(datafile.EClipNames);
         }
 
         private void InitVClipPanel()
@@ -410,21 +412,7 @@ namespace Descent2Workshop
         public void UpdateTexturePanel(int num)
         {
             TMAPInfo texture = datafile.TMapInfo[num];
-            txtTexID.Text = datafile.Textures[num].ToString();
-            txtTexLight.Text = texture.lighting.ToString();
-            txtTexDamage.Text = texture.damage.ToString();
-            cbTexEClip.SelectedIndex = texture.eclip_num + 1;
-            txtTexSlideU.Text = GetFloatFromFixed88(texture.slide_u).ToString();
-            txtTexSlideV.Text = GetFloatFromFixed88(texture.slide_v).ToString();
-            txtTexDestroyed.Text = texture.destroyed.ToString();
-            cbTexLava.Checked = ((texture.flags & TMAPInfo.TMI_VOLATILE) != 0);
-            cbTexWater.Checked = ((texture.flags & TMAPInfo.TMI_WATER) != 0);
-            cbTexForcefield.Checked = ((texture.flags & TMAPInfo.TMI_FORCE_FIELD) != 0);
-            cbTexRedGoal.Checked = ((texture.flags & TMAPInfo.TMI_GOAL_RED) != 0);
-            cbTexBlueGoal.Checked = ((texture.flags & TMAPInfo.TMI_GOAL_BLUE) != 0);
-            cbTexHoardGoal.Checked = ((texture.flags & TMAPInfo.TMI_GOAL_HOARD) != 0);
-
-            UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, datafile.Textures[num]), pbTexPrev);
+            texturePanel.Update(datafile, num, texture);
         }
 
         public void UpdateGaguePanel(int num)
@@ -753,11 +741,6 @@ namespace Descent2Workshop
                 int shipvalue = 0;
                 switch (button.Tag)
                 {
-                    case "1":
-                        datafile.Textures[ElementNumber] = (ushort)(value);
-                        UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, value), pbTexPrev);
-                        txtTexID.Text = (value).ToString();
-                        break;
                     case "2":
                         datafile.VClips[ElementNumber].frames[(int)nudAnimFrame.Value] = (ushort)(value);
                         UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, value), pbAnimFramePreview);
@@ -825,94 +808,6 @@ namespace Descent2Workshop
                 }
                 isLocked = false;
             }
-        }
-
-        //---------------------------------------------------------------------
-        // TMAPINFO UPDATORS
-        //---------------------------------------------------------------------
-
-        private void TextureFlagCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            TMAPInfo tmapinfo = datafile.TMapInfo[ElementNumber];
-
-            CheckBox check = (CheckBox)sender;
-            int flagvalue = int.Parse(check.Tag.ToString());
-            tmapinfo.updateFlags(flagvalue, check.Checked);
-        }
-
-        private void TextureProperty_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            TextBox textBox = (TextBox)sender;
-            TMAPInfo info = datafile.TMapInfo[ElementNumber];
-            try
-            {
-                //double value = double.Parse(textBox.Text);
-                switch (textBox.Tag)
-                {
-                    case "0":
-                        datafile.Textures[ElementNumber] = ushort.Parse(textBox.Text);
-                        break;
-                    case "1":
-                        info.lighting = (int)(double.Parse(textBox.Text) * 65536.0d);
-                        break;
-                    case "2":
-                        info.damage = (int)(double.Parse(textBox.Text) * 65536.0d);
-                        break;
-                    case "4":
-                        info.slide_u = (short)(double.Parse(textBox.Text) * 256.0d);
-                        break;
-                    case "5":
-                        info.slide_v = (short)(double.Parse(textBox.Text) * 256.0d);
-                        break;
-                    case "6":
-                        info.destroyed = short.Parse(textBox.Text);
-                        break;
-                }
-            }
-            catch (Exception)
-            {
-                statusBar1.Text = "failed to update data!";
-            }
-        }
-
-        private void cbTexEClip_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked) return;
-            int eclipNum = cbTexEClip.SelectedIndex - 1;
-            EClip clip = datafile.GetEClip(eclipNum);
-            TMAPInfo tmapInfo = datafile.TMapInfo[ElementNumber];
-            if (clip == null)
-            {
-                tmapInfo.eclip_num = -1;
-            }
-            else
-            {
-                int clipCurrentID = clip.GetCurrentTMap();
-                if (clipCurrentID != -1 && clipCurrentID != ElementNumber)
-                {
-                    if (MessageBox.Show("This EClip is already assigned to another wall texture, do you want to change it?", "EClip in use", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                    {
-                        TMAPInfo oldTMapInfo = datafile.TMapInfo[clipCurrentID];
-                        oldTMapInfo.eclip_num = -1;
-                        clip.changing_wall_texture = (short)ElementNumber;
-
-                    }
-                    else
-                    {
-                        cbTexEClip.SelectedIndex = tmapInfo.eclip_num + 1;
-                        return;
-                    }
-                }
-                /*else
-                {
-                    clip.changing_wall_texture = (short)ElementNumber;
-                }*/
-            }
-            tmapInfo.eclip_num = (short)eclipNum;
         }
 
         //---------------------------------------------------------------------
@@ -1292,7 +1187,7 @@ namespace Descent2Workshop
             {
                 int result = 1;
                 int elementNumber = copyForm.elementValue;
-                result = datafile.CopyElement(typeTable[tabControl1.SelectedIndex], (int)nudElementNum.Value, elementNumber);
+                result = datafile.CopyElement(typeTable[EditorTabs.SelectedIndex], (int)nudElementNum.Value, elementNumber);
                 if (result == -1)
                     MessageBox.Show("Cannot copy to an element that doesn't exist!");
                 else if (result == 1)
