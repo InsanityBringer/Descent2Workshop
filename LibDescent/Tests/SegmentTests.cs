@@ -1,5 +1,6 @@
 using LibDescent.Data;
 using NUnit.Framework;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace LibDescent.Tests
@@ -21,52 +22,52 @@ namespace LibDescent.Tests
         public void TestVertexPositions()
         {
             var segment = CreateDefaultSegment();
-            Assert.AreEqual(segment.Vertices.Length, 8);
-            Assert.AreEqual(segment.Vertices[0], new FixVector(10d, 10d, -10d));
-            Assert.AreEqual(segment.Vertices[1], new FixVector(10d, -10d, -10d));
-            Assert.AreEqual(segment.Vertices[2], new FixVector(-10d, -10d, -10d));
-            Assert.AreEqual(segment.Vertices[3], new FixVector(-10d, 10d, -10d));
-            Assert.AreEqual(segment.Vertices[4], new FixVector(10d, 10d, 10d));
-            Assert.AreEqual(segment.Vertices[5], new FixVector(10d, -10d, 10d));
-            Assert.AreEqual(segment.Vertices[6], new FixVector(-10d, -10d, 10d));
-            Assert.AreEqual(segment.Vertices[7], new FixVector(-10d, 10d, 10d));
+            Assert.AreEqual(8, segment.Vertices.Length);
+            Assert.AreEqual(new FixVector(10d, 10d, -10d), segment.Vertices[0]);
+            Assert.AreEqual(new FixVector(10d, -10d, -10d), segment.Vertices[1]);
+            Assert.AreEqual(new FixVector(-10d, -10d, -10d), segment.Vertices[2]);
+            Assert.AreEqual(new FixVector(-10d, 10d, -10d), segment.Vertices[3]);
+            Assert.AreEqual(new FixVector(10d, 10d, 10d), segment.Vertices[4]);
+            Assert.AreEqual(new FixVector(10d, -10d, 10d), segment.Vertices[5]);
+            Assert.AreEqual(new FixVector(-10d, -10d, 10d), segment.Vertices[6]);
+            Assert.AreEqual(new FixVector(-10d, 10d, 10d), segment.Vertices[7]);
         }
 
         [Test]
         public void TestSideVertices()
         {
             var segment = CreateDefaultSegment();
-            Assert.AreEqual(segment.Sides.Length, 6);
-            Assert.AreEqual(segment.Sides[0].GetNumVertices(), 4);
-            Assert.AreSame(segment.Sides[0].GetVertex(0), segment.Vertices[7]);
-            Assert.AreSame(segment.Sides[0].GetVertex(1), segment.Vertices[6]);
-            Assert.AreSame(segment.Sides[0].GetVertex(2), segment.Vertices[2]);
-            Assert.AreSame(segment.Sides[0].GetVertex(3), segment.Vertices[3]);
-            Assert.AreEqual(segment.Sides[1].GetNumVertices(), 4);
-            Assert.AreSame(segment.Sides[1].GetVertex(0), segment.Vertices[0]);
-            Assert.AreSame(segment.Sides[1].GetVertex(1), segment.Vertices[4]);
-            Assert.AreSame(segment.Sides[1].GetVertex(2), segment.Vertices[7]);
-            Assert.AreSame(segment.Sides[1].GetVertex(3), segment.Vertices[3]);
-            Assert.AreEqual(segment.Sides[2].GetNumVertices(), 4);
-            Assert.AreSame(segment.Sides[2].GetVertex(0), segment.Vertices[0]);
-            Assert.AreSame(segment.Sides[2].GetVertex(1), segment.Vertices[1]);
-            Assert.AreSame(segment.Sides[2].GetVertex(2), segment.Vertices[5]);
-            Assert.AreSame(segment.Sides[2].GetVertex(3), segment.Vertices[4]);
-            Assert.AreEqual(segment.Sides[3].GetNumVertices(), 4);
-            Assert.AreSame(segment.Sides[3].GetVertex(0), segment.Vertices[2]);
-            Assert.AreSame(segment.Sides[3].GetVertex(1), segment.Vertices[6]);
-            Assert.AreSame(segment.Sides[3].GetVertex(2), segment.Vertices[5]);
-            Assert.AreSame(segment.Sides[3].GetVertex(3), segment.Vertices[1]);
-            Assert.AreEqual(segment.Sides[4].GetNumVertices(), 4);
-            Assert.AreSame(segment.Sides[4].GetVertex(0), segment.Vertices[4]);
-            Assert.AreSame(segment.Sides[4].GetVertex(1), segment.Vertices[5]);
-            Assert.AreSame(segment.Sides[4].GetVertex(2), segment.Vertices[6]);
-            Assert.AreSame(segment.Sides[4].GetVertex(3), segment.Vertices[7]);
-            Assert.AreEqual(segment.Sides[5].GetNumVertices(), 4);
-            Assert.AreSame(segment.Sides[5].GetVertex(0), segment.Vertices[3]);
-            Assert.AreSame(segment.Sides[5].GetVertex(1), segment.Vertices[2]);
-            Assert.AreSame(segment.Sides[5].GetVertex(2), segment.Vertices[1]);
-            Assert.AreSame(segment.Sides[5].GetVertex(3), segment.Vertices[0]);
+            Assert.AreEqual(6, segment.Sides.Length);
+            Assert.AreEqual(4, segment.Sides[0].GetNumVertices());
+            Assert.AreSame(segment.Vertices[7], segment.Sides[0].GetVertex(0));
+            Assert.AreSame(segment.Vertices[6], segment.Sides[0].GetVertex(1));
+            Assert.AreSame(segment.Vertices[2], segment.Sides[0].GetVertex(2));
+            Assert.AreSame(segment.Vertices[3], segment.Sides[0].GetVertex(3));
+            Assert.AreEqual(4, segment.Sides[1].GetNumVertices());
+            Assert.AreSame(segment.Vertices[0], segment.Sides[1].GetVertex(0));
+            Assert.AreSame(segment.Vertices[4], segment.Sides[1].GetVertex(1));
+            Assert.AreSame(segment.Vertices[7], segment.Sides[1].GetVertex(2));
+            Assert.AreSame(segment.Vertices[3], segment.Sides[1].GetVertex(3));
+            Assert.AreEqual(4, segment.Sides[2].GetNumVertices());
+            Assert.AreSame(segment.Vertices[0], segment.Sides[2].GetVertex(0));
+            Assert.AreSame(segment.Vertices[1], segment.Sides[2].GetVertex(1));
+            Assert.AreSame(segment.Vertices[5], segment.Sides[2].GetVertex(2));
+            Assert.AreSame(segment.Vertices[4], segment.Sides[2].GetVertex(3));
+            Assert.AreEqual(4, segment.Sides[3].GetNumVertices());
+            Assert.AreSame(segment.Vertices[2], segment.Sides[3].GetVertex(0));
+            Assert.AreSame(segment.Vertices[6], segment.Sides[3].GetVertex(1));
+            Assert.AreSame(segment.Vertices[5], segment.Sides[3].GetVertex(2));
+            Assert.AreSame(segment.Vertices[1], segment.Sides[3].GetVertex(3));
+            Assert.AreEqual(4, segment.Sides[4].GetNumVertices());
+            Assert.AreSame(segment.Vertices[4], segment.Sides[4].GetVertex(0));
+            Assert.AreSame(segment.Vertices[5], segment.Sides[4].GetVertex(1));
+            Assert.AreSame(segment.Vertices[6], segment.Sides[4].GetVertex(2));
+            Assert.AreSame(segment.Vertices[7], segment.Sides[4].GetVertex(3));
+            Assert.AreEqual(4, segment.Sides[5].GetNumVertices());
+            Assert.AreSame(segment.Vertices[3], segment.Sides[5].GetVertex(0));
+            Assert.AreSame(segment.Vertices[2], segment.Sides[5].GetVertex(1));
+            Assert.AreSame(segment.Vertices[1], segment.Sides[5].GetVertex(2));
+            Assert.AreSame(segment.Vertices[0], segment.Sides[5].GetVertex(3));
         }
 
         [Test]
@@ -74,35 +75,35 @@ namespace LibDescent.Tests
         {
             var segment = CreateDefaultSegment();
 
-            Assert.AreSame(segment.GetSide(SegSide.Left).GetNeighbor(Edge.Right), segment.GetSide(SegSide.Front));
-            Assert.AreSame(segment.GetSide(SegSide.Left).GetNeighbor(Edge.Bottom), segment.GetSide(SegSide.Down));
-            Assert.AreSame(segment.GetSide(SegSide.Left).GetNeighbor(Edge.Left), segment.GetSide(SegSide.Back));
-            Assert.AreSame(segment.GetSide(SegSide.Left).GetNeighbor(Edge.Top), segment.GetSide(SegSide.Up));
+            Assert.AreSame(segment.GetSide(SegSide.Front), segment.GetSide(SegSide.Left).GetNeighbor(Edge.Right));
+            Assert.AreSame(segment.GetSide(SegSide.Down), segment.GetSide(SegSide.Left).GetNeighbor(Edge.Bottom));
+            Assert.AreSame(segment.GetSide(SegSide.Back), segment.GetSide(SegSide.Left).GetNeighbor(Edge.Left));
+            Assert.AreSame(segment.GetSide(SegSide.Up), segment.GetSide(SegSide.Left).GetNeighbor(Edge.Top));
 
-            Assert.AreSame(segment.GetSide(SegSide.Up).GetNeighbor(Edge.Right), segment.GetSide(SegSide.Left));
-            Assert.AreSame(segment.GetSide(SegSide.Up).GetNeighbor(Edge.Bottom), segment.GetSide(SegSide.Back));
-            Assert.AreSame(segment.GetSide(SegSide.Up).GetNeighbor(Edge.Left), segment.GetSide(SegSide.Right));
-            Assert.AreSame(segment.GetSide(SegSide.Up).GetNeighbor(Edge.Top), segment.GetSide(SegSide.Front));
+            Assert.AreSame(segment.GetSide(SegSide.Left), segment.GetSide(SegSide.Up).GetNeighbor(Edge.Right));
+            Assert.AreSame(segment.GetSide(SegSide.Back), segment.GetSide(SegSide.Up).GetNeighbor(Edge.Bottom));
+            Assert.AreSame(segment.GetSide(SegSide.Right), segment.GetSide(SegSide.Up).GetNeighbor(Edge.Left));
+            Assert.AreSame(segment.GetSide(SegSide.Front), segment.GetSide(SegSide.Up).GetNeighbor(Edge.Top));
 
-            Assert.AreSame(segment.GetSide(SegSide.Right).GetNeighbor(Edge.Right), segment.GetSide(SegSide.Back));
-            Assert.AreSame(segment.GetSide(SegSide.Right).GetNeighbor(Edge.Bottom), segment.GetSide(SegSide.Down));
-            Assert.AreSame(segment.GetSide(SegSide.Right).GetNeighbor(Edge.Left), segment.GetSide(SegSide.Front));
-            Assert.AreSame(segment.GetSide(SegSide.Right).GetNeighbor(Edge.Top), segment.GetSide(SegSide.Up));
+            Assert.AreSame(segment.GetSide(SegSide.Back), segment.GetSide(SegSide.Right).GetNeighbor(Edge.Right));
+            Assert.AreSame(segment.GetSide(SegSide.Down), segment.GetSide(SegSide.Right).GetNeighbor(Edge.Bottom));
+            Assert.AreSame(segment.GetSide(SegSide.Front), segment.GetSide(SegSide.Right).GetNeighbor(Edge.Left));
+            Assert.AreSame(segment.GetSide(SegSide.Up), segment.GetSide(SegSide.Right).GetNeighbor(Edge.Top));
 
-            Assert.AreSame(segment.GetSide(SegSide.Down).GetNeighbor(Edge.Right), segment.GetSide(SegSide.Right));
-            Assert.AreSame(segment.GetSide(SegSide.Down).GetNeighbor(Edge.Bottom), segment.GetSide(SegSide.Back));
-            Assert.AreSame(segment.GetSide(SegSide.Down).GetNeighbor(Edge.Left), segment.GetSide(SegSide.Left));
-            Assert.AreSame(segment.GetSide(SegSide.Down).GetNeighbor(Edge.Top), segment.GetSide(SegSide.Front));
+            Assert.AreSame(segment.GetSide(SegSide.Right), segment.GetSide(SegSide.Down).GetNeighbor(Edge.Right));
+            Assert.AreSame(segment.GetSide(SegSide.Back), segment.GetSide(SegSide.Down).GetNeighbor(Edge.Bottom));
+            Assert.AreSame(segment.GetSide(SegSide.Left), segment.GetSide(SegSide.Down).GetNeighbor(Edge.Left));
+            Assert.AreSame(segment.GetSide(SegSide.Front), segment.GetSide(SegSide.Down).GetNeighbor(Edge.Top));
 
-            Assert.AreSame(segment.GetSide(SegSide.Back).GetNeighbor(Edge.Right), segment.GetSide(SegSide.Left));
-            Assert.AreSame(segment.GetSide(SegSide.Back).GetNeighbor(Edge.Bottom), segment.GetSide(SegSide.Down));
-            Assert.AreSame(segment.GetSide(SegSide.Back).GetNeighbor(Edge.Left), segment.GetSide(SegSide.Right));
-            Assert.AreSame(segment.GetSide(SegSide.Back).GetNeighbor(Edge.Top), segment.GetSide(SegSide.Up));
+            Assert.AreSame(segment.GetSide(SegSide.Left), segment.GetSide(SegSide.Back).GetNeighbor(Edge.Right));
+            Assert.AreSame(segment.GetSide(SegSide.Down), segment.GetSide(SegSide.Back).GetNeighbor(Edge.Bottom));
+            Assert.AreSame(segment.GetSide(SegSide.Right), segment.GetSide(SegSide.Back).GetNeighbor(Edge.Left));
+            Assert.AreSame(segment.GetSide(SegSide.Up), segment.GetSide(SegSide.Back).GetNeighbor(Edge.Top));
 
-            Assert.AreSame(segment.GetSide(SegSide.Front).GetNeighbor(Edge.Right), segment.GetSide(SegSide.Right));
-            Assert.AreSame(segment.GetSide(SegSide.Front).GetNeighbor(Edge.Bottom), segment.GetSide(SegSide.Down));
-            Assert.AreSame(segment.GetSide(SegSide.Front).GetNeighbor(Edge.Left), segment.GetSide(SegSide.Left));
-            Assert.AreSame(segment.GetSide(SegSide.Front).GetNeighbor(Edge.Top), segment.GetSide(SegSide.Up));
+            Assert.AreSame(segment.GetSide(SegSide.Right), segment.GetSide(SegSide.Front).GetNeighbor(Edge.Right));
+            Assert.AreSame(segment.GetSide(SegSide.Down), segment.GetSide(SegSide.Front).GetNeighbor(Edge.Bottom));
+            Assert.AreSame(segment.GetSide(SegSide.Left), segment.GetSide(SegSide.Front).GetNeighbor(Edge.Left));
+            Assert.AreSame(segment.GetSide(SegSide.Up), segment.GetSide(SegSide.Front).GetNeighbor(Edge.Top));
         }
 
         [Test]
@@ -110,12 +111,12 @@ namespace LibDescent.Tests
         {
             var segment = CreateDefaultSegment();
 
-            Assert.AreSame(segment.GetSide(SegSide.Left).GetOppositeSide(), segment.GetSide(SegSide.Right));
-            Assert.AreSame(segment.GetSide(SegSide.Up).GetOppositeSide(), segment.GetSide(SegSide.Down));
-            Assert.AreSame(segment.GetSide(SegSide.Right).GetOppositeSide(), segment.GetSide(SegSide.Left));
-            Assert.AreSame(segment.GetSide(SegSide.Down).GetOppositeSide(), segment.GetSide(SegSide.Up));
-            Assert.AreSame(segment.GetSide(SegSide.Back).GetOppositeSide(), segment.GetSide(SegSide.Front));
-            Assert.AreSame(segment.GetSide(SegSide.Front).GetOppositeSide(), segment.GetSide(SegSide.Back));
+            Assert.AreSame(segment.GetSide(SegSide.Right), segment.GetSide(SegSide.Left).GetOppositeSide());
+            Assert.AreSame(segment.GetSide(SegSide.Down), segment.GetSide(SegSide.Up).GetOppositeSide());
+            Assert.AreSame(segment.GetSide(SegSide.Left), segment.GetSide(SegSide.Right).GetOppositeSide());
+            Assert.AreSame(segment.GetSide(SegSide.Up), segment.GetSide(SegSide.Down).GetOppositeSide());
+            Assert.AreSame(segment.GetSide(SegSide.Front), segment.GetSide(SegSide.Back).GetOppositeSide());
+            Assert.AreSame(segment.GetSide(SegSide.Back), segment.GetSide(SegSide.Front).GetOppositeSide());
         }
 
         [Test]
@@ -124,15 +125,15 @@ namespace LibDescent.Tests
             var segment = CreateDefaultSegment();
 
             // Center of the segment
-            Assert.AreEqual(segment.Center, new FixVector(0d, 0d, 0d));
+            Assert.AreEqual(new FixVector(0d, 0d, 0d), segment.Center);
 
             // Center of each side
-            Assert.AreEqual(segment.Sides[0].Center, new FixVector(-10d, 0d, 0d));
-            Assert.AreEqual(segment.Sides[1].Center, new FixVector(0d, 10d, 0d));
-            Assert.AreEqual(segment.Sides[2].Center, new FixVector(10d, 0d, 0d));
-            Assert.AreEqual(segment.Sides[3].Center, new FixVector(0d, -10d, 0d));
-            Assert.AreEqual(segment.Sides[4].Center, new FixVector(0d, 0d, 10d));
-            Assert.AreEqual(segment.Sides[5].Center, new FixVector(0d, 0d, -10d));
+            Assert.AreEqual(new FixVector(-10d, 0d, 0d), segment.Sides[0].Center);
+            Assert.AreEqual(new FixVector(0d, 10d, 0d), segment.Sides[1].Center);
+            Assert.AreEqual(new FixVector(10d, 0d, 0d), segment.Sides[2].Center);
+            Assert.AreEqual(new FixVector(0d, -10d, 0d), segment.Sides[3].Center);
+            Assert.AreEqual(new FixVector(0d, 0d, 10d), segment.Sides[4].Center);
+            Assert.AreEqual(new FixVector(0d, 0d, -10d), segment.Sides[5].Center);
         }
 
         [Test]
@@ -141,23 +142,23 @@ namespace LibDescent.Tests
             // Default segment
             var segment = CreateDefaultSegment();
 
-            Assert.AreEqual(segment.Sides[0].Normal, new FixVector(1d, 0d, 0d));
-            Assert.AreEqual(segment.Sides[1].Normal, new FixVector(0d, -1d, 0d));
-            Assert.AreEqual(segment.Sides[2].Normal, new FixVector(-1d, 0d, 0d));
-            Assert.AreEqual(segment.Sides[3].Normal, new FixVector(0d, 1d, 0d));
-            Assert.AreEqual(segment.Sides[4].Normal, new FixVector(0d, 0d, -1d));
-            Assert.AreEqual(segment.Sides[5].Normal, new FixVector(0d, 0d, 1d));
+            Assert.AreEqual(new FixVector(1d, 0d, 0d), segment.Sides[0].Normal);
+            Assert.AreEqual(new FixVector(0d, -1d, 0d), segment.Sides[1].Normal);
+            Assert.AreEqual(new FixVector(-1d, 0d, 0d), segment.Sides[2].Normal);
+            Assert.AreEqual(new FixVector(0d, 1d, 0d), segment.Sides[3].Normal);
+            Assert.AreEqual(new FixVector(0d, 0d, -1d), segment.Sides[4].Normal);
+            Assert.AreEqual(new FixVector(0d, 0d, 1d), segment.Sides[5].Normal);
 
             // Warped segment
-            segment.Vertices[2].x = -20d;
-            segment.Vertices[6].x = -20d;
+            segment.Vertices[2].x = -30d;
+            segment.Vertices[6].x = -30d;
 
-            Assert.AreEqual(segment.GetSide(SegSide.Front).Normal, new FixVector(0d, 0d, 1d));
-            Assert.AreEqual(segment.GetSide(SegSide.Back).Normal, new FixVector(0d, 0d, -1d));
+            Assert.AreEqual(new FixVector(0d, 0d, 1d), segment.GetSide(SegSide.Front).Normal);
+            Assert.AreEqual(new FixVector(0d, 0d, -1d), segment.GetSide(SegSide.Back).Normal);
             var expectedNormal = new FixVector(0.7071d, 0d, -0.7071d);
-            Assert.AreEqual(segment.GetSide(SegSide.Left).Normal.x, expectedNormal.x, 0.01);
-            Assert.AreEqual(segment.GetSide(SegSide.Left).Normal.y, expectedNormal.y, 0.01);
-            Assert.AreEqual(segment.GetSide(SegSide.Left).Normal.z, expectedNormal.z, 0.01);
+            Assert.AreEqual(expectedNormal.x, segment.GetSide(SegSide.Left).Normal.x, 0.01);
+            Assert.AreEqual(expectedNormal.y, segment.GetSide(SegSide.Left).Normal.y, 0.01);
+            Assert.AreEqual(expectedNormal.z, segment.GetSide(SegSide.Left).Normal.z, 0.01);
         }
 
         [Test]
@@ -166,7 +167,17 @@ namespace LibDescent.Tests
             // Default segment
             var segment = CreateDefaultSegment();
 
+            Assert.AreEqual(20d, segment.Length);
+            Assert.AreEqual(20d, segment.Width);
+            Assert.AreEqual(20d, segment.Height);
+
             // Warped segment
+            segment.Vertices[2].x = -30d;
+            segment.Vertices[6].x = -30d;
+
+            Assert.AreEqual(22.36d, segment.Length, 0.01);
+            Assert.AreEqual(30d, segment.Width);
+            Assert.AreEqual(20d, segment.Height);
         }
 
         [Test]
@@ -174,14 +185,17 @@ namespace LibDescent.Tests
         {
             var segment = CreateDefaultSegment();
 
-            // Simple set/get (still undecided exactly what the interface will look like)
-            //segment.special = 1;
-            //Assert.AreEqual(segment.Type, FuelCen);
+            segment.special = 1;
+            Assert.AreEqual(SegFunction.FuelCenter, segment.Function);
+
+            segment.Function = SegFunction.BlueGoal;
+            Assert.AreEqual(5, segment.special);
         }
 
         private Block CreateTestBlock()
         {
-            throw new System.NotImplementedException();
+            var blockStream = GetType().Assembly.GetManifestResourceStream(GetType(), "test.blx");
+            return Block.FromStream(blockStream);
         }
 
         [Test]
@@ -189,7 +203,7 @@ namespace LibDescent.Tests
         {
             var segments = CreateTestBlock().Segments;
 
-            Assert.AreSame(segments[0].GetSide(SegSide.Front).ConnectedSegment, segments[1]);
+            Assert.AreSame(segments[1], segments[0].GetSide(SegSide.Front).ConnectedSegment);
             Assert.IsNull(segments[0].GetSide(SegSide.Left).ConnectedSegment);
         }
 
@@ -198,7 +212,7 @@ namespace LibDescent.Tests
         {
             var segments = CreateTestBlock().Segments;
 
-            Assert.AreSame(segments[0].GetSide(SegSide.Front).GetJoinedSide(), segments[1].GetSide(SegSide.Back));
+            Assert.AreSame(segments[1].GetSide(SegSide.Back), segments[0].GetSide(SegSide.Front).GetJoinedSide());
             Assert.IsNull(segments[0].GetSide(SegSide.Left).GetJoinedSide());
         }
 
@@ -208,21 +222,21 @@ namespace LibDescent.Tests
             var segments = CreateTestBlock().Segments;
 
             // Basic stuff
-            Assert.AreSame(segments[0].GetSide(SegSide.Down).GetVisibleNeighbor(Edge.Top), segments[1].GetSide(SegSide.Down));
-            Assert.AreSame(segments[0].GetSide(SegSide.Front).GetVisibleNeighbor(Edge.Bottom), segments[0].GetSide(SegSide.Down));
-            Assert.AreSame(segments[0].GetSide(SegSide.Left).GetVisibleNeighbor(Edge.Bottom), segments[0].GetSide(SegSide.Down));
+            Assert.AreSame(segments[1].GetSide(SegSide.Down), segments[0].GetSide(SegSide.Down).GetVisibleNeighbor(Edge.Top));
+            Assert.AreSame(segments[0].GetSide(SegSide.Down), segments[0].GetSide(SegSide.Front).GetVisibleNeighbor(Edge.Bottom));
+            Assert.AreSame(segments[0].GetSide(SegSide.Down), segments[0].GetSide(SegSide.Left).GetVisibleNeighbor(Edge.Bottom));
 
             // Wrap around corners
-            Assert.AreSame(segments[0].GetSide(SegSide.Left).GetVisibleNeighbor(Edge.Right), segments[3].GetSide(SegSide.Back));
+            Assert.AreSame(segments[3].GetSide(SegSide.Back), segments[0].GetSide(SegSide.Left).GetVisibleNeighbor(Edge.Right));
 
             // Quad-join
             Assert.IsNull(segments[1].GetSide(SegSide.Front).GetVisibleNeighbor(Edge.Left));
 
             // Visible walls
-            Assert.AreSame(segments[3].GetSide(SegSide.Back).GetVisibleNeighbor(Edge.Right), segments[3].GetSide(SegSide.Left));
+            Assert.AreSame(segments[3].GetSide(SegSide.Left), segments[3].GetSide(SegSide.Back).GetVisibleNeighbor(Edge.Right));
 
             // Invisible walls
-            Assert.AreSame(segments[0].GetSide(SegSide.Right).GetVisibleNeighbor(Edge.Left), segments[5].GetSide(SegSide.Back));
+            Assert.AreSame(segments[5].GetSide(SegSide.Back), segments[0].GetSide(SegSide.Right).GetVisibleNeighbor(Edge.Left));
         }
 
         [Test]
@@ -230,8 +244,8 @@ namespace LibDescent.Tests
         {
             var segments = CreateTestBlock().Segments;
 
-            Assert.AreSame(segments[5].GetSide(SegSide.Right).GetNeighbor(Edge.Left, side => side.IsVisible && !side.IsTransparent),
-                segments[6].GetSide(SegSide.Right));
+            Assert.AreSame(segments[6].GetSide(SegSide.Right),
+                segments[5].GetSide(SegSide.Right).GetNeighbor(Edge.Left, side => side.IsVisible && !side.IsTransparent));
         }
 
         [Test]
@@ -240,10 +254,15 @@ namespace LibDescent.Tests
             var segments = CreateTestBlock().Segments;
 
             // Segments 0 and 1 (connected by one side)
+            var expectedVertices = new int[] { 4, 5, 6, 7 };
+            Assert.That(Enumerable.SequenceEqual(expectedVertices, segments[0].GetSharedVertexNumbers(segments[1])));
 
             // Segments 0 and 3 (connected by one edge)
+            expectedVertices = new int[] { 6, 7 };
+            Assert.That(Enumerable.SequenceEqual(expectedVertices, segments[0].GetSharedVertexNumbers(segments[3])));
 
             // Segments 0 and 4 (not connected)
+            Assert.IsEmpty(segments[0].GetSharedVertexNumbers(segments[4]));
         }
 
         [Test]
@@ -252,14 +271,31 @@ namespace LibDescent.Tests
             var segments = CreateTestBlock().Segments;
 
             // Same segment, adjacent
+            var expectedVertices = new int[] { 2, 3 };
+            Assert.That(Enumerable.SequenceEqual(expectedVertices,
+                segments[0].GetSide(SegSide.Left).GetSharedVertexNumbers(segments[0].GetSide(SegSide.Front))));
 
             // Same segment, non-adjacent
+            Assert.IsEmpty(segments[0].GetSide(SegSide.Left).GetSharedVertexNumbers(segments[0].GetSide(SegSide.Right)));
 
             // Different segments, joined
+            expectedVertices = new int[] { 0, 1, 2, 3 };
+            Assert.That(Enumerable.SequenceEqual(expectedVertices,
+                segments[0].GetSide(SegSide.Front).GetSharedVertexNumbers(segments[1].GetSide(SegSide.Back))));
 
             // Different segments, adjacent
+            expectedVertices = new int[] { 0, 1 };
+            Assert.That(Enumerable.SequenceEqual(expectedVertices,
+                segments[0].GetSide(SegSide.Right).GetSharedVertexNumbers(segments[1].GetSide(SegSide.Right))));
 
             // Different segments, non-adjacent
+            Assert.IsEmpty(segments[0].GetSide(SegSide.Left).GetSharedVertexNumbers(segments[1].GetSide(SegSide.Front)));
+
+            // Different segments, adjacent but not joined
+            // First we have to disconnect the sides (note this works differently with levels; we're using a block here)
+            segments[2].GetSide(SegSide.Left).ConnectedSegment = null;
+            segments[4].GetSide(SegSide.Right).ConnectedSegment = null;
+            Assert.IsEmpty(segments[2].GetSide(SegSide.Front).GetSharedVertexNumbers(segments[4].GetSide(SegSide.Front)));
         }
     }
 }

@@ -21,6 +21,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 
 namespace LibDescent.Data
 {
@@ -32,6 +33,22 @@ namespace LibDescent.Data
         Down,
         Back,
         Front,
+    }
+
+    public enum SegFunction
+    {
+        None = 0,
+        FuelCenter = 1,
+        RepairCenter = 2,
+        Reactor = 3,
+        MatCenter = 4,
+        BlueGoal = 5, // Descent 2
+        RedGoal = 6, // Descent 2
+        BlueTeamStart = 7, // D2X-XL
+        RedTeamStart = 8, // D2X-XL
+        WindTunnel = 9, // D2X-XL
+        SkyBox = 10, // D2X-XL
+        PowerupCenter = 11, // D2X-XL
     }
 
     public partial class Segment
@@ -48,9 +65,20 @@ namespace LibDescent.Data
         public Side[] Sides { get; }
         public FixVector[] Vertices { get; }
         public MatCenter MatCenter { get; set; }
+        public SegFunction Function
+        {
+            get => (SegFunction)special;
+            set => special = (byte)value;
+        }
 
         #region Read-only convenience properties
         public FixVector Center { get; }
+        // The length of the bimedian of the front and back sides
+        public Fix Length { get; }
+        // The length of the bimedian of the left and right sides
+        public Fix Width { get; }
+        // The length of the bimedian of the top and bottom sides
+        public Fix Height { get; }
         #endregion
 
         public Segment(uint numSides = MaxSegmentSides, uint numVertices = MaxSegmentVerts)
@@ -60,5 +88,10 @@ namespace LibDescent.Data
         }
 
         public Side GetSide(SegSide side) => Sides[(int)side];
+
+        public IEnumerable<int> GetSharedVertexNumbers(Segment other)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

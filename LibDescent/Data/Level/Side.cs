@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace LibDescent.Data
 {
@@ -66,5 +67,10 @@ namespace LibDescent.Data
         }
 
         public Side GetVisibleNeighbor(Edge atEdge) => GetNeighbor(atEdge, side => side.IsVisible);
+
+        public IEnumerable<int> GetSharedVertexNumbers(Side other)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
