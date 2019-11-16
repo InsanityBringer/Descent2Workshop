@@ -142,16 +142,15 @@ namespace Descent2Workshop
             cbRobotTauntSound.Items.Clear();
             cbRobotHitSound.Items.Clear();
             cbRobotDeathSound.Items.Clear();
-            for (int i = 0; i < datafile.baseFile.Sounds.Count; i++)
-            {
-                cbRobotAttackSound.Items.Add(datafile.baseFile.SoundNames[i]);
-                cbRobotClawSound.Items.Add(datafile.baseFile.SoundNames[i]);
-                cbRobotDyingSound.Items.Add(datafile.baseFile.SoundNames[i]);
-                cbRobotSeeSound.Items.Add(datafile.baseFile.SoundNames[i]);
-                cbRobotTauntSound.Items.Add(datafile.baseFile.SoundNames[i]);
-                cbRobotHitSound.Items.Add(datafile.baseFile.SoundNames[i]);
-                cbRobotDeathSound.Items.Add(datafile.baseFile.SoundNames[i]);
-            }
+            string[] stringlist = datafile.baseFile.SoundNames.ToArray();
+            cbRobotAttackSound.Items.AddRange(stringlist);
+            cbRobotClawSound.Items.AddRange(stringlist);
+            cbRobotDyingSound.Items.AddRange(stringlist);
+            cbRobotSeeSound.Items.AddRange(stringlist);
+            cbRobotTauntSound.Items.AddRange(stringlist);
+            cbRobotHitSound.Items.AddRange(stringlist);
+            cbRobotDeathSound.Items.AddRange(stringlist);
+
             cbRobotWeapon1.Items.Clear();
             cbRobotWeapon2.Items.Clear(); cbRobotWeapon2.Items.Add("None");
             for (int i = 0; i < datafile.GetNumWeapons(); i++)
@@ -173,7 +172,7 @@ namespace Descent2Workshop
 
             ReplacedElementComboBox.Items.Clear();
             for (int i = 0; i < 85; i++)
-                ReplacedElementComboBox.Items.Add(datafile.GetRobotName(i));
+                ReplacedElementComboBox.Items.Add(datafile.GetRobotName(i, true));
         }
 
         private void UpdateRobotDropTypes(int dropType, Robot robot)
@@ -306,7 +305,7 @@ namespace Descent2Workshop
 
             ReplacedElementComboBox.Items.Clear();
             for (int i = 0; i < 200; i++)
-                ReplacedElementComboBox.Items.Add(datafile.GetModelName(i));
+                ReplacedElementComboBox.Items.Add(datafile.GetModelName(i, true));
         }
 
         private void UpdateModelPanel(int num)

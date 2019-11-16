@@ -285,18 +285,17 @@ namespace LibDescent.Data
         }
 
         /// <summary>
-        /// Generates a list of all robot names from the base file, with replaced robot names.
+        /// Generates default new robot names.
         /// </summary>
         public void GenerateNameTable()
         {
-            foreach (string name in baseFile.RobotNames)
-            {
-                RobotNames.Add(name);
-            }
             for (int i = 0; i < replacedRobots.Count; i++)
             {
-                int replacement = replacedRobots[i].replacementID;
-                RobotNames[replacement] = string.Format("New Robot {0}", i);
+                RobotNames.Add(string.Format("Replaced Robot {0}", i));
+            }
+            for (int i = 0; i < replacedModels.Count; i++)
+            {
+                ModelNames.Add(string.Format("Replaced Model {0}", i));
             }
         }
 
@@ -589,10 +588,18 @@ namespace LibDescent.Data
         /// Gets a robot name, passing through to the HAM or VHAM files if not replaced.
         /// </summary>
         /// <param name="id">ID of the robot to get the name of.</param>
+        /// <param name="baseOnly">Set to true to only get original names, no replaced names.</param>
         /// <returns>The robot name.</returns>
-        public string GetRobotName(int id)
+        public string GetRobotName(int id, bool baseOnly = false)
         {
             //This is a horrible hack
+            if (!baseOnly)
+            {
+                for (int i = 0; i < replacedRobots.Count; i++)
+                {
+                    if (replacedRobots[i].replacementID == id) return RobotNames[i];
+                }
+            }
             if (augmentFile != null && id >= VHAMFile.N_D2_ROBOT_TYPES)
             {
                 if (id - VHAMFile.N_D2_ROBOT_TYPES >= augmentFile.RobotNames.Count)
@@ -613,7 +620,7 @@ namespace LibDescent.Data
         {
             foreach (Robot robot in replacedRobots)
             {
-                if (robot.ID == id) return robot;
+                if (robot.replacementID == id) return robot;
             }
             if (augmentFile != null)
                 return augmentFile.GetRobot(id); //passes through
@@ -650,8 +657,16 @@ namespace LibDescent.Data
             return numWeapons;
         }
 
-        public string GetModelName(int id)
+        public string GetModelName(int id, bool baseOnly = false)
         {
+            //This is a horrible hack
+            if (!baseOnly)
+            {
+                for (int i = 0; i < replacedModels.Count; i++)
+                {
+                    if (replacedModels[i].replacementID == id) return ModelNames[i];
+                }
+            }
             if (augmentFile != null && id >= VHAMFile.N_D2_POLYGON_MODELS)
             {
                 if (id - VHAMFile.N_D2_POLYGON_MODELS >= augmentFile.ModelNames.Count)

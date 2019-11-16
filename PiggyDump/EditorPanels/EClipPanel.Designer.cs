@@ -246,9 +246,9 @@
             this.cbEffectCritical.AutoSize = true;
             this.cbEffectCritical.Location = new System.Drawing.Point(6, 19);
             this.cbEffectCritical.Name = "cbEffectCritical";
-            this.cbEffectCritical.Size = new System.Drawing.Size(76, 17);
+            this.cbEffectCritical.Size = new System.Drawing.Size(118, 17);
             this.cbEffectCritical.TabIndex = 18;
-            this.cbEffectCritical.Text = "Critical clip";
+            this.cbEffectCritical.Text = "Disable animation...";
             this.cbEffectCritical.UseVisualStyleBackColor = true;
             // 
             // groupBox5
