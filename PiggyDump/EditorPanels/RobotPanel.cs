@@ -30,6 +30,9 @@ namespace Descent2Workshop.EditorPanels
         private TextBox[] FireCountControls = new TextBox[5];
         private TextBox[] EvadeSpeedControls = new TextBox[5];
 
+        //HXM file for showing HXM data
+        private HXMFile hxmFile;
+
         public RobotPanel()
         {
             InitializeComponent();
@@ -86,6 +89,12 @@ namespace Descent2Workshop.EditorPanels
             cbRobotModel.Items.Clear();
 
             cbRobotModel.Items.AddRange(ModelNames.ToArray<string>());
+        }
+
+        public void InitHXM(HXMFile hxmFile)
+        {
+            this.hxmFile = hxmFile;
+            HXMGroupBox.Visible = true;
         }
 
         //Fillers
@@ -154,7 +163,34 @@ namespace Descent2Workshop.EditorPanels
                 cbRobotAI.SelectedIndex = 0;
 
             UpdateRobotAI();
+            if (hxmFile != null)
+            {
+                UpdateRobotAnimation();
+            }
             isLocked = false;
+        }
+
+        private void UpdateRobotAnimation()
+        {
+            if (robot.model_num >= hxmFile.GetNumModels())
+            {
+                BaseJointSpinner.Value = 0;
+                NumJointsTextBox.Text = "0";
+                UnallocatedModelWarning.Visible = true;
+            }
+            else
+            {
+                UnallocatedModelWarning.Visible = false;
+                if (hxmFile.GetModel(robot.model_num).isAnimated)
+                {
+                    RobotAnimationCheckbox.Checked = true;
+                    BaseJointSpinner.Value = (Decimal)robot.baseJoint;
+                }
+                else
+                    RobotAnimationCheckbox.Checked = false;
+
+                NumJointsTextBox.Text = (Robot.NUM_ANIMATION_STATES * (hxmFile.GetModel(robot.model_num).n_models - 1)).ToString();
+            }
         }
 
         private void UpdateRobotDropTypes(int dropType, Robot robot)
@@ -202,6 +238,14 @@ namespace Descent2Workshop.EditorPanels
             int tagvalue = Int32.Parse(tagstr);
             int value = sendingControl.SelectedIndex;
             robot.UpdateRobot(tagvalue, ref value, 0, 0);
+
+            //[ISB] ugly hack, show new value of joints and animation checkbox
+            if (hxmFile != null)
+            {
+                isLocked = true;
+                UpdateRobotAnimation();
+                isLocked = false;
+            }
         }
 
         private void RobotProperty_TextChanged(object sender, EventArgs e)
@@ -426,6 +470,25 @@ namespace Descent2Workshop.EditorPanels
             {
                 int value = (int)(fvalue * 65536f);
                 SetAIHelper(tagvalue, 4, value);
+            }
+        }
+
+        //HXM editors
+        private void BaseJointSpinner_ValueChanged(object sender, EventArgs e)
+        {
+            if (isLocked)
+                return;
+            robot.baseJoint = (int)BaseJointSpinner.Value;
+        }
+
+        private void RobotAnimationCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (isLocked)
+                return;
+            if (robot.model_num < hxmFile.GetNumModels())
+            {
+                Polymodel model = hxmFile.GetModel(robot.model_num);
+                model.isAnimated = RobotAnimationCheckbox.Checked;
             }
         }
     }

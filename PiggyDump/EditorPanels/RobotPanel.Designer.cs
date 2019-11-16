@@ -82,6 +82,38 @@
             this.cbRobotClaw = new System.Windows.Forms.CheckBox();
             this.label95 = new System.Windows.Forms.Label();
             this.groupBox18 = new System.Windows.Forms.GroupBox();
+            this.RobotFireDelay24 = new System.Windows.Forms.TextBox();
+            this.RobotEvadeSpeed4 = new System.Windows.Forms.TextBox();
+            this.RobotShotCount4 = new System.Windows.Forms.TextBox();
+            this.RobotCircleDist4 = new System.Windows.Forms.TextBox();
+            this.RobotMaxSpeed4 = new System.Windows.Forms.TextBox();
+            this.RobotTurnTime4 = new System.Windows.Forms.TextBox();
+            this.RobotFireDelay4 = new System.Windows.Forms.TextBox();
+            this.RobotFOV4 = new System.Windows.Forms.TextBox();
+            this.RobotFireDelay23 = new System.Windows.Forms.TextBox();
+            this.RobotEvadeSpeed3 = new System.Windows.Forms.TextBox();
+            this.RobotShotCount3 = new System.Windows.Forms.TextBox();
+            this.RobotCircleDist3 = new System.Windows.Forms.TextBox();
+            this.RobotMaxSpeed3 = new System.Windows.Forms.TextBox();
+            this.RobotTurnTime3 = new System.Windows.Forms.TextBox();
+            this.RobotFireDelay3 = new System.Windows.Forms.TextBox();
+            this.RobotFOV3 = new System.Windows.Forms.TextBox();
+            this.RobotFireDelay22 = new System.Windows.Forms.TextBox();
+            this.RobotEvadeSpeed2 = new System.Windows.Forms.TextBox();
+            this.RobotShotCount2 = new System.Windows.Forms.TextBox();
+            this.RobotCircleDist2 = new System.Windows.Forms.TextBox();
+            this.RobotMaxSpeed2 = new System.Windows.Forms.TextBox();
+            this.RobotTurnTime2 = new System.Windows.Forms.TextBox();
+            this.RobotFireDelay2 = new System.Windows.Forms.TextBox();
+            this.RobotFOV2 = new System.Windows.Forms.TextBox();
+            this.RobotFireDelay21 = new System.Windows.Forms.TextBox();
+            this.RobotEvadeSpeed1 = new System.Windows.Forms.TextBox();
+            this.RobotShotCount1 = new System.Windows.Forms.TextBox();
+            this.RobotCircleDist1 = new System.Windows.Forms.TextBox();
+            this.RobotMaxSpeed1 = new System.Windows.Forms.TextBox();
+            this.RobotTurnTime1 = new System.Windows.Forms.TextBox();
+            this.RobotFireDelay1 = new System.Windows.Forms.TextBox();
+            this.RobotFOV1 = new System.Windows.Forms.TextBox();
             this.label145 = new System.Windows.Forms.Label();
             this.txtRobotFireDelay2 = new System.Windows.Forms.TextBox();
             this.label28 = new System.Windows.Forms.Label();
@@ -117,40 +149,18 @@
             this.label80 = new System.Windows.Forms.Label();
             this.label79 = new System.Windows.Forms.Label();
             this.label77 = new System.Windows.Forms.Label();
-            this.RobotFireDelay21 = new System.Windows.Forms.TextBox();
-            this.RobotEvadeSpeed1 = new System.Windows.Forms.TextBox();
-            this.RobotShotCount1 = new System.Windows.Forms.TextBox();
-            this.RobotCircleDist1 = new System.Windows.Forms.TextBox();
-            this.RobotMaxSpeed1 = new System.Windows.Forms.TextBox();
-            this.RobotTurnTime1 = new System.Windows.Forms.TextBox();
-            this.RobotFireDelay1 = new System.Windows.Forms.TextBox();
-            this.RobotFOV1 = new System.Windows.Forms.TextBox();
-            this.RobotFireDelay22 = new System.Windows.Forms.TextBox();
-            this.RobotEvadeSpeed2 = new System.Windows.Forms.TextBox();
-            this.RobotShotCount2 = new System.Windows.Forms.TextBox();
-            this.RobotCircleDist2 = new System.Windows.Forms.TextBox();
-            this.RobotMaxSpeed2 = new System.Windows.Forms.TextBox();
-            this.RobotTurnTime2 = new System.Windows.Forms.TextBox();
-            this.RobotFireDelay2 = new System.Windows.Forms.TextBox();
-            this.RobotFOV2 = new System.Windows.Forms.TextBox();
-            this.RobotFireDelay23 = new System.Windows.Forms.TextBox();
-            this.RobotEvadeSpeed3 = new System.Windows.Forms.TextBox();
-            this.RobotShotCount3 = new System.Windows.Forms.TextBox();
-            this.RobotCircleDist3 = new System.Windows.Forms.TextBox();
-            this.RobotMaxSpeed3 = new System.Windows.Forms.TextBox();
-            this.RobotTurnTime3 = new System.Windows.Forms.TextBox();
-            this.RobotFireDelay3 = new System.Windows.Forms.TextBox();
-            this.RobotFOV3 = new System.Windows.Forms.TextBox();
-            this.RobotFireDelay24 = new System.Windows.Forms.TextBox();
-            this.RobotEvadeSpeed4 = new System.Windows.Forms.TextBox();
-            this.RobotShotCount4 = new System.Windows.Forms.TextBox();
-            this.RobotCircleDist4 = new System.Windows.Forms.TextBox();
-            this.RobotMaxSpeed4 = new System.Windows.Forms.TextBox();
-            this.RobotTurnTime4 = new System.Windows.Forms.TextBox();
-            this.RobotFireDelay4 = new System.Windows.Forms.TextBox();
-            this.RobotFOV4 = new System.Windows.Forms.TextBox();
+            this.HXMGroupBox = new System.Windows.Forms.GroupBox();
+            this.NumJointsTextBox = new System.Windows.Forms.TextBox();
+            this.RobotAnimationCheckbox = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.BaseJointSpinner = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.UnallocatedModelWarning = new System.Windows.Forms.Label();
             this.groupBox20.SuspendLayout();
             this.groupBox18.SuspendLayout();
+            this.HXMGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BaseJointSpinner)).BeginInit();
             this.SuspendLayout();
             // 
             // cbRobotModel
@@ -621,9 +631,9 @@
             this.groupBox20.Controls.Add(this.cbRobotThief);
             this.groupBox20.Controls.Add(this.cbRobotCompanion);
             this.groupBox20.Controls.Add(this.cbRobotClaw);
-            this.groupBox20.Location = new System.Drawing.Point(494, 346);
+            this.groupBox20.Location = new System.Drawing.Point(198, 243);
             this.groupBox20.Name = "groupBox20";
-            this.groupBox20.Size = new System.Drawing.Size(338, 123);
+            this.groupBox20.Size = new System.Drawing.Size(191, 123);
             this.groupBox20.TabIndex = 215;
             this.groupBox20.TabStop = false;
             this.groupBox20.Text = "Flags";
@@ -633,10 +643,10 @@
             this.cbKamikaze.AutoSize = true;
             this.cbKamikaze.Location = new System.Drawing.Point(9, 93);
             this.cbKamikaze.Name = "cbKamikaze";
-            this.cbKamikaze.Size = new System.Drawing.Size(72, 17);
+            this.cbKamikaze.Size = new System.Drawing.Size(83, 17);
             this.cbKamikaze.TabIndex = 77;
             this.cbKamikaze.Tag = "1";
-            this.cbKamikaze.Text = "Kamikaze";
+            this.cbKamikaze.Text = "Is Kamikaze";
             this.cbKamikaze.UseVisualStyleBackColor = true;
             this.cbKamikaze.CheckedChanged += new System.EventHandler(this.RobotCheckBox_CheckedChange);
             // 
@@ -645,10 +655,10 @@
             this.cbRobotThief.AutoSize = true;
             this.cbRobotThief.Location = new System.Drawing.Point(9, 70);
             this.cbRobotThief.Name = "cbRobotThief";
-            this.cbRobotThief.Size = new System.Drawing.Size(69, 17);
+            this.cbRobotThief.Size = new System.Drawing.Size(80, 17);
             this.cbRobotThief.TabIndex = 76;
             this.cbRobotThief.Tag = "0";
-            this.cbRobotThief.Text = "Thief Bot";
+            this.cbRobotThief.Text = "Is Thief-Bot";
             this.cbRobotThief.UseVisualStyleBackColor = true;
             this.cbRobotThief.CheckedChanged += new System.EventHandler(this.RobotCheckBox_CheckedChange);
             // 
@@ -657,10 +667,10 @@
             this.cbRobotCompanion.AutoSize = true;
             this.cbRobotCompanion.Location = new System.Drawing.Point(9, 47);
             this.cbRobotCompanion.Name = "cbRobotCompanion";
-            this.cbRobotCompanion.Size = new System.Drawing.Size(90, 17);
+            this.cbRobotCompanion.Size = new System.Drawing.Size(84, 17);
             this.cbRobotCompanion.TabIndex = 75;
             this.cbRobotCompanion.Tag = "2";
-            this.cbRobotCompanion.Text = "Is Companion";
+            this.cbRobotCompanion.Text = "Is Guide-Bot";
             this.cbRobotCompanion.UseVisualStyleBackColor = true;
             this.cbRobotCompanion.CheckedChanged += new System.EventHandler(this.RobotCheckBox_CheckedChange);
             // 
@@ -669,10 +679,10 @@
             this.cbRobotClaw.AutoSize = true;
             this.cbRobotClaw.Location = new System.Drawing.Point(9, 24);
             this.cbRobotClaw.Name = "cbRobotClaw";
-            this.cbRobotClaw.Size = new System.Drawing.Size(108, 17);
+            this.cbRobotClaw.Size = new System.Drawing.Size(109, 17);
             this.cbRobotClaw.TabIndex = 74;
             this.cbRobotClaw.Tag = "3";
-            this.cbRobotClaw.Text = "Uses claw attack";
+            this.cbRobotClaw.Text = "Is Melee Attacker";
             this.cbRobotClaw.UseVisualStyleBackColor = true;
             this.cbRobotClaw.CheckedChanged += new System.EventHandler(this.RobotCheckBox_CheckedChange);
             // 
@@ -741,6 +751,294 @@
             this.groupBox18.TabIndex = 213;
             this.groupBox18.TabStop = false;
             this.groupBox18.Text = "Skill Data";
+            // 
+            // RobotFireDelay24
+            // 
+            this.RobotFireDelay24.Location = new System.Drawing.Point(310, 65);
+            this.RobotFireDelay24.Name = "RobotFireDelay24";
+            this.RobotFireDelay24.Size = new System.Drawing.Size(39, 20);
+            this.RobotFireDelay24.TabIndex = 89;
+            this.RobotFireDelay24.Tag = "22";
+            this.RobotFireDelay24.TextChanged += new System.EventHandler(this.RobotAIFixed4_TextChanged);
+            // 
+            // RobotEvadeSpeed4
+            // 
+            this.RobotEvadeSpeed4.Location = new System.Drawing.Point(310, 195);
+            this.RobotEvadeSpeed4.Name = "RobotEvadeSpeed4";
+            this.RobotEvadeSpeed4.Size = new System.Drawing.Size(39, 20);
+            this.RobotEvadeSpeed4.TabIndex = 82;
+            this.RobotEvadeSpeed4.Tag = "27";
+            this.RobotEvadeSpeed4.TextChanged += new System.EventHandler(this.RobotAI4_TextChanged);
+            // 
+            // RobotShotCount4
+            // 
+            this.RobotShotCount4.Location = new System.Drawing.Point(310, 169);
+            this.RobotShotCount4.Name = "RobotShotCount4";
+            this.RobotShotCount4.Size = new System.Drawing.Size(39, 20);
+            this.RobotShotCount4.TabIndex = 83;
+            this.RobotShotCount4.Tag = "26";
+            this.RobotShotCount4.TextChanged += new System.EventHandler(this.RobotAI4_TextChanged);
+            // 
+            // RobotCircleDist4
+            // 
+            this.RobotCircleDist4.Location = new System.Drawing.Point(310, 143);
+            this.RobotCircleDist4.Name = "RobotCircleDist4";
+            this.RobotCircleDist4.Size = new System.Drawing.Size(39, 20);
+            this.RobotCircleDist4.TabIndex = 84;
+            this.RobotCircleDist4.Tag = "25";
+            this.RobotCircleDist4.TextChanged += new System.EventHandler(this.RobotAIFixed4_TextChanged);
+            // 
+            // RobotMaxSpeed4
+            // 
+            this.RobotMaxSpeed4.Location = new System.Drawing.Point(310, 117);
+            this.RobotMaxSpeed4.Name = "RobotMaxSpeed4";
+            this.RobotMaxSpeed4.Size = new System.Drawing.Size(39, 20);
+            this.RobotMaxSpeed4.TabIndex = 85;
+            this.RobotMaxSpeed4.Tag = "24";
+            this.RobotMaxSpeed4.TextChanged += new System.EventHandler(this.RobotAIFixed4_TextChanged);
+            // 
+            // RobotTurnTime4
+            // 
+            this.RobotTurnTime4.Location = new System.Drawing.Point(310, 91);
+            this.RobotTurnTime4.Name = "RobotTurnTime4";
+            this.RobotTurnTime4.Size = new System.Drawing.Size(39, 20);
+            this.RobotTurnTime4.TabIndex = 86;
+            this.RobotTurnTime4.Tag = "23";
+            this.RobotTurnTime4.TextChanged += new System.EventHandler(this.RobotAIFixed4_TextChanged);
+            // 
+            // RobotFireDelay4
+            // 
+            this.RobotFireDelay4.Location = new System.Drawing.Point(310, 39);
+            this.RobotFireDelay4.Name = "RobotFireDelay4";
+            this.RobotFireDelay4.Size = new System.Drawing.Size(39, 20);
+            this.RobotFireDelay4.TabIndex = 87;
+            this.RobotFireDelay4.Tag = "21";
+            this.RobotFireDelay4.TextChanged += new System.EventHandler(this.RobotAIFixed4_TextChanged);
+            // 
+            // RobotFOV4
+            // 
+            this.RobotFOV4.Location = new System.Drawing.Point(310, 13);
+            this.RobotFOV4.Name = "RobotFOV4";
+            this.RobotFOV4.Size = new System.Drawing.Size(39, 20);
+            this.RobotFOV4.TabIndex = 88;
+            this.RobotFOV4.Tag = "20";
+            this.RobotFOV4.TextChanged += new System.EventHandler(this.RobotAI4_TextChanged);
+            // 
+            // RobotFireDelay23
+            // 
+            this.RobotFireDelay23.Location = new System.Drawing.Point(265, 65);
+            this.RobotFireDelay23.Name = "RobotFireDelay23";
+            this.RobotFireDelay23.Size = new System.Drawing.Size(39, 20);
+            this.RobotFireDelay23.TabIndex = 81;
+            this.RobotFireDelay23.Tag = "22";
+            this.RobotFireDelay23.TextChanged += new System.EventHandler(this.RobotAIFixed3_TextChanged);
+            // 
+            // RobotEvadeSpeed3
+            // 
+            this.RobotEvadeSpeed3.Location = new System.Drawing.Point(265, 195);
+            this.RobotEvadeSpeed3.Name = "RobotEvadeSpeed3";
+            this.RobotEvadeSpeed3.Size = new System.Drawing.Size(39, 20);
+            this.RobotEvadeSpeed3.TabIndex = 74;
+            this.RobotEvadeSpeed3.Tag = "27";
+            this.RobotEvadeSpeed3.TextChanged += new System.EventHandler(this.RobotAI3_TextChanged);
+            // 
+            // RobotShotCount3
+            // 
+            this.RobotShotCount3.Location = new System.Drawing.Point(265, 169);
+            this.RobotShotCount3.Name = "RobotShotCount3";
+            this.RobotShotCount3.Size = new System.Drawing.Size(39, 20);
+            this.RobotShotCount3.TabIndex = 75;
+            this.RobotShotCount3.Tag = "26";
+            this.RobotShotCount3.TextChanged += new System.EventHandler(this.RobotAI3_TextChanged);
+            // 
+            // RobotCircleDist3
+            // 
+            this.RobotCircleDist3.Location = new System.Drawing.Point(265, 143);
+            this.RobotCircleDist3.Name = "RobotCircleDist3";
+            this.RobotCircleDist3.Size = new System.Drawing.Size(39, 20);
+            this.RobotCircleDist3.TabIndex = 76;
+            this.RobotCircleDist3.Tag = "25";
+            this.RobotCircleDist3.TextChanged += new System.EventHandler(this.RobotAIFixed3_TextChanged);
+            // 
+            // RobotMaxSpeed3
+            // 
+            this.RobotMaxSpeed3.Location = new System.Drawing.Point(265, 117);
+            this.RobotMaxSpeed3.Name = "RobotMaxSpeed3";
+            this.RobotMaxSpeed3.Size = new System.Drawing.Size(39, 20);
+            this.RobotMaxSpeed3.TabIndex = 77;
+            this.RobotMaxSpeed3.Tag = "24";
+            this.RobotMaxSpeed3.TextChanged += new System.EventHandler(this.RobotAIFixed3_TextChanged);
+            // 
+            // RobotTurnTime3
+            // 
+            this.RobotTurnTime3.Location = new System.Drawing.Point(265, 91);
+            this.RobotTurnTime3.Name = "RobotTurnTime3";
+            this.RobotTurnTime3.Size = new System.Drawing.Size(39, 20);
+            this.RobotTurnTime3.TabIndex = 78;
+            this.RobotTurnTime3.Tag = "23";
+            this.RobotTurnTime3.TextChanged += new System.EventHandler(this.RobotAIFixed3_TextChanged);
+            // 
+            // RobotFireDelay3
+            // 
+            this.RobotFireDelay3.Location = new System.Drawing.Point(265, 39);
+            this.RobotFireDelay3.Name = "RobotFireDelay3";
+            this.RobotFireDelay3.Size = new System.Drawing.Size(39, 20);
+            this.RobotFireDelay3.TabIndex = 79;
+            this.RobotFireDelay3.Tag = "21";
+            this.RobotFireDelay3.TextChanged += new System.EventHandler(this.RobotAIFixed3_TextChanged);
+            // 
+            // RobotFOV3
+            // 
+            this.RobotFOV3.Location = new System.Drawing.Point(265, 13);
+            this.RobotFOV3.Name = "RobotFOV3";
+            this.RobotFOV3.Size = new System.Drawing.Size(39, 20);
+            this.RobotFOV3.TabIndex = 80;
+            this.RobotFOV3.Tag = "20";
+            this.RobotFOV3.TextChanged += new System.EventHandler(this.RobotAI3_TextChanged);
+            // 
+            // RobotFireDelay22
+            // 
+            this.RobotFireDelay22.Location = new System.Drawing.Point(220, 65);
+            this.RobotFireDelay22.Name = "RobotFireDelay22";
+            this.RobotFireDelay22.Size = new System.Drawing.Size(39, 20);
+            this.RobotFireDelay22.TabIndex = 73;
+            this.RobotFireDelay22.Tag = "22";
+            this.RobotFireDelay22.TextChanged += new System.EventHandler(this.RobotAIFixed2_TextChanged);
+            // 
+            // RobotEvadeSpeed2
+            // 
+            this.RobotEvadeSpeed2.Location = new System.Drawing.Point(220, 195);
+            this.RobotEvadeSpeed2.Name = "RobotEvadeSpeed2";
+            this.RobotEvadeSpeed2.Size = new System.Drawing.Size(39, 20);
+            this.RobotEvadeSpeed2.TabIndex = 66;
+            this.RobotEvadeSpeed2.Tag = "27";
+            this.RobotEvadeSpeed2.TextChanged += new System.EventHandler(this.RobotAI2_TextChanged);
+            // 
+            // RobotShotCount2
+            // 
+            this.RobotShotCount2.Location = new System.Drawing.Point(220, 169);
+            this.RobotShotCount2.Name = "RobotShotCount2";
+            this.RobotShotCount2.Size = new System.Drawing.Size(39, 20);
+            this.RobotShotCount2.TabIndex = 67;
+            this.RobotShotCount2.Tag = "26";
+            this.RobotShotCount2.TextChanged += new System.EventHandler(this.RobotAI2_TextChanged);
+            // 
+            // RobotCircleDist2
+            // 
+            this.RobotCircleDist2.Location = new System.Drawing.Point(220, 143);
+            this.RobotCircleDist2.Name = "RobotCircleDist2";
+            this.RobotCircleDist2.Size = new System.Drawing.Size(39, 20);
+            this.RobotCircleDist2.TabIndex = 68;
+            this.RobotCircleDist2.Tag = "25";
+            this.RobotCircleDist2.TextChanged += new System.EventHandler(this.RobotAIFixed2_TextChanged);
+            // 
+            // RobotMaxSpeed2
+            // 
+            this.RobotMaxSpeed2.Location = new System.Drawing.Point(220, 117);
+            this.RobotMaxSpeed2.Name = "RobotMaxSpeed2";
+            this.RobotMaxSpeed2.Size = new System.Drawing.Size(39, 20);
+            this.RobotMaxSpeed2.TabIndex = 69;
+            this.RobotMaxSpeed2.Tag = "24";
+            this.RobotMaxSpeed2.TextChanged += new System.EventHandler(this.RobotAIFixed2_TextChanged);
+            // 
+            // RobotTurnTime2
+            // 
+            this.RobotTurnTime2.Location = new System.Drawing.Point(220, 91);
+            this.RobotTurnTime2.Name = "RobotTurnTime2";
+            this.RobotTurnTime2.Size = new System.Drawing.Size(39, 20);
+            this.RobotTurnTime2.TabIndex = 70;
+            this.RobotTurnTime2.Tag = "23";
+            this.RobotTurnTime2.TextChanged += new System.EventHandler(this.RobotAIFixed2_TextChanged);
+            // 
+            // RobotFireDelay2
+            // 
+            this.RobotFireDelay2.Location = new System.Drawing.Point(220, 39);
+            this.RobotFireDelay2.Name = "RobotFireDelay2";
+            this.RobotFireDelay2.Size = new System.Drawing.Size(39, 20);
+            this.RobotFireDelay2.TabIndex = 71;
+            this.RobotFireDelay2.Tag = "21";
+            this.RobotFireDelay2.TextChanged += new System.EventHandler(this.RobotAIFixed2_TextChanged);
+            // 
+            // RobotFOV2
+            // 
+            this.RobotFOV2.Location = new System.Drawing.Point(220, 13);
+            this.RobotFOV2.Name = "RobotFOV2";
+            this.RobotFOV2.Size = new System.Drawing.Size(39, 20);
+            this.RobotFOV2.TabIndex = 72;
+            this.RobotFOV2.Tag = "20";
+            this.RobotFOV2.TextChanged += new System.EventHandler(this.RobotAI2_TextChanged);
+            // 
+            // RobotFireDelay21
+            // 
+            this.RobotFireDelay21.Location = new System.Drawing.Point(175, 65);
+            this.RobotFireDelay21.Name = "RobotFireDelay21";
+            this.RobotFireDelay21.Size = new System.Drawing.Size(39, 20);
+            this.RobotFireDelay21.TabIndex = 65;
+            this.RobotFireDelay21.Tag = "22";
+            this.RobotFireDelay21.TextChanged += new System.EventHandler(this.RobotAIFixed1_TextChanged);
+            // 
+            // RobotEvadeSpeed1
+            // 
+            this.RobotEvadeSpeed1.Location = new System.Drawing.Point(175, 195);
+            this.RobotEvadeSpeed1.Name = "RobotEvadeSpeed1";
+            this.RobotEvadeSpeed1.Size = new System.Drawing.Size(39, 20);
+            this.RobotEvadeSpeed1.TabIndex = 58;
+            this.RobotEvadeSpeed1.Tag = "27";
+            this.RobotEvadeSpeed1.TextChanged += new System.EventHandler(this.RobotAI1_TextChanged);
+            // 
+            // RobotShotCount1
+            // 
+            this.RobotShotCount1.Location = new System.Drawing.Point(175, 169);
+            this.RobotShotCount1.Name = "RobotShotCount1";
+            this.RobotShotCount1.Size = new System.Drawing.Size(39, 20);
+            this.RobotShotCount1.TabIndex = 59;
+            this.RobotShotCount1.Tag = "26";
+            this.RobotShotCount1.TextChanged += new System.EventHandler(this.RobotAI1_TextChanged);
+            // 
+            // RobotCircleDist1
+            // 
+            this.RobotCircleDist1.Location = new System.Drawing.Point(175, 143);
+            this.RobotCircleDist1.Name = "RobotCircleDist1";
+            this.RobotCircleDist1.Size = new System.Drawing.Size(39, 20);
+            this.RobotCircleDist1.TabIndex = 60;
+            this.RobotCircleDist1.Tag = "25";
+            this.RobotCircleDist1.TextChanged += new System.EventHandler(this.RobotAIFixed1_TextChanged);
+            // 
+            // RobotMaxSpeed1
+            // 
+            this.RobotMaxSpeed1.Location = new System.Drawing.Point(175, 117);
+            this.RobotMaxSpeed1.Name = "RobotMaxSpeed1";
+            this.RobotMaxSpeed1.Size = new System.Drawing.Size(39, 20);
+            this.RobotMaxSpeed1.TabIndex = 61;
+            this.RobotMaxSpeed1.Tag = "24";
+            this.RobotMaxSpeed1.TextChanged += new System.EventHandler(this.RobotAIFixed1_TextChanged);
+            // 
+            // RobotTurnTime1
+            // 
+            this.RobotTurnTime1.Location = new System.Drawing.Point(175, 91);
+            this.RobotTurnTime1.Name = "RobotTurnTime1";
+            this.RobotTurnTime1.Size = new System.Drawing.Size(39, 20);
+            this.RobotTurnTime1.TabIndex = 62;
+            this.RobotTurnTime1.Tag = "23";
+            this.RobotTurnTime1.TextChanged += new System.EventHandler(this.RobotAIFixed1_TextChanged);
+            // 
+            // RobotFireDelay1
+            // 
+            this.RobotFireDelay1.Location = new System.Drawing.Point(175, 39);
+            this.RobotFireDelay1.Name = "RobotFireDelay1";
+            this.RobotFireDelay1.Size = new System.Drawing.Size(39, 20);
+            this.RobotFireDelay1.TabIndex = 63;
+            this.RobotFireDelay1.Tag = "21";
+            this.RobotFireDelay1.TextChanged += new System.EventHandler(this.RobotAIFixed1_TextChanged);
+            // 
+            // RobotFOV1
+            // 
+            this.RobotFOV1.Location = new System.Drawing.Point(175, 13);
+            this.RobotFOV1.Name = "RobotFOV1";
+            this.RobotFOV1.Size = new System.Drawing.Size(39, 20);
+            this.RobotFOV1.TabIndex = 64;
+            this.RobotFOV1.Tag = "20";
+            this.RobotFOV1.TextChanged += new System.EventHandler(this.RobotAI1_TextChanged);
             // 
             // label145
             // 
@@ -1077,298 +1375,97 @@
             this.label77.TabIndex = 187;
             this.label77.Text = "Model number:";
             // 
-            // RobotFireDelay21
+            // HXMGroupBox
             // 
-            this.RobotFireDelay21.Location = new System.Drawing.Point(175, 65);
-            this.RobotFireDelay21.Name = "RobotFireDelay21";
-            this.RobotFireDelay21.Size = new System.Drawing.Size(39, 20);
-            this.RobotFireDelay21.TabIndex = 65;
-            this.RobotFireDelay21.Tag = "22";
-            this.RobotFireDelay21.TextChanged += new System.EventHandler(this.RobotAIFixed1_TextChanged);
+            this.HXMGroupBox.Controls.Add(this.UnallocatedModelWarning);
+            this.HXMGroupBox.Controls.Add(this.NumJointsTextBox);
+            this.HXMGroupBox.Controls.Add(this.RobotAnimationCheckbox);
+            this.HXMGroupBox.Controls.Add(this.label3);
+            this.HXMGroupBox.Controls.Add(this.button1);
+            this.HXMGroupBox.Controls.Add(this.BaseJointSpinner);
+            this.HXMGroupBox.Controls.Add(this.label2);
+            this.HXMGroupBox.Location = new System.Drawing.Point(494, 340);
+            this.HXMGroupBox.Name = "HXMGroupBox";
+            this.HXMGroupBox.Size = new System.Drawing.Size(223, 124);
+            this.HXMGroupBox.TabIndex = 256;
+            this.HXMGroupBox.TabStop = false;
+            this.HXMGroupBox.Text = "Animation Control";
+            this.HXMGroupBox.Visible = false;
             // 
-            // RobotEvadeSpeed1
+            // NumJointsTextBox
             // 
-            this.RobotEvadeSpeed1.Location = new System.Drawing.Point(175, 195);
-            this.RobotEvadeSpeed1.Name = "RobotEvadeSpeed1";
-            this.RobotEvadeSpeed1.Size = new System.Drawing.Size(39, 20);
-            this.RobotEvadeSpeed1.TabIndex = 58;
-            this.RobotEvadeSpeed1.Tag = "27";
-            this.RobotEvadeSpeed1.TextChanged += new System.EventHandler(this.RobotAI1_TextChanged);
+            this.NumJointsTextBox.Location = new System.Drawing.Point(98, 65);
+            this.NumJointsTextBox.Name = "NumJointsTextBox";
+            this.NumJointsTextBox.ReadOnly = true;
+            this.NumJointsTextBox.Size = new System.Drawing.Size(56, 20);
+            this.NumJointsTextBox.TabIndex = 7;
             // 
-            // RobotShotCount1
+            // RobotAnimationCheckbox
             // 
-            this.RobotShotCount1.Location = new System.Drawing.Point(175, 169);
-            this.RobotShotCount1.Name = "RobotShotCount1";
-            this.RobotShotCount1.Size = new System.Drawing.Size(39, 20);
-            this.RobotShotCount1.TabIndex = 59;
-            this.RobotShotCount1.Tag = "26";
-            this.RobotShotCount1.TextChanged += new System.EventHandler(this.RobotAI1_TextChanged);
+            this.RobotAnimationCheckbox.AutoSize = true;
+            this.RobotAnimationCheckbox.Location = new System.Drawing.Point(6, 19);
+            this.RobotAnimationCheckbox.Name = "RobotAnimationCheckbox";
+            this.RobotAnimationCheckbox.Size = new System.Drawing.Size(104, 17);
+            this.RobotAnimationCheckbox.TabIndex = 6;
+            this.RobotAnimationCheckbox.Text = "Load Animations";
+            this.RobotAnimationCheckbox.UseVisualStyleBackColor = true;
+            this.RobotAnimationCheckbox.CheckedChanged += new System.EventHandler(this.RobotAnimationCheckbox_CheckedChanged);
             // 
-            // RobotCircleDist1
+            // label3
             // 
-            this.RobotCircleDist1.Location = new System.Drawing.Point(175, 143);
-            this.RobotCircleDist1.Name = "RobotCircleDist1";
-            this.RobotCircleDist1.Size = new System.Drawing.Size(39, 20);
-            this.RobotCircleDist1.TabIndex = 60;
-            this.RobotCircleDist1.Tag = "25";
-            this.RobotCircleDist1.TextChanged += new System.EventHandler(this.RobotAIFixed1_TextChanged);
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 68);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(86, 13);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "Number of joints:";
             // 
-            // RobotMaxSpeed1
+            // button1
             // 
-            this.RobotMaxSpeed1.Location = new System.Drawing.Point(175, 117);
-            this.RobotMaxSpeed1.Name = "RobotMaxSpeed1";
-            this.RobotMaxSpeed1.Size = new System.Drawing.Size(39, 20);
-            this.RobotMaxSpeed1.TabIndex = 61;
-            this.RobotMaxSpeed1.Tag = "24";
-            this.RobotMaxSpeed1.TextChanged += new System.EventHandler(this.RobotAIFixed1_TextChanged);
+            this.button1.Location = new System.Drawing.Point(142, 36);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "Browse...";
+            this.button1.UseVisualStyleBackColor = true;
             // 
-            // RobotTurnTime1
+            // BaseJointSpinner
             // 
-            this.RobotTurnTime1.Location = new System.Drawing.Point(175, 91);
-            this.RobotTurnTime1.Name = "RobotTurnTime1";
-            this.RobotTurnTime1.Size = new System.Drawing.Size(39, 20);
-            this.RobotTurnTime1.TabIndex = 62;
-            this.RobotTurnTime1.Tag = "23";
-            this.RobotTurnTime1.TextChanged += new System.EventHandler(this.RobotAIFixed1_TextChanged);
+            this.BaseJointSpinner.Location = new System.Drawing.Point(86, 39);
+            this.BaseJointSpinner.Maximum = new decimal(new int[] {
+            1600,
+            0,
+            0,
+            0});
+            this.BaseJointSpinner.Name = "BaseJointSpinner";
+            this.BaseJointSpinner.Size = new System.Drawing.Size(50, 20);
+            this.BaseJointSpinner.TabIndex = 3;
+            this.BaseJointSpinner.ValueChanged += new System.EventHandler(this.BaseJointSpinner_ValueChanged);
             // 
-            // RobotFireDelay1
+            // label2
             // 
-            this.RobotFireDelay1.Location = new System.Drawing.Point(175, 39);
-            this.RobotFireDelay1.Name = "RobotFireDelay1";
-            this.RobotFireDelay1.Size = new System.Drawing.Size(39, 20);
-            this.RobotFireDelay1.TabIndex = 63;
-            this.RobotFireDelay1.Tag = "21";
-            this.RobotFireDelay1.TextChanged += new System.EventHandler(this.RobotAIFixed1_TextChanged);
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 41);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(74, 13);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Write joints at:";
             // 
-            // RobotFOV1
+            // UnallocatedModelWarning
             // 
-            this.RobotFOV1.Location = new System.Drawing.Point(175, 13);
-            this.RobotFOV1.Name = "RobotFOV1";
-            this.RobotFOV1.Size = new System.Drawing.Size(39, 20);
-            this.RobotFOV1.TabIndex = 64;
-            this.RobotFOV1.Tag = "20";
-            this.RobotFOV1.TextChanged += new System.EventHandler(this.RobotAI1_TextChanged);
-            // 
-            // RobotFireDelay22
-            // 
-            this.RobotFireDelay22.Location = new System.Drawing.Point(220, 65);
-            this.RobotFireDelay22.Name = "RobotFireDelay22";
-            this.RobotFireDelay22.Size = new System.Drawing.Size(39, 20);
-            this.RobotFireDelay22.TabIndex = 73;
-            this.RobotFireDelay22.Tag = "22";
-            this.RobotFireDelay22.TextChanged += new System.EventHandler(this.RobotAIFixed2_TextChanged);
-            // 
-            // RobotEvadeSpeed2
-            // 
-            this.RobotEvadeSpeed2.Location = new System.Drawing.Point(220, 195);
-            this.RobotEvadeSpeed2.Name = "RobotEvadeSpeed2";
-            this.RobotEvadeSpeed2.Size = new System.Drawing.Size(39, 20);
-            this.RobotEvadeSpeed2.TabIndex = 66;
-            this.RobotEvadeSpeed2.Tag = "27";
-            this.RobotEvadeSpeed2.TextChanged += new System.EventHandler(this.RobotAI2_TextChanged);
-            // 
-            // RobotShotCount2
-            // 
-            this.RobotShotCount2.Location = new System.Drawing.Point(220, 169);
-            this.RobotShotCount2.Name = "RobotShotCount2";
-            this.RobotShotCount2.Size = new System.Drawing.Size(39, 20);
-            this.RobotShotCount2.TabIndex = 67;
-            this.RobotShotCount2.Tag = "26";
-            this.RobotShotCount2.TextChanged += new System.EventHandler(this.RobotAI2_TextChanged);
-            // 
-            // RobotCircleDist2
-            // 
-            this.RobotCircleDist2.Location = new System.Drawing.Point(220, 143);
-            this.RobotCircleDist2.Name = "RobotCircleDist2";
-            this.RobotCircleDist2.Size = new System.Drawing.Size(39, 20);
-            this.RobotCircleDist2.TabIndex = 68;
-            this.RobotCircleDist2.Tag = "25";
-            this.RobotCircleDist2.TextChanged += new System.EventHandler(this.RobotAIFixed2_TextChanged);
-            // 
-            // RobotMaxSpeed2
-            // 
-            this.RobotMaxSpeed2.Location = new System.Drawing.Point(220, 117);
-            this.RobotMaxSpeed2.Name = "RobotMaxSpeed2";
-            this.RobotMaxSpeed2.Size = new System.Drawing.Size(39, 20);
-            this.RobotMaxSpeed2.TabIndex = 69;
-            this.RobotMaxSpeed2.Tag = "24";
-            this.RobotMaxSpeed2.TextChanged += new System.EventHandler(this.RobotAIFixed2_TextChanged);
-            // 
-            // RobotTurnTime2
-            // 
-            this.RobotTurnTime2.Location = new System.Drawing.Point(220, 91);
-            this.RobotTurnTime2.Name = "RobotTurnTime2";
-            this.RobotTurnTime2.Size = new System.Drawing.Size(39, 20);
-            this.RobotTurnTime2.TabIndex = 70;
-            this.RobotTurnTime2.Tag = "23";
-            this.RobotTurnTime2.TextChanged += new System.EventHandler(this.RobotAIFixed2_TextChanged);
-            // 
-            // RobotFireDelay2
-            // 
-            this.RobotFireDelay2.Location = new System.Drawing.Point(220, 39);
-            this.RobotFireDelay2.Name = "RobotFireDelay2";
-            this.RobotFireDelay2.Size = new System.Drawing.Size(39, 20);
-            this.RobotFireDelay2.TabIndex = 71;
-            this.RobotFireDelay2.Tag = "21";
-            this.RobotFireDelay2.TextChanged += new System.EventHandler(this.RobotAIFixed2_TextChanged);
-            // 
-            // RobotFOV2
-            // 
-            this.RobotFOV2.Location = new System.Drawing.Point(220, 13);
-            this.RobotFOV2.Name = "RobotFOV2";
-            this.RobotFOV2.Size = new System.Drawing.Size(39, 20);
-            this.RobotFOV2.TabIndex = 72;
-            this.RobotFOV2.Tag = "20";
-            this.RobotFOV2.TextChanged += new System.EventHandler(this.RobotAI2_TextChanged);
-            // 
-            // RobotFireDelay23
-            // 
-            this.RobotFireDelay23.Location = new System.Drawing.Point(265, 65);
-            this.RobotFireDelay23.Name = "RobotFireDelay23";
-            this.RobotFireDelay23.Size = new System.Drawing.Size(39, 20);
-            this.RobotFireDelay23.TabIndex = 81;
-            this.RobotFireDelay23.Tag = "22";
-            this.RobotFireDelay23.TextChanged += new System.EventHandler(this.RobotAIFixed3_TextChanged);
-            // 
-            // RobotEvadeSpeed3
-            // 
-            this.RobotEvadeSpeed3.Location = new System.Drawing.Point(265, 195);
-            this.RobotEvadeSpeed3.Name = "RobotEvadeSpeed3";
-            this.RobotEvadeSpeed3.Size = new System.Drawing.Size(39, 20);
-            this.RobotEvadeSpeed3.TabIndex = 74;
-            this.RobotEvadeSpeed3.Tag = "27";
-            this.RobotEvadeSpeed3.TextChanged += new System.EventHandler(this.RobotAI3_TextChanged);
-            // 
-            // RobotShotCount3
-            // 
-            this.RobotShotCount3.Location = new System.Drawing.Point(265, 169);
-            this.RobotShotCount3.Name = "RobotShotCount3";
-            this.RobotShotCount3.Size = new System.Drawing.Size(39, 20);
-            this.RobotShotCount3.TabIndex = 75;
-            this.RobotShotCount3.Tag = "26";
-            this.RobotShotCount3.TextChanged += new System.EventHandler(this.RobotAI3_TextChanged);
-            // 
-            // RobotCircleDist3
-            // 
-            this.RobotCircleDist3.Location = new System.Drawing.Point(265, 143);
-            this.RobotCircleDist3.Name = "RobotCircleDist3";
-            this.RobotCircleDist3.Size = new System.Drawing.Size(39, 20);
-            this.RobotCircleDist3.TabIndex = 76;
-            this.RobotCircleDist3.Tag = "25";
-            this.RobotCircleDist3.TextChanged += new System.EventHandler(this.RobotAIFixed3_TextChanged);
-            // 
-            // RobotMaxSpeed3
-            // 
-            this.RobotMaxSpeed3.Location = new System.Drawing.Point(265, 117);
-            this.RobotMaxSpeed3.Name = "RobotMaxSpeed3";
-            this.RobotMaxSpeed3.Size = new System.Drawing.Size(39, 20);
-            this.RobotMaxSpeed3.TabIndex = 77;
-            this.RobotMaxSpeed3.Tag = "24";
-            this.RobotMaxSpeed3.TextChanged += new System.EventHandler(this.RobotAIFixed3_TextChanged);
-            // 
-            // RobotTurnTime3
-            // 
-            this.RobotTurnTime3.Location = new System.Drawing.Point(265, 91);
-            this.RobotTurnTime3.Name = "RobotTurnTime3";
-            this.RobotTurnTime3.Size = new System.Drawing.Size(39, 20);
-            this.RobotTurnTime3.TabIndex = 78;
-            this.RobotTurnTime3.Tag = "23";
-            this.RobotTurnTime3.TextChanged += new System.EventHandler(this.RobotAIFixed3_TextChanged);
-            // 
-            // RobotFireDelay3
-            // 
-            this.RobotFireDelay3.Location = new System.Drawing.Point(265, 39);
-            this.RobotFireDelay3.Name = "RobotFireDelay3";
-            this.RobotFireDelay3.Size = new System.Drawing.Size(39, 20);
-            this.RobotFireDelay3.TabIndex = 79;
-            this.RobotFireDelay3.Tag = "21";
-            this.RobotFireDelay3.TextChanged += new System.EventHandler(this.RobotAIFixed3_TextChanged);
-            // 
-            // RobotFOV3
-            // 
-            this.RobotFOV3.Location = new System.Drawing.Point(265, 13);
-            this.RobotFOV3.Name = "RobotFOV3";
-            this.RobotFOV3.Size = new System.Drawing.Size(39, 20);
-            this.RobotFOV3.TabIndex = 80;
-            this.RobotFOV3.Tag = "20";
-            this.RobotFOV3.TextChanged += new System.EventHandler(this.RobotAI3_TextChanged);
-            // 
-            // RobotFireDelay24
-            // 
-            this.RobotFireDelay24.Location = new System.Drawing.Point(310, 65);
-            this.RobotFireDelay24.Name = "RobotFireDelay24";
-            this.RobotFireDelay24.Size = new System.Drawing.Size(39, 20);
-            this.RobotFireDelay24.TabIndex = 89;
-            this.RobotFireDelay24.Tag = "22";
-            this.RobotFireDelay24.TextChanged += new System.EventHandler(this.RobotAIFixed4_TextChanged);
-            // 
-            // RobotEvadeSpeed4
-            // 
-            this.RobotEvadeSpeed4.Location = new System.Drawing.Point(310, 195);
-            this.RobotEvadeSpeed4.Name = "RobotEvadeSpeed4";
-            this.RobotEvadeSpeed4.Size = new System.Drawing.Size(39, 20);
-            this.RobotEvadeSpeed4.TabIndex = 82;
-            this.RobotEvadeSpeed4.Tag = "27";
-            this.RobotEvadeSpeed4.TextChanged += new System.EventHandler(this.RobotAI4_TextChanged);
-            // 
-            // RobotShotCount4
-            // 
-            this.RobotShotCount4.Location = new System.Drawing.Point(310, 169);
-            this.RobotShotCount4.Name = "RobotShotCount4";
-            this.RobotShotCount4.Size = new System.Drawing.Size(39, 20);
-            this.RobotShotCount4.TabIndex = 83;
-            this.RobotShotCount4.Tag = "26";
-            this.RobotShotCount4.TextChanged += new System.EventHandler(this.RobotAI4_TextChanged);
-            // 
-            // RobotCircleDist4
-            // 
-            this.RobotCircleDist4.Location = new System.Drawing.Point(310, 143);
-            this.RobotCircleDist4.Name = "RobotCircleDist4";
-            this.RobotCircleDist4.Size = new System.Drawing.Size(39, 20);
-            this.RobotCircleDist4.TabIndex = 84;
-            this.RobotCircleDist4.Tag = "25";
-            this.RobotCircleDist4.TextChanged += new System.EventHandler(this.RobotAIFixed4_TextChanged);
-            // 
-            // RobotMaxSpeed4
-            // 
-            this.RobotMaxSpeed4.Location = new System.Drawing.Point(310, 117);
-            this.RobotMaxSpeed4.Name = "RobotMaxSpeed4";
-            this.RobotMaxSpeed4.Size = new System.Drawing.Size(39, 20);
-            this.RobotMaxSpeed4.TabIndex = 85;
-            this.RobotMaxSpeed4.Tag = "24";
-            this.RobotMaxSpeed4.TextChanged += new System.EventHandler(this.RobotAIFixed4_TextChanged);
-            // 
-            // RobotTurnTime4
-            // 
-            this.RobotTurnTime4.Location = new System.Drawing.Point(310, 91);
-            this.RobotTurnTime4.Name = "RobotTurnTime4";
-            this.RobotTurnTime4.Size = new System.Drawing.Size(39, 20);
-            this.RobotTurnTime4.TabIndex = 86;
-            this.RobotTurnTime4.Tag = "23";
-            this.RobotTurnTime4.TextChanged += new System.EventHandler(this.RobotAIFixed4_TextChanged);
-            // 
-            // RobotFireDelay4
-            // 
-            this.RobotFireDelay4.Location = new System.Drawing.Point(310, 39);
-            this.RobotFireDelay4.Name = "RobotFireDelay4";
-            this.RobotFireDelay4.Size = new System.Drawing.Size(39, 20);
-            this.RobotFireDelay4.TabIndex = 87;
-            this.RobotFireDelay4.Tag = "21";
-            this.RobotFireDelay4.TextChanged += new System.EventHandler(this.RobotAIFixed4_TextChanged);
-            // 
-            // RobotFOV4
-            // 
-            this.RobotFOV4.Location = new System.Drawing.Point(310, 13);
-            this.RobotFOV4.Name = "RobotFOV4";
-            this.RobotFOV4.Size = new System.Drawing.Size(39, 20);
-            this.RobotFOV4.TabIndex = 88;
-            this.RobotFOV4.Tag = "20";
-            this.RobotFOV4.TextChanged += new System.EventHandler(this.RobotAI4_TextChanged);
+            this.UnallocatedModelWarning.AutoSize = true;
+            this.UnallocatedModelWarning.Location = new System.Drawing.Point(3, 91);
+            this.UnallocatedModelWarning.Name = "UnallocatedModelWarning";
+            this.UnallocatedModelWarning.Size = new System.Drawing.Size(140, 13);
+            this.UnallocatedModelWarning.TabIndex = 8;
+            this.UnallocatedModelWarning.Text = "Warning: Model unallocated";
+            this.UnallocatedModelWarning.Visible = false;
             // 
             // RobotPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.HXMGroupBox);
             this.Controls.Add(this.cbRobotModel);
             this.Controls.Add(this.cbRobotDeathSound);
             this.Controls.Add(this.label47);
@@ -1444,6 +1541,9 @@
             this.groupBox20.PerformLayout();
             this.groupBox18.ResumeLayout(false);
             this.groupBox18.PerformLayout();
+            this.HXMGroupBox.ResumeLayout(false);
+            this.HXMGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BaseJointSpinner)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1572,5 +1672,13 @@
         private System.Windows.Forms.TextBox RobotTurnTime1;
         private System.Windows.Forms.TextBox RobotFireDelay1;
         private System.Windows.Forms.TextBox RobotFOV1;
+        private System.Windows.Forms.GroupBox HXMGroupBox;
+        private System.Windows.Forms.TextBox NumJointsTextBox;
+        private System.Windows.Forms.CheckBox RobotAnimationCheckbox;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.NumericUpDown BaseJointSpinner;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label UnallocatedModelWarning;
     }
 }
