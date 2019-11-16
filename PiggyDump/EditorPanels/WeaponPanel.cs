@@ -34,25 +34,31 @@ namespace Descent2Workshop.EditorPanels
             cbWeaponFireSound.Items.Clear(); cbWeaponFireSound.Items.Add("None");
             cbWeaponRobotHitSound.Items.Clear(); cbWeaponRobotHitSound.Items.Add("None");
             cbWeaponWallHitSound.Items.Clear(); cbWeaponWallHitSound.Items.Add("None");
-            cbWeaponFireSound.Items.AddRange(SoundNames.ToArray());
-            cbWeaponRobotHitSound.Items.AddRange(SoundNames.ToArray());
-            cbWeaponWallHitSound.Items.AddRange(SoundNames.ToArray());
+
+            string[] stringarray = SoundNames.ToArray();
+            cbWeaponFireSound.Items.AddRange(stringarray);
+            cbWeaponRobotHitSound.Items.AddRange(stringarray);
+            cbWeaponWallHitSound.Items.AddRange(stringarray);
 
             cbWeaponMuzzleFlash.Items.Clear(); cbWeaponMuzzleFlash.Items.Add("None");
             cbWeaponWallHit.Items.Clear(); cbWeaponWallHit.Items.Add("None");
             cbWeaponRobotHit.Items.Clear(); cbWeaponRobotHit.Items.Add("None");
             cbWeaponVClip.Items.Clear(); cbWeaponVClip.Items.Add("None");
-            cbWeaponMuzzleFlash.Items.AddRange(VClipNames.ToArray());
-            cbWeaponWallHit.Items.AddRange(VClipNames.ToArray());
-            cbWeaponRobotHit.Items.AddRange(VClipNames.ToArray());
-            cbWeaponVClip.Items.AddRange(VClipNames.ToArray());
+
+            stringarray = VClipNames.ToArray();
+            cbWeaponMuzzleFlash.Items.AddRange(stringarray);
+            cbWeaponWallHit.Items.AddRange(stringarray);
+            cbWeaponRobotHit.Items.AddRange(stringarray);
+            cbWeaponVClip.Items.AddRange(stringarray);
 
             cbWeaponChildren.Items.Clear(); cbWeaponChildren.Items.Add("None"); //this will be fun since my own size can change. ugh
             cbWeaponChildren.Items.AddRange(WeaponNames.ToArray());
             cbWeaponModel1.Items.Clear(); cbWeaponModel1.Items.Add("None");
             cbWeaponModel2.Items.Clear(); cbWeaponModel2.Items.Add("None");
-            cbWeaponModel1.Items.AddRange(ModelNames.ToArray());
-            cbWeaponModel2.Items.AddRange(ModelNames.ToArray());
+
+            stringarray = ModelNames.ToArray();
+            cbWeaponModel1.Items.AddRange(stringarray);
+            cbWeaponModel2.Items.AddRange(stringarray);
             isLocked = false;
         }
 
