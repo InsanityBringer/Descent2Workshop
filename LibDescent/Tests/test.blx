@@ -1,0 +1,638 @@
+DMB_EXT_BLOCK_FILE
+segment 0
+  side 0
+    BaseTex 219
+    OvlTex 268
+    uvls 0 0 8438
+    uvls -2048 0 8438
+    uvls -2048 -2048 27335
+    uvls 0 -2048 26922
+    vertex ids 7 6 2 3
+    wall 2047
+  side 1
+    BaseTex 219
+    OvlTex 268
+    uvls 0 0 27646
+    uvls 0 2048 12613
+    uvls -2048 2048 8438
+    uvls -2048 0 26922
+    vertex ids 0 4 7 3
+    wall 2047
+  side 2
+    BaseTex 219
+    OvlTex 268
+    uvls 0 0 27646
+    uvls 2048 0 27233
+    uvls 2048 2048 12613
+    uvls 0 2048 12613
+    vertex ids 0 1 5 4
+    wall 2047
+  side 3
+    BaseTex 286
+    OvlTex 0
+    uvls 0 0 27335
+    uvls 0 2048 8438
+    uvls -2048 2048 12613
+    uvls -2048 0 27233
+    vertex ids 2 6 5 1
+    wall 2047
+  side 4
+    BaseTex 0
+    OvlTex 0
+    uvls 0 0 14316
+    uvls 0 0 14316
+    uvls 0 0 9349
+    uvls 0 0 9349
+    vertex ids 4 5 6 7
+    wall 2047
+  side 5
+    BaseTex 201
+    OvlTex 307
+    uvls 0 0 26922
+    uvls 0 2048 27335
+    uvls -2048 2048 27233
+    uvls -2048 0 27646
+    vertex ids 3 2 1 0
+    wall 2047
+  children -1 -1 -1 -1 1 -1
+  Vertex 0 0 1310720 0
+  Vertex 1 1310720 1310720 0
+  Vertex 2 1310720 1310720 -1310720
+  Vertex 3 0 1310720 -1310720
+  Vertex 4 0 0 0
+  Vertex 5 1310720 0 0
+  Vertex 6 1310720 0 -1310720
+  Vertex 7 0 0 -1310720
+  static_light 229471
+  special 0
+  matcen_num -1
+  value -1
+  child_bitmask 16
+  wall_bitmask 0
+segment 1
+  side 0
+    BaseTex 0
+    OvlTex 0
+    uvls 0 0 7039
+    uvls 0 0 7039
+    uvls 0 0 9899
+    uvls 0 0 9899
+    vertex ids 7 6 2 3
+    wall 2047
+  side 1
+    BaseTex 58
+    OvlTex 0
+    uvls 0 0 12613
+    uvls 0 2048 9082
+    uvls -2048 2048 7039
+    uvls -2048 0 8438
+    vertex ids 0 4 7 3
+    wall 2047
+  side 2
+    BaseTex 0
+    OvlTex 0
+    uvls 0 0 10423
+    uvls 0 2048 10423
+    uvls -2048 2048 7924
+    uvls -2048 0 7924
+    vertex ids 0 1 5 4
+    wall 0
+        segment 1
+        side 2
+        hps 0
+        type 4
+        flags 0
+        state 0
+        clip -1
+        keys 0
+        cloak 0
+        trigger 0
+			    type 0
+			    flags 0
+			    value 327680
+			    timer -1
+			    count 1
+			        segment 3
+			        side 0
+  side 3
+    BaseTex 286
+    OvlTex 0
+    uvls 0 0 8438
+    uvls 0 2048 7039
+    uvls -2048 2048 9082
+    uvls -2048 0 12613
+    vertex ids 2 6 5 1
+    wall 2047
+  side 4
+    BaseTex 0
+    OvlTex 0
+    uvls 0 0 7924
+    uvls 0 0 7924
+    uvls 0 0 2476
+    uvls 0 0 2476
+    vertex ids 4 5 6 7
+    wall 2047
+  side 5
+    BaseTex 0
+    OvlTex 0
+    uvls 0 0 2598
+    uvls 0 2048 2598
+    uvls -2048 2048 7685
+    uvls -2048 0 7685
+    vertex ids 3 2 1 0
+    wall 2047
+  children 3 -1 5 -1 2 0
+  Vertex 4 0 0 0
+  Vertex 5 1310720 0 0
+  Vertex 6 1310720 0 -1310720
+  Vertex 7 0 0 -1310720
+  Vertex 8 0 -1310720 0
+  Vertex 9 1310720 -1310720 0
+  Vertex 10 1310720 -1310720 -1310720
+  Vertex 11 0 -1310720 -1310720
+  static_light 93140
+  special 0
+  matcen_num -1
+  value -1
+  child_bitmask 53
+  wall_bitmask 0
+segment 2
+  side 0
+    BaseTex 0
+    OvlTex 0
+    uvls 0 0 18114
+    uvls 0 2048 17454
+    uvls -2048 2048 7039
+    uvls -2048 0 7039
+    vertex ids 7 6 2 3
+    wall 2047
+  side 1
+    BaseTex 58
+    OvlTex 0
+    uvls 0 0 9082
+    uvls 0 2048 13520
+    uvls -2048 2048 18114
+    uvls -2048 0 7039
+    vertex ids 0 4 7 3
+    wall 2047
+  side 2
+    BaseTex 269
+    OvlTex 0
+    uvls 0 0 9082
+    uvls 0 2048 9082
+    uvls -2048 2048 13850
+    uvls -2048 0 13520
+    vertex ids 0 1 5 4
+    wall 2
+        segment 2
+        side 2
+        hps 0
+        type 5
+        flags 0
+        state 0
+        clip -1
+        keys 0
+        cloak 0
+        trigger 255
+  side 3
+    BaseTex 286
+    OvlTex 0
+    uvls 0 0 7039
+    uvls 0 2048 17454
+    uvls -2048 2048 13850
+    uvls -2048 0 9082
+    vertex ids 2 6 5 1
+    wall 2047
+  side 4
+    BaseTex 42
+    OvlTex -32427
+    uvls 0 0 13520
+    uvls 0 2048 13850
+    uvls -2048 2048 17454
+    uvls -2048 0 18114
+    vertex ids 4 5 6 7
+    wall 2047
+  side 5
+    BaseTex 0
+    OvlTex 0
+    uvls 0 0 6352
+    uvls 0 2048 6352
+    uvls -2048 2048 11800
+    uvls -2048 0 11800
+    vertex ids 3 2 1 0
+    wall 2047
+  children 4 -1 6 -1 -1 1
+  Vertex 8 0 -1310720 0
+  Vertex 9 1310720 -1310720 0
+  Vertex 10 1310720 -1310720 -1310720
+  Vertex 11 0 -1310720 -1310720
+  Vertex 12 0 -2621440 0
+  Vertex 13 1310720 -2621440 0
+  Vertex 14 1310720 -2621440 -1310720
+  Vertex 15 0 -2621440 -1310720
+  static_light 144801
+  special 0
+  matcen_num -1
+  value -1
+  child_bitmask 37
+  wall_bitmask 0
+segment 3
+  side 0
+    BaseTex 585
+    OvlTex 0
+    uvls 0 0 1078
+    uvls 0 2048 1314
+    uvls -2048 2048 916
+    uvls -2048 0 1122
+    vertex ids 7 6 2 3
+    wall 5
+        segment 3
+        side 0
+        hps 0
+        type 2
+        flags 24
+        state 0
+        clip 18
+        keys 1
+        cloak 0
+        trigger 255
+  side 1
+    BaseTex 58
+    OvlTex 0
+    uvls 0 0 8438
+    uvls 0 2048 7039
+    uvls -2048 2048 1078
+    uvls -2048 0 1122
+    vertex ids 0 4 7 3
+    wall 2047
+  side 2
+    BaseTex 0
+    OvlTex 0
+    uvls 0 0 9349
+    uvls 0 2048 9349
+    uvls -2048 2048 6369
+    uvls -2048 0 6369
+    vertex ids 0 1 5 4
+    wall 2047
+  side 3
+    BaseTex 286
+    OvlTex 0
+    uvls 0 0 916
+    uvls 0 2048 1314
+    uvls -2048 2048 7039
+    uvls -2048 0 8438
+    vertex ids 2 6 5 1
+    wall 2047
+  side 4
+    BaseTex 0
+    OvlTex 0
+    uvls 0 0 2476
+    uvls 0 0 2476
+    uvls 0 0 1662
+    uvls 0 0 1249
+    vertex ids 4 5 6 7
+    wall 2047
+  side 5
+    BaseTex 109
+    OvlTex -32442
+    uvls 0 0 1122
+    uvls 0 2048 916
+    uvls -2048 2048 8438
+    uvls -2048 0 8438
+    vertex ids 3 2 1 0
+    wall 2047
+  children 7 -1 1 -1 4 -1
+  Vertex 7 0 0 -1310720
+  Vertex 6 1310720 0 -1310720
+  Vertex 18 1310720 0 -2621440
+  Vertex 19 0 0 -2621440
+  Vertex 11 0 -1310720 -1310720
+  Vertex 10 1310720 -1310720 -1310720
+  Vertex 17 1310720 -1310720 -2621440
+  Vertex 16 0 -1310720 -2621440
+  static_light 49013
+  special 0
+  matcen_num -1
+  value -1
+  child_bitmask 21
+  wall_bitmask 0
+segment 4
+  side 0
+    BaseTex 109
+    OvlTex 326
+    uvls 0 0 2294
+    uvls 0 2048 2294
+    uvls -2048 2048 1314
+    uvls -2048 0 1078
+    vertex ids 7 6 2 3
+    wall 2047
+  side 1
+    BaseTex 58
+    OvlTex 0
+    uvls 0 0 7039
+    uvls 0 2048 18114
+    uvls -2048 2048 2294
+    uvls -2048 0 1078
+    vertex ids 0 4 7 3
+    wall 2047
+  side 2
+    BaseTex 0
+    OvlTex 0
+    uvls 0 0 6369
+    uvls 0 2048 6369
+    uvls -2048 2048 16889
+    uvls -2048 0 17237
+    vertex ids 0 1 5 4
+    wall 2047
+  side 3
+    BaseTex 286
+    OvlTex 0
+    uvls 0 0 1314
+    uvls 0 2048 2294
+    uvls -2048 2048 17454
+    uvls -2048 0 7039
+    vertex ids 2 6 5 1
+    wall 2047
+  side 4
+    BaseTex 42
+    OvlTex 0
+    uvls 0 0 18114
+    uvls 0 2048 17454
+    uvls -2048 2048 2294
+    uvls -2048 0 2294
+    vertex ids 4 5 6 7
+    wall 2047
+  side 5
+    BaseTex 0
+    OvlTex 0
+    uvls 0 0 1370
+    uvls 0 2048 1588
+    uvls -2048 2048 6352
+    uvls -2048 0 6352
+    vertex ids 3 2 1 0
+    wall 2047
+  children -1 -1 2 -1 -1 3
+  Vertex 11 0 -1310720 -1310720
+  Vertex 10 1310720 -1310720 -1310720
+  Vertex 17 1310720 -1310720 -2621440
+  Vertex 16 0 -1310720 -2621440
+  Vertex 15 0 -2621440 -1310720
+  Vertex 14 1310720 -2621440 -1310720
+  Vertex 20 1310720 -2621440 -2621440
+  Vertex 21 0 -2621440 -2621440
+  static_light 83144
+  special 0
+  matcen_num -1
+  value -1
+  child_bitmask 36
+  wall_bitmask 0
+segment 5
+  side 0
+    BaseTex 0
+    OvlTex 0
+    uvls 0 0 12487
+    uvls 0 2048 12487
+    uvls -2048 2048 14986
+    uvls -2048 0 14986
+    vertex ids 7 6 2 3
+    wall 2047
+  side 1
+    BaseTex 58
+    OvlTex 0
+    uvls 0 0 18190
+    uvls 0 2048 13702
+    uvls -2048 2048 9082
+    uvls -2048 0 12613
+    vertex ids 0 4 7 3
+    wall 2047
+  side 2
+    BaseTex 42
+    OvlTex 341
+    uvls 0 0 18190
+    uvls 0 2048 18190
+    uvls -2048 2048 13702
+    uvls -2048 0 13702
+    vertex ids 0 1 5 4
+    wall 2047
+  side 3
+    BaseTex 286
+    OvlTex 0
+    uvls 0 0 12613
+    uvls 0 2048 9082
+    uvls -2048 2048 13702
+    uvls -2048 0 18190
+    vertex ids 2 6 5 1
+    wall 2047
+  side 4
+    BaseTex 269
+    OvlTex 0
+    uvls 0 0 13702
+    uvls 0 2048 13702
+    uvls -2048 2048 9082
+    uvls -2048 0 9082
+    vertex ids 4 5 6 7
+    wall 4
+        segment 5
+        side 4
+        hps 0
+        type 5
+        flags 0
+        state 0
+        clip -1
+        keys 0
+        cloak 0
+        trigger 255
+  side 5
+    BaseTex 42
+    OvlTex 326
+    uvls 0 0 12613
+    uvls 0 2048 12613
+    uvls -2048 2048 18190
+    uvls -2048 0 18190
+    vertex ids 3 2 1 0
+    wall 2047
+  children 1 -1 -1 -1 6 -1
+  Vertex 22 0 0 1310720
+  Vertex 23 1310720 0 1310720
+  Vertex 5 1310720 0 0
+  Vertex 4 0 0 0
+  Vertex 25 0 -1310720 1310720
+  Vertex 24 1310720 -1310720 1310720
+  Vertex 9 1310720 -1310720 0
+  Vertex 8 0 -1310720 0
+  static_light 166539
+  special 0
+  matcen_num -1
+  value -1
+  child_bitmask 17
+  wall_bitmask 0
+segment 6
+  side 0
+    BaseTex 269
+    OvlTex 0
+    uvls 0 0 13520
+    uvls 0 2048 13850
+    uvls -2048 2048 9082
+    uvls -2048 0 9082
+    vertex ids 7 6 2 3
+    wall 1
+        segment 6
+        side 0
+        hps 0
+        type 5
+        flags 0
+        state 0
+        clip -1
+        keys 0
+        cloak 0
+        trigger 255
+  side 1
+    BaseTex 362
+    OvlTex 0
+    uvls 0 0 13702
+    uvls 0 2048 6233
+    uvls -2048 2048 13520
+    uvls -2048 0 9082
+    vertex ids 0 4 7 3
+    wall 2047
+  side 2
+    BaseTex 198
+    OvlTex 264
+    uvls 0 0 13702
+    uvls 0 2048 13702
+    uvls -2048 2048 6233
+    uvls -2048 0 6233
+    vertex ids 0 1 5 4
+    wall 2047
+  side 3
+    BaseTex 362
+    OvlTex 0
+    uvls 0 0 9082
+    uvls 2048 0 13850
+    uvls 2048 2048 6233
+    uvls 0 2048 13702
+    vertex ids 2 6 5 1
+    wall 2047
+  side 4
+    BaseTex 198
+    OvlTex 264
+    uvls 0 0 6233
+    uvls 0 2048 6233
+    uvls -2048 2048 13850
+    uvls -2048 0 13520
+    vertex ids 4 5 6 7
+    wall 2047
+  side 5
+    BaseTex 269
+    OvlTex 0
+    uvls 0 0 9082
+    uvls 0 2048 9082
+    uvls -2048 2048 13702
+    uvls -2048 0 13702
+    vertex ids 3 2 1 0
+    wall 3
+        segment 6
+        side 5
+        hps 0
+        type 5
+        flags 0
+        state 0
+        clip -1
+        keys 0
+        cloak 0
+        trigger 255
+  children 2 -1 -1 -1 -1 5
+  Vertex 25 0 -1310720 1310720
+  Vertex 24 1310720 -1310720 1310720
+  Vertex 9 1310720 -1310720 0
+  Vertex 8 0 -1310720 0
+  Vertex 26 0 -2621440 1310720
+  Vertex 27 1310720 -2621440 1310720
+  Vertex 13 1310720 -2621440 0
+  Vertex 12 0 -2621440 0
+  static_light 128106
+  special 0
+  matcen_num -1
+  value -1
+  child_bitmask 33
+  wall_bitmask 0
+segment 7
+  side 0
+    BaseTex 198
+    OvlTex 264
+    uvls 0 0 0
+    uvls 0 2048 0
+    uvls -2048 2048 0
+    uvls -2048 0 0
+    vertex ids 7 6 2 3
+    wall 2047
+  side 1
+    BaseTex 58
+    OvlTex 0
+    uvls 0 0 1122
+    uvls 0 2048 1078
+    uvls -2048 2048 0
+    uvls -2048 0 0
+    vertex ids 0 4 7 3
+    wall 2047
+  side 2
+    BaseTex 585
+    OvlTex 0
+    uvls 0 0 1122
+    uvls 0 2048 916
+    uvls -2048 2048 1314
+    uvls -2048 0 1078
+    vertex ids 0 1 5 4
+    wall 6
+        segment 7
+        side 2
+        hps 0
+        type 2
+        flags 16
+        state 0
+        clip 18
+        keys 1
+        cloak 0
+        trigger 255
+  side 3
+    BaseTex 286
+    OvlTex 0
+    uvls 0 0 0
+    uvls 0 2048 0
+    uvls -2048 2048 1314
+    uvls -2048 0 916
+    vertex ids 2 6 5 1
+    wall 2047
+  side 4
+    BaseTex 109
+    OvlTex 0
+    uvls 0 0 1078
+    uvls 0 2048 1314
+    uvls -2048 2048 0
+    uvls -2048 0 0
+    vertex ids 4 5 6 7
+    wall 2047
+  side 5
+    BaseTex 109
+    OvlTex 0
+    uvls 0 0 0
+    uvls 0 2048 0
+    uvls -2048 2048 916
+    uvls -2048 0 1122
+    vertex ids 3 2 1 0
+    wall 2047
+  children -1 -1 3 -1 -1 -1
+  Vertex 19 0 0 -2621440
+  Vertex 18 1310720 0 -2621440
+  Vertex 30 1310720 0 -3932160
+  Vertex 31 0 0 -3932160
+  Vertex 16 0 -1310720 -2621440
+  Vertex 17 1310720 -1310720 -2621440
+  Vertex 29 1310720 -1310720 -3932160
+  Vertex 28 0 -1310720 -3932160
+  static_light 13290
+  special 0
+  matcen_num -1
+  value -1
+  child_bitmask 4
+  wall_bitmask 0
