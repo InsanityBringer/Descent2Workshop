@@ -16,15 +16,16 @@ namespace LibDescent.Data
             var sides = element.Element("Sides").Elements("Side");
 
             var segment = new Segment((uint)sides.Count(), (uint)vertices.Count());
-            vertices.ToList().ConvertAll(v => new FixVector(
+            vertices.ToList().ConvertAll(v => new LevelVertex(
                 double.Parse(v.Attribute("x").Value),
                 double.Parse(v.Attribute("y").Value),
                 double.Parse(v.Attribute("z").Value))
             ).CopyTo(segment.Vertices);
             sides.ToList().ConvertAll(s =>
             {
+                var sideNum = sides.ToList().IndexOf(s);
                 var uvls = s.Element("Uvls").Elements("Uvl");
-                var side = new Side((uint)uvls.Count());
+                var side = new Side(segment, (uint)sideNum, (uint)uvls.Count());
                 uvls.ToList().ConvertAll(uvl => new FixVector(
                     double.Parse(uvl.Attribute("u").Value),
                     double.Parse(uvl.Attribute("v").Value),

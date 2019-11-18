@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LibDescent.Data
 {
@@ -55,7 +56,9 @@ namespace LibDescent.Data
     {
         public const int MaxSegmentSides = 6;
         public const int MaxSegmentVerts = 8;
-        public static readonly int[,] SideVerts = { { 7, 6, 2, 3 }, { 0, 4, 7, 3 }, { 0, 1, 5, 4 }, { 2, 6, 5, 1 }, { 4, 5, 6, 7 }, { 3, 2, 1, 0 } };
+        private static readonly int[,] SideVerts = { { 7, 6, 2, 3 }, { 0, 4, 7, 3 }, { 0, 1, 5, 4 }, { 2, 6, 5, 1 }, { 4, 5, 6, 7 }, { 3, 2, 1, 0 } };
+        private static readonly int[] OppositeSideTable = { 2, 3, 0, 1, 5, 4 };
+        private static readonly int[,] SideNeighborTable = { { 4, 3, 5, 1 }, { 2, 4, 0, 5 }, { 5, 3, 4, 1 }, { 0, 4, 2, 5 }, { 2, 3, 0, 1 }, { 0, 3, 2, 1 } };
 
         public byte special;
         public byte value;
@@ -63,7 +66,7 @@ namespace LibDescent.Data
         public int staticLight;
 
         public Side[] Sides { get; }
-        public FixVector[] Vertices { get; }
+        public LevelVertex[] Vertices { get; }
         public MatCenter MatCenter { get; set; }
         public SegFunction Function
         {
@@ -72,7 +75,11 @@ namespace LibDescent.Data
         }
 
         #region Read-only convenience properties
-        public FixVector Center { get; }
+        public FixVector Center => new FixVector(
+            x: Vertices.Average(v => v.X),
+            y: Vertices.Average(v => v.Y),
+            z: Vertices.Average(v => v.Z)
+            );
         // The length of the bimedian of the front and back sides
         public Fix Length { get; }
         // The length of the bimedian of the left and right sides
@@ -84,14 +91,20 @@ namespace LibDescent.Data
         public Segment(uint numSides = MaxSegmentSides, uint numVertices = MaxSegmentVerts)
         {
             Sides = new Side[numSides];
-            Vertices = new FixVector[numVertices];
+            Vertices = new LevelVertex[numVertices];
         }
 
         public Side GetSide(SegSide side) => Sides[(int)side];
 
-        public IEnumerable<int> GetSharedVertexNumbers(Segment other)
+        public IEnumerable<LevelVertex> GetSharedVertices(Segment other)
         {
             throw new NotImplementedException();
         }
+
+        internal LevelVertex GetVertex(uint sideNum, int vertexNum) => Vertices[SideVerts[sideNum, vertexNum]];
+
+        internal Side GetOppositeSide(uint sideNum) => Sides[OppositeSideTable[sideNum]];
+
+        internal Side GetSideNeighbor(uint sideNum, Edge atEdge) => Sides[SideNeighborTable[sideNum, (int)atEdge]];
     }
 }
