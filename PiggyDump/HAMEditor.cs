@@ -28,6 +28,7 @@ using System.IO;
 using System.Text;
 using LibDescent.Data;
 using LibDescent.Edit;
+using Descent2Workshop.EditorPanels;
 
 namespace Descent2Workshop
 {
@@ -44,7 +45,14 @@ namespace Descent2Workshop
         private bool noPMView = false;
 
         private int ElementNumber { get { return (int)nudElementNum.Value; } }
-        private int PageNumber { get { return tabControl1.SelectedIndex; } }
+        private int PageNumber { get { return EditorTabs.SelectedIndex; } }
+
+        //I still don't get the VS toolbox. Ugh
+        TMAPInfoPanel texturePanel;
+        VClipPanel vclipPanel;
+        EClipPanel eclipPanel;
+        RobotPanel robotPanel;
+        WeaponPanel weaponPanel;
         
         public HAMEditor(HAMFile data, StandardUI host)
         {
@@ -60,8 +68,24 @@ namespace Descent2Workshop
             this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
             this.glControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl1_Paint);
 
+            texturePanel = new TMAPInfoPanel(); components.Add(texturePanel);
+            texturePanel.Dock = DockStyle.Fill;
+            vclipPanel = new VClipPanel(); components.Add(vclipPanel);
+            vclipPanel.Dock = DockStyle.Fill;
+            eclipPanel = new EClipPanel(); components.Add(eclipPanel);
+            eclipPanel.Dock = DockStyle.Fill;
+            robotPanel = new RobotPanel(); components.Add(robotPanel);
+            robotPanel.Dock = DockStyle.Fill;
+            weaponPanel = new WeaponPanel(); components.Add(weaponPanel);
+            weaponPanel.Dock = DockStyle.Fill;
+            TextureTabPage.Controls.Add(texturePanel);
+            VClipTabPage.Controls.Add(vclipPanel);
+            EffectsTabPage.Controls.Add(eclipPanel);
+            RobotTabPage.Controls.Add(robotPanel);
+            WeaponTabPage.Controls.Add(weaponPanel);
+
             if (!noPMView)
-                this.tabPage7.Controls.Add(this.glControl1);
+                this.ModelTabPage.Controls.Add(this.glControl1);
             datafile = data;
             this.host = host;
             modelRenderer = new ModelRenderer(datafile, host.DefaultPigFile);
@@ -89,7 +113,10 @@ namespace Descent2Workshop
 
         private void ElementListInit()
         {
-            switch (tabControl1.SelectedIndex)
+            //Hacks aaaa
+            vclipPanel.Stop();
+            eclipPanel.Stop();
+            switch (EditorTabs.SelectedIndex)
             {
                 case 0:
                     nudElementNum.Maximum = datafile.TMapInfo.Count - 1;
@@ -155,7 +182,7 @@ namespace Descent2Workshop
             isLocked = true;
             ElementListInit();
             nudElementNum.Value = 0;
-            FillOutCurrentPanel(tabControl1.SelectedIndex, 0);
+            FillOutCurrentPanel(EditorTabs.SelectedIndex, 0);
             isLocked = false;
         }
 
@@ -164,7 +191,7 @@ namespace Descent2Workshop
             if (!isLocked)
             {
                 isLocked = true;
-                FillOutCurrentPanel(tabControl1.SelectedIndex, (int)nudElementNum.Value);
+                FillOutCurrentPanel(EditorTabs.SelectedIndex, (int)nudElementNum.Value);
                 isLocked = false;
             }
         }
@@ -221,7 +248,7 @@ namespace Descent2Workshop
 
         private void InsertElem_Click(object sender, EventArgs e)
         {
-            HAMType type = typeTable[tabControl1.SelectedIndex];
+            HAMType type = typeTable[EditorTabs.SelectedIndex];
             int newID = datafile.AddElement(type);
             if (newID != -1)
             {
@@ -233,7 +260,7 @@ namespace Descent2Workshop
 
         private void DeleteElem_Click(object sender, EventArgs e)
         {
-            HAMType type = typeTable[tabControl1.SelectedIndex];
+            HAMType type = typeTable[EditorTabs.SelectedIndex];
             int returnv = datafile.DeleteElement(type, ElementNumber);
             if (returnv >= 0)
             {
@@ -242,7 +269,7 @@ namespace Descent2Workshop
                 isLocked = true;
                 if (nudElementNum.Value >= returnv)
                     nudElementNum.Value = returnv - 1;
-                FillOutCurrentPanel(tabControl1.SelectedIndex, ElementNumber);
+                FillOutCurrentPanel(EditorTabs.SelectedIndex, ElementNumber);
                 isLocked = false;
             }
             else
@@ -262,12 +289,13 @@ namespace Descent2Workshop
                     nudElementNum.Value = elementList.ElementNumber;
                 }
             }
+            elementList.Dispose();
         }
 
         private void ElemName_TextChanged(object sender, EventArgs e)
         {
             if (isLocked) return;
-            datafile.UpdateName(typeTable[tabControl1.SelectedIndex], ElementNumber, txtElemName.Text);
+            datafile.UpdateName(typeTable[EditorTabs.SelectedIndex], ElementNumber, txtElemName.Text);
         }
 
         //---------------------------------------------------------------------
@@ -279,35 +307,19 @@ namespace Descent2Workshop
         private void InitTexturePanel()
         {
             SetElementControl(true, false);
-            cbTexEClip.Items.Clear(); cbTexEClip.Items.Add("None");
-            for (int i = 0; i < datafile.EClips.Count; i++)
-                cbTexEClip.Items.Add(datafile.EClipNames[i]);
+            texturePanel.Init(datafile.EClipNames);
         }
 
         private void InitVClipPanel()
         {
             SetElementControl(true, true);
-            cbVClipSound.Items.Clear(); cbVClipSound.Items.Add("None");
-            for (int i = 0; i < datafile.Sounds.Count; i++)
-                cbVClipSound.Items.Add(datafile.SoundNames[i]);
+            vclipPanel.Init(datafile.SoundNames);
         }
 
         private void InitEClipPanel()
         {
             SetElementControl(true, true);
-            cbEClipBreakEClip.Items.Clear(); cbEClipBreakEClip.Items.Add("None");
-            cbEClipMineCritical.Items.Clear(); cbEClipMineCritical.Items.Add("None");
-            cbEClipBreakVClip.Items.Clear(); cbEClipBreakVClip.Items.Add("None");
-            cbEClipBreakSound.Items.Clear(); cbEClipBreakSound.Items.Add("None");
-            for (int i = 0; i < datafile.EClips.Count; i++)
-            {
-                cbEClipBreakEClip.Items.Add(datafile.EClipNames[i]);
-                cbEClipMineCritical.Items.Add(datafile.EClipNames[i]);
-            }
-            for (int i = 0; i < datafile.VClips.Count; i++)
-                cbEClipBreakVClip.Items.Add(datafile.VClipNames[i]);
-            for (int i = 0; i < datafile.Sounds.Count; i++)
-                cbEClipBreakSound.Items.Add(datafile.SoundNames[i]);
+            eclipPanel.Init(datafile.VClipNames, datafile.EClipNames, datafile.SoundNames);
         }
 
         private void InitWallPanel()
@@ -315,85 +327,20 @@ namespace Descent2Workshop
             SetElementControl(true, false);
             cbWallCloseSound.Items.Clear(); cbWallCloseSound.Items.Add("None");
             cbWallOpenSound.Items.Clear(); cbWallOpenSound.Items.Add("None");
-            for (int i = 0; i < datafile.Sounds.Count; i++)
-            {
-                cbWallOpenSound.Items.Add(datafile.SoundNames[i]);
-                cbWallCloseSound.Items.Add(datafile.SoundNames[i]);
-            }
+            cbWallOpenSound.Items.AddRange(datafile.SoundNames.ToArray());
+            cbWallCloseSound.Items.AddRange(datafile.SoundNames.ToArray());
         }
 
         private void InitWeaponPanel()
         {
             SetElementControl(true, true);
-            cbWeaponFireSound.Items.Clear(); cbWeaponFireSound.Items.Add("None");
-            cbWeaponRobotHitSound.Items.Clear(); cbWeaponRobotHitSound.Items.Add("None");
-            cbWeaponWallHitSound.Items.Clear(); cbWeaponWallHitSound.Items.Add("None");
-            for (int i = 0; i < datafile.Sounds.Count; i++)
-            {
-                cbWeaponFireSound.Items.Add(datafile.SoundNames[i]);
-                cbWeaponRobotHitSound.Items.Add(datafile.SoundNames[i]);
-                cbWeaponWallHitSound.Items.Add(datafile.SoundNames[i]);
-            }
-            cbWeaponMuzzleFlash.Items.Clear(); cbWeaponMuzzleFlash.Items.Add("None");
-            cbWeaponWallHit.Items.Clear(); cbWeaponWallHit.Items.Add("None");
-            cbWeaponRobotHit.Items.Clear(); cbWeaponRobotHit.Items.Add("None");
-            cbWeaponVClip.Items.Clear(); cbWeaponVClip.Items.Add("None");
-            for (int i = 0; i < datafile.VClips.Count; i++)
-            {
-                cbWeaponMuzzleFlash.Items.Add(datafile.VClipNames[i]);
-                cbWeaponWallHit.Items.Add(datafile.VClipNames[i]);
-                cbWeaponRobotHit.Items.Add(datafile.VClipNames[i]);
-                cbWeaponVClip.Items.Add(datafile.VClipNames[i]);
-            }
-            cbWeaponChildren.Items.Clear(); cbWeaponChildren.Items.Add("None"); //this will be fun since my own size can change. ugh
-            for (int i = 0; i < datafile.Weapons.Count; i++)
-                cbWeaponChildren.Items.Add(datafile.WeaponNames[i]);
-            cbWeaponModel1.Items.Clear(); cbWeaponModel1.Items.Add("None");
-            cbWeaponModel2.Items.Clear(); cbWeaponModel2.Items.Add("None");
-            for (int i = 0; i < datafile.PolygonModels.Count; i++)
-            {
-                cbWeaponModel1.Items.Add(datafile.ModelNames[i]);
-                cbWeaponModel2.Items.Add(datafile.ModelNames[i]);
-            }
+            weaponPanel.Init(datafile.SoundNames, datafile.VClipNames, datafile.WeaponNames, datafile.ModelNames, host.DefaultPigFile);
         }
 
         private void InitRobotPanel()
         {
             SetElementControl(true, true);
-            cbRobotAttackSound.Items.Clear();
-            cbRobotClawSound.Items.Clear();
-            cbRobotDyingSound.Items.Clear();
-            cbRobotSeeSound.Items.Clear();
-            cbRobotTauntSound.Items.Clear();
-            cbRobotHitSound.Items.Clear();
-            cbRobotDeathSound.Items.Clear();
-            for (int i = 0; i < datafile.Sounds.Count; i++)
-            {
-                cbRobotAttackSound.Items.Add(datafile.SoundNames[i]);
-                cbRobotClawSound.Items.Add(datafile.SoundNames[i]);
-                cbRobotDyingSound.Items.Add(datafile.SoundNames[i]);
-                cbRobotSeeSound.Items.Add(datafile.SoundNames[i]);
-                cbRobotTauntSound.Items.Add(datafile.SoundNames[i]);
-                cbRobotHitSound.Items.Add(datafile.SoundNames[i]);
-                cbRobotDeathSound.Items.Add(datafile.SoundNames[i]);
-            }
-            cbRobotWeapon1.Items.Clear();
-            cbRobotWeapon2.Items.Clear(); cbRobotWeapon2.Items.Add("None");
-            for (int i = 0; i < datafile.Weapons.Count; i++)
-            {
-                cbRobotWeapon1.Items.Add(datafile.WeaponNames[i]);
-                cbRobotWeapon2.Items.Add(datafile.WeaponNames[i]);
-            }
-            cbRobotHitVClip.Items.Clear(); cbRobotHitVClip.Items.Add("None");
-            cbRobotDeathVClip.Items.Clear(); cbRobotDeathVClip.Items.Add("None");
-            for (int i = 0; i < datafile.VClips.Count; i++)
-            {
-                cbRobotHitVClip.Items.Add(datafile.VClipNames[i]);
-                cbRobotDeathVClip.Items.Add(datafile.VClipNames[i]);
-            }
-            cbRobotModel.Items.Clear();
-            for (int i = 0; i < datafile.PolygonModels.Count; i++)
-                cbRobotModel.Items.Add(datafile.ModelNames[i]);
+            robotPanel.Init(datafile.VClipNames, datafile.SoundNames, datafile.RobotNames, datafile.WeaponNames, datafile.PowerupNames, datafile.ModelNames);
         }
 
         private void InitSoundPanel()
@@ -403,8 +350,7 @@ namespace Descent2Workshop
             cbLowMemSound.Items.Clear();
             cbSoundSNDid.Items.Add("None");
             cbLowMemSound.Items.Add("None");
-            for (int i = 0; i < datafile.Sounds.Count; i++)
-                cbLowMemSound.Items.Add(datafile.SoundNames[i]);
+            cbLowMemSound.Items.AddRange(datafile.SoundNames.ToArray());
             foreach (SoundData sound in host.DefaultSoundFile.sounds)
                 cbSoundSNDid.Items.Add(sound.name);
         }
@@ -414,10 +360,8 @@ namespace Descent2Workshop
             SetElementControl(true, true);
             cbPowerupPickupSound.Items.Clear();
             cbPowerupSprite.Items.Clear();
-            for (int i = 0; i < datafile.Sounds.Count; i++)
-                cbPowerupPickupSound.Items.Add(datafile.SoundNames[i]);
-            for (int i = 0; i < datafile.VClips.Count; i++)
-                cbPowerupSprite.Items.Add(datafile.VClipNames[i]);
+            cbPowerupPickupSound.Items.AddRange(datafile.SoundNames.ToArray());
+            cbPowerupSprite.Items.AddRange(datafile.VClipNames.ToArray());
         }
 
         private void InitModelPanel()
@@ -426,20 +370,16 @@ namespace Descent2Workshop
             cbModelLowDetail.Items.Clear(); cbModelLowDetail.Items.Add("None");
             cbModelDyingModel.Items.Clear(); cbModelDyingModel.Items.Add("None");
             cbModelDeadModel.Items.Clear(); cbModelDeadModel.Items.Add("None");
-            for (int i = 0; i < datafile.PolygonModels.Count; i++)
-            {
-                cbModelLowDetail.Items.Add(datafile.ModelNames[i]);
-                cbModelDyingModel.Items.Add(datafile.ModelNames[i]);
-                cbModelDeadModel.Items.Add(datafile.ModelNames[i]);
-            }
+            cbModelLowDetail.Items.AddRange(datafile.ModelNames.ToArray());
+            cbModelDyingModel.Items.AddRange(datafile.ModelNames.ToArray());
+            cbModelDeadModel.Items.AddRange(datafile.ModelNames.ToArray());
         }
 
         private void InitReactorPanel()
         {
             SetElementControl(true, true);
             cbReactorModel.Items.Clear();
-            for (int i = 0; i < datafile.PolygonModels.Count; i++)
-                cbReactorModel.Items.Add(datafile.ModelNames[i]);
+            cbReactorModel.Items.AddRange(datafile.ModelNames.ToArray());
         }
 
         //---------------------------------------------------------------------
@@ -460,21 +400,7 @@ namespace Descent2Workshop
         public void UpdateTexturePanel(int num)
         {
             TMAPInfo texture = datafile.TMapInfo[num];
-            txtTexID.Text = datafile.Textures[num].ToString();
-            txtTexLight.Text = texture.lighting.ToString();
-            txtTexDamage.Text = texture.damage.ToString();
-            cbTexEClip.SelectedIndex = texture.eclip_num + 1;
-            txtTexSlideU.Text = GetFloatFromFixed88(texture.slide_u).ToString();
-            txtTexSlideV.Text = GetFloatFromFixed88(texture.slide_v).ToString();
-            txtTexDestroyed.Text = texture.destroyed.ToString();
-            cbTexLava.Checked = ((texture.flags & TMAPInfo.TMI_VOLATILE) != 0);
-            cbTexWater.Checked = ((texture.flags & TMAPInfo.TMI_WATER) != 0);
-            cbTexForcefield.Checked = ((texture.flags & TMAPInfo.TMI_FORCE_FIELD) != 0);
-            cbTexRedGoal.Checked = ((texture.flags & TMAPInfo.TMI_GOAL_RED) != 0);
-            cbTexBlueGoal.Checked = ((texture.flags & TMAPInfo.TMI_GOAL_BLUE) != 0);
-            cbTexHoardGoal.Checked = ((texture.flags & TMAPInfo.TMI_GOAL_HOARD) != 0);
-
-            UpdatePictureBox(datafile.piggyFile.GetBitmap(datafile.Textures[num]), pbTexPrev);
+            texturePanel.Update(datafile, num, texture);
         }
 
         public void UpdateGaguePanel(int num)
@@ -491,7 +417,7 @@ namespace Descent2Workshop
                 pbGagueLores.Image = null;
                 temp.Dispose();
             }
-            pbGagueLores.Image = datafile.piggyFile.GetBitmap(gague);
+            pbGagueLores.Image = PiggyBitmapConverter.GetBitmap(datafile.piggyFile, gague);
 
             if (pbGagueHires.Image != null)
             {
@@ -499,69 +425,23 @@ namespace Descent2Workshop
                 pbGagueHires.Image = null;
                 temp.Dispose();
             }
-            pbGagueHires.Image = datafile.piggyFile.GetBitmap(hiresgague);
+            pbGagueHires.Image = PiggyBitmapConverter.GetBitmap(datafile.piggyFile, hiresgague);
         }
 
         public void UpdateVClipPanel(int num)
         {
-            VClip animation = datafile.VClips[num];
-            txtAnimFrameSpeed.Text = animation.frame_time.ToString();
-            txtAnimTotalTime.Text = animation.play_time.ToString();
-            txtAnimLight.Text = animation.light_value.ToString();
-            cbVClipSound.SelectedIndex = animation.sound_num + 1;
-            txtAnimFrameCount.Text = animation.num_frames.ToString();
-            cbAnimRod.Checked = ((animation.flags & 1) == 1);
-
-            nudAnimFrame.Value = 0;
-            UpdateAnimationFrame(0);
-
+            vclipPanel.Stop();
+            VClip clip = datafile.VClips[num];
+            vclipPanel.Update(clip, datafile.piggyFile);
             txtElemName.Text = datafile.VClipNames[num];
-        }
-
-        private void nudAnimFrame_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isLocked)
-            {
-                isLocked = true;
-                UpdateAnimationFrame((int)nudAnimFrame.Value);
-                isLocked = false;
-            }
         }
 
         public void UpdateEClipPanel(int num)
         {
-            EClip animation = datafile.EClips[num];
-
-            //vclip specific data
-            txtEffectFrameSpeed.Text = animation.vc.frame_time.ToString();
-            txtEffectTotalTime.Text = animation.vc.play_time.ToString();
-            txtEffectLight.Text = animation.vc.light_value.ToString();
-            txtEffectFrameCount.Text = animation.vc.num_frames.ToString();
-
-            //eclip stuff
-            cbEClipBreakEClip.SelectedIndex = animation.dest_eclip + 1;
-            cbEClipBreakVClip.SelectedIndex = animation.dest_vclip + 1;
-            txtEffectExplodeSize.Text = animation.dest_size.ToString();
-            txtEffectBrokenID.Text = animation.dest_bm_num.ToString();
-            cbEClipBreakSound.SelectedIndex = animation.sound_num + 1;
-            cbEClipMineCritical.SelectedIndex = animation.crit_clip + 1;
-            cbEffectCritical.Checked = (animation.flags & 1) != 0;
-            cbEffectOneShot.Checked = (animation.flags & 2) != 0;
-
-            nudEffectFrame.Value = 0;
-            UpdateEffectFrame(0);
-
+            eclipPanel.Stop();
+            EClip clip = datafile.EClips[num];
+            eclipPanel.Update(clip, datafile.piggyFile);
             txtElemName.Text = datafile.EClipNames[num];
-        }
-
-        private void nudEffectFrame_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isLocked)
-            {
-                isLocked = true;
-                UpdateEffectFrame((int)nudEffectFrame.Value);
-                isLocked = false;
-            }
         }
 
         public void UpdateWClipPanel(int num)
@@ -594,211 +474,18 @@ namespace Descent2Workshop
             }
         }
 
-        private void UpdateRobotDropTypes(int dropType, Robot robot)
-        {
-            cbRobotDropItem.Items.Clear();
-            if (dropType != 1)
-            {
-                for (int i = 0; i < datafile.Powerups.Count; i++)
-                    cbRobotDropItem.Items.Add(datafile.PowerupNames[i]);
-                cbRobotDropItem.SelectedIndex = robot.contains_id;
-            }
-            else
-            {
-                for (int i = 0; i < datafile.Robots.Count; i++)
-                    cbRobotDropItem.Items.Add(datafile.RobotNames[i]);
-                cbRobotDropItem.SelectedIndex = robot.contains_id;
-            }
-            //cbRobotDropItem.SelectedIndex = 0;
-        }
-
         public void UpdateRobotPanel(int num)
         {
             Robot robot = datafile.Robots[num];
-            cbRobotAttackSound.SelectedIndex = robot.attack_sound;
-            cbRobotClawSound.SelectedIndex = robot.claw_sound;
-            txtRobotDrag.Text = robot.drag.ToString();
-            txtRobotDropProb.Text = robot.contains_prob.ToString();
-            txtRobotDrops.Text = robot.contains_count.ToString();
-            txtRobotLight.Text = robot.lighting.ToString();
-            txtRobotMass.Text = robot.mass.ToString();
-            txtRobotScore.Text = robot.score_value.ToString();
-            cbRobotHitSound.SelectedIndex = robot.exp1_sound_num;
-            cbRobotDeathSound.SelectedIndex = robot.exp2_sound_num;
-            cbRobotSeeSound.SelectedIndex = robot.see_sound;
-            txtRobotShield.Text = robot.strength.ToString();
-            cbRobotTauntSound.SelectedIndex = robot.taunt_sound;
-            txtRobotAim.Text = robot.aim.ToString();
-            txtRobotBadass.Text = robot.badass.ToString();
-            txtRobotDeathBlobs.Text = robot.smart_blobs.ToString();
-            txtRobotDeathRolls.Text = robot.death_roll.ToString();
-            txtRobotEnergyDrain.Text = robot.energy_drain.ToString();
-            txtRobotHitBlobs.Text = robot.energy_blobs.ToString();
-            txtRobotGlow.Text = robot.glow.ToString();
-            txtRobotPursuit.Text = robot.pursuit.ToString();
-            cbRobotDyingSound.SelectedIndex = robot.deathroll_sound;
-            txtRobotLightcast.Text = robot.lightcast.ToString();
-
-            cbRobotCompanion.Checked = robot.companion != 0;
-            cbRobotClaw.Checked = robot.attack_type != 0;
-            cbRobotThief.Checked = robot.thief != 0;
-            cbKamikaze.Checked = robot.kamikaze != 0;
-
-            int dropType = robot.contains_type;
-            if (dropType == 2)
-                dropType = 1;
-            else
-                dropType = 0;
-
-            UpdateRobotDropTypes(dropType, robot);
-            cbRobotDropType.SelectedIndex = dropType;
-
-            cbRobotHitVClip.SelectedIndex = robot.exp1_vclip_num + 1;
-            cbRobotDeathVClip.SelectedIndex = robot.exp2_vclip_num + 1;
-            cbRobotModel.SelectedIndex = robot.model_num;
-            cbRobotWeapon1.SelectedIndex = robot.weapon_type;
-            cbRobotWeapon2.SelectedIndex = robot.weapon_type2 + 1;
-            if (robot.behavior >= 128)
-            {
-                cbRobotAI.SelectedIndex = robot.behavior - 128;
-            }
-            else cbRobotAI.SelectedIndex = 0;
-
-            int bossMode = robot.boss_flag;
-            if (bossMode > 20)
-                bossMode -= 18;
-            cmRobotBoss.SelectedIndex = bossMode;
-            cmRobotCloak.SelectedIndex = robot.cloak_type;
-
-            if (robot.behavior != 0)
-                cbRobotAI.SelectedIndex = robot.behavior - 0x80;
-            else
-                cbRobotAI.SelectedIndex = 0;
-
-            nudRobotAI.Value = 0;
-            UpdateRobotAI(0);
-
+            robotPanel.Update(robot);
             txtElemName.Text = datafile.RobotNames[num];
-        }
-
-        private void nudRobotAI_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isLocked)
-            {
-                isLocked = true;
-                UpdateRobotAI((int)nudRobotAI.Value);
-                isLocked = false;
-            }
-        }
-
-        private void UpdateRobotAI(int num)
-        {
-            Robot robot = datafile.Robots[(int)nudElementNum.Value];
-
-            txtRobotCircleDist.Text = robot.circle_distance[num].ToString();
-            txtRobotEvadeSpeed.Text = robot.evade_speed[num].ToString();
-            txtRobotFireDelay.Text = robot.firing_wait[num].ToString();
-            txtRobotFireDelay2.Text = robot.firing_wait2[num].ToString();
-            txtRobotFOV.Text = ((int)(Math.Round(Math.Acos(robot.field_of_view[num]) * 180 / Math.PI, MidpointRounding.AwayFromZero))).ToString();
-            txtRobotMaxSpeed.Text = robot.max_speed[num].ToString();
-            txtRobotTurnSpeed.Text = robot.turn_time[num].ToString();
-            txtRobotShotCount.Text = robot.rapidfire_count[num].ToString();
         }
 
         public void UpdateWeaponPanel(int num)
         {
             Weapon weapon = datafile.Weapons[num];
-
-            int rendernum = weapon.render_type;
-
-            if (rendernum == 255)
-            {
-                rendernum = 4;
-            }
-
-            cbWeaponRenderMode.SelectedIndex = rendernum;
-
-            txtWeaponABSize.Text = weapon.afterburner_size.ToString();
-            txtWeaponAmmoUse.Text = weapon.ammo_usage.ToString();
-            txtWeaponBlindSize.Text = weapon.flash.ToString();
-            cbWeaponBounce.SelectedIndex = weapon.bounce;
-            txtWeaponCockpitImage.Text = weapon.picture.ToString();
-            txtWeaponCockpitImageh.Text = weapon.hires_picture.ToString();
-            txtWeaponDrag.Text = weapon.drag.ToString();
-            txtWeaponEnergyUsage.Text = weapon.energy_usage.ToString();
-            txtWeaponExplosionSize.Text = weapon.damage_radius.ToString();
-            txtWeaponFireWait.Text = weapon.fire_wait.ToString();
-            txtWeaponFlashSize.Text = weapon.flash_size.ToString();
-            txtWeaponImpactSize.Text = weapon.impact_size.ToString();
-            txtWeaponLifetime.Text = weapon.lifetime.ToString();
-            txtWeaponLight.Text = weapon.light.ToString();
-            txtWeaponMass.Text = weapon.mass.ToString();
-            txtWeaponMPScale.Text = weapon.multi_damage_scale.ToString();
-            txtWeaponPolyLWRatio.Text = weapon.po_len_to_width_ratio.ToString();
-            txtWeaponProjectileCount.Text = weapon.fire_count.ToString();
-            txtWeaponProjectileSize.Text = weapon.blob_size.ToString();
-            txtWeaponSpeedvar.Text = weapon.speedvar.ToString();
-            txtWeaponStaticSprite.Text = weapon.bitmap.ToString();
-            txtWeaponThrust.Text = weapon.thrust.ToString();
-
-            cbWeaponDestroyable.Checked = weapon.destroyable != 0;
-            cbWeaponHoming.Checked = weapon.homing_flag != 0;
-            cbWeaponIsMatter.Checked = weapon.matter != 0;
-            cbWeaponPlacable.Checked = (weapon.flags & 1) != 0;
-            cbWeaponRipper.Checked = weapon.persistent != 0;
-
-            cbWeaponChildren.SelectedIndex = weapon.children + 1;
-            cbWeaponFireSound.SelectedIndex = weapon.flash_sound + 1;
-            cbWeaponRobotHitSound.SelectedIndex = weapon.robot_hit_sound + 1;
-            cbWeaponWallHitSound.SelectedIndex = weapon.wall_hit_sound + 1;
-            cbWeaponModel1.SelectedIndex = weapon.model_num + 1;
-            cbWeaponModel2.SelectedIndex = weapon.model_num_inner + 1;
-            cbWeaponWallHit.SelectedIndex = weapon.wall_hit_vclip + 1;
-            cbWeaponRobotHit.SelectedIndex = weapon.robot_hit_vclip + 1;
-            cbWeaponMuzzleFlash.SelectedIndex = weapon.flash_vclip + 1;
-            cbWeaponVClip.SelectedIndex = weapon.weapon_vclip + 1;
-
-            nudWeaponStr.Value = 0;
-            UpdateWeaponPower(0);
+            weaponPanel.Update(weapon);
             txtElemName.Text = datafile.WeaponNames[num];
-
-            UpdateWeaponGraphicControls();
-        }
-
-        private void nudWeaponStr_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isLocked)
-            {
-                isLocked = true;
-                UpdateWeaponPower((int)nudWeaponStr.Value);
-                isLocked = false;
-            }
-        }
-
-        private void UpdateWeaponPower(int num)
-        {
-            Weapon weapon = datafile.Weapons[(int)nudElementNum.Value];
-
-            txtWeaponStr.Text = weapon.strength[num].ToString();
-            txtWeaponSpeed.Text = weapon.speed[num].ToString();
-        }
-
-        private void UpdateWeaponGraphicControls()
-        {
-            cbWeaponModel1.Visible = cbWeaponModel2.Visible = cbWeaponVClip.Visible = txtWeaponStaticSprite.Visible = false;
-            lbSprite.Visible = lbModelNum.Visible = lbModelNumInner.Visible = btnRemapWeaponSprite.Visible = false;
-            if (cbWeaponRenderMode.SelectedIndex == 0 || cbWeaponRenderMode.SelectedIndex == 1 || cbWeaponRenderMode.SelectedIndex == 4)
-            {
-                lbSprite.Visible = txtWeaponStaticSprite.Visible = btnRemapWeaponSprite.Visible = true;
-            }
-            else if (cbWeaponRenderMode.SelectedIndex == 3)
-            {
-                lbSprite.Visible = cbWeaponVClip.Visible = true;
-            }
-            else if (cbWeaponRenderMode.SelectedIndex == 2)
-            {
-                lbModelNum.Visible = lbModelNumInner.Visible = cbWeaponModel1.Visible = cbWeaponModel2.Visible = true;
-            }
         }
 
         private void UpdateModelPanel(int num)
@@ -875,36 +562,8 @@ namespace Descent2Workshop
 
         private void UpdateShipTextures(int id)
         {
-            UpdatePictureBox(datafile.piggyFile.GetBitmap(datafile.multiplayerBitmaps[id * 2]), pbWeaponTexture);
-            UpdatePictureBox(datafile.piggyFile.GetBitmap(datafile.multiplayerBitmaps[id * 2 + 1]), pbWingTex);
-        }
-
-        private void UpdateAnimationFrame(int frame)
-        {
-            VClip animation = datafile.VClips[(int)nudElementNum.Value];
-            txtAnimFrameNum.Text = animation.frames[frame].ToString();
-
-            if (pbAnimFramePreview.Image != null)
-            {
-                Bitmap temp = (Bitmap)pbAnimFramePreview.Image;
-                pbAnimFramePreview.Image = null;
-                temp.Dispose();
-            }
-            pbAnimFramePreview.Image = datafile.piggyFile.GetBitmap(animation.frames[frame]);
-        }
-
-        private void UpdateEffectFrame(int frame)
-        {
-            EClip animation = datafile.EClips[(int)nudElementNum.Value];
-            txtEffectFrameNum.Text = animation.vc.frames[frame].ToString();
-
-            if (pbEffectFramePreview.Image != null)
-            {
-                Bitmap temp = (Bitmap)pbEffectFramePreview.Image;
-                pbEffectFramePreview.Image = null;
-                temp.Dispose();
-            }
-            pbEffectFramePreview.Image = datafile.piggyFile.GetBitmap(animation.vc.frames[frame]);
+            UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, datafile.multiplayerBitmaps[id * 2]), pbWeaponTexture);
+            UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, datafile.multiplayerBitmaps[id * 2 + 1]), pbWingTex);
         }
 
         private void UpdateWallFrame(int frame)
@@ -918,7 +577,7 @@ namespace Descent2Workshop
                 pbWallAnimPreview.Image = null;
                 temp.Dispose();
             }
-            pbWallAnimPreview.Image = datafile.piggyFile.GetBitmap((int)((ushort)datafile.Textures[animation.frames[frame]]));
+            pbWallAnimPreview.Image = PiggyBitmapConverter.GetBitmap(datafile.piggyFile, datafile.Textures[animation.frames[frame]]);
         }
 
         private void UpdateXLATPanel(int num)
@@ -932,7 +591,7 @@ namespace Descent2Workshop
                 pbBitmapSrc.Image = null;
                 temp.Dispose();
             }
-            pbBitmapSrc.Image = datafile.piggyFile.GetBitmap(num);
+            pbBitmapSrc.Image = PiggyBitmapConverter.GetBitmap(datafile.piggyFile, num);
 
             if (pbBitmapDest.Image != null)
             {
@@ -940,7 +599,7 @@ namespace Descent2Workshop
                 pbBitmapDest.Image = null;
                 temp.Dispose();
             }
-            pbBitmapDest.Image = datafile.piggyFile.GetBitmap(dst);
+            pbBitmapDest.Image = PiggyBitmapConverter.GetBitmap(datafile.piggyFile, dst);
         }
 
         private void UpdateCockpitPanel(int num)
@@ -954,7 +613,7 @@ namespace Descent2Workshop
                 pbCockpit.Image = null;
                 temp.Dispose();
             }
-            pbCockpit.Image = datafile.piggyFile.GetBitmap(cockpit);
+            pbCockpit.Image = PiggyBitmapConverter.GetBitmap(datafile.piggyFile, cockpit);
         }
 
         private void UpdateSoundPanel(int num)
@@ -996,25 +655,6 @@ namespace Descent2Workshop
                 int shipvalue = 0;
                 switch (button.Tag)
                 {
-                    case "1":
-                        datafile.Textures[ElementNumber] = (ushort)(value);
-                        UpdatePictureBox(datafile.piggyFile.GetBitmap(value), pbTexPrev);
-                        txtTexID.Text = (value).ToString();
-                        break;
-                    case "2":
-                        datafile.VClips[ElementNumber].frames[(int)nudAnimFrame.Value] = (ushort)(value);
-                        UpdatePictureBox(datafile.piggyFile.GetBitmap(value), pbAnimFramePreview);
-                        txtAnimFrameNum.Text = (value).ToString();
-                        break;
-                    case "3":
-                        datafile.EClips[ElementNumber].vc.frames[(int)nudAnimFrame.Value] = (ushort)(value);
-                        UpdatePictureBox(datafile.piggyFile.GetBitmap(value), pbAnimFramePreview);
-                        txtEffectFrameNum.Text = (value).ToString();
-                        break;
-                    case "4":
-                        datafile.Weapons[ElementNumber].bitmap = (ushort)(value);
-                        txtWeaponStaticSprite.Text = (value).ToString();
-                        break;
                     case "5":
                         shipvalue = (int)nudShipTextures.Value - 2;
                         datafile.multiplayerBitmaps[shipvalue * 2 + 1] = (ushort)(value);
@@ -1028,459 +668,20 @@ namespace Descent2Workshop
                     case "7":
                         txtGagueLores.Text = (value).ToString();
                         datafile.Gauges[ElementNumber] = (ushort)(value);
-                        UpdatePictureBox(datafile.piggyFile.GetBitmap(value), pbGagueLores);
+                        UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, value), pbGagueLores);
                         break;
                     case "8":
                         txtGagueHires.Text = (value).ToString();
                         datafile.GaugesHires[ElementNumber] = (ushort)(value);
-                        UpdatePictureBox(datafile.piggyFile.GetBitmap(value), pbGagueHires);
+                        UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, value), pbGagueHires);
                         break;
                     case "9":
                         txtCockpitID.Text = (value).ToString();
                         datafile.Cockpits[ElementNumber] = (ushort)(value);
-                        UpdatePictureBox(datafile.piggyFile.GetBitmap(value), pbCockpit);
-                        break;
-                    case "10":
-                        txtWeaponCockpitImage.Text = (value).ToString();
-                        datafile.Weapons[ElementNumber].picture = (ushort)value;
-                        break;
-                    case "11":
-                        txtWeaponCockpitImageh.Text = (value).ToString();
-                        datafile.Weapons[ElementNumber].hires_picture = (ushort)value;
+                        UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, value), pbCockpit);
                         break;
                 }
                 isLocked = false;
-            }
-        }
-
-        private void RemapMultiImage_Click(object sender, EventArgs e)
-        {
-            Button button = (Button)sender;
-            ImageSelector selector = new ImageSelector(host.DefaultPigFile, true);
-            if (selector.ShowDialog() == DialogResult.OK)
-            {
-                int value = selector.Selection;
-                isLocked = true;
-                switch (button.Tag)
-                {
-                    case "1":
-                        datafile.VClips[ElementNumber].RemapVClip(value, host.DefaultPigFile);
-                        txtAnimFrameCount.Text = datafile.VClips[ElementNumber].num_frames.ToString();
-                        txtAnimFrameSpeed.Text = datafile.VClips[ElementNumber].frame_time.ToString();
-                        nudAnimFrame.Value = 0;
-                        UpdatePictureBox(datafile.piggyFile.GetBitmap(datafile.VClips[ElementNumber].frames[0]), pbAnimFramePreview);
-                        break;
-                    case "2":
-                        datafile.EClips[ElementNumber].vc.RemapVClip(value, host.DefaultPigFile);
-                        txtEffectFrameCount.Text = datafile.EClips[ElementNumber].vc.num_frames.ToString();
-                        txtEffectFrameSpeed.Text = datafile.EClips[ElementNumber].vc.frame_time.ToString();
-                        nudEffectFrame.Value = 0;
-                        UpdatePictureBox(datafile.piggyFile.GetBitmap(datafile.EClips[ElementNumber].vc.frames[0]), pbEffectFramePreview);
-                        break;
-                }
-                isLocked = false;
-            }
-        }
-
-        //---------------------------------------------------------------------
-        // ROBOT UPDATORS
-        //---------------------------------------------------------------------
-
-        private void RobotComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-            {
-                return;
-            }
-            ComboBox sendingControl = (ComboBox)sender;
-            string tagstr = (string)sendingControl.Tag;
-            int tagvalue = Int32.Parse(tagstr);
-            int value = sendingControl.SelectedIndex;
-            Robot robot = datafile.Robots[ElementNumber];
-            robot.UpdateRobot(tagvalue, ref value, (int)nudRobotAI.Value, 0, datafile);
-        }
-
-        private void RobotProperty_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            TextBox textBox = (TextBox)sender;
-            int tagvalue = int.Parse((string)textBox.Tag);
-            int value;
-            if (int.TryParse(textBox.Text, out value))
-            {
-                Robot robot = datafile.Robots[ElementNumber];
-                bool clamped = robot.UpdateRobot(tagvalue, ref value, (int)nudRobotAI.Value, 0, datafile);
-                if (clamped) //parrot back the value if it clamped
-                {
-                    isLocked = true;
-                    textBox.Text = value.ToString();
-                    isLocked = false;
-                }
-            }
-        }
-
-        private void RobotPropertyFixed_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-            {
-                return;
-            }
-            TextBox textBox = (TextBox)sender;
-            int tagvalue = int.Parse((string)textBox.Tag);
-
-            float fvalue;
-            if (float.TryParse(textBox.Text, out fvalue))
-            {
-                int value = (int)(fvalue * 65536f);
-                Robot robot = datafile.Robots[ElementNumber];
-                bool clamped = robot.UpdateRobot(tagvalue, ref value, (int)nudRobotAI.Value, 0, datafile);
-                if (clamped) //parrot back the value if it clamped
-                {
-                    isLocked = true;
-                    textBox.Text = (value / 65536d).ToString();
-                    isLocked = false;
-                }
-            }
-        }
-
-        private void cmRobotCloak_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            Robot robot = datafile.Robots[ElementNumber];
-            robot.cloak_type = (sbyte)cmRobotCloak.SelectedIndex;
-        }
-
-        private void cmRobotBoss_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            Robot robot = datafile.Robots[ElementNumber];
-            int bosstype = cmRobotBoss.SelectedIndex;
-            if (bosstype >= 3)
-            {
-                bosstype += 18;
-            }
-            robot.boss_flag = (sbyte)bosstype;
-        }
-
-        private void cbRobotAI_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            Robot robot = datafile.Robots[ElementNumber];
-            int bosstype = cbRobotAI.SelectedIndex;
-            robot.behavior = (byte)(bosstype + 0x80);
-        }
-
-        private void cbRobotDropType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked) return;
-            Robot robot = datafile.Robots[ElementNumber];
-            robot.ClearAndUpdateDropReference(datafile, cbRobotDropType.SelectedIndex == 1 ? 2 : 7);
-            UpdateRobotDropTypes(cbRobotDropType.SelectedIndex, robot);
-        }
-
-        private void RobotCheckBox_CheckedChange(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            CheckBox input = (CheckBox)sender;
-            Robot robot = datafile.Robots[ElementNumber];
-            switch (input.Tag)
-            {
-                case "0":
-                    robot.thief = (sbyte)(input.Checked ? 1 : 0);
-                    break;
-                case "1":
-                    robot.kamikaze = (sbyte)(input.Checked ? 1 : 0);
-                    break;
-                case "2":
-                    robot.companion = (sbyte)(input.Checked ? 1 : 0);
-                    break;
-                case "3":
-                    robot.attack_type = (sbyte)(input.Checked ? 1 : 0);
-                    break;
-            }
-        }
-
-        //---------------------------------------------------------------------
-        // WEAPON UPDATORS
-        //---------------------------------------------------------------------
-
-        private void txtWeaponBounce_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-            {
-                return;
-            }
-            TextBox textBox = (TextBox)sender;
-            int tagvalue = int.Parse((string)textBox.Tag);
-
-            int value = int.MinValue;
-            if (int.TryParse(textBox.Text, out value))
-            {
-                Weapon weapon = datafile.Weapons[ElementNumber];
-                weapon.UpdateWeapon(tagvalue, value, (int)nudWeaponStr.Value, datafile);
-            }
-        }
-
-        private void fixedWeaponElemChange_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-            {
-                return;
-            }
-            TextBox textBox = (TextBox)sender;
-            string tagstr = (string)textBox.Tag;
-            int tagvalue = Int32.Parse(tagstr);
-
-            float fvalue = 0.0f;
-            if (float.TryParse(textBox.Text, out fvalue))
-            {
-                int value = (int)(fvalue * 65536f);
-                Weapon weapon = datafile.Weapons[ElementNumber];
-                weapon.UpdateWeapon(tagvalue, value, (int)nudWeaponStr.Value, datafile);
-            }
-        }
-
-        private void WeaponCheckBox_CheckChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            Weapon weapon = datafile.Weapons[ElementNumber];
-            CheckBox checkBox = (CheckBox)sender;
-
-            switch (checkBox.Tag)
-            {
-                case "1":
-                    weapon.destroyable = (byte)(checkBox.Checked ? 1 : 0);
-                    break;
-                case "2":
-                    weapon.persistent = (byte)(checkBox.Checked ? 1 : 0);
-                    break;
-                case "3":
-                    weapon.matter = (byte)(checkBox.Checked ? 1 : 0);
-                    break;
-                case "4":
-                    weapon.homing_flag = (byte)(checkBox.Checked ? 1 : 0);
-                    break;
-                case "5":
-                    weapon.flags = (byte)(checkBox.Checked ? 1 : 0);
-                    break;
-            }
-        }
-
-        private void cbWeaponRenderMode_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            Weapon weapon = datafile.Weapons[ElementNumber];
-            int weapontype = cbWeaponRenderMode.SelectedIndex;
-            if (weapontype > 3)
-            {
-                weapontype = 255;
-            }
-            weapon.render_type = (byte)weapontype;
-            UpdateWeaponGraphicControls();
-        }
-
-        private void WeaponComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked) return;
-            ComboBox comboBox = (ComboBox)sender;
-            Weapon weapon = datafile.Weapons[(int)nudElementNum.Value];
-            weapon.UpdateWeapon(int.Parse((string)comboBox.Tag), comboBox.SelectedIndex, (int)nudWeaponStr.Value, datafile);
-        }
-
-        private void btnCalculateLW_Click(object sender, EventArgs e)
-        {
-            Weapon weapon = datafile.Weapons[ElementNumber];
-            if (weapon.render_type == 2)
-            {
-                Polymodel model = datafile.PolygonModels[weapon.model_num];
-                double width = Math.Abs(model.mins.x / 65536.0d) + Math.Abs(model.maxs.x / 65536.0d);
-                double len = Math.Abs(model.mins.z / 65536.0d) + Math.Abs(model.maxs.z / 65536.0d);
-                double ratio = len / width;
-                weapon.po_len_to_width_ratio = (int)(ratio * 65536.0d);
-                isLocked = true;
-                txtWeaponPolyLWRatio.Text = ratio.ToString();
-                isLocked = false;
-            }
-        }
-
-        //---------------------------------------------------------------------
-        // TMAPINFO UPDATORS
-        //---------------------------------------------------------------------
-
-        private void TextureFlagCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            TMAPInfo tmapinfo = datafile.TMapInfo[ElementNumber];
-
-            CheckBox check = (CheckBox)sender;
-            int flagvalue = int.Parse(check.Tag.ToString());
-            tmapinfo.updateFlags(flagvalue, check.Checked);
-        }
-
-        private void TextureProperty_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            TextBox textBox = (TextBox)sender;
-            TMAPInfo info = datafile.TMapInfo[ElementNumber];
-            try
-            {
-                //double value = double.Parse(textBox.Text);
-                switch (textBox.Tag)
-                {
-                    case "0":
-                        datafile.Textures[ElementNumber] = ushort.Parse(textBox.Text);
-                        break;
-                    case "1":
-                        info.lighting = (int)(double.Parse(textBox.Text) * 65536.0d);
-                        break;
-                    case "2":
-                        info.damage = (int)(double.Parse(textBox.Text) * 65536.0d);
-                        break;
-                    case "4":
-                        info.slide_u = (short)(double.Parse(textBox.Text) * 256.0d);
-                        break;
-                    case "5":
-                        info.slide_v = (short)(double.Parse(textBox.Text) * 256.0d);
-                        break;
-                    case "6":
-                        info.destroyed = short.Parse(textBox.Text);
-                        break;
-                }
-            }
-            catch (Exception)
-            {
-                statusBar1.Text = "failed to update data!";
-            }
-        }
-
-        private void cbTexEClip_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked) return;
-            int eclipNum = cbTexEClip.SelectedIndex - 1;
-            EClip clip = datafile.GetEClip(eclipNum);
-            TMAPInfo tmapInfo = datafile.TMapInfo[ElementNumber];
-            if (clip == null)
-            {
-                tmapInfo.eclip_num = -1;
-            }
-            else
-            {
-                int clipCurrentID = clip.GetCurrentTMap();
-                if (clipCurrentID != -1 && clipCurrentID != ElementNumber)
-                {
-                    if (MessageBox.Show("This EClip is already assigned to another wall texture, do you want to change it?", "EClip in use", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                    {
-                        TMAPInfo oldTMapInfo = datafile.TMapInfo[clipCurrentID];
-                        oldTMapInfo.eclip_num = -1;
-                        clip.changing_wall_texture = (short)ElementNumber;
-
-                    }
-                    else
-                    {
-                        cbTexEClip.SelectedIndex = tmapInfo.eclip_num + 1;
-                        return;
-                    }
-                }
-                /*else
-                {
-                    clip.changing_wall_texture = (short)ElementNumber;
-                }*/
-            }
-            tmapInfo.eclip_num = (short)eclipNum;
-        }
-
-        //---------------------------------------------------------------------
-        // VCLIP UPDATORS
-        //---------------------------------------------------------------------
-
-        private void VClipProperty_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            TextBox textBox = (TextBox)sender;
-            VClip clip = datafile.VClips[ElementNumber];
-            double value;
-            if (double.TryParse(textBox.Text, out value))
-            {
-                switch (textBox.Tag)
-                {
-                    case "1":
-                        int totalTimeFix = (int)(value * 65536);
-                        clip.play_time = new Fix(totalTimeFix);
-                        clip.frame_time = new Fix(totalTimeFix / clip.num_frames);
-                        txtAnimFrameSpeed.Text = clip.frame_time.ToString();
-                        break;
-                    case "2":
-                        clip.light_value = new Fix((int)(value * 65536));
-                        break;
-                }
-            }
-        }
-
-        //---------------------------------------------------------------------
-        // ECLIP UPDATORS
-        //---------------------------------------------------------------------
-
-        private void EClipProperty_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            TextBox textBox = (TextBox)sender;
-            EClip clip = datafile.EClips[ElementNumber];
-            double value;
-            if (double.TryParse(textBox.Text, out value))
-            {
-                switch (textBox.Tag)
-                {
-                    case "1":
-                        int totalTimeFix = (int)(value * 65536);
-                        clip.vc.play_time = new Fix(totalTimeFix);
-                        clip.vc.frame_time = new Fix(totalTimeFix / clip.vc.num_frames);
-                        txtEffectFrameSpeed.Text = clip.vc.frame_time.ToString();
-                        break;
-                    case "2":
-                        clip.vc.light_value = new Fix((int)(value * 65536));
-                        break;
-                    case "3":
-                        clip.dest_size = new Fix((int)(value * 65536));
-                        break;
-                    case "4":
-                        clip.dest_bm_num = int.Parse(textBox.Text);
-                        break;
-                }
-            }
-        }
-
-        private void EClipComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            ComboBox comboBox = (ComboBox)sender;
-            EClip clip = datafile.EClips[ElementNumber];
-            int value = comboBox.SelectedIndex;
-            switch (comboBox.Tag)
-            {
-                case "1":
-                    clip.dest_eclip = (value - 1);
-                    break;
-                case "2":
-                    clip.dest_vclip = (value - 1);
-                    break;
-                case "3":
-                    clip.sound_num = value - 1;
-                    break;
-                case "4":
-                    clip.crit_clip = (value - 1);
-                    break;
             }
         }
 
@@ -1503,15 +704,6 @@ namespace Descent2Workshop
                     clip.close_sound = (short)(comboBox.SelectedIndex - 1);
                     break;
             }
-        }
-
-        private void cbVClipSound_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            ComboBox comboBox = (ComboBox)sender;
-            VClip clip = datafile.VClips[ElementNumber];
-            clip.sound_num = (short)(comboBox.SelectedIndex - 1);
         }
 
         private void WallFlag_CheckedChanged(object sender, EventArgs e)
@@ -1753,11 +945,11 @@ namespace Descent2Workshop
                 {
                     case "1":
                         datafile.Gauges[ElementNumber] = value;
-                        UpdatePictureBox(datafile.piggyFile.GetBitmap(value - 1), pbGagueLores);
+                        UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, value - 1), pbGagueLores);
                         break;
                     case "2":
                         datafile.GaugesHires[ElementNumber] = value;
-                        UpdatePictureBox(datafile.piggyFile.GetBitmap(value - 1), pbGagueHires);
+                        UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, value - 1), pbGagueHires);
                         break;
                 }
             }
@@ -1775,7 +967,7 @@ namespace Descent2Workshop
             {
                 int result = 1;
                 int elementNumber = copyForm.elementValue;
-                result = datafile.CopyElement(typeTable[tabControl1.SelectedIndex], (int)nudElementNum.Value, elementNumber);
+                result = datafile.CopyElement(typeTable[EditorTabs.SelectedIndex], (int)nudElementNum.Value, elementNumber);
                 if (result == -1)
                     MessageBox.Show("Cannot copy to an element that doesn't exist!");
                 else if (result == 1)
@@ -1795,16 +987,18 @@ namespace Descent2Workshop
                 sw.Dispose();
                 string modelPath = Path.GetDirectoryName(saveFileDialog1.FileName);
                 Polymodel model;
-                //for (int i = 0; i < datafile.PolygonModels.Count; i++)
-                foreach (int i in BitmapTableFile.pofIndicies)
+                if (datafile.PolygonModels.Count >= 160)
                 {
-                    model = datafile.PolygonModels[i];
-                    BinaryWriter bw = new BinaryWriter(File.Open(String.Format("{0}{1}{2}", modelPath, Path.DirectorySeparatorChar, BitmapTableFile.pofNames[i]), FileMode.Create));
-                    POFWriter.SerializePolymodel(bw, model, 8);
-                    bw.Close();
-                    bw.Dispose();
+                    //for (int i = 0; i < datafile.PolygonModels.Count; i++)
+                    foreach (int i in BitmapTableFile.pofIndicies)
+                    {
+                        model = datafile.PolygonModels[i];
+                        BinaryWriter bw = new BinaryWriter(File.Open(String.Format("{0}{1}{2}", modelPath, Path.DirectorySeparatorChar, BitmapTableFile.pofNames[i]), FileMode.Create));
+                        POFWriter.SerializePolymodel(bw, model, 8);
+                        bw.Close();
+                        bw.Dispose();
+                    }
                 }
-
             }
         }
 

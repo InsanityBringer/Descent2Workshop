@@ -302,6 +302,33 @@ namespace LibDescent.Data
         {
         }
 
+        public int GetNumRobots()
+        {
+            //More robots in the base file than the augment file would add. This is a horrible situation
+            if (baseFile.Robots.Count > (N_D2_ROBOT_TYPES + Robots.Count))
+                return baseFile.Robots.Count;
+
+            return N_D2_ROBOT_TYPES + Robots.Count;
+        }
+
+        public int GetNumWeapons()
+        {
+            //More robots in the base file than the augment file would add. This is a horrible situation
+            if (baseFile.Weapons.Count > (N_D2_WEAPON_TYPES + Weapons.Count))
+                return baseFile.Weapons.Count;
+
+            return N_D2_WEAPON_TYPES + Weapons.Count;
+        }
+
+        public int GetNumModels()
+        {
+            //More robots in the base file than the augment file would add. This is a horrible situation
+            if (baseFile.PolygonModels.Count > (N_D2_POLYGON_MODELS + Models.Count))
+                return baseFile.PolygonModels.Count;
+
+            return N_D2_POLYGON_MODELS + Models.Count;
+        }
+
         //Convenience members to access elements by their absolute ID, when needed
         public Robot GetRobot(int id)
         {

@@ -93,6 +93,36 @@
     <Compile Include="ConfigDialog.Designer.cs">
       <DependentUpon>ConfigDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="EditorPanels\EClipPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorPanels\EClipPanel.Designer.cs">
+      <DependentUpon>EClipPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorPanels\RobotPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorPanels\RobotPanel.Designer.cs">
+      <DependentUpon>RobotPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorPanels\TMAPInfoPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorPanels\TMAPInfoPanel.Designer.cs">
+      <DependentUpon>TMAPInfoPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorPanels\VClipPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorPanels\VClipPanel.Designer.cs">
+      <DependentUpon>VClipPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorPanels\WeaponPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorPanels\WeaponPanel.Designer.cs">
+      <DependentUpon>WeaponPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Editor\ControlCenter.cs" />
     <Compile Include="Editor\ConvertToOverload.cs" />
     <Compile Include="Editor\DynamicLight.cs" />
@@ -109,6 +139,7 @@
     <Compile Include="Editor\Level.cs" />
     <Compile Include="Editor\LevelTransform.cs" />
     <Compile Include="Editor\MatCenter.cs" />
+    <Compile Include="Editor\Operation.cs" />
     <Compile Include="Editor\Render\Camera.cs" />
     <Compile Include="Editor\Render\LevelData.cs" />
     <Compile Include="Editor\Render\MineRender.cs" />
@@ -118,6 +149,8 @@
     <Compile Include="Editor\Render\TransformBuffer.cs" />
     <Compile Include="Editor\Segment.cs" />
     <Compile Include="Editor\SharedRendererState.cs" />
+    <Compile Include="Editor\Tool.cs" />
+    <Compile Include="Editor\Tools\GrabTool.cs" />
     <Compile Include="Editor\Trigger.cs" />
     <Compile Include="Editor\VertMatcher.cs" />
     <Compile Include="Editor\Wall.cs" />
@@ -164,6 +197,7 @@
     <Compile Include="HXMEditor.Designer.cs">
       <DependentUpon>HXMEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="PiggyBitmapConverter.cs" />
     <Compile Include="VHAMLoadDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -200,6 +234,21 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ConfigDialog.resx">
       <DependentUpon>ConfigDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorPanels\EClipPanel.resx">
+      <DependentUpon>EClipPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorPanels\RobotPanel.resx">
+      <DependentUpon>RobotPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorPanels\TMAPInfoPanel.resx">
+      <DependentUpon>TMAPInfoPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorPanels\VClipPanel.resx">
+      <DependentUpon>VClipPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorPanels\WeaponPanel.resx">
+      <DependentUpon>WeaponPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editor\EditorUI.resx">
       <DependentUpon>EditorUI.cs</DependentUpon>
@@ -343,6 +392,9 @@
       <Project>{FE0955CA-4C10-425E-9DFA-CBAFC18720A5}</Project>
       <Name>LibDescent.Edit</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Editor\Operations\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

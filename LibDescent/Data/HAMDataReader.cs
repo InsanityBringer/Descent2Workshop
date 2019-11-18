@@ -235,7 +235,7 @@ namespace LibDescent.Data
             weapon.robot_hit_sound = br.ReadInt16();
             
             weapon.ammo_usage = br.ReadByte();
-            weapon.weapon_vclip = br.ReadByte();
+            weapon.weapon_vclip = br.ReadSByte();
             weapon.wall_hit_sound = br.ReadInt16();
             
             weapon.destroyable = br.ReadByte();
@@ -301,7 +301,7 @@ namespace LibDescent.Data
             weapon.robot_hit_sound = br.ReadInt16();
 
             weapon.ammo_usage = br.ReadByte();
-            weapon.weapon_vclip = br.ReadByte();
+            weapon.weapon_vclip = br.ReadSByte();
             weapon.wall_hit_sound = br.ReadInt16();
 
             weapon.destroyable = br.ReadByte();

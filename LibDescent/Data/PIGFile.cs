@@ -23,7 +23,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Drawing;
 
 namespace LibDescent.Data
 {
@@ -122,14 +121,33 @@ namespace LibDescent.Data
             filename = name;
         }
 
-        public Bitmap GetBitmap(int id)
+        public PIGImage GetImage(int id)
         {
-            if (id >= images.Count) return images[0].GetPicture(palette);
-            PIGImage image = (PIGImage)images[id];
-            return image.GetPicture(palette);
+            if (id >= images.Count || id < 0) return images[0];
+            return images[id];
         }
 
-        public Bitmap GetBitmap(string name)
+        public PIGImage GetImage(string name)
+        {
+            for (int x = 0; x < images.Count; x++)
+            {
+                //todo: Dictionary
+                if (images[x].name.Equals(name, StringComparison.OrdinalIgnoreCase))
+                {
+                    return images[x];
+                }
+            }
+            return images[0];
+        }
+
+        public byte[] GetBitmap(int id)
+        {
+            if (id >= images.Count) return images[0].GetData();
+            PIGImage image = images[id];
+            return image.GetData();
+        }
+
+        public byte[] GetBitmap(string name)
         {
             for (int x = 0; x < images.Count; x++)
             {

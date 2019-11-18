@@ -93,9 +93,9 @@ namespace LibDescent.Data
             bw.Write(robot.model_num);
             for (int x = 0; x < 8; x++)
             {
-                bw.Write(robot.gun_points[x].x);
-                bw.Write(robot.gun_points[x].y);
-                bw.Write(robot.gun_points[x].z);
+                bw.Write(robot.gun_points[x].x.GetRawValue());
+                bw.Write(robot.gun_points[x].y.GetRawValue());
+                bw.Write(robot.gun_points[x].z.GetRawValue());
             }
             for (int x = 0; x < 8; x++)
             {

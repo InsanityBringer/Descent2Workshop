@@ -94,7 +94,7 @@ namespace Descent2Workshop
             }
             ListEntry entry = (ListEntry)listBox1.Items[listBox1.SelectedIndex];
             selection = entry.id;
-            pictureBox1.Image = pigFile.GetBitmap(entry.id);
+            pictureBox1.Image = PiggyBitmapConverter.GetBitmap(pigFile, entry.id);
         }
     }
 }

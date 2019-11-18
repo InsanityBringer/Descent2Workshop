@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System.Drawing.Imaging;
+﻿using System;
 using System.IO;
 
 namespace LibDescent.Data
@@ -110,7 +109,46 @@ namespace LibDescent.Data
             return 0;
         }
 
-        public Bitmap GetCharacterBitmap(int charNum)
+        public byte[] GetCharacterData(int charNum)
+        {
+            int charWidth = charWidths[charNum];
+            byte[] charData = new byte[charWidth * height];
+
+            byte pixel;
+            int offset, bitmask;
+            int xpix, ypix;
+            if ((flags & FT_COLOR) != 0)
+            {
+                //nothing special, simply copy the data out and be done with it
+                Array.Copy(fontData, charPointers[charNum], charData, 0, charWidth * height);
+            }
+            else
+            {
+                //Build an 8bpp bitmap where 0 = transparent !0 = opaque I guess
+                for (int y = 0; y < height; y++)
+                {
+                    ypix = y;
+                    offset = (((charWidth + 7) >> 3) * y);
+                    bitmask = 0x80;
+                    for (int x = 0; x < charWidth; x++)
+                    {
+                        xpix = x;
+                        if (bitmask == 0)
+                        {
+                            bitmask = 0x80;
+                            offset++;
+                        }
+                        pixel = (byte)(fontData[charPointers[charNum] + offset] & (bitmask));
+                        bitmask >>= 1;
+                        charData[ypix * charWidth + xpix] = pixel;
+                    }
+                }
+            }
+
+            return charData;
+        }
+
+        /*public Bitmap GetCharacterBitmap(int charNum)
         {
             if (charNum >= numChars) return null;
 
@@ -210,6 +248,8 @@ namespace LibDescent.Data
             bitmap.UnlockBits(bitmapData);
 
             return bitmap;
-        }
+        }*/
+
+
     }
 }

@@ -49,6 +49,8 @@ namespace Descent2Workshop
 
         private int ElementNumber { get { return (int)nudElementNum.Value; } }
 
+        private EditorPanels.RobotPanel robotPanel;
+
         public HXMEditor(HXMFile datafile, StandardUI host)
         {
             InitializeComponent();
@@ -65,9 +67,15 @@ namespace Descent2Workshop
             pictureBox3.Enabled = false;
             pictureBox3.Visible = false;
 
+            robotPanel = new EditorPanels.RobotPanel();
+            robotPanel.Dock = DockStyle.Fill;
+            RobotTabPage.Controls.Add(robotPanel);
+            components.Add(robotPanel);
+
             this.datafile = datafile;
             this.host = host;
             modelRenderer = new ModelRenderer(datafile.baseFile, host.DefaultPigFile);
+            this.Text = string.Format("{0} - HXM Editor", datafile.filename);
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -91,10 +99,14 @@ namespace Descent2Workshop
                 case 0:
                     InitRobotPanel();
                     nudElementNum.Maximum = (decimal)datafile.replacedRobots.Count - 1;
+                    if (datafile.replacedRobots.Count == 0) nudElementNum.Minimum = -1;
+                    else nudElementNum.Minimum = 0;
                     break;
                 case 1:
                     InitModelPanel();
                     nudElementNum.Maximum = (decimal)datafile.replacedModels.Count - 1;
+                    if (datafile.replacedModels.Count == 0) nudElementNum.Minimum = -1;
+                    else nudElementNum.Minimum = 0;
                     break;
             }
         }
@@ -118,7 +130,7 @@ namespace Descent2Workshop
                     {
                         UpdateModelPanel(val);
                         glControl1.Invalidate();
-                        ReplacedElementSpinner.Value = (int)datafile.replacedModels[val].replacementID;
+                        ReplacedElementComboBox.SelectedIndex = datafile.replacedModels[val].replacementID;
                     }
                     else
                     {
@@ -130,157 +142,36 @@ namespace Descent2Workshop
 
         private void InitRobotPanel()
         {
-            cbRobotAttackSound.Items.Clear();
-            cbRobotClawSound.Items.Clear();
-            cbRobotDyingSound.Items.Clear();
-            cbRobotSeeSound.Items.Clear();
-            cbRobotTauntSound.Items.Clear();
-            cbRobotHitSound.Items.Clear();
-            cbRobotDeathSound.Items.Clear();
-            for (int i = 0; i < datafile.baseFile.Sounds.Count; i++)
+            List<string> RobotNames = new List<string>();
+            List<string> ModelNames = new List<string>();
+            List<string> WeaponNames = new List<string>();
+
+            ReplacedElementComboBox.Items.Clear();
+            for (int i = 0; i < 85; i++)
             {
-                cbRobotAttackSound.Items.Add(datafile.baseFile.SoundNames[i]);
-                cbRobotClawSound.Items.Add(datafile.baseFile.SoundNames[i]);
-                cbRobotDyingSound.Items.Add(datafile.baseFile.SoundNames[i]);
-                cbRobotSeeSound.Items.Add(datafile.baseFile.SoundNames[i]);
-                cbRobotTauntSound.Items.Add(datafile.baseFile.SoundNames[i]);
-                cbRobotHitSound.Items.Add(datafile.baseFile.SoundNames[i]);
-                cbRobotDeathSound.Items.Add(datafile.baseFile.SoundNames[i]);
+                RobotNames.Add(datafile.GetRobotName(i));
+                ReplacedElementComboBox.Items.Add(datafile.GetRobotName(i, true));
             }
-            cbRobotWeapon1.Items.Clear();
-            cbRobotWeapon2.Items.Clear(); cbRobotWeapon2.Items.Add("None");
+
+            for (int i = 0; i < 200; i++)
+            {
+                ModelNames.Add(datafile.GetModelName(i));
+            }
             for (int i = 0; i < datafile.GetNumWeapons(); i++)
             {
-                cbRobotWeapon1.Items.Add(datafile.GetWeaponName(i));
-                cbRobotWeapon2.Items.Add(datafile.GetWeaponName(i));
+                WeaponNames.Add(datafile.GetWeaponName(i));
             }
-            cbRobotHitVClip.Items.Clear(); cbRobotHitVClip.Items.Add("None");
-            cbRobotDeathVClip.Items.Clear(); cbRobotDeathVClip.Items.Add("None");
-            for (int i = 0; i < datafile.baseFile.VClips.Count; i++)
-            {
-                cbRobotHitVClip.Items.Add(datafile.baseFile.VClipNames[i]);
-                cbRobotDeathVClip.Items.Add(datafile.baseFile.VClipNames[i]);
-            }
-            cbRobotModel.Items.Clear();
 
-            for (int i = 0; i < datafile.GetNumModels(); i++)
-                cbRobotModel.Items.Add(datafile.GetModelName(i));
-        }
-
-        private void UpdateRobotDropTypes(int dropType, Robot robot)
-        {
-            cbRobotDropItem.Items.Clear();
-            if (dropType != 1)
-            {
-                for (int i = 0; i < datafile.baseFile.Powerups.Count; i++)
-                    cbRobotDropItem.Items.Add(datafile.baseFile.PowerupNames[i]);
-                cbRobotDropItem.SelectedIndex = robot.contains_id;
-            }
-            else
-            {
-                for (int i = 0; i < datafile.GetNumRobots(); i++)
-                    cbRobotDropItem.Items.Add(datafile.GetRobotName(i));
-                cbRobotDropItem.SelectedIndex = robot.contains_id;
-            }
-            //cbRobotDropItem.SelectedIndex = 0;
+            robotPanel.Init(datafile.baseFile.VClipNames, datafile.baseFile.SoundNames, RobotNames, WeaponNames, datafile.baseFile.PowerupNames, ModelNames);
+            robotPanel.InitHXM(datafile);
         }
 
         public void UpdateRobotPanel(int num)
         {
             Robot robot = datafile.replacedRobots[num];
-            cbRobotAttackSound.SelectedIndex = robot.attack_sound;
-            cbRobotClawSound.SelectedIndex = robot.claw_sound;
-            txtRobotDrag.Text = robot.drag.ToString();
-            txtRobotDropProb.Text = robot.contains_prob.ToString();
-            txtRobotDrops.Text = robot.contains_count.ToString();
-            txtRobotLight.Text = robot.lighting.ToString();
-            txtRobotMass.Text = robot.mass.ToString();
-            txtRobotScore.Text = robot.score_value.ToString();
-            cbRobotHitSound.SelectedIndex = robot.exp1_sound_num;
-            cbRobotDeathSound.SelectedIndex = robot.exp2_sound_num;
-            cbRobotSeeSound.SelectedIndex = robot.see_sound;
-            txtRobotShield.Text = robot.strength.ToString();
-            cbRobotTauntSound.SelectedIndex = robot.taunt_sound;
-            txtRobotAim.Text = robot.aim.ToString();
-            txtRobotBadass.Text = robot.badass.ToString();
-            txtRobotDeathBlobs.Text = robot.smart_blobs.ToString();
-            txtRobotDeathRolls.Text = robot.death_roll.ToString();
-            txtRobotEnergyDrain.Text = robot.energy_drain.ToString();
-            txtRobotHitBlobs.Text = robot.energy_blobs.ToString();
-            txtRobotGlow.Text = robot.glow.ToString();
-            txtRobotPursuit.Text = robot.pursuit.ToString();
-            cbRobotDyingSound.SelectedIndex = robot.deathroll_sound;
-            txtRobotLightcast.Text = robot.lightcast.ToString();
+            robotPanel.Update(robot);
 
-            cbRobotCompanion.Checked = robot.companion != 0;
-            cbRobotClaw.Checked = robot.attack_type != 0;
-            cbRobotThief.Checked = robot.thief != 0;
-            cbKamikaze.Checked = robot.kamikaze != 0;
-
-            int dropType = robot.contains_type;
-            if (dropType == 2)
-                dropType = 1;
-            else
-                dropType = 0;
-
-            UpdateRobotDropTypes(dropType, robot);
-            cbRobotDropType.SelectedIndex = dropType;
-
-            cbRobotHitVClip.SelectedIndex = robot.exp1_vclip_num + 1;
-            cbRobotDeathVClip.SelectedIndex = robot.exp2_vclip_num + 1;
-            cbRobotModel.SelectedIndex = robot.model_num;
-            cbRobotWeapon1.SelectedIndex = robot.weapon_type;
-            cbRobotWeapon2.SelectedIndex = robot.weapon_type2 + 1;
-            if (robot.behavior >= 128)
-            {
-                cbRobotAI.SelectedIndex = robot.behavior - 128;
-            }
-            else cbRobotAI.SelectedIndex = 0;
-
-            int bossMode = robot.boss_flag;
-            if (bossMode > 20)
-                bossMode -= 18;
-            cmRobotBoss.SelectedIndex = bossMode;
-            cmRobotCloak.SelectedIndex = robot.cloak_type;
-
-            if (robot.behavior != 0)
-                cbRobotAI.SelectedIndex = robot.behavior - 0x80;
-            else
-                cbRobotAI.SelectedIndex = 0;
-
-            nudRobotAI.Value = 0;
-            UpdateRobotAI(0);
-
-            ReplacedElementSpinner.Value = (int)robot.replacementID;
-
-            UpdateRobotAnimation(robot);
-        }
-
-        private void UpdateRobotAnimation(Robot robot)
-        {
-            if (datafile.GetModel(robot.model_num).isAnimated)
-            {
-                RobotAnimationCheckbox.Checked = true;
-                BaseJointSpinner.Value = (Decimal)robot.baseJoint;
-            }
-            else
-                RobotAnimationCheckbox.Checked = false;
-
-            NumJointsTextBox.Text = (Robot.NUM_ANIMATION_STATES * (datafile.GetModel(robot.model_num).n_models - 1)).ToString();
-        }
-
-        private void UpdateRobotAI(int num)
-        {
-            Robot robot = datafile.replacedRobots[(int)nudElementNum.Value];
-
-            txtRobotCircleDist.Text = robot.circle_distance[num].ToString();
-            txtRobotEvadeSpeed.Text = robot.evade_speed[num].ToString();
-            txtRobotFireDelay.Text = robot.firing_wait[num].ToString();
-            txtRobotFireDelay2.Text = robot.firing_wait2[num].ToString();
-            txtRobotFOV.Text = ((int)(Math.Round(Math.Acos(robot.field_of_view[num]) * 180 / Math.PI, MidpointRounding.AwayFromZero))).ToString();
-            txtRobotMaxSpeed.Text = robot.max_speed[num].ToString();
-            txtRobotTurnSpeed.Text = robot.turn_time[num].ToString();
-            txtRobotShotCount.Text = robot.rapidfire_count[num].ToString();
+            ReplacedElementComboBox.SelectedIndex = robot.replacementID;
         }
         
         private void InitModelPanel()
@@ -294,6 +185,10 @@ namespace Descent2Workshop
                 cbModelDyingModel.Items.Add(datafile.GetModelName(i));
                 cbModelDeadModel.Items.Add(datafile.GetModelName(i));
             }
+
+            ReplacedElementComboBox.Items.Clear();
+            for (int i = 0; i < 200; i++)
+                ReplacedElementComboBox.Items.Add(datafile.GetModelName(i, true));
         }
 
         private void UpdateModelPanel(int num)
@@ -345,21 +240,6 @@ namespace Descent2Workshop
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            switch (tabControl1.SelectedIndex)
-            {
-                case 0:
-                    datafile.replacedRobots.Add(new Robot());
-                    ResetMaxes();
-                    if (nudElementNum.Value == -1)
-                    {
-                        nudElementNum.Value = 0;
-                    }
-                    break;
-            }
-        }
-
         private void nudElementNum_ValueChanged(object sender, EventArgs e)
         {
             if (!isLocked)
@@ -376,16 +256,6 @@ namespace Descent2Workshop
             ResetMaxes();
             FillOutCurrentPanel(0, 0);
             isLocked = false;
-        }
-
-        private void nudRobotAI_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isLocked)
-            {
-                isLocked = true;
-                UpdateRobotAI((int)nudRobotAI.Value);
-                isLocked = false;
-            }
         }
 
         private void glControl1_Load(object sender, EventArgs e)
@@ -434,169 +304,18 @@ namespace Descent2Workshop
         }
 
         //---------------------------------------------------------------------
-        // ROBOT UPDATORS
-        //---------------------------------------------------------------------
-
-        private void RobotComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-            {
-                return;
-            }
-            ComboBox sendingControl = (ComboBox)sender;
-            string tagstr = (string)sendingControl.Tag;
-            int tagvalue = Int32.Parse(tagstr);
-            int value = sendingControl.SelectedIndex;
-            Robot robot = datafile.replacedRobots[ElementNumber];
-            robot.UpdateRobot(tagvalue, ref value, (int)nudRobotAI.Value, 0, datafile);
-            //[ISB] ugly hack, show new value of joints and animation checkbox
-            isLocked = true;
-            UpdateRobotAnimation(robot);
-            isLocked = false;
-        }
-
-        private void RobotProperty_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            TextBox textBox = (TextBox)sender;
-            int tagvalue = int.Parse((string)textBox.Tag);
-            int value;
-            if (int.TryParse(textBox.Text, out value))
-            {
-                Robot robot = datafile.replacedRobots[ElementNumber];
-                bool clamped = robot.UpdateRobot(tagvalue, ref value, (int)nudRobotAI.Value, 0, datafile);
-                if (clamped) //parrot back the value if it clamped
-                {
-                    isLocked = true;
-                    textBox.Text = value.ToString();
-                    isLocked = false;
-                }
-            }
-        }
-
-        private void RobotPropertyFixed_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-            {
-                return;
-            }
-            TextBox textBox = (TextBox)sender;
-            int tagvalue = int.Parse((string)textBox.Tag);
-
-            float fvalue;
-            if (float.TryParse(textBox.Text, out fvalue))
-            {
-                int value = (int)(fvalue * 65536f);
-                Robot robot = datafile.replacedRobots[ElementNumber];
-                bool clamped = robot.UpdateRobot(tagvalue, ref value, (int)nudRobotAI.Value, 0, datafile);
-                if (clamped) //parrot back the value if it clamped
-                {
-                    isLocked = true;
-                    textBox.Text = (value / 65536d).ToString();
-                    isLocked = false;
-                }
-            }
-        }
-
-        private void cmRobotCloak_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            Robot robot = datafile.replacedRobots[ElementNumber];
-            robot.cloak_type = (sbyte)cmRobotCloak.SelectedIndex;
-        }
-
-        private void cmRobotBoss_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            Robot robot = datafile.replacedRobots[ElementNumber];
-            int bosstype = cmRobotBoss.SelectedIndex;
-            if (bosstype >= 3)
-            {
-                bosstype += 18;
-            }
-            robot.boss_flag = (sbyte)bosstype;
-        }
-
-        private void cbRobotAI_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            Robot robot = datafile.replacedRobots[ElementNumber];
-            int bosstype = cbRobotAI.SelectedIndex;
-            robot.behavior = (byte)(bosstype + 0x80);
-        }
-
-        private void cbRobotDropType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked) return;
-            Robot robot = datafile.replacedRobots[ElementNumber];
-            robot.ClearAndUpdateDropReference(null, cbRobotDropType.SelectedIndex == 1 ? 2 : 7);
-            UpdateRobotDropTypes(cbRobotDropType.SelectedIndex, robot);
-        }
-
-        private void RobotCheckBox_CheckedChange(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            CheckBox input = (CheckBox)sender;
-            Robot robot = datafile.replacedRobots[ElementNumber];
-            switch (input.Tag)
-            {
-                case "0":
-                    robot.thief = (sbyte)(input.Checked ? 1 : 0);
-                    break;
-                case "1":
-                    robot.kamikaze = (sbyte)(input.Checked ? 1 : 0);
-                    break;
-                case "2":
-                    robot.companion = (sbyte)(input.Checked ? 1 : 0);
-                    break;
-                case "3":
-                    robot.attack_type = (sbyte)(input.Checked ? 1 : 0);
-                    break;
-            }
-        }
-
-        private void menuItem3_Click_1(object sender, EventArgs e)
-        {
-            saveFileDialog1.Filter = "HXM Files|*.hxm";
-            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                if (saveFileDialog1.FileName != "")
-                {
-                    datafile.SaveDataFile(saveFileDialog1.FileName);
-                }
-            }
-        }
-
-        private void BaseJointSpinner_ValueChanged(object sender, EventArgs e)
-        {
-            if (isLocked) return;
-            Robot robot = datafile.replacedRobots[ElementNumber];
-            robot.baseJoint = (int)BaseJointSpinner.Value;
-        }
-
-        private void RobotAnimationCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (isLocked) return;
-            Polymodel model = datafile.GetModel(datafile.replacedRobots[ElementNumber].model_num);
-            model.isAnimated = RobotAnimationCheckbox.Checked;
-        }
-
-        //---------------------------------------------------------------------
         // MODEL UPDATORS
         //---------------------------------------------------------------------
 
         private void btnImportModel_Click(object sender, EventArgs e)
         {
+            if (datafile.replacedModels.Count == 0) return;
             ImportModel(datafile.replacedModels[ElementNumber]);
         }
 
         private void btnExportModel_Click(object sender, EventArgs e)
         {
+            if (datafile.replacedModels.Count == 0) return;
             saveFileDialog1.Filter = "Parallax Object Files|*.pof";
             saveFileDialog1.FileName = string.Format("model_{0}.pof", ElementNumber);
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
@@ -613,6 +332,7 @@ namespace Descent2Workshop
             int oldNumTextures = original.n_textures;
 
             List<string> newTextureNames = new List<string>();
+            openFileDialog1.Filter = "Parallax Object Files|*.pof";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 string traceto = "";
@@ -634,6 +354,7 @@ namespace Descent2Workshop
         {
             if (isLocked)
                 return;
+            if (datafile.replacedModels.Count == 0) return;
             Polymodel model = datafile.replacedModels[ElementNumber];
             ComboBox comboBox = (ComboBox)sender;
             switch (comboBox.Tag)
@@ -653,6 +374,7 @@ namespace Descent2Workshop
 
         private void FindPackButton_Click(object sender, EventArgs e)
         {
+            if (datafile.replacedModels.Count == 0) return;
             Polymodel model = datafile.replacedModels[ElementNumber];
             //Okay, the logic here is that we can pack new object bitmaps past 422.
             //So long as you aren't using more than 178 entirely new textures, this
@@ -681,16 +403,91 @@ namespace Descent2Workshop
 
         private void ModelBaseTextureSpinner_ValueChanged(object sender, EventArgs e)
         {
-            if (!isLocked) return;
+            if (isLocked)
+                return;
+            if (datafile.replacedModels.Count == 0) return;
             Polymodel model = datafile.replacedModels[ElementNumber];
             model.BaseTexture = (int)ModelBaseTextureSpinner.Value;
         }
 
         private void ModelBasePointerSpinner_ValueChanged(object sender, EventArgs e)
         {
-            if (!isLocked) return;
+            if (isLocked)
+                return;
+            if (datafile.replacedModels.Count == 0) return;
             Polymodel model = datafile.replacedModels[ElementNumber];
             model.first_texture = (ushort)ModelBasePointerSpinner.Value;
+        }
+
+        //---------------------------------------------------------------------
+        // GENERIC FUNCTIONS
+        //---------------------------------------------------------------------
+        private void ReplacedElementComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (isLocked) return;
+            switch (tabControl1.SelectedIndex)
+            {
+                case 0:
+                    {
+                        if (datafile.replacedRobots.Count == 0) return;
+                        Robot robot = datafile.replacedRobots[ElementNumber];
+                        robot.replacementID = ReplacedElementComboBox.SelectedIndex;
+                    }
+                    break;
+                case 1:
+                    {
+                        if (datafile.replacedModels.Count == 0) return;
+                        Polymodel model = datafile.replacedModels[ElementNumber];
+                        model.replacementID = ReplacedElementComboBox.SelectedIndex;
+                    }
+                    break;
+            }
+        }
+
+        private void InsertButton_Click(object sender, EventArgs e)
+        {
+            switch (tabControl1.SelectedIndex)
+            {
+                case 0:
+                    datafile.replacedRobots.Add(new Robot());
+                    ResetMaxes();
+                    if (nudElementNum.Value == -1)
+                        nudElementNum.Value = 0;
+                    else
+                        nudElementNum.Value = datafile.replacedRobots.Count - 1;
+                    break;
+                case 1:
+                    Polymodel model = new Polymodel();
+                    model.data = new PolymodelData(0);
+                    datafile.replacedModels.Add(model);
+                    ResetMaxes();
+                    if (nudElementNum.Value == -1)
+                        nudElementNum.Value = 0;
+                    else
+                        nudElementNum.Value = datafile.replacedModels.Count - 1;
+                    break;
+            }
+        }
+
+        //---------------------------------------------------------------------
+        // MENU FUNCTIONS
+        //---------------------------------------------------------------------
+        private void menuItem3_Click_1(object sender, EventArgs e)
+        {
+            saveFileDialog1.Filter = "HXM Files|*.hxm";
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if (saveFileDialog1.FileName != "")
+                {
+                    datafile.SaveDataFile(saveFileDialog1.FileName);
+                    this.Text = string.Format("{0} - HXM Editor", datafile.filename);
+                }
+            }
+        }
+
+        private void MenuItem2_Click(object sender, EventArgs e)
+        {
+            datafile.SaveDataFile(datafile.filename);
         }
     }
 }

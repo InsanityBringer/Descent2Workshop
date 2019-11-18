@@ -34,18 +34,11 @@ namespace LibDescent.Data
         public int replacementID;
         public ushort data; 
     }
-    /// <summary>
-    /// Wraps a replaced model reference.
-    /// </summary>
-    public struct ReplacedModelID
-    {
-        public int replacementID;
-        public int data;
-    }
     public class HXMFile : IElementManager
     {
         public HAMFile baseFile;
         public VHAMFile augmentFile;
+        public string filename;
         public List<string> RobotNames = new List<string>();
         public List<string> ModelNames = new List<string>();
         public int sig, ver;
@@ -53,8 +46,6 @@ namespace LibDescent.Data
         public List<JointPos> replacedJoints = new List<JointPos>();
         public List<Polymodel> replacedModels = new List<Polymodel>();
         public List<PolymodelData> replacedModelData = new List<PolymodelData>();
-        public List<ReplacedModelID> replacedDyingModelnums = new List<ReplacedModelID>();
-        public List<ReplacedModelID> replacedDeadModelnums = new List<ReplacedModelID>();
         public List<ReplacedBitmapElement> replacedObjBitmaps = new List<ReplacedBitmapElement>();
         public List<ReplacedBitmapElement> replacedObjBitmapPtrs = new List<ReplacedBitmapElement>();
 
@@ -160,6 +151,7 @@ namespace LibDescent.Data
                 BuildModelAnimation(robot);
             }
             br.Close();
+            this.filename = filename;
             return 0;
         }
 
@@ -212,6 +204,10 @@ namespace LibDescent.Data
                     else if (TextureNames.ContainsKey(pointer))
                     {
                         model.textureList.Add(TextureNames[pointer]);
+                    }
+                    else
+                    {
+                        model.textureList.Add("bogus");
                     }
                 }
                 Console.Write("Model texture list: [");
@@ -289,18 +285,17 @@ namespace LibDescent.Data
         }
 
         /// <summary>
-        /// Generates a list of all robot names from the base file, with replaced robot names.
+        /// Generates default new robot names.
         /// </summary>
         public void GenerateNameTable()
         {
-            foreach (string name in baseFile.RobotNames)
-            {
-                RobotNames.Add(name);
-            }
             for (int i = 0; i < replacedRobots.Count; i++)
             {
-                int replacement = replacedRobots[i].replacementID;
-                RobotNames[replacement] = string.Format("New Robot {0}", i);
+                RobotNames.Add(string.Format("Replaced Robot {0}", i));
+            }
+            for (int i = 0; i < replacedModels.Count; i++)
+            {
+                ModelNames.Add(string.Format("Replaced Model {0}", i));
             }
         }
 
@@ -318,6 +313,7 @@ namespace LibDescent.Data
             {
                 LoadAnimations(robot, GetModel(robot.model_num));
             }
+            LoadModelTextures();
 
             bw.Write(sig);
             bw.Write(ver);
@@ -343,8 +339,8 @@ namespace LibDescent.Data
                 bw.Write(replacedModels[x].replacementID);
                 datawriter.WritePolymodel(replacedModels[x], bw);
                 bw.Write(replacedModels[x].data.InterpreterData);
-                bw.Write(replacedDyingModelnums[x].data);
-                bw.Write(replacedDeadModelnums[x].data);
+                bw.Write(replacedModels[x].DyingModelnum);
+                bw.Write(replacedModels[x].DeadModelnum);
             }
             bw.Write(replacedObjBitmaps.Count);
             for (int x = 0; x < replacedObjBitmaps.Count; x++)
@@ -360,6 +356,104 @@ namespace LibDescent.Data
             }
 
             bw.Close();
+            filename = name;
+        }
+
+        /// <summary>
+        /// Generates all model's needed ObjBitmaps and ObjBitmapPointers
+        /// </summary>
+        private void LoadModelTextures()
+        {
+            Dictionary<string, int> textureMapping = new Dictionary<string, int>();
+            PIGImage img;
+            EClip clip;
+            ReplacedBitmapElement bm;
+            //Add base file ObjBitmaps to this mess
+            for (int i = 0; i < baseFile.ObjBitmaps.Count; i++)
+            {
+                img = baseFile.piggyFile.GetImage(baseFile.ObjBitmaps[i]);
+                if (!img.isAnimated && !textureMapping.ContainsKey(img.name))
+                    textureMapping.Add(img.name, i);
+            }
+            //Add EClip names
+            for (int i = 0; i < baseFile.EClips.Count; i++)
+            {
+                clip = baseFile.EClips[i];
+                if (clip.changing_object_texture != -1)
+                    textureMapping.Add(baseFile.EClipNames[i], clip.changing_object_texture);
+            }
+            //If augment file, add augment obj bitmaps
+            if (augmentFile != null)
+            {
+                for (int i = 0; i < augmentFile.ObjBitmaps.Count; i++)
+                {
+                    img = baseFile.piggyFile.GetImage(augmentFile.ObjBitmaps[i]);
+                    if (!textureMapping.ContainsKey(img.name))
+                        textureMapping.Add(img.name, i + VHAMFile.N_D2_OBJBITMAPS);
+                }
+            }
+
+            //Nuke the old replaced ObjBitmaps and ObjBitmapPointers because they aren't needed anymore
+            replacedObjBitmaps.Clear();
+            replacedObjBitmapPtrs.Clear();
+
+            //Generate the new elements
+            Polymodel model;
+            int replacedNum;
+            List<int> newTextures = new List<int>();
+            string texName;
+            for (int i = 0; i < replacedModels.Count; i++)
+            {
+                model = replacedModels[i];
+                replacedNum = model.BaseTexture;
+
+                //Find the unique textures in this model
+                for (int j = 0; j < model.textureList.Count; j++)
+                {
+                    texName = model.textureList[j];
+                    if (!textureMapping.ContainsKey(texName))
+                        newTextures.Add(baseFile.piggyFile.GetBitmapIDFromName(texName));
+                }
+                //Generate the new ObjBitmaps
+                foreach (int newID in newTextures)
+                {
+                    ReplacedBitmapElement elem;
+                    elem.data = (ushort)newID;
+                    elem.replacementID = replacedNum;
+                    replacedObjBitmaps.Add(elem);
+                    replacedNum++;
+                }
+
+                newTextures.Clear();
+            }
+
+            //Finally augment things with our own images
+            for (int i = 0; i < replacedObjBitmaps.Count; i++)
+            {
+                bm = replacedObjBitmaps[i];
+                img = baseFile.piggyFile.GetImage(bm.data);
+                if (!textureMapping.ContainsKey(img.name))
+                    textureMapping.Add(img.name, bm.replacementID);
+            }
+
+            //Final stage: generate new ObjBitmapPointers
+            for (int i = 0; i < replacedModels.Count; i++)
+            {
+                model = replacedModels[i];
+                replacedNum = model.first_texture;
+
+                foreach (string texture in model.textureList)
+                {
+                    ReplacedBitmapElement elem;
+                    if (textureMapping.ContainsKey(texture))
+                        elem.data = (ushort)textureMapping[texture];
+                    else
+                        elem.data = 0;
+                    elem.replacementID = replacedNum;
+                    replacedObjBitmapPtrs.Add(elem);
+                    replacedNum++;
+                }
+            }
         }
 
         /// <summary>
@@ -494,11 +588,26 @@ namespace LibDescent.Data
         /// Gets a robot name, passing through to the HAM or VHAM files if not replaced.
         /// </summary>
         /// <param name="id">ID of the robot to get the name of.</param>
+        /// <param name="baseOnly">Set to true to only get original names, no replaced names.</param>
         /// <returns>The robot name.</returns>
-        public string GetRobotName(int id)
+        public string GetRobotName(int id, bool baseOnly = false)
         {
+            //This is a horrible hack
+            if (!baseOnly)
+            {
+                for (int i = 0; i < replacedRobots.Count; i++)
+                {
+                    if (replacedRobots[i].replacementID == id) return RobotNames[i];
+                }
+            }
             if (augmentFile != null && id >= VHAMFile.N_D2_ROBOT_TYPES)
+            {
+                if (id - VHAMFile.N_D2_ROBOT_TYPES >= augmentFile.RobotNames.Count)
+                    return string.Format("Unallocated #{0}", id);
                 return augmentFile.RobotNames[id - VHAMFile.N_D2_ROBOT_TYPES];
+            }
+            if (id >= baseFile.RobotNames.Count)
+                return string.Format("Unallocated #{0}", id);
             return baseFile.RobotNames[id];
         }
 
@@ -511,7 +620,7 @@ namespace LibDescent.Data
         {
             foreach (Robot robot in replacedRobots)
             {
-                if (robot.ID == id) return robot;
+                if (robot.replacementID == id) return robot;
             }
             if (augmentFile != null)
                 return augmentFile.GetRobot(id); //passes through
@@ -548,10 +657,24 @@ namespace LibDescent.Data
             return numWeapons;
         }
 
-        public string GetModelName(int id)
+        public string GetModelName(int id, bool baseOnly = false)
         {
+            //This is a horrible hack
+            if (!baseOnly)
+            {
+                for (int i = 0; i < replacedModels.Count; i++)
+                {
+                    if (replacedModels[i].replacementID == id) return ModelNames[i];
+                }
+            }
             if (augmentFile != null && id >= VHAMFile.N_D2_POLYGON_MODELS)
+            {
+                if (id - VHAMFile.N_D2_POLYGON_MODELS >= augmentFile.ModelNames.Count)
+                    return string.Format("Unallocated #{0}", id);
                 return augmentFile.ModelNames[id - VHAMFile.N_D2_POLYGON_MODELS];
+            }
+            if (id >= baseFile.ModelNames.Count)
+                return string.Format("Unallocated #{0}", id);
             return baseFile.ModelNames[id];
         }
 

@@ -117,7 +117,7 @@ namespace LibDescent.Data
             weapon_type2 = -1;
         }
 
-        public bool UpdateRobot(int tag, ref int value, int curAI, int curGun, IElementManager manager)
+        public bool UpdateRobot(int tag, ref int value, int curAI, int curGun)
         {
             bool clamped = false;
             switch (tag)
@@ -302,7 +302,7 @@ namespace LibDescent.Data
             return clamped;
         }
 
-        public void ClearAndUpdateDropReference(HAMFile datafile, int v)
+        public void ClearAndUpdateDropReference(int v)
         {
             //[ISB] this doesn't really need to exist but may as well..
             contains_type = (sbyte)v;

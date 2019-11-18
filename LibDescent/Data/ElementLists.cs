@@ -24,7 +24,6 @@ namespace LibDescent.Data
 {
     class ElementLists
     {
-        //all guns
         public static string[] guns = {"Laser level 1", "Laser level 2", "Laser level 3", "Laser level 4",
                             "Blue Energy Ball",
                             "Class 1 Drone Fireball", "Reactor Energy Ball", "Nothing", "Concussion Missile", "Flare",
@@ -82,14 +81,14 @@ namespace LibDescent.Data
 
         //all robots
         public static string[] robots = {"Medium Hulk", "Medium Lifter", "Spider Processer", "Class 1 Drone", "Class 2 Drone",
-                    "Cloaked Driller", "Cloaked Medium Hulk", "Supervisor", "Alternate Lifter", "Heavy Driller",
+                    "Cloaked Driller", "Cloaked Medium Hulk", "Supervisor", "Secondary Lifter", "Heavy Driller",
                     "Gopher", "Laser Platform Robot", "Missile Platform Robot", "Splitter Pod", "Baby Spider",
                     "Fusion Hulk", "Supermech", "Level 7 Boss", "Cloaked Lifter", "Class 1 Driller", "Light Hulk",
                     "Advanced Lifter", "Defense Prototype", "Level 27 Boss", "BPER Bot", "Smelter", "Ice Spindle",
                     "Bulk Destroyer", "TRN Racer", "Fox Attack Bot", "Sidearm", "Red Fatty Boss", "New Boss",
                     "Guidebot", "Mine Guard", "Evil Twin", "ITSC Bot", "ITD Bot", "PEST", "PIG", 
                     "Diamond Claw", "Hornet", "Thief Bot", "Seeker", "E-Bandit", "Fire Boss", "Water Boss",
-                    "Boarshed", "Spider", "Omega Defense Spawn", "Sidearm Modula", "LOU Guard", "Ailen 1 Boss",
+                    "Boarshead", "Spider", "Omega Defense Spawn", "Sidearm Modula", "LOU Guard", "Ailen 1 Boss",
                     "Popcorn Miniboss", "Cloaked Diamond Claw", "Cloaked Smelter", "Guppy", "Smelter Clone",
                     "Omega Defense Spawn Clone", "BPER Bot Clone", "Spider Clone", "Spawn Clone", "Ice Boss", "Spawn",
                     "Final Boss", "Mini Reactor"};
@@ -106,7 +105,7 @@ namespace LibDescent.Data
 
         public static string[] polymodels = {"Medium Hulk", "Medium Hulk LOD", "Medium Lifter", "Medium Lifter LOD", "Spider Processor",
                       "Spider Processor LOD", "Class 1 Drone", "Class 1 Drone LOD", "Class 2 Drone", "Class 2 Drone LOD", "Cloaked Driller",
-                      "Cloaked Driller LOD", "Cloaked Hulk", "Cloaked Hulk LOD", "Supervisor", "Alternate Lifter", "Alternate Lifter LOD", 
+                      "Cloaked Driller LOD", "Cloaked Medium Hulk", "Cloaked Medium Hulk LOD", "Supervisor", "Secondary Lifter", "Secondary Lifter LOD", 
                       "Heavy Driller", "Heavy Driller LOD", "Gopher", "Laser Platform Robot", "Missile Platform Robot", "Splitter Pod", "Baby Spider", 
                       "Baby Spider LOD", "Fusion Hulk", "Supermech", "Supermech LOD", "Level 7 Boss", "Cloaked Lifter", "Cloaked Lifter LOD",
                       "Class 1 Driller", "Class 1 Driller LOD", "Light Hulk", "Light Hulk LOD", "Advanced Lifter", "Advanced Lifter LOD",
@@ -114,17 +113,17 @@ namespace LibDescent.Data
                       "Bulk Destroyer", "TRN Racer", "Fox Attack Bot", "Sidearm", "Sidearm LOD", "Red Fatty Boss", "New Boss", "Guidebot",
                       "Mine Guard", "Mine Guard LOD", "Evil Twin", "ITSC Bot", "ITD Bot", "ITD Bot LOD", "PEST Bot", "PEST LOD", 
                       "PIG", "PIG Bot LOD", "Diamond Claw", "Diamond Claw LOD", "Hornet", "Thief Bot", "Thief Bot (LD)", "Seeker",
-                      "E-Bandit", "Fire Boss", "Water Boss", "Boarshed", "Spider", "Omega Defense Spawn", "Sidearm Modula", "LOU Guard",
+                      "E-Bandit", "Fire Boss", "Water Boss", "Boarshead", "Spider", "Omega Defense Spawn", "Sidearm Modula", "LOU Guard",
                       "Alien 1 Boss", "Popcorn Miniboss", "Cloaked Diamond Claw", "Cloaked Diamond Claw LOD", "Cloaked Smelter", "Cloaked Smelter LOD",
                       "Guppy", "Smelter Clone", "Smelter Clone LOD", "Omega Defense Spawn Clone", "BPER Bot Clone", "Spider Clone", "Spawn", "Ice Boss",
                       "Spawn Clone", "Final Boss", "Mini Reactor", "Descent 1 Reactor", "Descent 1 Reactor Destroyed", "Alien Reactor", "Ailen Reactor Destroyed", 
                       "Zeta Aquilae Reactor", "Zeta Aquilae Reactor Destroyed", "Water Reactor", "Water Reactor Destroyed", "Ailen 1 Reactor",
                       "Ailen 1 Reactor Destroyed", "Fire Reactor", "Fire Reactor Destroyed", "Ice Reactor", "Ice Reactor Destroyed", "Marker", "Pyro GX",
-                      "Pyro GX LOD", "Pyro GX Dying", "Red Laser", "Red Laser LOD", "Red Laser LOD 2", "Red Laser Core", "Purple Laser", "Purple Laser LOD",
+                      "Pyro GX LOD", "Pyro GX Debris", "Red Laser", "Red Laser LOD", "Red Laser LOD 2", "Red Laser Core", "Purple Laser", "Purple Laser LOD",
                       "Purple Laser LOD 2", "Purple Laser Core", "Light Blue Laser", "Light Blue Laser LOD", "Light Blue Laser LOD2", "Light Blue Laser Core", "Green Laser",
                       "Green Laser LOD", "Green Laser LOD 2", "Green Laser Core", "Concussion Missile", "Flare", "Robot Blue Laser", "Robot Blue Laser Core",
                       "Fusion Blob", "Fusion Blob Core", "Homing Missile", "Smart Missile", "Mega Missile", "Robot Homing Missile", "Robot Concussion Missile", "Robot Red Laser", 
-                      "Robot Red Laser Core", "Robot Green Laser", "Robot Green Laser Core", "Robot Mega Missile", "Yellow Laser", "Yellow Laser 2", "Yellow Laser 3", "Yellow Laser 4", 
+                      "Robot Red Laser Core", "Robot Green Laser", "Robot Green Laser Core", "Robot Mega Missile", "Yellow Laser", "Yellow Laser LOD", "Yellow Laser LOD 2", "Yellow Laser Core", 
                       "White Laser", "White Laser LOD", "White Laser LOD 2", "White Laser Core", "Flash Missile", "Guided Missile", "Mercury Missile", "Earthshaker Missile",
                       "Robot Vulcan", "Robot White Laser", "Robot White Laser Core", "Robot Flash Missile", "Mine", "Earthshaker Child", "Robot Mercury Missile", "Robot Smart Missile", 
                       "Robot Earthshaker Missile", "Robot Earthshaker Missile Child", "Robot Homing Flash Missile"};
@@ -132,16 +131,14 @@ namespace LibDescent.Data
         public static string[] polymodelsDemo = { "Smelter", "Smelter LOD", "Sidearm", "Sidearm LOD", "Red Fatty", "Red Fatty LOD",
             "Guidebot", "Guidebot LOD", "ITD", "ITD LOD", "PEST", "PEST LOD", "PIG", "PIG LOD", "Diamond Claw", "Diamond Claw LOD",
             "Thief Bot", "Thief Bot LOD", "Sidearm Modula", "Sidearm Modula LOD", "Zeta Aquilae Reactor", "Zeta Aquilae Reactor Destroyed",
-            "Marker", "Pyro-GX", "Pyro-GX LOD", "Pyro-GX Dying", "Mine Exit", "Mine Exit Destroyed", "Red Laser", "Red Laser LOD",
+            "Marker", "Pyro-GX", "Pyro-GX LOD", "Pyro-GX Debris", "Mine Exit", "Mine Exit Destroyed", "Red Laser", "Red Laser LOD",
             "Red Laser LOD 2", "Red Laser Core", "Purple Laser", "Purple Laser LOD", "Purple Laser LOD 2", "Purple Laser Core",
             "Light Blue Laser", "Light Blue Laser LOD", "Light Blue Laser LOD2", "Light Blue Laser Core", "Green Laser", "Green Laser LOD",
             "Green Laser LOD 2", "Green Laser Core", "Concussion Missile", "Flare", "Robot Blue Laser", "Robot Blue Laser Core",
             "Homing Missile", "Smart Missile", "Robot Homing Missile", "Robot Concussion Missile", "Robot Red Laser", "Robot Red Laser Core",
-            "Robot Green Laser", "Robot Green Laser Core", "Yellow Laser", "Yellow Laser 2", "Yellow Laser 3", "Yellow Laser 4", "White Laser",
+            "Robot Green Laser", "Robot Green Laser Core", "Yellow Laser", "Yellow Laser LOD", "Yellow Laser LOD 2", "Yellow Laser Core", "White Laser",
             "White Laser LOD", "White Laser LOD 2", "White Laser Core", "Flash Missile", "Guided Missile", "Robot Vulcan", "Robot White Laser",
             "Robot White Laser Core", "Robot Flash Missile", "Mine" };
-
-        public static string[] cockpits = { "Cockpit", "Cockpit rearview", "Status bar" };
 
         public static string[] sounds = {"Silence", "Seeker sight", "Seeker attack", "BPER sight", "BPER attack", "Boarshed sight", "Boarshed attack",
                       "TRN Racer sight", "TRN Racer attack", "Bulk Destroyer sight", "Unused laser fire", "Explosion", "Smart Blob launch",
@@ -168,14 +165,14 @@ namespace LibDescent.Data
                       "Diamond Claw sight", "Unused #179", "PIG sight", "Baby Spider sight", "Unused #182", "Boss 1 loop", "Boss 1 attack", "Old boss death",
                       "Boss 2 loop", "Boss 2 attack", "Boss 1 death", "Unused #189", "Claw tear", "Unused #191", "Boss 5 loop", "Boss 5 attack", "Boss 5 death",
                       "Boss 6 loop", "Boss 6 attack", "Boss 6 death", "Unused #198", "Unused #199", "Cheater!", "Supervisor sight",
-                      "Sidearm sight", "Cloaked Driller attack", "Laser Platform sight", "Defense Prototype sight", "Unused #206", "Unused #207", "Unused #208", "Alternate Lifter sight",
+                      "Sidearm sight", "Cloaked Driller attack", "Laser Platform sight", "Defense Prototype sight", "Unused #206", "Unused #207", "Unused #208", "Secondary Lifter sight",
                       "Unused #210", "Smelter sight", "Unused #212", "Unused #213", "Unused #214", "Unused #215", "Unused #216", "Unused #217", "Unused #218", "PEST sight", "Popcorn sight",
                       "Secret exit", "Lava bubbling", "Water splashing", "Lava flow", "Boss 3 loop", "Boss 3 attack", "Boss 3 death", "Unused #228", "Unused #229", "Gauss fire",
                       "Mega Missile explosion", "Water shot", "Water splash", "Unused #234", "Waterfall", "Boss 4 loop", "Boss 4 attack", "Boss 4 death", "Unused #239", "Switch hit",
                       "Converter", "E-Bandit drain", "Unused #243", "Thief steal", "Earthshaker Missile explode", "Illusionary Wall disabled", "Afterburner", "Afterburner end",
                       "Secret warp", "Earthshaker launch", "Earthquake", "Unsued #252", "Unused #253"};
 
-        public static string[] reactors = { "Descent 1 Reactor", "Alien Reactor", "Zeta Aquilae Reactor", "Water Reactor", "Fire Reactor", "Alien 1 Reactor", "Ice Reactor" };
+        public static string[] reactors = { "Descent 1 Reactor", "Alien 2 Reactor", "Zeta Aquilae Reactor", "Water Reactor", "Fire Reactor", "Alien 1 Reactor", "Ice Reactor" };
 
         public static string GetWeaponName(int weapon_type)
         {

@@ -19,6 +19,7 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 */
+using System;
 
 namespace LibDescent.Data
 {
@@ -88,6 +89,16 @@ namespace LibDescent.Data
                 this.z * other.x - this.x * other.z,
                 this.x * other.y - this.y * other.x
             );
+        }
+
+        public double Mag()
+        {
+            return Math.Sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+        }
+
+        public FixVector Normalize()
+        {
+            return Scale(1.0/Mag());
         }
     }
 

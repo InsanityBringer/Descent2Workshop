@@ -177,6 +177,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "HXMLoadDialog";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "HXMLoadDialog";
             this.ResumeLayout(false);
             this.PerformLayout();

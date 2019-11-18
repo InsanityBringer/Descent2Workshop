@@ -11,7 +11,8 @@ namespace Descent2Workshop.Editor
     {
         private Level level;
         private HAMFile dataFile;
-        private SharedRendererState rendererState;
+        //private SharedRendererState rendererState;
+        private Render.MineRender rendererState;
         private EditorUI host;
         private List<LevelVertex> selectedVertices = new List<LevelVertex>();
         private Dictionary<LevelVertex, int> selectedVertMapping = new Dictionary<LevelVertex, int>();
@@ -23,13 +24,18 @@ namespace Descent2Workshop.Editor
         public Level EditorLevel { get { return level; } }
         public HAMFile EditorData { get { return dataFile; } }
 
-        public EditorState(Level level, HAMFile dataFile, SharedRendererState rendererState, EditorUI host)
+        public EditorState(Level level, HAMFile dataFile, EditorUI host)
         {
             this.level = level;
             this.dataFile = dataFile;
-            this.rendererState = rendererState;
             this.host = host;
-            rendererState.state = this;
+            //rendererState.state = this;
+            //this.rendererState = rendererState;
+        }
+
+        public void AttachRenderer(Render.MineRender renderer)
+        {
+            rendererState = renderer;
         }
 
         public bool HandleEvent(InputEvent ev)
@@ -46,6 +52,7 @@ namespace Descent2Workshop.Editor
                 index = selectedVertices.Count;
                 selectedVertMapping.Add(vert, index);
                 selectedVertices.Add(vert);
+                rendererState.AddSelectedVert(vert);
             }
             else
             {
@@ -58,6 +65,7 @@ namespace Descent2Workshop.Editor
                 selectedVertices[deleteIndex] = lastVert;
                 selectedVertices.RemoveAt(index);
                 index = deleteIndex;
+                rendererState.RemoveSelectedVertAt(deleteIndex);
             }
             //rendererState.SetSelectedVert(vert, index);
             
