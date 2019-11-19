@@ -185,44 +185,44 @@ namespace LibDescent.Data
                     break;
                 case 16:
                     value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
-                    lighting = new Fix(value);
+                    lighting = Fix.FromRawValue(value);
                     break;
                 case 17:
                     value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
-                    strength = new Fix(value);
+                    strength = Fix.FromRawValue(value);
                     break;
                 case 18:
                     value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
-                    mass = new Fix(value);
+                    mass = Fix.FromRawValue(value);
                     break;
                 case 19:
                     value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
-                    drag = new Fix(value);
+                    drag = Fix.FromRawValue(value);
                     break;
                 case 20:
                     value = (int)(Math.Cos(value * Math.PI / 180.0D) * 65536.0);
                     value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
-                    field_of_view[curAI] = new Fix(value);
+                    field_of_view[curAI] = Fix.FromRawValue(value);
                     break;
                 case 21:
                     value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
-                    firing_wait[curAI] = new Fix(value);
+                    firing_wait[curAI] = Fix.FromRawValue(value);
                     break;
                 case 22:
                     value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
-                    firing_wait2[curAI] = new Fix(value);
+                    firing_wait2[curAI] = Fix.FromRawValue(value);
                     break;
                 case 23:
                     value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
-                    turn_time[curAI] = new Fix(value);
+                    turn_time[curAI] = Fix.FromRawValue(value);
                     break;
                 case 24:
                     value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
-                    max_speed[curAI] = new Fix(value);
+                    max_speed[curAI] = Fix.FromRawValue(value);
                     break;
                 case 25:
                     value = Util.Clamp(value, int.MinValue, int.MaxValue, ref clamped);
-                    circle_distance[curAI] = new Fix(value);
+                    circle_distance[curAI] = Fix.FromRawValue(value);
                     break;
                 case 26:
                     value = Util.Clamp(value, sbyte.MinValue, sbyte.MaxValue, ref clamped);

@@ -197,7 +197,7 @@ namespace LibDescent.Data
             for (int i = 0; i < Polymodel.MAX_GUNS; i++)
             {
                 model.gunPoints[i] = robot.gun_points[i];
-                model.gunDirs[i] = new FixVector(65536, 0, 0);
+                model.gunDirs[i] = FixVector.FromRawValues(65536, 0, 0);
                 model.gunSubmodels[i] = robot.gun_submodels[i];
             }
             int[,] jointmapping = new int[10, 5];

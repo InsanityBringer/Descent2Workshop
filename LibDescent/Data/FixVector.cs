@@ -34,14 +34,14 @@ namespace LibDescent.Data
         public Fix y;
         public Fix z;
 
-        public FixVector(int x, int y, int z)
-        {
-            this.x = new Fix(x); this.y = new Fix(y); this.z = new Fix(z);
-        }
-        
         public FixVector(Fix x, Fix y, Fix z)
         {
             this.x = x; this.y = y; this.z = z;
+        }
+
+        public static FixVector FromRawValues(int x, int y, int z)
+        {
+            return new FixVector(Fix.FromRawValue(x), Fix.FromRawValue(y), Fix.FromRawValue(z));
         }
 
         public override string ToString()

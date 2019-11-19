@@ -135,8 +135,8 @@ namespace Descent2Workshop.Editor
             {
                 Vector3 translateX = xAxis * xAmount;
                 Vector3 translateY = yAxis * yAmount;
-                FixVector xVecFix = new FixVector((int)(-translateX.X * 65536), (int)(translateX.Y * 65536), (int)(translateX.Z * 65536));
-                FixVector yVecFix = new FixVector((int)(-translateY.X * 65536), (int)(translateY.Y * 65536), (int)(translateY.Z * 65536));
+                FixVector xVecFix = FixVector.FromRawValues((int)(-translateX.X * 65536), (int)(translateX.Y * 65536), (int)(translateX.Z * 65536));
+                FixVector yVecFix = FixVector.FromRawValues((int)(-translateY.X * 65536), (int)(translateY.Y * 65536), (int)(translateY.Z * 65536));
                 foreach (LevelVertex vert in operatedVerts)
                 {
                     vert.location.Add(xVecFix);

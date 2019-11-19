@@ -44,25 +44,25 @@ namespace LibDescent.Data
                     expl_vclip_num = data;
                     break;
                 case 3:
-                    mass = new Fix(data);
+                    mass = Fix.FromRawValue(data);
                     break;
                 case 4:
-                    drag = new Fix(data);
+                    drag = Fix.FromRawValue(data);
                     break;
                 case 5:
-                    max_thrust = new Fix(data);
+                    max_thrust = Fix.FromRawValue(data);
                     break;
                 case 6:
-                    reverse_thrust = new Fix(data);
+                    reverse_thrust = Fix.FromRawValue(data);
                     break;
                 case 7:
-                    brakes = new Fix(data);
+                    brakes = Fix.FromRawValue(data);
                     break;
                 case 8:
-                    wiggle = new Fix(data);
+                    wiggle = Fix.FromRawValue(data);
                     break;
                 case 9:
-                    max_rotthrust = new Fix(data);
+                    max_rotthrust = Fix.FromRawValue(data);
                     break;
             }
         }

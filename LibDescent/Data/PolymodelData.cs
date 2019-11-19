@@ -55,8 +55,8 @@ namespace LibDescent.Data
             BinaryReader br = new BinaryReader(ms);
             br.BaseStream.Seek(host.submodels[num].Pointer, SeekOrigin.Begin);
             short opcode = br.ReadInt16();
-            FixVector mins = new FixVector(int.MaxValue, int.MaxValue, int.MaxValue);
-            FixVector maxs = new FixVector(int.MinValue, int.MinValue, int.MinValue);
+            FixVector mins = FixVector.FromRawValues(int.MaxValue, int.MaxValue, int.MaxValue);
+            FixVector maxs = FixVector.FromRawValues(int.MinValue, int.MinValue, int.MinValue);
             switch (opcode)
             {
                 case 1:
@@ -66,9 +66,9 @@ namespace LibDescent.Data
                         for (int x = 0; x < pointc; x++)
                         {
                             FixVector point = new FixVector();
-                            point.x = new Fix(br.ReadInt32());
-                            point.y = new Fix(br.ReadInt32());
-                            point.z = new Fix(br.ReadInt32());
+                            point.x = Fix.FromRawValue(br.ReadInt32());
+                            point.y = Fix.FromRawValue(br.ReadInt32());
+                            point.z = Fix.FromRawValue(br.ReadInt32());
 
                             mins.x = Math.Min(mins.x, point.x);
                             mins.y = Math.Min(mins.y, point.y);
@@ -86,9 +86,9 @@ namespace LibDescent.Data
                         for (int x = 0; x < pointc; x++)
                         {
                             FixVector point = new FixVector();
-                            point.x = new Fix(br.ReadInt32());
-                            point.y = new Fix(br.ReadInt32());
-                            point.z = new Fix(br.ReadInt32());
+                            point.x = Fix.FromRawValue(br.ReadInt32());
+                            point.y = Fix.FromRawValue(br.ReadInt32());
+                            point.z = Fix.FromRawValue(br.ReadInt32());
 
                             mins.x = Math.Min(mins.x, point.x);
                             mins.y = Math.Min(mins.y, point.y);
@@ -167,9 +167,9 @@ namespace LibDescent.Data
                             for (int x = 0; x < pointc; x++)
                             {
                                 FixVector point = new FixVector();
-                                point.x = new Fix(br.ReadInt32());
-                                point.y = new Fix(br.ReadInt32());
-                                point.z = new Fix(br.ReadInt32());
+                                point.x = Fix.FromRawValue(br.ReadInt32());
+                                point.y = Fix.FromRawValue(br.ReadInt32());
+                                point.z = Fix.FromRawValue(br.ReadInt32());
                                 points[x] = point;
 
                             }
@@ -185,13 +185,13 @@ namespace LibDescent.Data
                             }
                             short pointc = br.ReadInt16(); //+2
                             FixVector vector = new FixVector();
-                            vector.x = new Fix(br.ReadInt32());
-                            vector.y = new Fix(br.ReadInt32());
-                            vector.z = new Fix(br.ReadInt32());
+                            vector.x = Fix.FromRawValue(br.ReadInt32());
+                            vector.y = Fix.FromRawValue(br.ReadInt32());
+                            vector.z = Fix.FromRawValue(br.ReadInt32());
                             FixVector normal = new FixVector();
-                            normal.x = new Fix(br.ReadInt32());
-                            normal.y = new Fix(br.ReadInt32());
-                            normal.z = new Fix(br.ReadInt32());
+                            normal.x = Fix.FromRawValue(br.ReadInt32());
+                            normal.y = Fix.FromRawValue(br.ReadInt32());
+                            normal.z = Fix.FromRawValue(br.ReadInt32());
                             short color = br.ReadInt16();
                             short[] pointindex = new short[pointc];
                             for (int x = 0; x < pointc; x++)
@@ -221,13 +221,13 @@ namespace LibDescent.Data
                             }
                             short pointc = br.ReadInt16(); //+2
                             FixVector vector = new FixVector();
-                            vector.x = new Fix(br.ReadInt32());
-                            vector.y = new Fix(br.ReadInt32());
-                            vector.z = new Fix(br.ReadInt32());
+                            vector.x = Fix.FromRawValue(br.ReadInt32());
+                            vector.y = Fix.FromRawValue(br.ReadInt32());
+                            vector.z = Fix.FromRawValue(br.ReadInt32());
                             FixVector normal = new FixVector();
-                            normal.x = new Fix(br.ReadInt32());
-                            normal.y = new Fix(br.ReadInt32());
-                            normal.z = new Fix(br.ReadInt32());
+                            normal.x = Fix.FromRawValue(br.ReadInt32());
+                            normal.y = Fix.FromRawValue(br.ReadInt32());
+                            normal.z = Fix.FromRawValue(br.ReadInt32());
                             short texture = br.ReadInt16();
                             if (sw != null)
                             {
@@ -247,9 +247,9 @@ namespace LibDescent.Data
                             for (int x = 0; x < pointc; x++)
                             {
                                 FixVector uvlcoords = new FixVector();
-                                uvlcoords.x = new Fix(br.ReadInt32());
-                                uvlcoords.y = new Fix(br.ReadInt32());
-                                uvlcoords.z = new Fix(br.ReadInt32());
+                                uvlcoords.x = Fix.FromRawValue(br.ReadInt32());
+                                uvlcoords.y = Fix.FromRawValue(br.ReadInt32());
+                                uvlcoords.z = Fix.FromRawValue(br.ReadInt32());
                                 uvlcoordlist[x] = uvlcoords;
                             }
                             FixVector[] pointdata = new FixVector[pointc];
@@ -271,13 +271,13 @@ namespace LibDescent.Data
                             long pos = br.BaseStream.Position - 2;
                             short n_points = br.ReadInt16();
                             FixVector vector = new FixVector();
-                            vector.x = new Fix(br.ReadInt32());
-                            vector.y = new Fix(br.ReadInt32());
-                            vector.z = new Fix(br.ReadInt32());
+                            vector.x = Fix.FromRawValue(br.ReadInt32());
+                            vector.y = Fix.FromRawValue(br.ReadInt32());
+                            vector.z = Fix.FromRawValue(br.ReadInt32());
                             FixVector norm = new FixVector();
-                            norm.x = new Fix(br.ReadInt32());
-                            norm.y = new Fix(br.ReadInt32());
-                            norm.z = new Fix(br.ReadInt32());
+                            norm.x = Fix.FromRawValue(br.ReadInt32());
+                            norm.y = Fix.FromRawValue(br.ReadInt32());
+                            norm.z = Fix.FromRawValue(br.ReadInt32());
                             Vector3 fvector = new Vector3((float)vector.x / 65536f, (float)vector.y / 65536f, (float)vector.z / 65536f);
                             Vector3 fnorm = new Vector3((float)norm.x / 65536f, (float)norm.y / 65536f, (float)norm.z / 65536f);
                             short zFront = br.ReadInt16();
@@ -335,12 +335,12 @@ namespace LibDescent.Data
                             long pos = br.BaseStream.Position - 2;
                             short objnum = br.ReadInt16();
                             //FixVector offset = new FixVector();
-                            host.submodels[objnum].RenderOffset.x = new Fix(br.ReadInt32());
-                            host.submodels[objnum].RenderOffset.y = new Fix(br.ReadInt32());
-                            host.submodels[objnum].RenderOffset.z = new Fix(br.ReadInt32());
-                            //offset.x = positionOffset.x + new Fix(br.ReadInt32());
-                            //offset.y = positionOffset.y + new Fix(br.ReadInt32());
-                            //offset.z = positionOffset.z + new Fix(br.ReadInt32());
+                            host.submodels[objnum].RenderOffset.x = Fix.FromRawValue(br.ReadInt32());
+                            host.submodels[objnum].RenderOffset.y = Fix.FromRawValue(br.ReadInt32());
+                            host.submodels[objnum].RenderOffset.z = Fix.FromRawValue(br.ReadInt32());
+                            //offset.x = positionOffset.x + Fix.FromRawValue(br.ReadInt32());
+                            //offset.y = positionOffset.y + Fix.FromRawValue(br.ReadInt32());
+                            //offset.z = positionOffset.z + Fix.FromRawValue(br.ReadInt32());
 
                             FixVector offset = positionOffset + host.submodels[objnum].RenderOffset;
                             ushort soffset = br.ReadUInt16();
@@ -384,9 +384,9 @@ namespace LibDescent.Data
                             for (int x = 0; x < pointc; x++)
                             {
                                 FixVector point = new FixVector();
-                                point.x = new Fix(br.ReadInt32());
-                                point.y = new Fix(br.ReadInt32());
-                                point.z = new Fix(br.ReadInt32());
+                                point.x = Fix.FromRawValue(br.ReadInt32());
+                                point.y = Fix.FromRawValue(br.ReadInt32());
+                                point.z = Fix.FromRawValue(br.ReadInt32());
                                 points[x + formerpoints] = point;
                                 //host.submodels[modelnum].points[x + formerpoints] = point;
                                 if (sw != null)
@@ -418,9 +418,9 @@ namespace LibDescent.Data
                             long pos = br.BaseStream.Position - 2;
                             short objnum = br.ReadInt16();
                             FixVector offset = new FixVector();
-                            offset.x = positionOffset.x + new Fix(br.ReadInt32());
-                            offset.y = positionOffset.y + new Fix(br.ReadInt32());
-                            offset.z = positionOffset.z + new Fix(br.ReadInt32());
+                            offset.x = positionOffset.x + Fix.FromRawValue(br.ReadInt32());
+                            offset.y = positionOffset.y + Fix.FromRawValue(br.ReadInt32());
+                            offset.z = positionOffset.z + Fix.FromRawValue(br.ReadInt32());
                             int soffset = br.ReadInt32();
                             long returnpos = br.BaseStream.Position;
                             if (sw != null)

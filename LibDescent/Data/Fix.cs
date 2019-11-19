@@ -27,42 +27,41 @@ namespace LibDescent.Data
     {
         private int value;
 
-        public Fix(int rawValue)
-        {
-            value = rawValue;
-        }
-
+        public static implicit operator int(Fix f)
+            => f.value / 65536;
+        public static implicit operator Fix(int i)
+            => FromRawValue(i * 65536);
         public static implicit operator float(Fix f)
             => f.value / 65536.0f;
         public static implicit operator Fix(float d)
-            => new Fix((int)(d * 65536.0f));
+            => FromRawValue((int)(d * 65536.0f));
         public static implicit operator double(Fix f)
             => f.value / 65536.0;
         public static implicit operator Fix(double d)
-            => new Fix((int)(d * 65536.0));
+            => FromRawValue((int)(d * 65536.0));
 
         public static Fix operator +(Fix a)
-            => new Fix(a.value);
+            => FromRawValue(a.value);
         public static Fix operator -(Fix a)
-            => new Fix(-a.value);
+            => FromRawValue(-a.value);
         public static Fix operator +(Fix a, Fix b)
-            => new Fix(a.value + b.value);
+            => FromRawValue(a.value + b.value);
         public static Fix operator -(Fix a, Fix b)
-            => new Fix(a.value - b.value);
+            => FromRawValue(a.value - b.value);
 
         public static Fix operator *(Fix a, Fix b)
         {
             long product = (long)a.value * (long)b.value;
-            return new Fix((int)(product >> 16));
+            return FromRawValue((int)(product >> 16));
         }
         public static Fix operator /(Fix a, Fix b)
         {
             long quotient = ((long)a.value << 16) / (long)b.value;
-            return new Fix((int)quotient);
+            return FromRawValue((int)quotient);
         }
 
-        public static Fix operator <<(Fix a, int shift) => new Fix(a.value << shift);
-        public static Fix operator >>(Fix a, int shift) => new Fix(a.value >> shift);
+        public static Fix operator <<(Fix a, int shift) => FromRawValue(a.value << shift);
+        public static Fix operator >>(Fix a, int shift) => FromRawValue(a.value >> shift);
 
         public override string ToString()
         {
@@ -72,6 +71,14 @@ namespace LibDescent.Data
         public int GetRawValue()
         {
             return value;
+        }
+
+        public static Fix FromRawValue(int value)
+        {
+            return new Fix
+            {
+                value = value
+            };
         }
     }
 }
