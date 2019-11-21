@@ -27,7 +27,7 @@ namespace LibDescent.Data
     {
         private int value;
 
-        public static implicit operator int(Fix f)
+        public static explicit operator int(Fix f)
             => f.value / 65536;
         public static implicit operator Fix(int i)
             => FromRawValue(i * 65536);
@@ -62,6 +62,8 @@ namespace LibDescent.Data
 
         public static Fix operator <<(Fix a, int shift) => FromRawValue(a.value << shift);
         public static Fix operator >>(Fix a, int shift) => FromRawValue(a.value >> shift);
+        public static bool operator ==(Fix a, Fix b) => a.value == b.value;
+        public static bool operator !=(Fix a, Fix b) => a.value != b.value;
 
         public override string ToString()
         {
@@ -79,6 +81,17 @@ namespace LibDescent.Data
             {
                 value = value
             };
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Fix fix &&
+                   value == fix.value;
+        }
+
+        public override int GetHashCode()
+        {
+            return -1584136870 + value.GetHashCode();
         }
     }
 }
