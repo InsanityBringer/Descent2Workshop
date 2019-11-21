@@ -157,8 +157,8 @@ namespace LibDescent.Tests
             Assert.AreEqual(new FixVector(0d, 0d, 1d), segment.Sides[5].Normal);
 
             // Warped segment
-            segment.Vertices[2].X = -30d;
             segment.Vertices[6].X = -30d;
+            segment.Vertices[7].X = -30d;
 
             Assert.AreEqual(new FixVector(0d, 0d, 1d), segment.GetSide(SegSide.Front).Normal);
             Assert.AreEqual(new FixVector(0d, 0d, -1d), segment.GetSide(SegSide.Back).Normal);
@@ -174,17 +174,17 @@ namespace LibDescent.Tests
             // Default segment
             var segment = CreateDefaultSegment();
 
-            Assert.AreEqual(20d, segment.Length);
-            Assert.AreEqual(20d, segment.Width);
-            Assert.AreEqual(20d, segment.Height);
+            Assert.AreEqual(20d, (double)segment.Length);
+            Assert.AreEqual(20d, (double)segment.Width);
+            Assert.AreEqual(20d, (double)segment.Height);
 
             // Warped segment
-            segment.Vertices[2].X = -30d;
             segment.Vertices[6].X = -30d;
+            segment.Vertices[7].X = -30d;
 
             Assert.AreEqual(22.36d, segment.Length, 0.01);
-            Assert.AreEqual(30d, segment.Width);
-            Assert.AreEqual(20d, segment.Height);
+            Assert.AreEqual(30d, (double)segment.Width);
+            Assert.AreEqual(20d, (double)segment.Height);
         }
 
         [Test]

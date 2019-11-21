@@ -81,11 +81,11 @@ namespace LibDescent.Data
             z: Vertices.Average(v => v.Z)
             );
         // The length of the bimedian of the front and back sides
-        public Fix Length { get; }
+        public Fix Length => (GetSide(SegSide.Back).Center - GetSide(SegSide.Front).Center).Mag();
         // The length of the bimedian of the left and right sides
-        public Fix Width { get; }
+        public Fix Width => (GetSide(SegSide.Left).Center - GetSide(SegSide.Right).Center).Mag();
         // The length of the bimedian of the top and bottom sides
-        public Fix Height { get; }
+        public Fix Height => (GetSide(SegSide.Up).Center - GetSide(SegSide.Down).Center).Mag();
         #endregion
 
         public Segment(uint numSides = MaxSegmentSides, uint numVertices = MaxSegmentVerts)
