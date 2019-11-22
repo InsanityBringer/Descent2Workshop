@@ -30,29 +30,29 @@ namespace LibDescent.Data
         public static explicit operator int(Fix f)
             => f.value / 65536;
         public static implicit operator Fix(int i)
-            => FromRawValue(i * 65536);
+            => FromRawValue(checked(i * 65536));
         public static implicit operator float(Fix f)
             => f.value / 65536.0f;
         public static implicit operator Fix(float d)
-            => FromRawValue((int)(d * 65536.0f));
+            => FromRawValue(checked((int)(d * 65536.0f)));
         public static implicit operator double(Fix f)
             => f.value / 65536.0;
         public static implicit operator Fix(double d)
-            => FromRawValue((int)(d * 65536.0));
+            => FromRawValue(checked((int)(d * 65536.0)));
 
         public static Fix operator +(Fix a)
             => FromRawValue(a.value);
         public static Fix operator -(Fix a)
             => FromRawValue(-a.value);
         public static Fix operator +(Fix a, Fix b)
-            => FromRawValue(a.value + b.value);
+            => FromRawValue(checked(a.value + b.value));
         public static Fix operator -(Fix a, Fix b)
-            => FromRawValue(a.value - b.value);
+            => FromRawValue(checked(a.value - b.value));
 
         public static Fix operator *(Fix a, Fix b)
         {
             long product = (long)a.value * (long)b.value;
-            return FromRawValue((int)(product >> 16));
+            return FromRawValue(checked((int)(product >> 16)));
         }
         public static Fix operator /(Fix a, Fix b)
         {
@@ -60,7 +60,7 @@ namespace LibDescent.Data
             return FromRawValue((int)quotient);
         }
 
-        public static Fix operator <<(Fix a, int shift) => FromRawValue(a.value << shift);
+        public static Fix operator <<(Fix a, int shift) => FromRawValue(checked(a.value << shift));
         public static Fix operator >>(Fix a, int shift) => FromRawValue(a.value >> shift);
         public static bool operator ==(Fix a, Fix b) => a.value == b.value;
         public static bool operator !=(Fix a, Fix b) => a.value != b.value;
