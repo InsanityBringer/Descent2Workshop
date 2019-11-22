@@ -51,12 +51,12 @@ namespace Descent2Workshop.Editor
     {
         //Quake-esque texture projection
         public static FixVector[] texturePlanes = {
-            new FixVector(65536, 0, 0), new FixVector(0, 65536, 0), new FixVector(0, 0, -65536), //Left
-            new FixVector(0, 0, -65536), new FixVector(65536, 0, 0), new FixVector(0, -65536, 0), //Ceiling
-            new FixVector(-65536, 0, 0), new FixVector(0, 65536, 0), new FixVector(0, 0, -65536), //Right
-            new FixVector(0, 0, 65536), new FixVector(65536, 0, 0), new FixVector(0, -65536, 0), //Floor
-            new FixVector(0, -65536, 0), new FixVector(65536, 0, 0), new FixVector(0, 0, -65536), //Back
-            new FixVector(0, 65536, 0), new FixVector(65536, 0, 0), new FixVector(0, 0, -65536), }; //Front
+            FixVector.FromRawValues(65536, 0, 0), FixVector.FromRawValues(0, 65536, 0), FixVector.FromRawValues(0, 0, -65536), //Left
+            FixVector.FromRawValues(0, 0, -65536), FixVector.FromRawValues(65536, 0, 0), FixVector.FromRawValues(0, -65536, 0), //Ceiling
+            FixVector.FromRawValues(-65536, 0, 0), FixVector.FromRawValues(0, 65536, 0), FixVector.FromRawValues(0, 0, -65536), //Right
+            FixVector.FromRawValues(0, 0, 65536), FixVector.FromRawValues(65536, 0, 0), FixVector.FromRawValues(0, -65536, 0), //Floor
+            FixVector.FromRawValues(0, -65536, 0), FixVector.FromRawValues(65536, 0, 0), FixVector.FromRawValues(0, 0, -65536), //Back
+            FixVector.FromRawValues(0, 65536, 0), FixVector.FromRawValues(65536, 0, 0), FixVector.FromRawValues(0, 0, -65536), }; //Front
 
         public SideType type;
         public SegSide sideNum;

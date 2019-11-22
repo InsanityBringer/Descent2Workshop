@@ -230,11 +230,7 @@ namespace Descent2Workshop
 
         private FixVector GetFixVector(byte[] data, ref int offset)
         {
-            FixVector res;
-            res.x = new Fix(GetInt(data, ref offset));
-            res.y = new Fix(GetInt(data, ref offset));
-            res.z = new Fix(GetInt(data, ref offset));
-            return res;
+            return FixVector.FromRawValues(GetInt(data, ref offset), GetInt(data, ref offset), GetInt(data, ref offset));
         }
 
         private void Execute(byte[] data, int offset, Polymodel mainModel, Submodel model)
