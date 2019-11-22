@@ -41,6 +41,11 @@ namespace LibDescent.Data
         public double Y { get => location.y; set => location.y = value; }
         public double Z { get => location.z; set => location.z = value; }
 
+        public override string ToString()
+        {
+            return string.Format("Location: {0}", location.ToString());
+        }
+
         public static implicit operator FixVector(LevelVertex v) => v.Location;
     }
 }

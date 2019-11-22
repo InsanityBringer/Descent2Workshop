@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace LibDescent.Data
 {
@@ -10,6 +11,13 @@ namespace LibDescent.Data
         Bottom,
         Left,
         Top
+    }
+
+    public enum TriangulationType
+    {
+        None,
+        Tri012_230,
+        Tri013_123
     }
 
     public class Side
@@ -47,7 +55,73 @@ namespace LibDescent.Data
             }
         }
 
-        public FixVector Normal { get; }
+        public TriangulationType Triangulation
+        {
+            get
+            {
+                if (GetNumVertices() < 3)
+                    throw new InvalidOperationException($"Illegal vertex count {GetNumVertices()}");
+                else if (GetNumVertices() == 3)
+                    return TriangulationType.None;
+
+                var vertices = GetAllVertices().ToList().ConvertAll(v => (Vector3)v.Location);
+                var triangle012 = Plane.CreateFromVertices(vertices[0], vertices[1], vertices[2]);
+                double dot = Vector3.Dot(triangle012.Normal, vertices[3] - vertices[1]);
+                if (Math.Abs(dot) < 0.0001)
+                    return TriangulationType.None;
+                else if (dot > 0)
+                    return TriangulationType.Tri012_230;
+                else
+                    return TriangulationType.Tri013_123;
+            }
+        }
+
+        public FixVector Normal
+        {
+            get
+            {
+                var normals = Normals;
+                return (normals.Item1 + normals.Item2).Scale(0.5);
+            }
+        }
+
+        public Tuple<FixVector, FixVector> Normals
+        {
+            get
+            {
+                Tuple<FixVector, FixVector> result;
+                var vertices = GetAllVertices().ToList().ConvertAll(v => (Vector3)v.Location);
+                switch (Triangulation)
+                {
+                    case TriangulationType.None:
+                        {
+                            var normal = Plane.CreateFromVertices(vertices[0], vertices[1], vertices[2]).Normal;
+                            result = new Tuple<FixVector, FixVector>(normal, normal);
+                        }
+                        break;
+
+                    case TriangulationType.Tri012_230:
+                        {
+                            var normal1 = Plane.CreateFromVertices(vertices[0], vertices[1], vertices[2]).Normal;
+                            var normal2 = Plane.CreateFromVertices(vertices[2], vertices[3], vertices[0]).Normal;
+                            result = new Tuple<FixVector, FixVector>(normal1, normal2);
+                        }
+                        break;
+
+                    case TriangulationType.Tri013_123:
+                        {
+                            var normal1 = Plane.CreateFromVertices(vertices[0], vertices[1], vertices[3]).Normal;
+                            var normal2 = Plane.CreateFromVertices(vertices[1], vertices[2], vertices[3]).Normal;
+                            result = new Tuple<FixVector, FixVector>(normal1, normal2);
+                        }
+                        break;
+
+                    default:
+                        throw new InvalidOperationException("Received bad value from Triangulation property");
+                }
+                return result;
+            }
+        }
 
         // Indicates if there is a visible texture on this side
         public bool IsVisible { get; }
