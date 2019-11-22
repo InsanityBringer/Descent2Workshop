@@ -157,8 +157,8 @@ namespace LibDescent.Tests
             Assert.AreEqual(new FixVector(0d, 0d, 1d), segment.Sides[5].Normal);
 
             // Warped segment
-            segment.Vertices[6].X = -30d;
-            segment.Vertices[7].X = -30d;
+            segment.Vertices[2].X = -30d;
+            segment.Vertices[3].X = -30d;
 
             Assert.AreEqual(new FixVector(0d, 0d, 1d), segment.GetSide(SegSide.Front).Normal);
             Assert.AreEqual(new FixVector(0d, 0d, -1d), segment.GetSide(SegSide.Back).Normal);
