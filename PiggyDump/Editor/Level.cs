@@ -337,9 +337,9 @@ namespace Descent2Workshop.Editor
 
                         for (int uv = 0; uv < 4; uv++)
                         {
-                            seg.sides[side].uvls[uv].x = new Fix(br.ReadInt16() << 5);
-                            seg.sides[side].uvls[uv].y = new Fix(br.ReadInt16() << 5);
-                            seg.sides[side].uvls[uv].z = new Fix(br.ReadUInt16() << 1);
+                            seg.sides[side].uvls[uv].x = Fix.FromRawValue(br.ReadInt16() << 5);
+                            seg.sides[side].uvls[uv].y = Fix.FromRawValue(br.ReadInt16() << 5);
+                            seg.sides[side].uvls[uv].z = Fix.FromRawValue(br.ReadUInt16() << 1);
                         }
                     }
                     else
@@ -811,7 +811,7 @@ namespace Descent2Workshop.Editor
                 obj.modelInfo.modelNum = 1;
                 obj.modelInfo.textureOverride = -1;
                 obj.moveType = MovementType.Spinning;
-                obj.spinRate = new FixVector(0, (int)(65536 / 1.5), 0);
+                obj.spinRate = FixVector.FromRawValues(0, (int)(65536 / 1.5), 0);
             }
 
             if (obj.type == ObjectType.Powerup && obj.id == 19)
@@ -820,7 +820,7 @@ namespace Descent2Workshop.Editor
                 obj.modelInfo.modelNum = 3;
                 obj.modelInfo.textureOverride = -1;
                 obj.moveType = MovementType.Spinning;
-                obj.spinRate = new FixVector(0, (int)(65536 / 1.5), 0);
+                obj.spinRate = FixVector.FromRawValues(0, (int)(65536 / 1.5), 0);
             }
 
             return obj;
@@ -1075,9 +1075,9 @@ namespace Descent2Workshop.Editor
         private FixVector ReadFixVec(BinaryReader br)
         {
             FixVector vec;
-            vec.x = new Fix(br.ReadInt32());
-            vec.y = new Fix(br.ReadInt32());
-            vec.z = new Fix(br.ReadInt32());
+            vec.x = Fix.FromRawValue(br.ReadInt32());
+            vec.y = Fix.FromRawValue(br.ReadInt32());
+            vec.z = Fix.FromRawValue(br.ReadInt32());
             return vec;
         }
 

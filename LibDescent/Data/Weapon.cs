@@ -193,10 +193,10 @@ namespace LibDescent.Data
                     children = (sbyte)(value - 1);
                     break;
                 case 22:
-                    energy_usage = new Fix(value);
+                    energy_usage = Fix.FromRawValue(value);
                     break;
                 case 23:
-                    fire_wait = new Fix(value);
+                    fire_wait = Fix.FromRawValue(value);
                     break;
                 case 24:
                     multi_damage_scale = value;
@@ -205,37 +205,37 @@ namespace LibDescent.Data
                     bitmap = (ushort)value;
                     break;
                 case 26:
-                    blob_size = new Fix(value);
+                    blob_size = Fix.FromRawValue(value);
                     break;
                 case 27:
-                    flash_size = new Fix(value);
+                    flash_size = Fix.FromRawValue(value);
                     break;
                 case 28:
-                    impact_size = new Fix(value);
+                    impact_size = Fix.FromRawValue(value);
                     break;
                 case 29:
-                    strength[index] = new Fix(value);
+                    strength[index] = Fix.FromRawValue(value);
                     break;
                 case 30:
-                    speed[index] = new Fix(value);
+                    speed[index] = Fix.FromRawValue(value);
                     break;
                 case 31:
-                    mass = new Fix(value);
+                    mass = Fix.FromRawValue(value);
                     break;
                 case 32:
-                    drag = new Fix(value);
+                    drag = Fix.FromRawValue(value);
                     break;
                 case 33:
-                    thrust = new Fix(value);
+                    thrust = Fix.FromRawValue(value);
                     break;
                 case 34:
-                    po_len_to_width_ratio = new Fix(value);
+                    po_len_to_width_ratio = Fix.FromRawValue(value);
                     break;
                 case 35:
-                    light = new Fix(value);
+                    light = Fix.FromRawValue(value);
                     break;
                 case 36:
-                    lifetime = new Fix(value);
+                    lifetime = Fix.FromRawValue(value);
                     break;
                 case 37:
                     picture = (ushort)value;
@@ -244,7 +244,7 @@ namespace LibDescent.Data
                     hires_picture = (ushort)value;
                     break;
                 case 39:
-                    damage_radius = new Fix(value);
+                    damage_radius = Fix.FromRawValue(value);
                     break;
             }
         }

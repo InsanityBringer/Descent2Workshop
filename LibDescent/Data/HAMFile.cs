@@ -229,8 +229,8 @@ namespace LibDescent.Data
                 Powerup powerup = new Powerup();
                 powerup.vclip_num = br.ReadInt32();
                 powerup.hit_sound = br.ReadInt32();
-                powerup.size = new Fix(br.ReadInt32());
-                powerup.light = new Fix(br.ReadInt32());
+                powerup.size = Fix.FromRawValue(br.ReadInt32());
+                powerup.light = Fix.FromRawValue(br.ReadInt32());
                 powerup.ID = x;
                 Powerups.Add(powerup);
             }
@@ -288,16 +288,16 @@ namespace LibDescent.Data
             PlayerShip = new Ship();
             PlayerShip.model_num = br.ReadInt32();
             PlayerShip.expl_vclip_num = br.ReadInt32();
-            PlayerShip.mass = new Fix(br.ReadInt32());
-            PlayerShip.drag = new Fix(br.ReadInt32());
-            PlayerShip.max_thrust = new Fix(br.ReadInt32());
-            PlayerShip.reverse_thrust = new Fix(br.ReadInt32());
-            PlayerShip.brakes = new Fix(br.ReadInt32());
-            PlayerShip.wiggle = new Fix(br.ReadInt32());
-            PlayerShip.max_rotthrust = new Fix(br.ReadInt32());
+            PlayerShip.mass = Fix.FromRawValue(br.ReadInt32());
+            PlayerShip.drag = Fix.FromRawValue(br.ReadInt32());
+            PlayerShip.max_thrust = Fix.FromRawValue(br.ReadInt32());
+            PlayerShip.reverse_thrust = Fix.FromRawValue(br.ReadInt32());
+            PlayerShip.brakes = Fix.FromRawValue(br.ReadInt32());
+            PlayerShip.wiggle = Fix.FromRawValue(br.ReadInt32());
+            PlayerShip.max_rotthrust = Fix.FromRawValue(br.ReadInt32());
             for (int x = 0; x < 8; x++)
             {
-                PlayerShip.gun_points[x] = new FixVector(br.ReadInt32(), br.ReadInt32(), br.ReadInt32());
+                PlayerShip.gun_points[x] = FixVector.FromRawValues(br.ReadInt32(), br.ReadInt32(), br.ReadInt32());
             }
             
             int NumCockpits = br.ReadInt32();
@@ -322,11 +322,11 @@ namespace LibDescent.Data
                 reactor.n_guns = br.ReadInt32();
                 for (int y = 0; y < 8; y++)
                 {
-                    reactor.gun_points[y] = new FixVector(br.ReadInt32(), br.ReadInt32(), br.ReadInt32());
+                    reactor.gun_points[y] = FixVector.FromRawValues(br.ReadInt32(), br.ReadInt32(), br.ReadInt32());
                 }
                 for (int y = 0; y < 8; y++)
                 {
-                    reactor.gun_dirs[y] = new FixVector(br.ReadInt32(), br.ReadInt32(), br.ReadInt32());
+                    reactor.gun_dirs[y] = FixVector.FromRawValues(br.ReadInt32(), br.ReadInt32(), br.ReadInt32());
                 }
                 Reactors.Add(reactor);
             }
@@ -517,7 +517,7 @@ namespace LibDescent.Data
             for (int i = 0; i < 8; i++)
             {
                 model.gunPoints[i] = ship.gun_points[i];
-                model.gunDirs[i] = new FixVector(65536, 0, 0);
+                model.gunDirs[i] = FixVector.FromRawValues(65536, 0, 0);
                 model.gunSubmodels[i] = 0;
             }
         }
@@ -544,7 +544,7 @@ namespace LibDescent.Data
             for (int i = 0; i < Polymodel.MAX_GUNS; i++)
             {
                 model.gunPoints[i] = robot.gun_points[i];
-                model.gunDirs[i] = new FixVector(65536, 0, 0);
+                model.gunDirs[i] = FixVector.FromRawValues(65536, 0, 0);
                 model.gunSubmodels[i] = robot.gun_submodels[i];
             }
             int[,] jointmapping = new int[10, 5];
@@ -1330,12 +1330,12 @@ namespace LibDescent.Data
                     for (int j = 0; j < model.numGuns; j++)
                     {
                         model.gunSubmodels[j] = br.ReadInt32();
-                        model.gunPoints[j].x = new Fix(br.ReadInt32());
-                        model.gunPoints[j].y = new Fix(br.ReadInt32());
-                        model.gunPoints[j].z = new Fix(br.ReadInt32());
-                        model.gunDirs[j].x = new Fix(br.ReadInt32());
-                        model.gunDirs[j].y = new Fix(br.ReadInt32());
-                        model.gunDirs[j].z = new Fix(br.ReadInt32());
+                        model.gunPoints[j].x = Fix.FromRawValue(br.ReadInt32());
+                        model.gunPoints[j].y = Fix.FromRawValue(br.ReadInt32());
+                        model.gunPoints[j].z = Fix.FromRawValue(br.ReadInt32());
+                        model.gunDirs[j].x = Fix.FromRawValue(br.ReadInt32());
+                        model.gunDirs[j].y = Fix.FromRawValue(br.ReadInt32());
+                        model.gunDirs[j].z = Fix.FromRawValue(br.ReadInt32());
                     }
                     model.isAnimated = br.ReadBoolean();
                     if (model.isAnimated)
