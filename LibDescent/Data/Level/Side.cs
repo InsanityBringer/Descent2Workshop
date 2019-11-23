@@ -145,8 +145,16 @@ namespace LibDescent.Data
             return vertices;
         }
 
+        /// <summary>
+        /// Finds the side opposite to this side in the current segment.
+        /// </summary>
+        /// <returns>The side opposite to this side in the current segment.</returns>
         public Side GetOppositeSide() => parentSegment.GetOppositeSide(parentSegmentSideNum);
 
+        /// <summary>
+        /// Finds the side of a neighboring segment that is joined to this side, if any.
+        /// </summary>
+        /// <returns>The side joined to this side, or null if this side is not joined.</returns>
         public Side GetJoinedSide()
         {
             if (ConnectedSegment == null)
@@ -177,14 +185,33 @@ namespace LibDescent.Data
             });
         }
 
-        public Side GetNeighbor(Edge atEdge) => parentSegment.GetSideNeighbor(parentSegmentSideNum, atEdge);
+        /// <summary>
+        /// Finds the first side that is joined to this side at a given edge, with no filtering.
+        /// Because there is no filtering, the neighboring side will always be in the same segment.
+        /// </summary>
+        /// <param name="atEdge">The edge of this side to search from.</param>
+        /// <returns>A tuple containing the neighboring side and the edge at which it is attached to this side.</returns>
+        public Tuple<Side, Edge> GetNeighbor(Edge atEdge) => parentSegment.GetSideNeighbor(parentSegmentSideNum, atEdge);
 
-        public Side GetNeighbor(Edge atEdge, Func<Side, bool> predicate)
+        /// <summary>
+        /// Finds the first visible side that is joined to this side at a given edge, filtered by a specified condition.
+        /// </summary>
+        /// <param name="atEdge">The edge of this side to search from.</param>
+        /// <param name="predicate">A predicate that tests whether a given side meets the required criteria.</param>
+        /// <returns>A tuple containing the neighboring side and the edge at which it is attached to this side,
+        /// or null if no such neighboring side exists.</returns>
+        public Tuple<Side, Edge> GetNeighbor(Edge atEdge, Func<Side, bool> predicate)
         {
             throw new NotImplementedException();
         }
 
-        public Side GetVisibleNeighbor(Edge atEdge) => GetNeighbor(atEdge, side => side.IsVisible);
+        /// <summary>
+        /// Finds the first visible side that is joined to this side at a given edge, if any.
+        /// </summary>
+        /// <param name="atEdge">The edge of this side to search from.</param>
+        /// <returns>A tuple containing the neighboring side and the edge at which it is attached to this side,
+        /// or null if no such neighboring side exists.</returns>
+        public Tuple<Side, Edge> GetVisibleNeighbor(Edge atEdge) => GetNeighbor(atEdge, side => side.IsVisible);
 
         public IEnumerable<LevelVertex> GetSharedVertices(Side other)
         {
