@@ -99,7 +99,7 @@ namespace LibDescent.Data
 
         public double Mag()
         {
-            return Math.Sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+            return Math.Sqrt((double)this.x * (double)this.x + (double)this.y * (double)this.y + (double)this.z * (double)this.z);
         }
 
         public FixVector Normalize()
