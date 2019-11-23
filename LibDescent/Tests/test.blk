@@ -374,52 +374,52 @@ segment 7
   side 0
     tmap_num 198
     tmap_num2 264
+    uvls -2048 2048 0
+    uvls -2048 0 0
     uvls 0 0 0
     uvls 0 2048 0
-    uvls -2048 2048 0
-    uvls -2048 0 0
   side 1
-    tmap_num 58
+    tmap_num 286
     tmap_num2 0
-    uvls 0 0 1122
-    uvls 0 2048 1078
-    uvls -2048 2048 0
-    uvls -2048 0 0
+    uvls 0 2048 1314
+    uvls 0 0 916
+    uvls 2048 0 0
+    uvls 2048 2048 0
   side 2
     tmap_num 585
     tmap_num2 0
-    uvls 0 0 1122
-    uvls 0 2048 916
     uvls -2048 2048 1314
     uvls -2048 0 1078
+    uvls 0 0 1122
+    uvls 0 2048 916
   side 3
-    tmap_num 286
+    tmap_num 58
     tmap_num2 0
-    uvls 0 0 0
-    uvls 0 2048 0
-    uvls -2048 2048 1314
-    uvls -2048 0 916
+    uvls -2048 0 0
+    uvls -2048 -2048 0
+    uvls 0 -2048 1122
+    uvls 0 0 1078
   side 4
     tmap_num 109
     tmap_num2 0
-    uvls 0 0 1078
-    uvls 0 2048 1314
-    uvls -2048 2048 0
-    uvls -2048 0 0
+    uvls 0 2048 916
+    uvls 0 0 1122
+    uvls 2048 0 0
+    uvls 2048 2048 0
   side 5
     tmap_num 109
     tmap_num2 0
-    uvls 0 0 0
-    uvls 0 2048 0
-    uvls -2048 2048 916
-    uvls -2048 0 1122
+    uvls -2048 0 0
+    uvls -2048 -2048 0
+    uvls 0 -2048 1078
+    uvls 0 0 1314
   children -1 -1 3 -1 -1 -1
-  vms_vector 0 0 0 -2621440
-  vms_vector 1 1310720 0 -2621440
-  vms_vector 2 1310720 0 -3932160
-  vms_vector 3 0 0 -3932160
-  vms_vector 4 0 -1310720 -2621440
-  vms_vector 5 1310720 -1310720 -2621440
-  vms_vector 6 1310720 -1310720 -3932160
-  vms_vector 7 0 -1310720 -3932160
+  vms_vector 0 1310720 -1310720 -2621440
+  vms_vector 1 0 -1310720 -2621440
+  vms_vector 2 0 -1310720 -3932160
+  vms_vector 3 1310720 -1310720 -3932160
+  vms_vector 4 1310720 0 -2621440
+  vms_vector 5 0 0 -2621440
+  vms_vector 6 0 0 -3932160
+  vms_vector 7 1310720 0 -3932160
   static_light 13290

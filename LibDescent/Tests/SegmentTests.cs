@@ -256,6 +256,12 @@ namespace LibDescent.Tests
 
         private Block CreateTestBlock()
         {
+            var blockStream = GetType().Assembly.GetManifestResourceStream(GetType(), "test.blk");
+            return Block.FromStream(blockStream);
+        }
+
+        private Block CreateTestBlockExtended()
+        {
             var blockStream = GetType().Assembly.GetManifestResourceStream(GetType(), "test.blx");
             return Block.FromStream(blockStream);
         }
@@ -284,21 +290,29 @@ namespace LibDescent.Tests
             var segments = CreateTestBlock().Segments;
 
             // Basic stuff
-            Assert.AreSame(segments[1].GetSide(SegSide.Down), segments[0].GetSide(SegSide.Down).GetVisibleNeighbor(Edge.Bottom));
-            Assert.AreSame(segments[0].GetSide(SegSide.Down), segments[0].GetSide(SegSide.Back).GetVisibleNeighbor(Edge.Bottom));
-            Assert.AreSame(segments[0].GetSide(SegSide.Down), segments[0].GetSide(SegSide.Left).GetVisibleNeighbor(Edge.Bottom));
+            Assert.AreSame(segments[1].GetSide(SegSide.Down), segments[0].GetSide(SegSide.Down).GetVisibleNeighbor(Edge.Bottom).Item1);
+            Assert.AreSame(segments[0].GetSide(SegSide.Down), segments[0].GetSide(SegSide.Back).GetVisibleNeighbor(Edge.Bottom).Item1);
+            Assert.AreSame(segments[0].GetSide(SegSide.Down), segments[0].GetSide(SegSide.Left).GetVisibleNeighbor(Edge.Bottom).Item1);
 
             // Wrap around corners
-            Assert.AreSame(segments[3].GetSide(SegSide.Front), segments[0].GetSide(SegSide.Left).GetVisibleNeighbor(Edge.Right));
+            Assert.AreSame(segments[3].GetSide(SegSide.Front), segments[0].GetSide(SegSide.Left).GetVisibleNeighbor(Edge.Right).Item1);
+            Assert.AreEqual(Edge.Left, segments[0].GetSide(SegSide.Left).GetVisibleNeighbor(Edge.Right).Item2);
+
+            // Rotated segment
+            Assert.AreSame(segments[7].GetSide(SegSide.Back), segments[3].GetSide(SegSide.Front).GetVisibleNeighbor(Edge.Right).Item1);
+            Assert.AreEqual(Edge.Right, segments[3].GetSide(SegSide.Front).GetVisibleNeighbor(Edge.Right).Item2);
 
             // Quad-join
             Assert.IsNull(segments[1].GetSide(SegSide.Back).GetVisibleNeighbor(Edge.Left));
 
+            // Need .blx format for walls
+            segments = CreateTestBlockExtended().Segments;
+
             // Visible walls
-            Assert.AreSame(segments[3].GetSide(SegSide.Left), segments[3].GetSide(SegSide.Front).GetVisibleNeighbor(Edge.Right));
+            Assert.AreSame(segments[3].GetSide(SegSide.Left), segments[3].GetSide(SegSide.Front).GetVisibleNeighbor(Edge.Right).Item1);
 
             // Invisible walls
-            Assert.AreSame(segments[5].GetSide(SegSide.Front), segments[0].GetSide(SegSide.Right).GetVisibleNeighbor(Edge.Left));
+            Assert.AreSame(segments[5].GetSide(SegSide.Front), segments[0].GetSide(SegSide.Right).GetVisibleNeighbor(Edge.Left).Item1);
         }
 
         [Test]
@@ -307,7 +321,7 @@ namespace LibDescent.Tests
             var segments = CreateTestBlock().Segments;
 
             Assert.AreSame(segments[6].GetSide(SegSide.Right),
-                segments[5].GetSide(SegSide.Right).GetNeighbor(Edge.Left, side => side.IsVisible && !side.IsTransparent));
+                segments[5].GetSide(SegSide.Right).GetNeighbor(Edge.Left, side => side.IsVisible && !side.IsTransparent).Item1);
         }
 
         [Test]

@@ -560,28 +560,28 @@ segment 7
   side 0
     BaseTex 198
     OvlTex 264
-    uvls 0 0 0
-    uvls 0 2048 0
     uvls -2048 2048 0
     uvls -2048 0 0
+    uvls 0 0 0
+    uvls 0 2048 0
     vertex ids 7 6 2 3
     wall 2047
   side 1
-    BaseTex 58
+    BaseTex 286
     OvlTex 0
-    uvls 0 0 1122
-    uvls 0 2048 1078
-    uvls -2048 2048 0
-    uvls -2048 0 0
+    uvls 0 2048 1314
+    uvls 0 0 916
+    uvls 2048 0 0
+    uvls 2048 2048 0
     vertex ids 0 4 7 3
     wall 2047
   side 2
     BaseTex 585
     OvlTex 0
-    uvls 0 0 1122
-    uvls 0 2048 916
     uvls -2048 2048 1314
     uvls -2048 0 1078
+    uvls 0 0 1122
+    uvls 0 2048 916
     vertex ids 0 1 5 4
     wall 6
         segment 7
@@ -595,41 +595,41 @@ segment 7
         cloak 0
         trigger 255
   side 3
-    BaseTex 286
+    BaseTex 58
     OvlTex 0
-    uvls 0 0 0
-    uvls 0 2048 0
-    uvls -2048 2048 1314
-    uvls -2048 0 916
+    uvls -2048 0 0
+    uvls -2048 -2048 0
+    uvls 0 -2048 1122
+    uvls 0 0 1078
     vertex ids 2 6 5 1
     wall 2047
   side 4
     BaseTex 109
     OvlTex 0
-    uvls 0 0 1078
-    uvls 0 2048 1314
-    uvls -2048 2048 0
-    uvls -2048 0 0
+    uvls 0 2048 916
+    uvls 0 0 1122
+    uvls 2048 0 0
+    uvls 2048 2048 0
     vertex ids 4 5 6 7
     wall 2047
   side 5
     BaseTex 109
     OvlTex 0
-    uvls 0 0 0
-    uvls 0 2048 0
-    uvls -2048 2048 916
-    uvls -2048 0 1122
+    uvls -2048 0 0
+    uvls -2048 -2048 0
+    uvls 0 -2048 1078
+    uvls 0 0 1314
     vertex ids 3 2 1 0
     wall 2047
   children -1 -1 3 -1 -1 -1
-  Vertex 19 0 0 -2621440
-  Vertex 18 1310720 0 -2621440
-  Vertex 30 1310720 0 -3932160
-  Vertex 31 0 0 -3932160
-  Vertex 16 0 -1310720 -2621440
-  Vertex 17 1310720 -1310720 -2621440
-  Vertex 29 1310720 -1310720 -3932160
+  Vertex 18 1310720 -1310720 -2621440
+  Vertex 19 0 -1310720 -2621440
   Vertex 28 0 -1310720 -3932160
+  Vertex 29 1310720 -1310720 -3932160
+  Vertex 16 1310720 0 -2621440
+  Vertex 17 0 0 -2621440
+  Vertex 30 0 0 -3932160
+  Vertex 31 1310720 0 -3932160
   static_light 13290
   special 0
   matcen_num -1
