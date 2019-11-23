@@ -81,7 +81,7 @@ namespace LibDescent.Data
             get
             {
                 var normals = Normals;
-                return (normals.Item1 + normals.Item2).Scale(0.5);
+                return (normals.Item1 + normals.Item2).Normalize();
             }
         }
 
