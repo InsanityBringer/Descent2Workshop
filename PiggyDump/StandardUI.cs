@@ -213,12 +213,29 @@ namespace Descent2Workshop
             }
         }
 
-        private void menuItem6_Click(object sender, EventArgs e)
+        private void NewHXMFileMenu_Click(object sender, EventArgs e)
         {
-            /*HXMFile hxm = new HXMFile();
+            openFileDialog1.Filter = ".HAM files|*.HAM";
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                HAMFile archive = new HAMFile(defaultPigFile);
+                int res = archive.LoadDataFile(openFileDialog1.FileName);
+                if (res == 0)
+                {
+                    HXMFile hxm = new HXMFile(archive);
 
-            HXMEditor editor = new HXMEditor(hxm, this);
-            editor.Show();*/
+                    HXMEditor editor = new HXMEditor(hxm, this);
+                    editor.Show();
+                }
+                else if (res == -1)
+                    AppendConsole("HAM file has invalid signature. Appears to be a V-HAM file.\r\n");
+                else if (res == -2)
+                    AppendConsole("HAM file is unknown version.\r\n");
+                else if (res == -3)
+                    AppendConsole("Cannot open HAM file: File not found.\r\n");
+                else if (res == -4)
+                    AppendConsole("Cannot open HAM file: Permission denied.\r\n");
+            }
         }
 
         private void menuItem24_Click(object sender, EventArgs e)

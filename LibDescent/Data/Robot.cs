@@ -117,6 +117,74 @@ namespace LibDescent.Data
             weapon_type2 = -1;
         }
 
+        public Robot(Robot other)
+        {
+            model_num = other.model_num;
+            exp1_vclip_num = other.exp1_vclip_num;
+            exp1_sound_num = other.exp1_sound_num;
+            exp2_vclip_num = other.exp2_vclip_num;
+            exp2_sound_num = other.exp2_sound_num;
+
+            weapon_type = other.weapon_type;
+            weapon_type2 = other.weapon_type2;
+
+            contains_count = other.contains_count;
+            contains_id = other.contains_id;
+            contains_prob = other.contains_prob;
+            contains_type = other.contains_type;
+
+            kamikaze = other.kamikaze;
+            score_value = other.score_value;
+            badass = other.badass;
+            energy_drain = other.energy_drain;
+
+            lighting = other.lighting;
+            strength = other.strength;
+
+            mass = other.mass;
+            drag = other.drag;
+
+            for (int i = 0; i < NUM_DIFFICULTY_LEVELS; i++)
+            {
+                field_of_view[i] = other.field_of_view[i];
+                firing_wait[i] = other.firing_wait[i];
+                firing_wait2[i] = other.firing_wait2[i];
+                turn_time[i] = other.turn_time[i];
+                max_speed[i] = other.max_speed[i];
+                circle_distance[i] = other.circle_distance[i];
+
+                rapidfire_count[i] = other.rapidfire_count[i];
+                evade_speed[i] = other.evade_speed[i];
+            }
+
+            cloak_type = other.cloak_type;
+            attack_type = other.attack_type;
+
+            see_sound = other.see_sound;
+            attack_sound = other.attack_sound;
+            claw_sound = other.claw_sound;
+            taunt_sound = other.taunt_sound;
+
+            boss_flag = other.boss_flag;
+            companion = other.companion;
+            smart_blobs = other.smart_blobs;
+            energy_blobs = other.energy_blobs;
+
+            thief = other.thief;
+            pursuit = other.pursuit;
+            lightcast = other.lightcast;
+            death_roll = other.death_roll;
+
+            flags = other.flags;
+
+            deathroll_sound = other.deathroll_sound;
+            glow = other.glow;
+            behavior = other.behavior;
+            aim = other.aim;
+
+            always_0xabcd = 0xabcd;
+        }
+
         public bool UpdateRobot(int tag, ref int value, int curAI, int curGun)
         {
             bool clamped = false;
