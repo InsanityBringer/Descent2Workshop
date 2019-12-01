@@ -76,59 +76,59 @@ namespace LibDescent.Tests
         {
             var segment = CreateDefaultSegment();
 
-            Assert.AreSame(segment.GetSide(SegSide.Back), segment.GetSide(SegSide.Left).GetNeighbor(Edge.Right).Item1);
-            Assert.AreEqual(Edge.Left, segment.GetSide(SegSide.Left).GetNeighbor(Edge.Right).Item2);
-            Assert.AreSame(segment.GetSide(SegSide.Down), segment.GetSide(SegSide.Left).GetNeighbor(Edge.Bottom).Item1);
-            Assert.AreEqual(Edge.Right, segment.GetSide(SegSide.Left).GetNeighbor(Edge.Bottom).Item2);
-            Assert.AreSame(segment.GetSide(SegSide.Front), segment.GetSide(SegSide.Left).GetNeighbor(Edge.Left).Item1);
-            Assert.AreEqual(Edge.Right, segment.GetSide(SegSide.Left).GetNeighbor(Edge.Left).Item2);
-            Assert.AreSame(segment.GetSide(SegSide.Up), segment.GetSide(SegSide.Left).GetNeighbor(Edge.Top).Item1);
-            Assert.AreEqual(Edge.Left, segment.GetSide(SegSide.Left).GetNeighbor(Edge.Top).Item2);
+            Assert.AreSame(segment.GetSide(SegSide.Back), segment.GetSide(SegSide.Left).GetNeighbor(Edge.Right).Side);
+            Assert.AreEqual(Edge.Left, segment.GetSide(SegSide.Left).GetNeighbor(Edge.Right).Edge);
+            Assert.AreSame(segment.GetSide(SegSide.Down), segment.GetSide(SegSide.Left).GetNeighbor(Edge.Bottom).Side);
+            Assert.AreEqual(Edge.Right, segment.GetSide(SegSide.Left).GetNeighbor(Edge.Bottom).Edge);
+            Assert.AreSame(segment.GetSide(SegSide.Front), segment.GetSide(SegSide.Left).GetNeighbor(Edge.Left).Side);
+            Assert.AreEqual(Edge.Right, segment.GetSide(SegSide.Left).GetNeighbor(Edge.Left).Edge);
+            Assert.AreSame(segment.GetSide(SegSide.Up), segment.GetSide(SegSide.Left).GetNeighbor(Edge.Top).Side);
+            Assert.AreEqual(Edge.Left, segment.GetSide(SegSide.Left).GetNeighbor(Edge.Top).Edge);
 
-            Assert.AreSame(segment.GetSide(SegSide.Right), segment.GetSide(SegSide.Up).GetNeighbor(Edge.Right).Item1);
-            Assert.AreEqual(Edge.Top, segment.GetSide(SegSide.Up).GetNeighbor(Edge.Right).Item2);
-            Assert.AreSame(segment.GetSide(SegSide.Back), segment.GetSide(SegSide.Up).GetNeighbor(Edge.Bottom).Item1);
-            Assert.AreEqual(Edge.Top, segment.GetSide(SegSide.Up).GetNeighbor(Edge.Bottom).Item2);
-            Assert.AreSame(segment.GetSide(SegSide.Left), segment.GetSide(SegSide.Up).GetNeighbor(Edge.Left).Item1);
-            Assert.AreEqual(Edge.Top, segment.GetSide(SegSide.Up).GetNeighbor(Edge.Left).Item2);
-            Assert.AreSame(segment.GetSide(SegSide.Front), segment.GetSide(SegSide.Up).GetNeighbor(Edge.Top).Item1);
-            Assert.AreEqual(Edge.Top, segment.GetSide(SegSide.Up).GetNeighbor(Edge.Top).Item2);
+            Assert.AreSame(segment.GetSide(SegSide.Right), segment.GetSide(SegSide.Up).GetNeighbor(Edge.Right).Side);
+            Assert.AreEqual(Edge.Top, segment.GetSide(SegSide.Up).GetNeighbor(Edge.Right).Edge);
+            Assert.AreSame(segment.GetSide(SegSide.Back), segment.GetSide(SegSide.Up).GetNeighbor(Edge.Bottom).Side);
+            Assert.AreEqual(Edge.Top, segment.GetSide(SegSide.Up).GetNeighbor(Edge.Bottom).Edge);
+            Assert.AreSame(segment.GetSide(SegSide.Left), segment.GetSide(SegSide.Up).GetNeighbor(Edge.Left).Side);
+            Assert.AreEqual(Edge.Top, segment.GetSide(SegSide.Up).GetNeighbor(Edge.Left).Edge);
+            Assert.AreSame(segment.GetSide(SegSide.Front), segment.GetSide(SegSide.Up).GetNeighbor(Edge.Top).Side);
+            Assert.AreEqual(Edge.Top, segment.GetSide(SegSide.Up).GetNeighbor(Edge.Top).Edge);
 
-            Assert.AreSame(segment.GetSide(SegSide.Front), segment.GetSide(SegSide.Right).GetNeighbor(Edge.Right).Item1);
-            Assert.AreEqual(Edge.Left, segment.GetSide(SegSide.Right).GetNeighbor(Edge.Right).Item2);
-            Assert.AreSame(segment.GetSide(SegSide.Down), segment.GetSide(SegSide.Right).GetNeighbor(Edge.Bottom).Item1);
-            Assert.AreEqual(Edge.Left, segment.GetSide(SegSide.Right).GetNeighbor(Edge.Bottom).Item2);
-            Assert.AreSame(segment.GetSide(SegSide.Back), segment.GetSide(SegSide.Right).GetNeighbor(Edge.Left).Item1);
-            Assert.AreEqual(Edge.Right, segment.GetSide(SegSide.Right).GetNeighbor(Edge.Left).Item2);
-            Assert.AreSame(segment.GetSide(SegSide.Up), segment.GetSide(SegSide.Right).GetNeighbor(Edge.Top).Item1);
-            Assert.AreEqual(Edge.Right, segment.GetSide(SegSide.Right).GetNeighbor(Edge.Top).Item2);
+            Assert.AreSame(segment.GetSide(SegSide.Front), segment.GetSide(SegSide.Right).GetNeighbor(Edge.Right).Side);
+            Assert.AreEqual(Edge.Left, segment.GetSide(SegSide.Right).GetNeighbor(Edge.Right).Edge);
+            Assert.AreSame(segment.GetSide(SegSide.Down), segment.GetSide(SegSide.Right).GetNeighbor(Edge.Bottom).Side);
+            Assert.AreEqual(Edge.Left, segment.GetSide(SegSide.Right).GetNeighbor(Edge.Bottom).Edge);
+            Assert.AreSame(segment.GetSide(SegSide.Back), segment.GetSide(SegSide.Right).GetNeighbor(Edge.Left).Side);
+            Assert.AreEqual(Edge.Right, segment.GetSide(SegSide.Right).GetNeighbor(Edge.Left).Edge);
+            Assert.AreSame(segment.GetSide(SegSide.Up), segment.GetSide(SegSide.Right).GetNeighbor(Edge.Top).Side);
+            Assert.AreEqual(Edge.Right, segment.GetSide(SegSide.Right).GetNeighbor(Edge.Top).Edge);
 
-            Assert.AreSame(segment.GetSide(SegSide.Left), segment.GetSide(SegSide.Down).GetNeighbor(Edge.Right).Item1);
-            Assert.AreEqual(Edge.Bottom, segment.GetSide(SegSide.Down).GetNeighbor(Edge.Right).Item2);
-            Assert.AreSame(segment.GetSide(SegSide.Back), segment.GetSide(SegSide.Down).GetNeighbor(Edge.Bottom).Item1);
-            Assert.AreEqual(Edge.Bottom, segment.GetSide(SegSide.Down).GetNeighbor(Edge.Bottom).Item2);
-            Assert.AreSame(segment.GetSide(SegSide.Right), segment.GetSide(SegSide.Down).GetNeighbor(Edge.Left).Item1);
-            Assert.AreEqual(Edge.Bottom, segment.GetSide(SegSide.Down).GetNeighbor(Edge.Left).Item2);
-            Assert.AreSame(segment.GetSide(SegSide.Front), segment.GetSide(SegSide.Down).GetNeighbor(Edge.Top).Item1);
-            Assert.AreEqual(Edge.Bottom, segment.GetSide(SegSide.Down).GetNeighbor(Edge.Top).Item2);
+            Assert.AreSame(segment.GetSide(SegSide.Left), segment.GetSide(SegSide.Down).GetNeighbor(Edge.Right).Side);
+            Assert.AreEqual(Edge.Bottom, segment.GetSide(SegSide.Down).GetNeighbor(Edge.Right).Edge);
+            Assert.AreSame(segment.GetSide(SegSide.Back), segment.GetSide(SegSide.Down).GetNeighbor(Edge.Bottom).Side);
+            Assert.AreEqual(Edge.Bottom, segment.GetSide(SegSide.Down).GetNeighbor(Edge.Bottom).Edge);
+            Assert.AreSame(segment.GetSide(SegSide.Right), segment.GetSide(SegSide.Down).GetNeighbor(Edge.Left).Side);
+            Assert.AreEqual(Edge.Bottom, segment.GetSide(SegSide.Down).GetNeighbor(Edge.Left).Edge);
+            Assert.AreSame(segment.GetSide(SegSide.Front), segment.GetSide(SegSide.Down).GetNeighbor(Edge.Top).Side);
+            Assert.AreEqual(Edge.Bottom, segment.GetSide(SegSide.Down).GetNeighbor(Edge.Top).Edge);
 
-            Assert.AreSame(segment.GetSide(SegSide.Right), segment.GetSide(SegSide.Back).GetNeighbor(Edge.Right).Item1);
-            Assert.AreEqual(Edge.Left, segment.GetSide(SegSide.Back).GetNeighbor(Edge.Right).Item2);
-            Assert.AreSame(segment.GetSide(SegSide.Down), segment.GetSide(SegSide.Back).GetNeighbor(Edge.Bottom).Item1);
-            Assert.AreEqual(Edge.Bottom, segment.GetSide(SegSide.Back).GetNeighbor(Edge.Bottom).Item2);
-            Assert.AreSame(segment.GetSide(SegSide.Left), segment.GetSide(SegSide.Back).GetNeighbor(Edge.Left).Item1);
-            Assert.AreEqual(Edge.Right, segment.GetSide(SegSide.Back).GetNeighbor(Edge.Left).Item2);
-            Assert.AreSame(segment.GetSide(SegSide.Up), segment.GetSide(SegSide.Back).GetNeighbor(Edge.Top).Item1);
-            Assert.AreEqual(Edge.Bottom, segment.GetSide(SegSide.Back).GetNeighbor(Edge.Top).Item2);
+            Assert.AreSame(segment.GetSide(SegSide.Right), segment.GetSide(SegSide.Back).GetNeighbor(Edge.Right).Side);
+            Assert.AreEqual(Edge.Left, segment.GetSide(SegSide.Back).GetNeighbor(Edge.Right).Edge);
+            Assert.AreSame(segment.GetSide(SegSide.Down), segment.GetSide(SegSide.Back).GetNeighbor(Edge.Bottom).Side);
+            Assert.AreEqual(Edge.Bottom, segment.GetSide(SegSide.Back).GetNeighbor(Edge.Bottom).Edge);
+            Assert.AreSame(segment.GetSide(SegSide.Left), segment.GetSide(SegSide.Back).GetNeighbor(Edge.Left).Side);
+            Assert.AreEqual(Edge.Right, segment.GetSide(SegSide.Back).GetNeighbor(Edge.Left).Edge);
+            Assert.AreSame(segment.GetSide(SegSide.Up), segment.GetSide(SegSide.Back).GetNeighbor(Edge.Top).Side);
+            Assert.AreEqual(Edge.Bottom, segment.GetSide(SegSide.Back).GetNeighbor(Edge.Top).Edge);
 
-            Assert.AreSame(segment.GetSide(SegSide.Left), segment.GetSide(SegSide.Front).GetNeighbor(Edge.Right).Item1);
-            Assert.AreEqual(Edge.Left, segment.GetSide(SegSide.Front).GetNeighbor(Edge.Right).Item2);
-            Assert.AreSame(segment.GetSide(SegSide.Down), segment.GetSide(SegSide.Front).GetNeighbor(Edge.Bottom).Item1);
-            Assert.AreEqual(Edge.Top, segment.GetSide(SegSide.Front).GetNeighbor(Edge.Bottom).Item2);
-            Assert.AreSame(segment.GetSide(SegSide.Right), segment.GetSide(SegSide.Front).GetNeighbor(Edge.Left).Item1);
-            Assert.AreEqual(Edge.Right, segment.GetSide(SegSide.Front).GetNeighbor(Edge.Left).Item2);
-            Assert.AreSame(segment.GetSide(SegSide.Up), segment.GetSide(SegSide.Front).GetNeighbor(Edge.Top).Item1);
-            Assert.AreEqual(Edge.Top, segment.GetSide(SegSide.Front).GetNeighbor(Edge.Top).Item2);
+            Assert.AreSame(segment.GetSide(SegSide.Left), segment.GetSide(SegSide.Front).GetNeighbor(Edge.Right).Side);
+            Assert.AreEqual(Edge.Left, segment.GetSide(SegSide.Front).GetNeighbor(Edge.Right).Edge);
+            Assert.AreSame(segment.GetSide(SegSide.Down), segment.GetSide(SegSide.Front).GetNeighbor(Edge.Bottom).Side);
+            Assert.AreEqual(Edge.Top, segment.GetSide(SegSide.Front).GetNeighbor(Edge.Bottom).Edge);
+            Assert.AreSame(segment.GetSide(SegSide.Right), segment.GetSide(SegSide.Front).GetNeighbor(Edge.Left).Side);
+            Assert.AreEqual(Edge.Right, segment.GetSide(SegSide.Front).GetNeighbor(Edge.Left).Edge);
+            Assert.AreSame(segment.GetSide(SegSide.Up), segment.GetSide(SegSide.Front).GetNeighbor(Edge.Top).Side);
+            Assert.AreEqual(Edge.Top, segment.GetSide(SegSide.Front).GetNeighbor(Edge.Top).Edge);
         }
 
         [Test]
@@ -290,17 +290,17 @@ namespace LibDescent.Tests
             var segments = CreateTestBlock().Segments;
 
             // Basic stuff
-            Assert.AreSame(segments[1].GetSide(SegSide.Down), segments[0].GetSide(SegSide.Down).GetVisibleNeighbor(Edge.Bottom).Item1);
-            Assert.AreSame(segments[0].GetSide(SegSide.Down), segments[0].GetSide(SegSide.Back).GetVisibleNeighbor(Edge.Bottom).Item1);
-            Assert.AreSame(segments[0].GetSide(SegSide.Down), segments[0].GetSide(SegSide.Left).GetVisibleNeighbor(Edge.Bottom).Item1);
+            Assert.AreSame(segments[1].GetSide(SegSide.Down), segments[0].GetSide(SegSide.Down).GetVisibleNeighbor(Edge.Bottom).Side);
+            Assert.AreSame(segments[0].GetSide(SegSide.Down), segments[0].GetSide(SegSide.Back).GetVisibleNeighbor(Edge.Bottom).Side);
+            Assert.AreSame(segments[0].GetSide(SegSide.Down), segments[0].GetSide(SegSide.Left).GetVisibleNeighbor(Edge.Bottom).Side);
 
             // Wrap around corners
-            Assert.AreSame(segments[3].GetSide(SegSide.Front), segments[0].GetSide(SegSide.Left).GetVisibleNeighbor(Edge.Right).Item1);
-            Assert.AreEqual(Edge.Left, segments[0].GetSide(SegSide.Left).GetVisibleNeighbor(Edge.Right).Item2);
+            Assert.AreSame(segments[3].GetSide(SegSide.Front), segments[0].GetSide(SegSide.Left).GetVisibleNeighbor(Edge.Right).Side);
+            Assert.AreEqual(Edge.Left, segments[0].GetSide(SegSide.Left).GetVisibleNeighbor(Edge.Right).Edge);
 
             // Rotated segment
-            Assert.AreSame(segments[7].GetSide(SegSide.Back), segments[3].GetSide(SegSide.Front).GetVisibleNeighbor(Edge.Right).Item1);
-            Assert.AreEqual(Edge.Right, segments[3].GetSide(SegSide.Front).GetVisibleNeighbor(Edge.Right).Item2);
+            Assert.AreSame(segments[7].GetSide(SegSide.Back), segments[3].GetSide(SegSide.Front).GetVisibleNeighbor(Edge.Right).Side);
+            Assert.AreEqual(Edge.Right, segments[3].GetSide(SegSide.Front).GetVisibleNeighbor(Edge.Right).Edge);
 
             // Quad-join
             Assert.IsNull(segments[1].GetSide(SegSide.Back).GetVisibleNeighbor(Edge.Left));
@@ -309,10 +309,10 @@ namespace LibDescent.Tests
             segments = CreateTestBlockExtended().Segments;
 
             // Visible walls
-            Assert.AreSame(segments[3].GetSide(SegSide.Left), segments[3].GetSide(SegSide.Front).GetVisibleNeighbor(Edge.Right).Item1);
+            Assert.AreSame(segments[3].GetSide(SegSide.Left), segments[3].GetSide(SegSide.Front).GetVisibleNeighbor(Edge.Right).Side);
 
             // Invisible walls
-            Assert.AreSame(segments[5].GetSide(SegSide.Front), segments[0].GetSide(SegSide.Right).GetVisibleNeighbor(Edge.Left).Item1);
+            Assert.AreSame(segments[5].GetSide(SegSide.Front), segments[0].GetSide(SegSide.Right).GetVisibleNeighbor(Edge.Left).Side);
         }
 
         [Test]
@@ -321,7 +321,7 @@ namespace LibDescent.Tests
             var segments = CreateTestBlock().Segments;
 
             Assert.AreSame(segments[6].GetSide(SegSide.Right),
-                segments[5].GetSide(SegSide.Right).GetNeighbor(Edge.Left, side => side.IsVisible && !side.IsTransparent).Item1);
+                segments[5].GetSide(SegSide.Right).GetNeighbor(Edge.Left, side => side.IsVisible && !side.IsTransparent).Side);
         }
 
         [Test]

@@ -107,7 +107,7 @@ namespace LibDescent.Data
 
         internal Side GetOppositeSide(uint sideNum) => Sides[OppositeSideTable[sideNum]];
 
-        internal Tuple<Side, Edge> GetSideNeighbor(uint sideNum, Edge atEdge)
-            => new Tuple<Side, Edge>(Sides[SideNeighborTable[sideNum, (int)atEdge]], (Edge)EdgeNeighborTable[sideNum, (int)atEdge]);
+        internal SideJoin GetSideNeighbor(uint sideNum, Edge atEdge)
+            => new SideJoin(Sides[SideNeighborTable[sideNum, (int)atEdge]], (Edge)EdgeNeighborTable[sideNum, (int)atEdge]);
     }
 }

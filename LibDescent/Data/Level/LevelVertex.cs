@@ -29,13 +29,18 @@ namespace LibDescent.Data
     {
         private FixVector location;
 
+        public LevelVertex(FixVector location)
+        {
+            this.location = location;
+        }
+
         public LevelVertex(Fix x, Fix y, Fix z)
         {
             location = new FixVector(x, y, z);
         }
 
-        public List<Tuple<Segment, uint>> ConnectedSegments { get; } = new List<Tuple<Segment, uint>>();
-        public List<Tuple<Side, uint>> ConnectedSides { get; } = new List<Tuple<Side, uint>>();
+        public List<(Segment, uint)> ConnectedSegments { get; } = new List<(Segment, uint)>();
+        public List<(Side, uint)> ConnectedSides { get; } = new List<(Side, uint)>();
         public FixVector Location { get => location; set => location = value; }
         public double X { get => location.x; set => location.x = value; }
         public double Y { get => location.y; set => location.y = value; }

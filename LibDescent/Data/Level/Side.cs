@@ -20,6 +20,19 @@ namespace LibDescent.Data
         Tri013_123
     }
 
+    public struct SideJoin
+    {
+        public SideJoin(Side side, Edge atEdge) : this()
+        {
+            Side = side;
+            Edge = atEdge;
+        }
+
+        public Side Side { get; }
+
+        public Edge Edge { get; }
+    }
+
     public class Side
     {
         private readonly Segment parentSegment;
@@ -162,18 +175,22 @@ namespace LibDescent.Data
                 return null;
             }
 
-            var vertices = GetAllVertices();
-
             // An exception will be thrown if only this side is connected.
-            return ConnectedSegment.Sides.First(otherSide =>
-            {
-                if (otherSide.ConnectedSegment != parentSegment || GetNumVertices() != otherSide.GetNumVertices())
-                {
-                    return false;
-                }
+            return ConnectedSegment.Sides.First(otherSide => IsJoinedTo(otherSide, vertexList: GetAllVertices()));
+        }
 
+        internal bool IsJoinedTo(Side otherSide, bool checkVertices = true, LevelVertex[] vertexList = null)
+        {
+            if (otherSide.ConnectedSegment != parentSegment || GetNumVertices() != otherSide.GetNumVertices())
+            {
+                return false;
+            }
+
+            if (checkVertices)
+            {
                 // Do a vertex test to handle cases where multiple sides are joined (the segment will be illegal,
                 // but we still want predictable behavior)
+                var vertices = vertexList ?? GetAllVertices();
                 for (int v = 0; v < otherSide.GetNumVertices(); v++)
                 {
                     if (!vertices.Contains(otherSide.GetVertex(v)))
@@ -181,8 +198,8 @@ namespace LibDescent.Data
                         return false;
                     }
                 }
-                return true;
-            });
+            }
+            return true;
         }
 
         /// <summary>
@@ -190,17 +207,17 @@ namespace LibDescent.Data
         /// Because there is no filtering, the neighboring side will always be in the same segment.
         /// </summary>
         /// <param name="atEdge">The edge of this side to search from.</param>
-        /// <returns>A tuple containing the neighboring side and the edge at which it is attached to this side.</returns>
-        public Tuple<Side, Edge> GetNeighbor(Edge atEdge) => parentSegment.GetSideNeighbor(parentSegmentSideNum, atEdge);
+        /// <returns>A structure containing the neighboring side and the edge at which it is attached to this side.</returns>
+        public SideJoin GetNeighbor(Edge atEdge) => parentSegment.GetSideNeighbor(parentSegmentSideNum, atEdge);
 
         /// <summary>
         /// Finds the first visible side that is joined to this side at a given edge, filtered by a specified condition.
         /// </summary>
         /// <param name="atEdge">The edge of this side to search from.</param>
         /// <param name="predicate">A predicate that tests whether a given side meets the required criteria.</param>
-        /// <returns>A tuple containing the neighboring side and the edge at which it is attached to this side,
+        /// <returns>A structure containing the neighboring side and the edge at which it is attached to this side,
         /// or null if no such neighboring side exists.</returns>
-        public Tuple<Side, Edge> GetNeighbor(Edge atEdge, Func<Side, bool> predicate)
+        public SideJoin GetNeighbor(Edge atEdge, Func<Side, bool> predicate)
         {
             throw new NotImplementedException();
         }
@@ -209,9 +226,9 @@ namespace LibDescent.Data
         /// Finds the first visible side that is joined to this side at a given edge, if any.
         /// </summary>
         /// <param name="atEdge">The edge of this side to search from.</param>
-        /// <returns>A tuple containing the neighboring side and the edge at which it is attached to this side,
+        /// <returns>A structure containing the neighboring side and the edge at which it is attached to this side,
         /// or null if no such neighboring side exists.</returns>
-        public Tuple<Side, Edge> GetVisibleNeighbor(Edge atEdge) => GetNeighbor(atEdge, side => side.IsVisible);
+        public SideJoin GetVisibleNeighbor(Edge atEdge) => GetNeighbor(atEdge, side => side.IsVisible);
 
         public IEnumerable<LevelVertex> GetSharedVertices(Side other)
         {
