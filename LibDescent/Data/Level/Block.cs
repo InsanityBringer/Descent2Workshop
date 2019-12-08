@@ -77,8 +77,7 @@ namespace LibDescent.Data
                 // Read vertices
                 for (uint vertexNum = 0; vertexNum < Segment.MaxSegmentVerts; vertexNum++)
                 {
-                    uint fileVertexNum;
-                    var vertexLocation = BlockCommon.ReadVertex(reader, out fileVertexNum, false);
+                    (var vertexLocation, var fileVertexNum) = BlockCommon.ReadVertex(reader, false);
                     if (fileVertexNum != vertexNum)
                     {
                         throw new InvalidDataException($"Unexpected vertex number {fileVertexNum} at line {reader.LastLineNumber}.");
@@ -357,8 +356,7 @@ namespace LibDescent.Data
                 /*pSegment->m_nShape = 0;*/ // DLE non-cuboid - for reference
                 for (uint vertexNum = 0; vertexNum < Segment.MaxSegmentVerts; vertexNum++)
                 {
-                    uint fileVertexNum;
-                    var vertexLocation = BlockCommon.ReadVertex(reader, out fileVertexNum, true);
+                    (var vertexLocation, var fileVertexNum) = BlockCommon.ReadVertex(reader, true);
 
                     // Non-cuboid segment support
                     /*pSegment->m_info.vertexIds[i] = fileVertexNum;*/
@@ -519,7 +517,7 @@ namespace LibDescent.Data
             return Array.ConvertAll(groups.Skip(1).ToArray(), group => int.Parse((group as Group).Value));
         }
 
-        internal static FixVector ReadVertex(BlockStreamReader reader, out uint vertexId, bool isExtendedFormat)
+        internal static (FixVector vertexLocation, uint vertexId) ReadVertex(BlockStreamReader reader, bool isExtendedFormat)
         {
             var regex = isExtendedFormat ? extendedVertexRegex : vertexRegex;
             var match = regex.Match(reader.ReadLine());
@@ -529,11 +527,11 @@ namespace LibDescent.Data
                 throw new InvalidDataException($"Expected {name} at line {reader.LastLineNumber}: '{reader.LastLine}'");
             }
 
-            vertexId = uint.Parse(match.Groups[1].Value);
-            return FixVector.FromRawValues(
+            return (vertexLocation: FixVector.FromRawValues(
                 x: int.Parse(match.Groups[2].Value),
                 y: int.Parse(match.Groups[3].Value),
-                z: int.Parse(match.Groups[4].Value));
+                z: int.Parse(match.Groups[4].Value)),
+                vertexId: uint.Parse(match.Groups[1].Value));
         }
 
         internal static uint[] ReadExtendedSideVertexIds(BlockStreamReader reader)
