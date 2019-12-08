@@ -20,6 +20,14 @@ namespace LibDescent.Data
         Tri013_123
     }
 
+    public enum OverlayRotation
+    {
+        Rotate0 = 0,
+        Rotate90 = 1,
+        Rotate180 = 2,
+        Rotate270 = 3
+    }
+
     public struct SideJoin
     {
         public SideJoin(Side side, Edge atEdge) : this()
@@ -42,14 +50,15 @@ namespace LibDescent.Data
         {
             parentSegment = parent;
             parentSegmentSideNum = sideNum;
-            Uvls = new FixVector[numVertices];
+            Uvls = new Uvl[numVertices];
         }
 
         public Wall Wall { get; set; }
         public Segment ConnectedSegment { get; set; }
         public LevelTexture BaseTexture { get; set; }
         public LevelTexture OverlayTexture { get; set; }
-        public FixVector[] Uvls { get; }
+        public OverlayRotation OverlayRotation { get; set; }
+        public Uvl[] Uvls { get; }
 
         // Indicates if this side is the end of an exit tunnel (only valid in D1 and D2 levels)
         public bool Exit { get; set; } = false;
