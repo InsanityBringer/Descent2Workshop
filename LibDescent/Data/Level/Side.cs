@@ -258,7 +258,7 @@ namespace LibDescent.Data
 
         public IEnumerable<LevelVertex> GetSharedVertices(Side other)
         {
-            throw new NotImplementedException();
+            return GetAllVertices().Where(v => v.ConnectedSides.Any(item => item.side == other));
         }
     }
 }

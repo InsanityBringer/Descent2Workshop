@@ -377,14 +377,6 @@ namespace LibDescent.Tests
             side = segments[0].GetSide(SegSide.Left);
             otherSide = segments[1].GetSide(SegSide.Back);
             Assert.IsEmpty(side.GetSharedVertices(otherSide));
-
-            // Different segments, adjacent but not joined
-            // First we have to disconnect the sides (note this works differently with levels; we're using a block here)
-            segments[2].GetSide(SegSide.Left).ConnectedSegment = null;
-            segments[4].GetSide(SegSide.Right).ConnectedSegment = null;
-            side = segments[2].GetSide(SegSide.Back);
-            otherSide = segments[4].GetSide(SegSide.Back);
-            Assert.IsEmpty(side.GetSharedVertices(otherSide));
         }
     }
 }

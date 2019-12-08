@@ -100,7 +100,7 @@ namespace LibDescent.Data
 
         public IEnumerable<LevelVertex> GetSharedVertices(Segment other)
         {
-            throw new NotImplementedException();
+            return Vertices.Where(v => v.ConnectedSegments.Any(item => item.segment == other));
         }
 
         internal LevelVertex GetVertex(uint sideNum, int vertexNum) => Vertices[SideVerts[sideNum, vertexNum]];
