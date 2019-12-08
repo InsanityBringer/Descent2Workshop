@@ -65,7 +65,6 @@ namespace LibDescent.Data
         public byte special;
         public byte value;
         public byte flags;
-        public int staticLight;
 
         public Side[] Sides { get; }
         public LevelVertex[] Vertices { get; }
@@ -75,6 +74,7 @@ namespace LibDescent.Data
             get => (SegFunction)special;
             set => special = (byte)value;
         }
+        public Fix Light { get; set; }
 
         #region Read-only convenience properties
         public FixVector Center => new FixVector(

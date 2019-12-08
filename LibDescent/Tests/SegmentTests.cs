@@ -254,16 +254,16 @@ namespace LibDescent.Tests
             Assert.AreEqual(5, segment.special);
         }
 
-        private Block CreateTestBlock()
+        private IBlock CreateTestBlock()
         {
             var blockStream = GetType().Assembly.GetManifestResourceStream(GetType(), "test.blk");
-            return Block.FromStream(blockStream);
+            return Block.CreateFromStream(blockStream);
         }
 
-        private Block CreateTestBlockExtended()
+        private IBlock CreateTestBlockExtended()
         {
             var blockStream = GetType().Assembly.GetManifestResourceStream(GetType(), "test.blx");
-            return Block.FromStream(blockStream);
+            return ExtendedBlock.CreateFromStream(blockStream);
         }
 
         [Test]
