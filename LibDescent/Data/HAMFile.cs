@@ -490,6 +490,10 @@ namespace LibDescent.Data
             }
             foreach (Weapon weapon in Weapons)
             {
+                if (weapon.model_num < 0 || weapon.model_num >= PolygonModels.Count)
+                    weapon.model_num = 0;
+                if (weapon.model_num_inner < -1 || weapon.model_num_inner >= PolygonModels.Count)
+                    weapon.model_num_inner = -1;
                 if (weapon.flash_vclip < -1 || weapon.flash_vclip >= VClips.Count)
                     weapon.flash_vclip = -1;
                 if (weapon.robot_hit_vclip < -1 || weapon.robot_hit_vclip >= VClips.Count)
