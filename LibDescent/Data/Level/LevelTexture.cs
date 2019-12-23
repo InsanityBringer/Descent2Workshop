@@ -30,6 +30,7 @@ namespace LibDescent.Data
         }
 
         public ushort TextureIndex { get; }
+        public bool IsTransparent { get; }
 
         public static LevelTexture FromTextureIndex(ushort textureIndex)
         {

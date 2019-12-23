@@ -162,6 +162,16 @@ namespace LibDescent.Tests
         [Test]
         public void TestExtendedBlockWalls()
         {
+            Assert.AreEqual(7, blxBlock.Walls.Count);
+
+            Assert.IsNotNull(blxBlock.Segments[1].GetSide(SegSide.Right).Wall);
+            Assert.AreEqual(WallType.Open, blxBlock.Segments[1].GetSide(SegSide.Right).Wall.type);
+
+            Assert.IsNotNull(blxBlock.Segments[3].GetSide(SegSide.Left).Wall);
+            Assert.AreEqual(WallType.Door, blxBlock.Segments[3].GetSide(SegSide.Left).Wall.type);
+
+            Assert.IsNull(blxBlock.Segments[5].GetSide(SegSide.Left).Wall);
+
             Assert.Fail();
         }
 
