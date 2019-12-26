@@ -20,6 +20,8 @@
     SOFTWARE.
 */
 
+using System;
+
 namespace LibDescent.Data
 {
     public class LevelTexture
@@ -30,7 +32,13 @@ namespace LibDescent.Data
         }
 
         public ushort TextureIndex { get; }
-        public bool IsTransparent { get; }
+        public bool IsTransparent
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
         public static LevelTexture FromTextureIndex(ushort textureIndex)
         {

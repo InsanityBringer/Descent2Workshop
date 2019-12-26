@@ -138,8 +138,7 @@ namespace LibDescent.Tests
         [Test]
         public void TestStandardBlockTriggersEmpty()
         {
-            //Assert.IsEmpty(blkBlock.Triggers);
-            Assert.Fail();
+            Assert.IsEmpty(blkBlock.Triggers);
         }
 
         [Test]
@@ -167,6 +166,7 @@ namespace LibDescent.Tests
             // Open wall (trigger) on right side of segment 1
             Assert.IsNotNull(blxBlock.Segments[1].GetSide(SegSide.Right).Wall);
             var wall = blxBlock.Segments[1].GetSide(SegSide.Right).Wall;
+            Assert.AreSame(blxBlock.Segments[1].GetSide(SegSide.Right), wall.Side);
             Assert.AreEqual(WallType.Open, wall.Type);
             Assert.Contains(wall, blxBlock.Walls);
             Assert.IsNull(wall.OppositeWall);
@@ -179,7 +179,8 @@ namespace LibDescent.Tests
             wall = blxBlock.Segments[3].GetSide(SegSide.Left).Wall;
             Assert.AreEqual(WallType.Door, wall.Type);
             Assert.Contains(wall, blxBlock.Walls);
-            Assert.AreSame(blxBlock.Segments[7].GetSide(SegSide.Left).Wall, wall.OppositeWall);
+            Assert.IsNotNull(wall.OppositeWall);
+            Assert.AreSame(blxBlock.Segments[7].GetSide(SegSide.Right).Wall, wall.OppositeWall);
 
             // Check some basic wall properties
             Assert.AreEqual(0, wall.HitPoints);

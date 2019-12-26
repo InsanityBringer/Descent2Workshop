@@ -98,16 +98,19 @@ namespace LibDescent.Data
             {
                 if (value > 31)
                 {
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(value));
                 }
                 cloakOpacity = value;
             }
         }
 
         #region Read-only convenience properties
-        public Wall OppositeWall { get; }
+        public Wall OppositeWall => Side?.GetJoinedSide()?.Wall;
 
-        public Trigger ControllingTrigger { get; }
+        public Trigger ControllingTrigger
+        {
+            get { throw new NotImplementedException(); }
+        }
         #endregion
     }
 }
