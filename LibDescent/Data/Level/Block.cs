@@ -10,7 +10,7 @@ namespace LibDescent.Data
     {
         List<Segment> Segments { get; }
         List<Wall> Walls { get; }
-        //List<Trigger> Triggers { get; }
+        List<Trigger> Triggers { get; }
         //List<FlickeringLight> AnimatedLights { get; }
 
         uint GetVertexCount();
@@ -23,6 +23,9 @@ namespace LibDescent.Data
 
         // Walls is always empty for a regular block
         public List<Wall> Walls => new List<Wall>();
+
+        // Triggers is always empty for a regular block
+        public List<Trigger> Triggers => new List<Trigger>();
 
         public uint GetVertexCount()
         {
@@ -226,6 +229,7 @@ namespace LibDescent.Data
 
         public List<Segment> Segments { get; } = new List<Segment>();
         public List<Wall> Walls { get; } = new List<Wall>();
+        public List<Trigger> Triggers { get; } = new List<Trigger>();
 
         public uint GetVertexCount()
         {
@@ -314,25 +318,31 @@ namespace LibDescent.Data
                     uint wallId = BlockCommon.ReadValue<uint>(reader, "wall");
                     if (wallId != BLX_WALL_ID_NONE)
                     {
-                        var wall = new Wall();
+                        var wall = new Wall(side);
+                        side.Wall = wall;
                         block.Walls.Add(wall);
-                        wall.segnum = BlockCommon.ReadValue<int>(reader, "segment");
-                        wall.sidenum = BlockCommon.ReadValue<int>(reader, "side");
-                        wall.hp = BlockCommon.ReadValue<int>(reader, "hps");
-                        wall.type = (WallType)BlockCommon.ReadValue<int>(reader, "type");
-                        wall.flags = BlockCommon.ReadValue<byte>(reader, "flags");
-                        wall.state = BlockCommon.ReadValue<byte>(reader, "state");
-                        wall.clipNum = (byte)BlockCommon.ReadValue<sbyte>(reader, "clip");
-                        wall.keys = BlockCommon.ReadValue<byte>(reader, "keys");
-                        wall.cloakValue = BlockCommon.ReadValue<byte>(reader, "cloak");
-                        wall.trigger = BlockCommon.ReadValue<byte>(reader, "trigger");
+
+                        // .blx format includes segment/side numbers for walls - we don't need them
+                        // because we derive from context
+                        BlockCommon.ReadValue<int>(reader, "segment");
+                        BlockCommon.ReadValue<int>(reader, "side");
+
+                        wall.HitPoints = BlockCommon.ReadValue<int>(reader, "hps");
+                        wall.Type = (WallType)BlockCommon.ReadValue<int>(reader, "type");
+                        wall.Flags = (WallFlags)BlockCommon.ReadValue<byte>(reader, "flags");
+                        wall.State = (WallState)BlockCommon.ReadValue<byte>(reader, "state");
+                        wall.DoorClipNumber = (byte)BlockCommon.ReadValue<sbyte>(reader, "clip");
+                        wall.Keys = (WallKeyFlags)BlockCommon.ReadValue<byte>(reader, "keys");
+                        wall.CloakOpacity = BlockCommon.ReadValue<byte>(reader, "cloak");
+
+                        var triggerNum = BlockCommon.ReadValue<byte>(reader, "trigger");
 
                         // 255 (0xFF) means no trigger on this wall
-                        if (wall.trigger != 0xFF)
+                        if (triggerNum != 0xFF)
                         {
                             // Still need to port this
-                            //var trigger = new Trigger();
-                            //block.Triggers.Add(trigger);
+                            var trigger = new Trigger();
+                            block.Triggers.Add(trigger);
                             BlockCommon.ReadValue<byte>(reader, "type");
                             BlockCommon.ReadValue<ushort>(reader, "flags");
                             BlockCommon.ReadValue<int>(reader, "value");

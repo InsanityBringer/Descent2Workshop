@@ -164,15 +164,30 @@ namespace LibDescent.Tests
         {
             Assert.AreEqual(7, blxBlock.Walls.Count);
 
+            // Open wall (trigger) on right side of segment 1
             Assert.IsNotNull(blxBlock.Segments[1].GetSide(SegSide.Right).Wall);
-            Assert.AreEqual(WallType.Open, blxBlock.Segments[1].GetSide(SegSide.Right).Wall.type);
+            var wall = blxBlock.Segments[1].GetSide(SegSide.Right).Wall;
+            Assert.AreEqual(WallType.Open, wall.Type);
+            Assert.Contains(wall, blxBlock.Walls);
+            Assert.IsNull(wall.OppositeWall);
 
-            Assert.IsNotNull(blxBlock.Segments[3].GetSide(SegSide.Left).Wall);
-            Assert.AreEqual(WallType.Door, blxBlock.Segments[3].GetSide(SegSide.Left).Wall.type);
-
+            // Opposite side (left side of segment 5) has no wall
             Assert.IsNull(blxBlock.Segments[5].GetSide(SegSide.Left).Wall);
 
-            Assert.Fail();
+            // Door on left side of segment 3 - opposite side is in segment 7
+            Assert.IsNotNull(blxBlock.Segments[3].GetSide(SegSide.Left).Wall);
+            wall = blxBlock.Segments[3].GetSide(SegSide.Left).Wall;
+            Assert.AreEqual(WallType.Door, wall.Type);
+            Assert.Contains(wall, blxBlock.Walls);
+            Assert.AreSame(blxBlock.Segments[7].GetSide(SegSide.Left).Wall, wall.OppositeWall);
+
+            // Check some basic wall properties
+            Assert.AreEqual(0, wall.HitPoints);
+            Assert.AreEqual(WallFlags.DoorLocked | WallFlags.DoorAuto, wall.Flags);
+            Assert.AreEqual((WallState)0, wall.State);
+            Assert.AreEqual(18, wall.DoorClipNumber);
+            Assert.AreEqual(WallKeyFlags.None, wall.Keys);
+            Assert.AreEqual(0, wall.CloakOpacity);
         }
 
         [Test]

@@ -133,7 +133,7 @@ namespace LibDescent.Data
         }
 
         // Indicates if there is a visible texture on this side
-        public bool IsVisible => (ConnectedSegment == null) || (Wall != null && Wall.type != WallType.Open);
+        public bool IsVisible => (ConnectedSegment == null) || (Wall != null && Wall.Type != WallType.Open);
 
         // Indicates if there is a transparent texture on this side
         public bool IsTransparent => !IsVisible || BaseTexture.IsTransparent || OverlayTexture.IsTransparent;
