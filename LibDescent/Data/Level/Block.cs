@@ -10,7 +10,7 @@ namespace LibDescent.Data
     {
         List<Segment> Segments { get; }
         List<Wall> Walls { get; }
-        List<Trigger> Triggers { get; }
+        List<BlockTrigger> Triggers { get; }
         //List<FlickeringLight> AnimatedLights { get; }
 
         uint GetVertexCount();
@@ -25,7 +25,7 @@ namespace LibDescent.Data
         public List<Wall> Walls => new List<Wall>();
 
         // Triggers is always empty for a regular block
-        public List<Trigger> Triggers => new List<Trigger>();
+        public List<BlockTrigger> Triggers => new List<BlockTrigger>();
 
         public uint GetVertexCount()
         {
@@ -229,7 +229,7 @@ namespace LibDescent.Data
 
         public List<Segment> Segments { get; } = new List<Segment>();
         public List<Wall> Walls { get; } = new List<Wall>();
-        public List<Trigger> Triggers { get; } = new List<Trigger>();
+        public List<BlockTrigger> Triggers { get; } = new List<BlockTrigger>();
 
         public uint GetVertexCount()
         {
@@ -249,6 +249,8 @@ namespace LibDescent.Data
             // We read segment children before we have all the segments, so we need to connect them in a subsequent pass
             var segmentConnections = new Dictionary<uint, int[]>();
             var vertices = new Dictionary<uint, LevelVertex>();
+            // We also read triggers before we have all the segments
+            var triggerTargetConnections = new Dictionary<int, List<(int segmentNum, int sideNum)>>();
 
             while (!reader.EndOfStream)
             {
@@ -340,23 +342,29 @@ namespace LibDescent.Data
                         // 255 (0xFF) means no trigger on this wall
                         if (triggerNum != 0xFF)
                         {
-                            // Still need to port this
-                            var trigger = new Trigger();
+                            var trigger = new BlockTrigger();
+                            wall.Trigger = trigger;
                             block.Triggers.Add(trigger);
-                            BlockCommon.ReadValue<byte>(reader, "type");
-                            BlockCommon.ReadValue<ushort>(reader, "flags");
-                            BlockCommon.ReadValue<int>(reader, "value");
-                            BlockCommon.ReadValue<int>(reader, "timer");
+
+                            trigger.Type = (TriggerType)BlockCommon.ReadValue<byte>(reader, "type");
+                            trigger.Flags = BlockCommon.ReadValue<ushort>(reader, "flags");
+                            trigger.Value = BlockCommon.ReadValue<int>(reader, "value");
+                            trigger.Time = BlockCommon.ReadValue<int>(reader, "timer");
+
+                            // Trigger targets
+                            var triggerTargets = new List<(int segmentNum, int sideNum)>();
                             var targetCount = BlockCommon.ReadValue<short>(reader, "count");
                             for (int targetNum = 0; targetNum < targetCount; targetNum++)
                             {
-                                BlockCommon.ReadValue<short>(reader, "segment");
-                                BlockCommon.ReadValue<short>(reader, "side");
+                                var targetSegmentNum = BlockCommon.ReadValue<int>(reader, "segment");
+                                var targetSideNum = BlockCommon.ReadValue<int>(reader, "side");
+                                triggerTargets.Add((targetSegmentNum, targetSideNum));
+                            }
+                            if (triggerTargets.Count > 0)
+                            {
+                                triggerTargetConnections[block.Triggers.Count - 1] = triggerTargets;
                             }
                         }
-
-                        // Link wall to trigger, and link trigger to targets
-                        // (not implemented yet)
                     }
                 }
 
@@ -442,6 +450,22 @@ namespace LibDescent.Data
             }
 
             BlockCommon.SetupVertexConnections(block);
+
+            // Set up trigger target connections
+            foreach (var connection in triggerTargetConnections)
+            {
+                var trigger = block.Triggers[connection.Key];
+                for (int targetNum = 0; targetNum < connection.Value.Count; targetNum++)
+                {
+                    var target = connection.Value[targetNum];
+                    var targetSide = block.Segments[target.segmentNum].Sides[target.sideNum];
+                    trigger.Targets.Add(targetSide);
+                    if (targetSide.Wall != null)
+                    {
+                        targetSide.Wall.ControllingTriggers.Add((trigger, (uint)targetNum));
+                    }
+                }
+            }
 
             return block;
         }

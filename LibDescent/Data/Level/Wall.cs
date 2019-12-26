@@ -21,6 +21,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 
 namespace LibDescent.Data
 {
@@ -80,7 +81,8 @@ namespace LibDescent.Data
 
         public Side Side { get; }
         public WallType Type { get; set; }
-        public Trigger Trigger { get; set; }
+        public ITrigger Trigger { get; set; }
+        public List<(ITrigger trigger, uint targetNum)> ControllingTriggers { get; } = new List<(ITrigger, uint)>();
 
         public int HitPoints { get; set; }
         public WallFlags Flags { get; set; }
@@ -106,11 +108,6 @@ namespace LibDescent.Data
 
         #region Read-only convenience properties
         public Wall OppositeWall => Side?.GetJoinedSide()?.Wall;
-
-        public Trigger ControllingTrigger
-        {
-            get { throw new NotImplementedException(); }
-        }
         #endregion
     }
 }
