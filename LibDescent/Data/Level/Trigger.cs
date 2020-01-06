@@ -56,9 +56,11 @@ namespace LibDescent.Data
         IllusionOff = 0x80,
         SecretExit = 0x100,
         IllusionOn = 0x200,
-        //OpenWall = 0x400, // D2X-XL only
-        //CloseWall = 0x800, // D2X-XL only
-        //MakeIllusionary = 0x1000, // D2X-XL only
+#if false
+        OpenWall = 0x400, // D2X-XL only
+        CloseWall = 0x800, // D2X-XL only
+        MakeIllusionary = 0x1000, // D2X-XL only
+#endif
     }
 
     [Flags]
@@ -67,11 +69,13 @@ namespace LibDescent.Data
         NoMessage = 0x1,
         OneShot = 0x2,
         Disabled = 0x4, // D2 sets this on a one-shot trigger when activated
-        //Permanent = 0x8, // D2X-XL only; control panel cannot be destroyed
-        //Alternate = 0x10, // D2X-XL only; trigger type inverts between activations
-        //SetOrient = 0x20, // D2X-XL only
-        //Silent = 0x40, // D2X-XL only
-        //AutoPlay = 0x80, // D2X-XL only
+#if false
+        Permanent = 0x8, // D2X-XL only; control panel not destroyed when activated
+        Alternate = 0x10, // D2X-XL only; trigger type inverts between activations
+        SetOrient = 0x20, // D2X-XL only
+        Silent = 0x40, // D2X-XL only
+        AutoPlay = 0x80, // D2X-XL only
+#endif
     }
 
     public interface ITrigger

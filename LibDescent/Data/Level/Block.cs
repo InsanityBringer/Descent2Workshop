@@ -11,7 +11,8 @@ namespace LibDescent.Data
         List<Segment> Segments { get; }
         List<Wall> Walls { get; }
         List<BlockTrigger> Triggers { get; }
-        //List<FlickeringLight> AnimatedLights { get; }
+        List<AnimatedLight> AnimatedLights { get; }
+        List<MatCenter> MatCenters { get; }
 
         uint GetVertexCount();
         void WriteToStream(Stream stream);
@@ -26,6 +27,12 @@ namespace LibDescent.Data
 
         // Triggers is always empty for a regular block
         public List<BlockTrigger> Triggers => new List<BlockTrigger>();
+
+        // AnimatedLights is always empty for a regular block
+        public List<AnimatedLight> AnimatedLights => new List<AnimatedLight>();
+
+        // MatCenters is always empty for a regular block
+        public List<MatCenter> MatCenters => new List<MatCenter>();
 
         public uint GetVertexCount()
         {
@@ -230,6 +237,8 @@ namespace LibDescent.Data
         public List<Segment> Segments { get; } = new List<Segment>();
         public List<Wall> Walls { get; } = new List<Wall>();
         public List<BlockTrigger> Triggers { get; } = new List<BlockTrigger>();
+        public List<AnimatedLight> AnimatedLights { get; } = new List<AnimatedLight>();
+        public List<MatCenter> MatCenters { get; } = new List<MatCenter>();
 
         public uint GetVertexCount()
         {
@@ -310,10 +319,13 @@ namespace LibDescent.Data
                     // Animated lights
                     if (hasVariableLight)
                     {
-                        Tuple<uint, int, int> variableLight = BlockCommon.ReadExtendedVariableLight(reader);
-                        // Not implemented yet. Below is DLE code
-                        /*tVariableLight vl;
-                        lightManager.AddVariableLight(CSideKey(nSegment, nSide), vl.mask, vl.timer);*/
+                        (uint mask, int timer, int delay) = BlockCommon.ReadExtendedVariableLight(reader);
+                        var light = new AnimatedLight(side);
+                        light.Mask = mask;
+                        light.TimeToNextTick = Fix.FromRawValue(timer);
+                        light.TickLength = Fix.FromRawValue(delay);
+                        block.AnimatedLights.Add(light);
+                        side.AnimatedLight = light;
                     }
 
                     // Walls and triggers
@@ -395,39 +407,22 @@ namespace LibDescent.Data
 
                 segment.Light = Fix.FromRawValue(BlockCommon.ReadValue<int>(reader, "static_light"));
                 segment.special = BlockCommon.ReadValue<byte>(reader, "special");
-                var nProducer = BlockCommon.ReadValue<sbyte>(reader, "matcen_num"); // not sure what DLE uses this for yet
+
+                var matcenNum = BlockCommon.ReadValue<sbyte>(reader, "matcen_num");
+                if (matcenNum != -1)
+                {
+                    var matcen = new MatCenter();
+                    matcen.segnum = (int)segmentId;
+                    matcen.fuelcenNum = matcenNum;
+                    segment.MatCenter = matcen;
+                    block.MatCenters.Add(matcen);
+                }
+
                 segment.value = (byte)BlockCommon.ReadValue<sbyte>(reader, "value");
                 // Child/wall bitmasks are used internally by DLE but we don't really need them
                 // - they can be recalculated
                 BlockCommon.ReadValue<byte>(reader, "child_bitmask");
                 BlockCommon.ReadValue<byte>(reader, "wall_bitmask");
-
-                switch (segment.special)
-                {
-                    // DLE code. Might only need to adapt robot maker and equipment maker
-                    /*case SEGMENT_FUNC_PRODUCER:
-                        if (!segmentManager.CreateProducer(nSegment, SEGMENT_FUNC_PRODUCER, false, false))
-                            pSegment->m_info.function = 0;
-                        break;
-                    case SEGMENT_FUNC_REPAIRCEN:
-                        if (!segmentManager.CreateProducer(nSegment, SEGMENT_FUNC_REPAIRCEN, false, false))
-                            pSegment->m_info.function = 0;
-                        break;
-                    case SEGMENT_FUNC_ROBOTMAKER:
-                        if (!segmentManager.CreateRobotMaker(nSegment, false, false))
-                            pSegment->m_info.function = 0;
-                        break;
-                    case SEGMENT_FUNC_EQUIPMAKER:
-                        if (!segmentManager.CreateEquipMaker(nSegment, false, false))
-                            pSegment->m_info.function = 0;
-                        break;
-                    case SEGMENT_FUNC_REACTOR:
-                        if (!segmentManager.CreateReactor(nSegment, false, false))
-                            pSegment->m_info.function = 0;
-                        break;*/
-                    default:
-                        break;
-                }
             }
 
             // Now set up segment connections
@@ -581,7 +576,7 @@ namespace LibDescent.Data
             return Array.ConvertAll(groups.Skip(1).ToArray(), group => uint.Parse((group as Group).Value));
         }
 
-        internal static Tuple<uint, int, int> ReadExtendedVariableLight(BlockStreamReader reader)
+        internal static (uint, int, int) ReadExtendedVariableLight(BlockStreamReader reader)
         {
             var regex = new Regex(@"^    variable light (\d+) (-?\d+) (-?\d+)$");
             var match = regex.Match(reader.ReadLine());
@@ -589,7 +584,7 @@ namespace LibDescent.Data
             {
                 throw new InvalidDataException($"Expected variable light at line {reader.LastLineNumber}: '{reader.LastLine}'");
             }
-            return new Tuple<uint, int, int>(uint.Parse(match.Groups[1].Value), int.Parse(match.Groups[2].Value), int.Parse(match.Groups[3].Value));
+            return (uint.Parse(match.Groups[1].Value), int.Parse(match.Groups[2].Value), int.Parse(match.Groups[3].Value));
         }
 
         internal static T ReadValue<T>(BlockStreamReader reader, string valueName)

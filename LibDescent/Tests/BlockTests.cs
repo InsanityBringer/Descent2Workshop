@@ -1,10 +1,7 @@
 ﻿using LibDescent.Data;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace LibDescent.Tests
 {
@@ -38,7 +35,7 @@ namespace LibDescent.Tests
 
             foreach (var block in blockFormats)
             {
-                Assert.AreEqual(8, block.Segments.Count);
+                Assert.AreEqual(9, block.Segments.Count);
                 Assert.IsNull(block.Segments[0].Sides[0].ConnectedSegment);
                 Assert.AreSame(block.Segments[1], block.Segments[0].Sides[4].ConnectedSegment);
             }
@@ -63,7 +60,7 @@ namespace LibDescent.Tests
 
             foreach (var block in blockFormats)
             {
-                Assert.AreEqual(32, block.GetVertexCount());
+                Assert.AreEqual(36, block.GetVertexCount());
                 Assert.AreSame(block.Segments[0].Vertices[7], block.Segments[1].Vertices[3]);
                 Assert.AreSame(block.Segments[0].Vertices[7], block.Segments[3].Vertices[0]);
                 Assert.AreEqual(3, block.Segments[0].Vertices[7].ConnectedSegments.Count);
@@ -79,22 +76,22 @@ namespace LibDescent.Tests
             foreach (var block in blockFormats)
             {
                 Assert.AreEqual(42, block.Segments[2].Sides[4].BaseTexture.TextureIndex); // rock160
-                Assert.AreEqual(new Uvl(0, 0, 0.41259765625), block.Segments[2].Sides[4].Uvls[0]);
-                Assert.AreEqual(new Uvl(0, 1, 0.42266845703125), block.Segments[2].Sides[4].Uvls[1]);
-                Assert.AreEqual(new Uvl(-1, 1, 0.53265380859375), block.Segments[2].Sides[4].Uvls[2]);
-                Assert.AreEqual(new Uvl(-1, 0, 0.55279541015625), block.Segments[2].Sides[4].Uvls[3]);
+                Assert.AreEqual(new Uvl(0, 0, 0.582275390625), block.Segments[2].Sides[4].Uvls[0]);
+                Assert.AreEqual(new Uvl(0, 1, 0.59796142578125), block.Segments[2].Sides[4].Uvls[1]);
+                Assert.AreEqual(new Uvl(-1, 1, 0.715576171875), block.Segments[2].Sides[4].Uvls[2]);
+                Assert.AreEqual(new Uvl(-1, 0, 0.8023681640625), block.Segments[2].Sides[4].Uvls[3]);
 
                 Assert.AreEqual(219, block.Segments[0].Sides[2].BaseTexture.TextureIndex); // metl046 (rotated)
-                Assert.AreEqual(new Uvl(0, 0, 0.84368896484375), block.Segments[0].Sides[2].Uvls[0]);
-                Assert.AreEqual(new Uvl(1, 0, 0.831085205078125), block.Segments[0].Sides[2].Uvls[1]);
-                Assert.AreEqual(new Uvl(1, 1, 0.384918212890625), block.Segments[0].Sides[2].Uvls[2]);
-                Assert.AreEqual(new Uvl(0, 1, 0.384918212890625), block.Segments[0].Sides[2].Uvls[3]);
+                Assert.AreEqual(new Uvl(0, 0, 0.836212158203125), block.Segments[0].Sides[2].Uvls[0]);
+                Assert.AreEqual(new Uvl(1, 0, 0.823486328125), block.Segments[0].Sides[2].Uvls[1]);
+                Assert.AreEqual(new Uvl(1, 1, 0.326934814453125), block.Segments[0].Sides[2].Uvls[2]);
+                Assert.AreEqual(new Uvl(0, 1, 0.32733154296875), block.Segments[0].Sides[2].Uvls[3]);
 
                 Assert.AreEqual(0, block.Segments[1].Sides[0].BaseTexture.TextureIndex); // rock021 (no wall)
-                Assert.AreEqual(new Uvl(0, 0, 0.214813232421875), block.Segments[1].Sides[0].Uvls[0]);
-                Assert.AreEqual(new Uvl(0, 0, 0.214813232421875), block.Segments[1].Sides[0].Uvls[1]);
-                Assert.AreEqual(new Uvl(0, 0, 0.302093505859375), block.Segments[1].Sides[0].Uvls[2]);
-                Assert.AreEqual(new Uvl(0, 0, 0.302093505859375), block.Segments[1].Sides[0].Uvls[3]);
+                Assert.AreEqual(new Uvl(0, 0, 0.245361328125), block.Segments[1].Sides[0].Uvls[0]);
+                Assert.AreEqual(new Uvl(0, 0, 0.24090576171875), block.Segments[1].Sides[0].Uvls[1]);
+                Assert.AreEqual(new Uvl(0, 0, 0.313140869140625), block.Segments[1].Sides[0].Uvls[2]);
+                Assert.AreEqual(new Uvl(0, 0, 0.319091796875), block.Segments[1].Sides[0].Uvls[3]);
             }
         }
 
@@ -123,9 +120,9 @@ namespace LibDescent.Tests
 
             foreach (var block in blockFormats)
             {
-                Assert.AreEqual(3.501, block.Segments[0].Light, 0.001);
-                Assert.AreEqual(1.421, block.Segments[1].Light, 0.001);
-                Assert.AreEqual(0.203, block.Segments[7].Light, 0.001);
+                Assert.AreEqual(7.186, block.Segments[0].Light, 0.001);
+                Assert.AreEqual(3.243, block.Segments[1].Light, 0.001);
+                Assert.AreEqual(0.000, block.Segments[7].Light, 0.001);
             }
         }
 
@@ -144,8 +141,7 @@ namespace LibDescent.Tests
         [Test]
         public void TestStandardBlockAnimatedLightsEmpty()
         {
-            //Assert.IsEmpty(blkBlock.AnimatedLights);
-            Assert.Fail();
+            Assert.IsEmpty(blkBlock.AnimatedLights);
         }
 
         [Test]
@@ -166,10 +162,7 @@ namespace LibDescent.Tests
             // Open wall (trigger) on right side of segment 1
             Assert.IsNotNull(blxBlock.Segments[1].GetSide(SegSide.Right).Wall);
             var wall = blxBlock.Segments[1].GetSide(SegSide.Right).Wall;
-            Assert.AreSame(blxBlock.Segments[1].GetSide(SegSide.Right), wall.Side);
-            Assert.AreEqual(WallType.Open, wall.Type);
             Assert.Contains(wall, blxBlock.Walls);
-            Assert.IsNull(wall.OppositeWall);
 
             // Opposite side (left side of segment 5) has no wall
             Assert.IsNull(blxBlock.Segments[5].GetSide(SegSide.Left).Wall);
@@ -177,65 +170,47 @@ namespace LibDescent.Tests
             // Door on left side of segment 3 - opposite side is in segment 7
             Assert.IsNotNull(blxBlock.Segments[3].GetSide(SegSide.Left).Wall);
             wall = blxBlock.Segments[3].GetSide(SegSide.Left).Wall;
-            Assert.AreEqual(WallType.Door, wall.Type);
             Assert.Contains(wall, blxBlock.Walls);
-            Assert.IsNotNull(wall.OppositeWall);
-            Assert.AreSame(blxBlock.Segments[7].GetSide(SegSide.Right).Wall, wall.OppositeWall);
-
-            // Check some basic wall properties
-            Assert.AreEqual(0, wall.HitPoints);
-            Assert.AreEqual(WallFlags.DoorLocked | WallFlags.DoorAuto, wall.Flags);
-            Assert.AreEqual((WallState)0, wall.State);
-            Assert.AreEqual(18, wall.DoorClipNumber);
-            Assert.AreEqual(WallKeyFlags.None, wall.Keys);
-            Assert.AreEqual(0, wall.CloakOpacity);
         }
 
         [Test]
         public void TestExtendedBlockTriggers()
         {
-            Assert.AreEqual(1, blxBlock.Triggers.Count);
+            Assert.AreEqual(2, blxBlock.Triggers.Count);
 
             // Check trigger is present and attached to correct face
             var trigger = blxBlock.Triggers[0];
             Assert.IsNotNull(blxBlock.Segments[1].GetSide(SegSide.Right).Wall.Trigger);
             Assert.AreSame(trigger, blxBlock.Segments[1].GetSide(SegSide.Right).Wall.Trigger);
-
-            // Check trigger targets set correctly
-            Assert.IsNotNull(trigger.Targets);
-            Assert.AreEqual(1, trigger.Targets.Count);
-            var targetSide = blxBlock.Segments[3].GetSide(SegSide.Left);
-            Assert.AreSame(targetSide, trigger.Targets[0]);
-            Assert.AreEqual(1, targetSide.Wall.ControllingTriggers.Count);
-            Assert.AreEqual(0, targetSide.Wall.ControllingTriggers[0].targetNum);
-            Assert.AreSame(trigger, targetSide.Wall.ControllingTriggers[0].trigger);
-
-            // Check properties
-            Assert.AreEqual(TriggerType.OpenDoor, trigger.Type);
-            Assert.AreEqual(0, trigger.Flags);
-            Assert.AreEqual((Fix)5.0, Fix.FromRawValue((int)trigger.Value));
-            Assert.AreEqual(-1, trigger.Time);
         }
 
         [Test]
         public void TestExtendedBlockAnimatedLights()
         {
-            Assert.Fail();
+            Assert.AreEqual(1, blxBlock.AnimatedLights.Count);
+
+            var light = blxBlock.AnimatedLights[0];
+            Assert.IsNotNull(blxBlock.Segments[0].GetSide(SegSide.Front).AnimatedLight);
+            Assert.AreSame(light, blxBlock.Segments[0].GetSide(SegSide.Front).AnimatedLight);
+            Assert.AreSame(blxBlock.Segments[0].GetSide(SegSide.Front), light.Side);
+            Assert.AreEqual(0x7B23C0FF, light.Mask);
+            Assert.AreEqual(0.1, light.TickLength, 0.001);
+            Assert.AreEqual(0.25, light.TimeToNextTick, 0.001);
         }
 
         [Test]
         public void TestExtendedBlockMatcens()
         {
-            Assert.Fail();
+            Assert.AreEqual(1, blxBlock.MatCenters.Count);
+
+            var matcen = blxBlock.MatCenters[0];
+            Assert.AreSame(matcen, blxBlock.Segments[8].MatCenter);
+            Assert.AreEqual(8, matcen.segnum);
+            Assert.AreEqual(4, blxBlock.Segments[8].special);
         }
 
         [Test]
-        public void TestExtendedBlockSpecial()
-        {
-            Assert.Fail();
-        }
-
-        [Test]
+        [Ignore(".blx file write support is no longer planned for implementation.")]
         public void TestExtendedBlockWrite()
         {
             var stream = new MemoryStream();
