@@ -20,36 +20,21 @@
     SOFTWARE.
 */
 
-using System.Collections.Generic;
+using System;
 
 namespace LibDescent.Data
 {
-    public class LevelVertex
+    public class AnimatedLight
     {
-        private FixVector location;
+        public uint Mask { get; set; }
+        public Fix TimeToNextTick { get; set; }
+        public Fix TickLength { get; set; }
 
-        public LevelVertex(FixVector location)
+        public Side Side { get; }
+
+        public AnimatedLight(Side side)
         {
-            this.location = location;
+            Side = side ?? throw new ArgumentNullException(nameof(side));
         }
-
-        public LevelVertex(Fix x, Fix y, Fix z)
-        {
-            location = new FixVector(x, y, z);
-        }
-
-        public List<(Segment segment, uint vertexNum)> ConnectedSegments { get; } = new List<(Segment, uint)>();
-        public List<(Side side, uint vertexNum)> ConnectedSides { get; } = new List<(Side, uint)>();
-        public FixVector Location { get => location; set => location = value; }
-        public double X { get => location.x; set => location.x = value; }
-        public double Y { get => location.y; set => location.y = value; }
-        public double Z { get => location.z; set => location.z = value; }
-
-        public override string ToString()
-        {
-            return string.Format("Location: {0}", location.ToString());
-        }
-
-        public static implicit operator FixVector(LevelVertex v) => v.Location;
     }
 }
