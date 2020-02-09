@@ -321,7 +321,7 @@ namespace LibDescent.Tests
             var segments = CreateTestBlockExtended().Segments;
 
             Assert.AreSame(segments[6].GetSide(SegSide.Right),
-                segments[5].GetSide(SegSide.Right).GetNeighbor(Edge.Left, side => side.IsVisible && !side.IsTransparent).Value.side);
+                segments[5].GetSide(SegSide.Right).GetNeighbor(Edge.Left, side => side.IsVisible && side.BaseTextureIndex != 269).Value.side);
         }
 
         [Test]

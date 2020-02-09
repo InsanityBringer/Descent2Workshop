@@ -72,9 +72,9 @@ namespace LibDescent.Data
 
                     var side = new Side(segment, sideNum);
                     segment.Sides[sideNum] = side;
-                    side.BaseTexture = LevelTexture.FromTextureIndex(BlockCommon.ReadPrimaryTextureIndex(reader, false));
+                    side.BaseTextureIndex = BlockCommon.ReadPrimaryTextureIndex(reader, false);
                     (var overlayIndex, var overlayRotation) = BlockCommon.ReadSecondaryTexture(reader, false);
-                    side.OverlayTexture = LevelTexture.FromTextureIndex(overlayIndex);
+                    side.OverlayTextureIndex = overlayIndex;
                     side.OverlayRotation = overlayRotation;
                     for (int i = 0; i < side.Uvls.Length; i++)
                     {
@@ -288,9 +288,9 @@ namespace LibDescent.Data
                     segment.Sides[sideNum] = side;
 
                     // Textures
-                    side.BaseTexture = LevelTexture.FromTextureIndex(BlockCommon.ReadPrimaryTextureIndex(reader, true));
+                    side.BaseTextureIndex = BlockCommon.ReadPrimaryTextureIndex(reader, true);
                     (var overlayIndex, var overlayRotation) = BlockCommon.ReadSecondaryTexture(reader, true);
-                    side.OverlayTexture = LevelTexture.FromTextureIndex(overlayIndex);
+                    side.OverlayTextureIndex = overlayIndex;
                     side.OverlayRotation = overlayRotation;
                     for (int i = 0; i < side.Uvls.Length; i++)
                     {

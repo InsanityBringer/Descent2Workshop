@@ -42,8 +42,8 @@ namespace LibDescent.Data
 
         public Wall Wall { get; set; }
         public Segment ConnectedSegment { get; set; }
-        public LevelTexture BaseTexture { get; set; }
-        public LevelTexture OverlayTexture { get; set; }
+        public ushort BaseTextureIndex { get; set; }
+        public ushort OverlayTextureIndex { get; set; }
         public OverlayRotation OverlayRotation { get; set; }
         public Uvl[] Uvls { get; }
         public AnimatedLight AnimatedLight { get; set; }
@@ -135,9 +135,6 @@ namespace LibDescent.Data
 
         // Indicates if there is a visible texture on this side
         public bool IsVisible => (ConnectedSegment == null) || (Wall != null && Wall.Type != WallType.Open);
-
-        // Indicates if there is a transparent texture on this side
-        public bool IsTransparent => !IsVisible || BaseTexture.IsTransparent || OverlayTexture.IsTransparent;
         #endregion
 
         public int GetNumVertices() => Uvls.Length;
