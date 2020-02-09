@@ -224,7 +224,44 @@ namespace LibDescent.Data
 
         public void WriteToStream(Stream stream)
         {
-            throw new NotImplementedException();
+            var writer = new StreamWriter(stream);
+            writer.WriteLine("DMB_BLOCK_FILE");
+
+            foreach (var segment in Segments)
+            {
+                writer.WriteLine($"segment {Segments.IndexOf(segment)}");
+
+                foreach (var side in segment.Sides)
+                {
+                    writer.WriteLine($"  side {Array.IndexOf(segment.Sides, side)}");
+                    writer.WriteLine($"    tmap_num {side.BaseTextureIndex}");
+                    writer.WriteLine($"    tmap_num2 {(short)(side.OverlayTextureIndex | ((ushort)side.OverlayRotation << 14))}");
+
+                    foreach (var uvl in side.Uvls)
+                    {
+                        (var u, var v, var l) = uvl.ToRawValues();
+                        writer.WriteLine($"    uvls {u} {v} {l}");
+                    }
+                }
+
+                writer.Write("  children");
+                foreach (var side in segment.Sides)
+                {
+                    var connectedSegmentId = side.ConnectedSegment != null ? Segments.IndexOf(side.ConnectedSegment) : -1;
+                    writer.Write($" {connectedSegmentId}");
+                }
+                writer.WriteLine();
+
+                foreach (var vertex in segment.Vertices)
+                {
+                    writer.WriteLine($"  vms_vector {Array.IndexOf(segment.Vertices, vertex)}" +
+                        $" {vertex.Location.x.GetRawValue()} {vertex.Location.y.GetRawValue()} {vertex.Location.z.GetRawValue()}");
+                }
+
+                writer.WriteLine($"  static_light {segment.Light.GetRawValue()}");
+            }
+
+            writer.Flush();
         }
     }
 

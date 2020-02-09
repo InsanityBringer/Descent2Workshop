@@ -152,7 +152,8 @@ namespace LibDescent.Tests
             Assert.DoesNotThrow(() => blkBlock.WriteToStream(stream));
 
             var originalFileContents = GetArrayFromResourceStream("test.blk");
-            Assert.IsTrue(Enumerable.SequenceEqual(originalFileContents, stream.ToArray()));
+            var resultingFileContents = stream.ToArray();
+            Assert.IsTrue(Enumerable.SequenceEqual(originalFileContents, resultingFileContents));
         }
 
         [Test]
