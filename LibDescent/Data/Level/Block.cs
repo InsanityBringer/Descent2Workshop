@@ -10,7 +10,7 @@ namespace LibDescent.Data
     {
         List<Segment> Segments { get; }
         List<Wall> Walls { get; }
-        List<BlockTrigger> Triggers { get; }
+        List<BlxTrigger> Triggers { get; }
         List<AnimatedLight> AnimatedLights { get; }
         List<MatCenter> MatCenters { get; }
 
@@ -26,7 +26,7 @@ namespace LibDescent.Data
         public List<Wall> Walls => new List<Wall>();
 
         // Triggers is always empty for a regular block
-        public List<BlockTrigger> Triggers => new List<BlockTrigger>();
+        public List<BlxTrigger> Triggers => new List<BlxTrigger>();
 
         // AnimatedLights is always empty for a regular block
         public List<AnimatedLight> AnimatedLights => new List<AnimatedLight>();
@@ -273,7 +273,7 @@ namespace LibDescent.Data
 
         public List<Segment> Segments { get; } = new List<Segment>();
         public List<Wall> Walls { get; } = new List<Wall>();
-        public List<BlockTrigger> Triggers { get; } = new List<BlockTrigger>();
+        public List<BlxTrigger> Triggers { get; } = new List<BlxTrigger>();
         public List<AnimatedLight> AnimatedLights { get; } = new List<AnimatedLight>();
         public List<MatCenter> MatCenters { get; } = new List<MatCenter>();
 
@@ -391,7 +391,7 @@ namespace LibDescent.Data
                         // 255 (0xFF) means no trigger on this wall
                         if (triggerNum != 0xFF)
                         {
-                            var trigger = new BlockTrigger();
+                            var trigger = new BlxTrigger();
                             wall.Trigger = trigger;
                             block.Triggers.Add(trigger);
 

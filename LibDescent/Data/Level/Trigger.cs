@@ -80,8 +80,19 @@ namespace LibDescent.Data
 
     public interface ITrigger
     {
+        /// <summary>
+        /// The kind of action this trigger performs when activated.
+        /// </summary>
         TriggerType Type { get; set; }
+
+        /// <summary>
+        /// A list of the sides this trigger acts on.
+        /// </summary>
         List<Side> Targets { get; }
+
+        /// <summary>
+        /// A value used by the trigger's action. Effect depends on trigger type.
+        /// </summary>
         ValueType Value { get; set; }
     }
 
@@ -89,7 +100,7 @@ namespace LibDescent.Data
     /// A specialization of ITrigger that is agnostic regarding whether it is for D1 or D2
     /// (since the BLX format does not carry that information).
     /// </summary>
-    public class BlockTrigger : ITrigger
+    public class BlxTrigger : ITrigger
     {
         private int value;
 
@@ -110,6 +121,9 @@ namespace LibDescent.Data
 
         private Fix fixValue;
 
+        /// <summary>
+        /// Descent 1 does not use trigger types.
+        /// </summary>
         public TriggerType Type { get; set; }
 
         public List<Side> Targets { get; } = new List<Side>();
@@ -118,6 +132,10 @@ namespace LibDescent.Data
 
         public D1TriggerFlags Flags { get; set; }
 
+        /// <summary>
+        /// Appears to have been intended to govern the "cooldown" time of repeatable triggers.
+        /// Descent does not actually make use of this value.
+        /// </summary>
         public int Time { get; set; }
     }
 
@@ -126,14 +144,22 @@ namespace LibDescent.Data
         public const int MaxWallsPerLink = 10;
 
         private Fix fixValue;
-        private int intValue;
 
         public TriggerType Type { get; set; }
 
         public List<Side> Targets { get; } = new List<Side>();
 
-        public ValueType Value { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        /// <summary>
+        /// Descent 2 does not have any trigger types that use Value.
+        /// </summary>
+        public ValueType Value { get => fixValue; set => fixValue = (Fix)value; }
 
         public D2TriggerFlags Flags { get; set; }
+
+        /// <summary>
+        /// Appears to have been intended to govern the "cooldown" time of repeatable triggers.
+        /// Descent does not actually make use of this value.
+        /// </summary>
+        public int Time { get; set; }
     }
 }
