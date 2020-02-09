@@ -99,7 +99,6 @@ namespace LibDescent.Data
                 segment.Light = Fix.FromRawValue(BlockCommon.ReadValue<int>(reader, "static_light"));
                 segment.Function = SegFunction.None;
                 segment.MatCenter = null;
-                segment.value = 0xFF; // related to matcens, might be able to get rid of this
             }
 
             // Now set up segment connections
@@ -443,19 +442,20 @@ namespace LibDescent.Data
                 }
 
                 segment.Light = Fix.FromRawValue(BlockCommon.ReadValue<int>(reader, "static_light"));
-                segment.special = BlockCommon.ReadValue<byte>(reader, "special");
+                segment.Function = (SegFunction)BlockCommon.ReadValue<byte>(reader, "special");
 
                 var matcenNum = BlockCommon.ReadValue<sbyte>(reader, "matcen_num");
                 if (matcenNum != -1)
                 {
-                    var matcen = new MatCenter();
-                    matcen.segnum = (int)segmentId;
-                    matcen.fuelcenNum = matcenNum;
+                    var matcen = new MatCenter(segment);
                     segment.MatCenter = matcen;
                     block.MatCenters.Add(matcen);
                 }
 
-                segment.value = (byte)BlockCommon.ReadValue<sbyte>(reader, "value");
+                // This is an index into the fuelcen (also used for matcens) array in D1/D2.
+                // It's relatively easy to recalculate so we don't store it.
+                BlockCommon.ReadValue<sbyte>(reader, "value");
+
                 // Child/wall bitmasks are used internally by DLE but we don't really need them
                 // - they can be recalculated
                 BlockCommon.ReadValue<byte>(reader, "child_bitmask");

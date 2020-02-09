@@ -247,11 +247,14 @@ namespace LibDescent.Tests
         {
             var segment = CreateDefaultSegment();
 
-            segment.special = 1;
+            // Default value
+            Assert.AreEqual(SegFunction.None, segment.Function);
+
+            segment.Function = (SegFunction)1;
             Assert.AreEqual(SegFunction.FuelCenter, segment.Function);
 
             segment.Function = SegFunction.BlueGoal;
-            Assert.AreEqual(5, segment.special);
+            Assert.AreEqual(5, (int)segment.Function);
         }
 
         private IBlock CreateTestBlock()

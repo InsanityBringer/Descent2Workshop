@@ -207,8 +207,6 @@ namespace LibDescent.Tests
 
             var matcen = blxBlock.MatCenters[0];
             Assert.AreSame(matcen, blxBlock.Segments[8].MatCenter);
-            Assert.AreEqual(8, matcen.segnum);
-            Assert.AreEqual(4, blxBlock.Segments[8].special);
         }
 
         [Test]

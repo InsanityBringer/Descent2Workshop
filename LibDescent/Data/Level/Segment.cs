@@ -62,9 +62,7 @@ namespace LibDescent.Data
         // This is basically the index of vertex n+1 in the corresponding row in SideVerts, but it's awkward to calculate that so let's just cache it
         private static readonly int[,] EdgeNeighborTable = { { 2, 0, 0, 2 }, { 3, 3, 3, 3 }, { 2, 2, 0, 0 }, { 1, 1, 1, 1 }, { 2, 1, 0, 1 }, { 2, 3, 0, 3 } };
 
-        public byte special;
-        public byte value;
-        public byte flags;
+        private byte special;
 
         public Side[] Sides { get; }
         public LevelVertex[] Vertices { get; }
@@ -75,6 +73,12 @@ namespace LibDescent.Data
             set => special = (byte)value;
         }
         public Fix Light { get; set; }
+
+        /// <summary>
+        /// Used by Descent 2 for ambient sounds.
+        /// Values stored in level data are ignored/overwritten.
+        /// </summary>
+        public byte Flags { get; set; }
 
         #region Read-only convenience properties
         public FixVector Center => new FixVector(
