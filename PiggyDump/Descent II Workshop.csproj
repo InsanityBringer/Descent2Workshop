@@ -126,7 +126,6 @@
     <Compile Include="Editor\ControlCenter.cs" />
     <Compile Include="Editor\ConvertToOverload.cs" />
     <Compile Include="Editor\DynamicLight.cs" />
-    <Compile Include="Editor\EditorObject.cs" />
     <Compile Include="Editor\EditorState.cs" />
     <Compile Include="Editor\EditorUI.cs">
       <SubType>Form</SubType>
