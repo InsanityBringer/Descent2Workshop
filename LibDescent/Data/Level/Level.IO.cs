@@ -28,7 +28,7 @@ namespace LibDescent.Data
 {
     public abstract partial class DescentLevelBase
     {
-        protected void LoadFromStream(Stream stream)
+        protected virtual void LoadFromStream(Stream stream)
         {
             using (var reader = new BinaryReader(stream))
             {
@@ -55,7 +55,7 @@ namespace LibDescent.Data
             }
         }
 
-        protected internal struct DeferredLevelLoadData
+        private protected struct DeferredLevelLoadData
         {
             public int version;
             public Dictionary<Side, uint> sideWallLinks;
@@ -73,7 +73,7 @@ namespace LibDescent.Data
             }
         }
 
-        protected internal virtual void LoadMineData(BinaryReader reader, ref DeferredLevelLoadData levelLoadData)
+        private protected virtual void LoadMineData(BinaryReader reader, ref DeferredLevelLoadData levelLoadData)
         {
             if (Vertices.Count > 0 || Segments.Count > 0)
             {
@@ -147,7 +147,7 @@ namespace LibDescent.Data
             }
         }
 
-        protected internal void ReadSegmentConnections(BinaryReader reader, Segment segment, byte segmentBitMask)
+        private void ReadSegmentConnections(BinaryReader reader, Segment segment, byte segmentBitMask)
         {
             for (int sideNum = 0; sideNum < Segment.MaxSegmentSides; sideNum++)
             {
@@ -166,7 +166,7 @@ namespace LibDescent.Data
             }
         }
 
-        protected internal void ReadSegmentVertices(BinaryReader reader, Segment segment)
+        private void ReadSegmentVertices(BinaryReader reader, Segment segment)
         {
             for (uint i = 0; i < Segment.MaxSegmentVerts; i++)
             {
@@ -185,7 +185,7 @@ namespace LibDescent.Data
             }
         }
 
-        protected internal void ReadSegmentWalls(BinaryReader reader, Segment segment, ref DeferredLevelLoadData levelLoadData)
+        private void ReadSegmentWalls(BinaryReader reader, Segment segment, ref DeferredLevelLoadData levelLoadData)
         {
             byte wallsBitMask = reader.ReadByte();
             for (uint sideNum = 0; sideNum < Segment.MaxSegmentSides; sideNum++)
@@ -202,12 +202,12 @@ namespace LibDescent.Data
             }
         }
 
-        protected internal static bool SegmentHasSpecialData(byte segmentBitMask)
+        private static bool SegmentHasSpecialData(byte segmentBitMask)
         {
             return (segmentBitMask & (1 << Segment.MaxSegmentSides)) != 0;
         }
 
-        protected internal void ReadSegmentSpecial(BinaryReader reader, Segment segment, ref DeferredLevelLoadData levelLoadData)
+        private void ReadSegmentSpecial(BinaryReader reader, Segment segment, ref DeferredLevelLoadData levelLoadData)
         {
             segment.Function = (SegFunction)reader.ReadByte();
             var matcenNum = reader.ReadByte();
@@ -226,7 +226,7 @@ namespace LibDescent.Data
             }
         }
 
-        protected internal void ReadSegmentTextures(BinaryReader reader, Segment segment, ref DeferredLevelLoadData levelLoadData)
+        private void ReadSegmentTextures(BinaryReader reader, Segment segment, ref DeferredLevelLoadData levelLoadData)
         {
             for (int sideNum = 0; sideNum < Segment.MaxSegmentSides; sideNum++)
             {
@@ -255,7 +255,7 @@ namespace LibDescent.Data
             }
         }
 
-        internal protected struct FileInfo
+        private protected struct FileInfo
         {
             public ushort signature;
             public ushort version;
@@ -293,7 +293,7 @@ namespace LibDescent.Data
             public int deltaLightsSize;
         }
 
-        internal protected virtual FileInfo LoadGameInfo(BinaryReader reader, ref DeferredLevelLoadData levelLoadData)
+        private protected virtual FileInfo LoadGameInfo(BinaryReader reader, ref DeferredLevelLoadData levelLoadData)
         {
             // "FileInfo" segment
             FileInfo fileInfo = new FileInfo();
@@ -465,7 +465,7 @@ namespace LibDescent.Data
             return fileInfo;
         }
 
-        private static string ReadString(BinaryReader reader, int maxStringLength, bool variableLength)
+        private protected static string ReadString(BinaryReader reader, int maxStringLength, bool variableLength)
         {
             char[] stringBuffer = new char[maxStringLength];
             for (int i = 0; i < maxStringLength; i++)
@@ -483,7 +483,7 @@ namespace LibDescent.Data
             return new string(stringBuffer).Trim('\0');
         }
 
-        protected static (short segmentNum, short sideNum)[] ReadFixedLengthTargetList(BinaryReader reader, int targetListLength)
+        private protected static (short segmentNum, short sideNum)[] ReadFixedLengthTargetList(BinaryReader reader, int targetListLength)
         {
             var targetList = new (short segmentNum, short sideNum)[targetListLength];
             for (int i = 0; i < targetListLength; i++)
@@ -497,12 +497,12 @@ namespace LibDescent.Data
             return targetList;
         }
 
-        protected abstract void CheckLevelVersion(int version);
-        protected abstract ITrigger LoadTrigger(BinaryReader reader);
-        protected abstract void ApplyDeferredLoadData(ref DeferredLevelLoadData levelLoadData);
+        private protected abstract void CheckLevelVersion(int version);
+        private protected abstract ITrigger LoadTrigger(BinaryReader reader);
+        private protected abstract void ApplyDeferredLoadData(ref DeferredLevelLoadData levelLoadData);
     }
 
-    public partial class D1Level : DescentLevelBase, ILevel
+    public partial class D1Level
     {
         public static D1Level CreateFromStream(Stream stream)
         {
@@ -511,7 +511,7 @@ namespace LibDescent.Data
             return level;
         }
 
-        protected override void CheckLevelVersion(int version)
+        private protected override void CheckLevelVersion(int version)
         {
             if (version != 1)
             {
@@ -519,7 +519,7 @@ namespace LibDescent.Data
             }
         }
 
-        protected override ITrigger LoadTrigger(BinaryReader reader)
+        private protected override ITrigger LoadTrigger(BinaryReader reader)
         {
             var trigger = new D1Trigger();
             trigger.Type = (TriggerType)reader.ReadByte();
@@ -539,7 +539,7 @@ namespace LibDescent.Data
             return trigger;
         }
 
-        protected override void ApplyDeferredLoadData(ref DeferredLevelLoadData levelLoadData)
+        private protected override void ApplyDeferredLoadData(ref DeferredLevelLoadData levelLoadData)
         {
             foreach (var sideWallLink in levelLoadData.sideWallLinks)
             {
@@ -572,7 +572,7 @@ namespace LibDescent.Data
             return level;
         }
 
-        internal protected override FileInfo LoadGameInfo(BinaryReader reader, ref DeferredLevelLoadData levelLoadData)
+        private protected override FileInfo LoadGameInfo(BinaryReader reader, ref DeferredLevelLoadData levelLoadData)
         {
             var fileInfo = base.LoadGameInfo(reader, ref levelLoadData);
 
@@ -612,12 +612,12 @@ namespace LibDescent.Data
             return fileInfo;
         }
 
-        protected override void CheckLevelVersion(int version)
+        private protected override void CheckLevelVersion(int version)
         {
             throw new NotImplementedException();
         }
 
-        protected override ITrigger LoadTrigger(BinaryReader reader)
+        private protected override ITrigger LoadTrigger(BinaryReader reader)
         {
             var trigger = new D2Trigger();
             trigger.Type = (TriggerType)reader.ReadByte();
@@ -637,7 +637,7 @@ namespace LibDescent.Data
             return trigger;
         }
 
-        protected override void ApplyDeferredLoadData(ref DeferredLevelLoadData levelLoadData)
+        private protected override void ApplyDeferredLoadData(ref DeferredLevelLoadData levelLoadData)
         {
             foreach (var sideWallLink in levelLoadData.sideWallLinks)
             {
