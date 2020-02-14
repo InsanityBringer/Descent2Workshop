@@ -1,8 +1,5 @@
 ﻿using LibDescent.Data;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace LibDescent.Tests
 {
@@ -22,6 +19,19 @@ namespace LibDescent.Tests
         {
             // Level already loaded by Setup, just check it's there
             Assert.NotNull(level);
+        }
+
+        [Test]
+        public void TestEndOfExitTunnel()
+        {
+            // Exit tunnel side - true
+            Assert.IsTrue(level.Segments[17].GetSide(SegSide.Back).Exit);
+
+            // Joined side - false
+            Assert.IsFalse(level.Segments[0].GetSide(SegSide.Back).Exit);
+
+            // Unjoined side - false
+            Assert.IsFalse(level.Segments[17].GetSide(SegSide.Left).Exit);
         }
     }
 }

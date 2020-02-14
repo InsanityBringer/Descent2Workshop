@@ -20,9 +20,7 @@
     SOFTWARE.
 */
 
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace LibDescent.Data
@@ -35,10 +33,11 @@ namespace LibDescent.Data
         List<LevelObject> Objects { get; }
         List<Wall> Walls { get; }
         List<ITrigger> Triggers { get; }
+        List<Side> ReactorTriggerTargets { get; }
         List<MatCenter> MatCenters { get; }
     }
 
-    public abstract class DescentLevelBase
+    public abstract partial class DescentLevelBase
     {
         public string LevelName { get; set; }
 
@@ -50,61 +49,20 @@ namespace LibDescent.Data
 
         public List<Wall> Walls { get; } = new List<Wall>();
 
+        public const int MaxReactorTriggerTargets = 10;
+        public List<Side> ReactorTriggerTargets { get; } = new List<Side>();
+
         public List<MatCenter> MatCenters { get; } = new List<MatCenter>();
     }
 
-    public class D1Level : DescentLevelBase, ILevel
+    public partial class D1Level : DescentLevelBase, ILevel
     {
         public List<D1Trigger> Triggers { get; } = new List<D1Trigger>();
 
         List<ITrigger> ILevel.Triggers => Triggers.ToList<ITrigger>();
-
-        public static D1Level CreateFromStream(Stream stream)
-        {
-            using (var reader = new BinaryReader(stream))
-            {
-                int signature = reader.ReadInt32();
-                const int expectedSignature = 'P' * 0x1000000 + 'L' * 0x10000 + 'V' * 0x100 + 'L';
-                if (signature != expectedSignature)
-                {
-                    throw new InvalidDataException("Level signature is invalid.");
-                }
-                int version = reader.ReadInt32();
-                if (version != 1)
-                {
-                    throw new InvalidDataException($"Level version should be 1 but was {version}.");
-                }
-
-                var level = new D1Level();
-                int mineDataOffset = reader.ReadInt32();
-                int gameDataOffset = reader.ReadInt32();
-
-                reader.BaseStream.Seek(mineDataOffset, SeekOrigin.Begin);
-                level.LoadMineData(reader);
-                reader.BaseStream.Seek(gameDataOffset, SeekOrigin.Begin);
-                level.LoadGameInfo(reader);
-            }
-
-            throw new NotImplementedException();
-        }
-
-        private void LoadMineData(BinaryReader reader)
-        {
-            if (Vertices.Count > 0 || Segments.Count > 0)
-            {
-                throw new InvalidOperationException("Cannot load mine data when level is not empty.");
-            }
-
-            throw new NotImplementedException();
-        }
-
-        private void LoadGameInfo(BinaryReader reader)
-        {
-            throw new NotImplementedException();
-        }
     }
 
-    public class D2Level : DescentLevelBase, ILevel
+    public partial class D2Level : DescentLevelBase, ILevel
     {
         public Palette Palette { get; set; }
 

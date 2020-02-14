@@ -50,5 +50,20 @@ namespace LibDescent.Data
         /// Descent and Descent 2 ignore this value and always use 5 seconds.
         /// </summary>
         public Fix Interval { get; set; }
+
+        internal void InitializeSpawnedRobots(uint[] robotListFlags)
+        {
+            SpawnedRobotIds.Clear();
+            int arrayElementSize = sizeof(uint) * 8;
+            for (int robotId = 0; robotId < robotListFlags.Length * arrayElementSize; robotId++)
+            {
+                int flagOffset;
+                int arrayIndex = Math.DivRem(robotId, arrayElementSize, out flagOffset);
+                if ((robotListFlags[arrayIndex] & (1 << flagOffset)) != 0)
+                {
+                    SpawnedRobotIds.Add((uint)robotId);
+                }
+            }
+        }
     }
 }
