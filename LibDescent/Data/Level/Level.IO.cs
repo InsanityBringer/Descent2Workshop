@@ -88,7 +88,7 @@ namespace LibDescent.Data
             // Vertices
             for (int i = 0; i < numVertices; i++)
             {
-                var vector = FixVector.FromRawValues(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
+                var vector = ReadFixVector(reader);
                 var vertex = new LevelVertex(vector);
                 Vertices.Add(vertex);
             }
@@ -371,8 +371,8 @@ namespace LibDescent.Data
             reader.BaseStream.Seek(fileInfo.objectsOffset, SeekOrigin.Begin);
             for (int i = 0; i < fileInfo.objectsCount; i++)
             {
-                /*var levelObject = ReadObject(reader);
-                Objects.Add(levelObject);*/
+                var levelObject = ReadObject(reader, ref fileInfo);
+                Objects.Add(levelObject);
             }
 
             // Walls
@@ -465,6 +465,98 @@ namespace LibDescent.Data
             return fileInfo;
         }
 
+        private LevelObject ReadObject(BinaryReader reader, ref FileInfo fileInfo)
+        {
+            var levelObject = new LevelObject();
+            levelObject.type = (ObjectType)reader.ReadSByte();
+            levelObject.id = reader.ReadByte();
+            levelObject.controlType = (ControlType)reader.ReadByte();
+            levelObject.moveType = (MovementType)reader.ReadByte();
+            levelObject.renderType = (RenderType)reader.ReadByte();
+            levelObject.flags = reader.ReadByte();
+            levelObject.segnum = reader.ReadInt16();
+            levelObject.attachedObject = -1;
+            levelObject.position = ReadFixVector(reader);
+            levelObject.orientation = ReadFixMatrix(reader);
+            levelObject.size = reader.ReadInt32();
+            levelObject.shields = reader.ReadInt32();
+            levelObject.lastPos = ReadFixVector(reader);
+            levelObject.containsType = reader.ReadByte();
+            levelObject.containsId = reader.ReadByte();
+            levelObject.containsCount = reader.ReadByte();
+
+            switch (levelObject.moveType)
+            {
+                case MovementType.Physics:
+                    levelObject.physicsInfo.velocity = ReadFixVector(reader);
+                    levelObject.physicsInfo.thrust = ReadFixVector(reader);
+                    levelObject.physicsInfo.mass = reader.ReadInt32();
+                    levelObject.physicsInfo.drag = reader.ReadInt32();
+                    levelObject.physicsInfo.brakes = reader.ReadInt32();
+                    levelObject.physicsInfo.angVel = ReadFixVector(reader);
+                    levelObject.physicsInfo.rotThrust = ReadFixVector(reader);
+                    levelObject.physicsInfo.turnroll = reader.ReadInt16();
+                    levelObject.physicsInfo.flags = reader.ReadInt16();
+                    break;
+                case MovementType.Spinning:
+                    levelObject.spinRate = ReadFixVector(reader);
+                    break;
+            }
+            switch (levelObject.controlType)
+            {
+                case ControlType.AI:
+                    levelObject.aiInfo.behavior = reader.ReadByte();
+                    for (int i = 0; i < AIInfo.NumAIFlags; i++)
+                        levelObject.aiInfo.aiFlags[i] = reader.ReadByte();
+
+                    levelObject.aiInfo.hideSegment = reader.ReadInt16();
+                    levelObject.aiInfo.hideIndex = reader.ReadInt16();
+                    levelObject.aiInfo.pathLength = reader.ReadInt16();
+                    levelObject.aiInfo.curPathIndex = reader.ReadInt16();
+
+                    if (fileInfo.version <= 25)
+                    {
+                        reader.ReadInt32();
+                    }
+                    break;
+                case ControlType.Explosion:
+                    levelObject.explosionInfo.SpawnTime = reader.ReadInt32();
+                    levelObject.explosionInfo.DeleteTime = reader.ReadInt32();
+                    levelObject.explosionInfo.DeleteObject = reader.ReadInt16();
+                    break;
+                case ControlType.Powerup:
+                    if (fileInfo.version >= 25)
+                    {
+                        levelObject.powerupCount = reader.ReadInt32();
+                    }
+                    break;
+            }
+            switch (levelObject.renderType)
+            {
+                case RenderType.Polyobj:
+                    {
+                        levelObject.modelInfo.modelNum = reader.ReadInt32();
+                        for (int i = 0; i < Polymodel.MAX_SUBMODELS; i++)
+                        {
+                            levelObject.modelInfo.animAngles[i] = ReadFixAngles(reader);
+                        }
+                        levelObject.modelInfo.flags = reader.ReadInt32();
+                        levelObject.modelInfo.textureOverride = reader.ReadInt32();
+                    }
+                    break;
+                case RenderType.WeaponVClip:
+                case RenderType.Hostage:
+                case RenderType.Powerup:
+                case RenderType.Fireball:
+                    levelObject.spriteInfo.vclipNum = reader.ReadInt32();
+                    levelObject.spriteInfo.frameTime = reader.ReadInt32();
+                    levelObject.spriteInfo.frameNumber = reader.ReadByte();
+                    break;
+            }
+
+            return levelObject;
+        }
+
         private protected static string ReadString(BinaryReader reader, int maxStringLength, bool variableLength)
         {
             char[] stringBuffer = new char[maxStringLength];
@@ -495,6 +587,21 @@ namespace LibDescent.Data
                 targetList[i].sideNum = reader.ReadInt16();
             }
             return targetList;
+        }
+
+        private protected static FixVector ReadFixVector(BinaryReader reader)
+        {
+            return FixVector.FromRawValues(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
+        }
+
+        private protected static FixAngles ReadFixAngles(BinaryReader reader)
+        {
+            return FixAngles.FromRawValues(reader.ReadInt16(), reader.ReadInt16(), reader.ReadInt16());
+        }
+
+        private protected FixMatrix ReadFixMatrix(BinaryReader reader)
+        {
+            return new FixMatrix(ReadFixVector(reader), ReadFixVector(reader), ReadFixVector(reader));
         }
 
         private protected abstract void CheckLevelVersion(int version);
