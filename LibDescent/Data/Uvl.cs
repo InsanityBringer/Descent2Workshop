@@ -47,6 +47,11 @@ namespace LibDescent.Data
             return ((short)(u.GetRawValue() >> 5), (short)(v.GetRawValue() >> 5), (ushort)(l.GetRawValue() >> 1));
         }
 
+        public (double u, double v, double l) ToDoubles()
+        {
+            return (u, v, l);
+        }
+
         public override string ToString()
         {
             return string.Format("{0}, {1}, {2}", u, v, l);

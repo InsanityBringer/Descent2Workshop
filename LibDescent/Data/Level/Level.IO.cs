@@ -243,7 +243,7 @@ namespace LibDescent.Data
                     {
                         rawTextureIndex = reader.ReadUInt16();
                         side.OverlayTextureIndex = (ushort)(rawTextureIndex & 0x3fffu);
-                        side.OverlayRotation = (OverlayRotation)(rawTextureIndex & 0xc000u);
+                        side.OverlayRotation = (OverlayRotation)((rawTextureIndex & 0xc000u) >> 14);
                     }
 
                     for (int uv = 0; uv < side.GetNumVertices(); uv++)

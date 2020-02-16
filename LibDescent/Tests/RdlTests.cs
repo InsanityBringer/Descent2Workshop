@@ -102,6 +102,42 @@ namespace LibDescent.Tests
         }
 
         [Test]
+        public void TestSideTextures()
+        {
+            // Segment 0 side 4 is joined, no textures
+            Assert.AreEqual(0, level.Segments[0].Sides[4].BaseTextureIndex);
+            Assert.AreEqual(0, level.Segments[0].Sides[4].OverlayTextureIndex);
+
+            // Segment 11 side 0 has one texture
+            Assert.AreEqual(19, level.Segments[11].Sides[0].BaseTextureIndex);
+            Assert.AreEqual(0, level.Segments[11].Sides[0].OverlayTextureIndex);
+
+            // Segment 3 side 4 has two textures
+            Assert.AreEqual(109, level.Segments[3].Sides[4].BaseTextureIndex);
+            Assert.AreEqual(255, level.Segments[3].Sides[4].OverlayTextureIndex);
+            Assert.AreEqual(OverlayRotation.Rotate0, level.Segments[3].Sides[4].OverlayRotation);
+
+            // Segment 10 side 0 has a flipped overlay texture
+            Assert.AreEqual(100, level.Segments[10].Sides[0].BaseTextureIndex);
+            Assert.AreEqual(250, level.Segments[10].Sides[0].OverlayTextureIndex);
+            Assert.AreEqual(OverlayRotation.Rotate180, level.Segments[10].Sides[0].OverlayRotation);
+        }
+
+        [Test]
+        public void TestSideUVLs()
+        {
+            Assert.That(level.Segments[3].Sides[4].Uvls[0].ToDoubles(), Is.EqualTo((0, 0, 1.0)).Within(0.001));
+            Assert.That(level.Segments[3].Sides[4].Uvls[1].ToDoubles(), Is.EqualTo((0, 1, 0.7764)).Within(0.001));
+            Assert.That(level.Segments[3].Sides[4].Uvls[2].ToDoubles(), Is.EqualTo((-1, 1, 1.0)).Within(0.001));
+            Assert.That(level.Segments[3].Sides[4].Uvls[3].ToDoubles(), Is.EqualTo((-1, 0, 1.0)).Within(0.001));
+
+            Assert.That(level.Segments[10].Sides[3].Uvls[0].ToDoubles(), Is.EqualTo((0, 0, 1.0)).Within(0.001));
+            Assert.That(level.Segments[10].Sides[3].Uvls[1].ToDoubles(), Is.EqualTo((-1, 1, 1.0)).Within(0.001));
+            Assert.That(level.Segments[10].Sides[3].Uvls[2].ToDoubles(), Is.EqualTo((-2, 1, 1.0)).Within(0.001));
+            Assert.That(level.Segments[10].Sides[3].Uvls[3].ToDoubles(), Is.EqualTo((-3, 0, 1.0)).Within(0.001));
+        }
+
+        [Test]
         public void TestObjects()
         {
             Assert.AreEqual(5, level.Objects.Count);
