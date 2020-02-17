@@ -26,236 +26,20 @@ using System.IO;
 
 namespace LibDescent.Data
 {
-    public abstract partial class DescentLevelBase
+    internal abstract class DescentLevelLoader
     {
-        protected virtual void LoadFromStream(Stream stream)
-        {
-            using (var reader = new BinaryReader(stream))
-            {
-                int signature = reader.ReadInt32();
-                const int expectedSignature = 'P' * 0x1000000 + 'L' * 0x10000 + 'V' * 0x100 + 'L';
-                if (signature != expectedSignature)
-                {
-                    throw new InvalidDataException("Level signature is invalid.");
-                }
-                int version = reader.ReadInt32();
-                CheckLevelVersion(version);
+        protected Stream _stream;
+        protected int _levelVersion;
+        protected int _mineDataOffset;
+        protected int _gameDataOffset;
+        protected FileInfo _fileInfo;
+        private Dictionary<Side, uint> _sideWallLinks = new Dictionary<Side, uint>();
+        private Dictionary<Segment, uint> _segmentMatcenLinks = new Dictionary<Segment, uint>();
+        private Dictionary<Wall, byte> _wallTriggerLinks = new Dictionary<Wall, byte>();
 
-                var levelLoadData = new DeferredLevelLoadData(version);
-                int mineDataOffset = reader.ReadInt32();
-                int gameDataOffset = reader.ReadInt32();
-                _ = reader.ReadInt32(); // hostageTextOffset - not used
+        protected abstract ILevel Level { get; }
 
-                reader.BaseStream.Seek(mineDataOffset, SeekOrigin.Begin);
-                LoadMineData(reader, ref levelLoadData);
-                reader.BaseStream.Seek(gameDataOffset, SeekOrigin.Begin);
-                LoadGameInfo(reader, ref levelLoadData);
-
-                ApplyDeferredLoadData(ref levelLoadData);
-            }
-        }
-
-        private protected struct DeferredLevelLoadData
-        {
-            public int version;
-            public Dictionary<Side, uint> sideWallLinks;
-            public Dictionary<Segment, uint> segmentMatcenLinks;
-            public List<ITrigger> triggers;
-            public Dictionary<Wall, byte> wallTriggerLinks;
-
-            public DeferredLevelLoadData(int version)
-            {
-                this.version = version;
-                sideWallLinks = new Dictionary<Side, uint>();
-                segmentMatcenLinks = new Dictionary<Segment, uint>();
-                triggers = new List<ITrigger>();
-                wallTriggerLinks = new Dictionary<Wall, byte>();
-            }
-        }
-
-        private protected virtual void LoadMineData(BinaryReader reader, ref DeferredLevelLoadData levelLoadData)
-        {
-            if (Vertices.Count > 0 || Segments.Count > 0)
-            {
-                throw new InvalidOperationException("Cannot load mine data when level is not empty.");
-            }
-
-            // Header
-            _ = reader.ReadByte(); // compiled mine version, not used
-            short numVertices = reader.ReadInt16();
-            short numSegments = reader.ReadInt16();
-
-            // Vertices
-            for (int i = 0; i < numVertices; i++)
-            {
-                var vector = ReadFixVector(reader);
-                var vertex = new LevelVertex(vector);
-                Vertices.Add(vertex);
-            }
-
-            // Segments
-
-            // Allocate segments/sides before reading data so we don't need a separate linking phase for them
-            for (int i = 0; i < numSegments; i++)
-            {
-                var segment = new Segment();
-                for (uint sideNum = 0; sideNum < Segment.MaxSegmentSides; sideNum++)
-                {
-                    segment.Sides[sideNum] = new Side(segment, sideNum);
-                }
-                Segments.Add(segment);
-            }
-            // Now read segment data
-            foreach (var segment in Segments)
-            {
-                byte segmentBitMask = reader.ReadByte();
-                if (levelLoadData.version == 5)
-                {
-                    if (SegmentHasSpecialData(segmentBitMask))
-                    {
-                        ReadSegmentSpecial(reader, segment, ref levelLoadData);
-                    }
-                    ReadSegmentVertices(reader, segment);
-                    ReadSegmentConnections(reader, segment, segmentBitMask);
-                }
-                else
-                {
-                    ReadSegmentConnections(reader, segment, segmentBitMask);
-                    ReadSegmentVertices(reader, segment);
-                    if (levelLoadData.version <= 1 && SegmentHasSpecialData(segmentBitMask))
-                    {
-                        ReadSegmentSpecial(reader, segment, ref levelLoadData);
-                    }
-                }
-
-                if (levelLoadData.version <= 5)
-                {
-                    segment.Light = Fix.FromRawValue(reader.ReadUInt16() << 4);
-                }
-
-                ReadSegmentWalls(reader, segment, ref levelLoadData);
-                ReadSegmentTextures(reader, segment, ref levelLoadData);
-            }
-
-            // D2 retail location for segment special data
-            if (levelLoadData.version > 5)
-            {
-                foreach (var segment in Segments)
-                {
-                    ReadSegmentSpecial(reader, segment, ref levelLoadData);
-                }
-            }
-        }
-
-        private void ReadSegmentConnections(BinaryReader reader, Segment segment, byte segmentBitMask)
-        {
-            for (int sideNum = 0; sideNum < Segment.MaxSegmentSides; sideNum++)
-            {
-                if ((segmentBitMask & (1 << sideNum)) != 0)
-                {
-                    var childSegmentId = reader.ReadInt16();
-                    if (childSegmentId == -2)
-                    {
-                        segment.Sides[sideNum].Exit = true;
-                    }
-                    else
-                    {
-                        segment.Sides[sideNum].ConnectedSegment = Segments[childSegmentId];
-                    }
-                }
-            }
-        }
-
-        private void ReadSegmentVertices(BinaryReader reader, Segment segment)
-        {
-            for (uint i = 0; i < Segment.MaxSegmentVerts; i++)
-            {
-                var vertexNum = reader.ReadInt16();
-                segment.Vertices[i] = Vertices[vertexNum];
-                segment.Vertices[i].ConnectedSegments.Add((segment, i));
-            }
-
-            // Connect vertices to sides
-            foreach (var side in segment.Sides)
-            {
-                for (int vertexNum = 0; vertexNum < side.GetNumVertices(); vertexNum++)
-                {
-                    side.GetVertex(vertexNum).ConnectedSides.Add((side, (uint)vertexNum));
-                }
-            }
-        }
-
-        private void ReadSegmentWalls(BinaryReader reader, Segment segment, ref DeferredLevelLoadData levelLoadData)
-        {
-            byte wallsBitMask = reader.ReadByte();
-            for (uint sideNum = 0; sideNum < Segment.MaxSegmentSides; sideNum++)
-            {
-                if ((wallsBitMask & (1 << (int)sideNum)) != 0)
-                {
-                    byte wallNum = reader.ReadByte();
-                    if (wallNum != 255)
-                    {
-                        // Walls haven't been read yet so we need to record the numbers and link later
-                        levelLoadData.sideWallLinks[segment.Sides[sideNum]] = wallNum;
-                    }
-                }
-            }
-        }
-
-        private static bool SegmentHasSpecialData(byte segmentBitMask)
-        {
-            return (segmentBitMask & (1 << Segment.MaxSegmentSides)) != 0;
-        }
-
-        private void ReadSegmentSpecial(BinaryReader reader, Segment segment, ref DeferredLevelLoadData levelLoadData)
-        {
-            segment.Function = (SegFunction)reader.ReadByte();
-            var matcenNum = reader.ReadByte();
-            // fuelcen number
-            _ = levelLoadData.version > 5 ? reader.ReadByte() : reader.ReadInt16();
-
-            if (levelLoadData.version <= 1 && matcenNum != 0xFF)
-            {
-                levelLoadData.segmentMatcenLinks[segment] = matcenNum;
-            }
-
-            if (levelLoadData.version > 5)
-            {
-                segment.Flags = reader.ReadByte();
-                segment.Light = Fix.FromRawValue(reader.ReadInt32());
-            }
-        }
-
-        private void ReadSegmentTextures(BinaryReader reader, Segment segment, ref DeferredLevelLoadData levelLoadData)
-        {
-            for (int sideNum = 0; sideNum < Segment.MaxSegmentSides; sideNum++)
-            {
-                var side = segment.Sides[sideNum];
-                if (side.ConnectedSegment == null || levelLoadData.sideWallLinks.ContainsKey(side))
-                {
-                    var rawTextureIndex = reader.ReadUInt16();
-                    side.BaseTextureIndex = (ushort)(rawTextureIndex & 0x7fffu);
-                    if ((rawTextureIndex & 0x8000) == 0)
-                    {
-                        side.OverlayTextureIndex = 0;
-                    }
-                    else
-                    {
-                        rawTextureIndex = reader.ReadUInt16();
-                        side.OverlayTextureIndex = (ushort)(rawTextureIndex & 0x3fffu);
-                        side.OverlayRotation = (OverlayRotation)((rawTextureIndex & 0xc000u) >> 14);
-                    }
-
-                    for (int uv = 0; uv < side.GetNumVertices(); uv++)
-                    {
-                        var uvl = Uvl.FromRawValues(reader.ReadInt16(), reader.ReadInt16(), reader.ReadUInt16());
-                        side.Uvls[uv] = uvl;
-                    }
-                }
-            }
-        }
-
-        private protected struct FileInfo
+        protected struct FileInfo
         {
             public ushort signature;
             public ushort version;
@@ -293,70 +77,273 @@ namespace LibDescent.Data
             public int deltaLightsSize;
         }
 
-        private protected virtual FileInfo LoadGameInfo(BinaryReader reader, ref DeferredLevelLoadData levelLoadData)
+        protected void LoadLevel()
         {
+            using (var reader = new BinaryReader(_stream))
+            {
+                int signature = reader.ReadInt32();
+                const int expectedSignature = 'P' * 0x1000000 + 'L' * 0x10000 + 'V' * 0x100 + 'L';
+                if (signature != expectedSignature)
+                {
+                    throw new InvalidDataException("Level signature is invalid.");
+                }
+                _levelVersion = reader.ReadInt32();
+                CheckLevelVersion();
+
+                _mineDataOffset = reader.ReadInt32();
+                _gameDataOffset = reader.ReadInt32();
+                _ = reader.ReadInt32(); // hostageTextOffset - not used
+
+                LoadMineData(reader);
+                LoadGameInfo(reader);
+                LoadVersionSpecificGameInfo(reader);
+            }
+        }
+
+        private void LoadMineData(BinaryReader reader)
+        {
+            reader.BaseStream.Seek(_mineDataOffset, SeekOrigin.Begin);
+
+            // Header
+            _ = reader.ReadByte(); // compiled mine version, not used
+            short numVertices = reader.ReadInt16();
+            short numSegments = reader.ReadInt16();
+
+            // Vertices
+            for (int i = 0; i < numVertices; i++)
+            {
+                var vector = ReadFixVector(reader);
+                var vertex = new LevelVertex(vector);
+                Level.Vertices.Add(vertex);
+            }
+
+            // Segments
+
+            // Allocate segments/sides before reading data so we don't need a separate linking phase for them
+            for (int i = 0; i < numSegments; i++)
+            {
+                var segment = new Segment();
+                for (uint sideNum = 0; sideNum < Segment.MaxSegmentSides; sideNum++)
+                {
+                    segment.Sides[sideNum] = new Side(segment, sideNum);
+                }
+                Level.Segments.Add(segment);
+            }
+            // Now read segment data
+            foreach (var segment in Level.Segments)
+            {
+                byte segmentBitMask = reader.ReadByte();
+                if (_levelVersion == 5)
+                {
+                    if (SegmentHasSpecialData(segmentBitMask))
+                    {
+                        ReadSegmentSpecial(reader, segment);
+                    }
+                    ReadSegmentVertices(reader, segment);
+                    ReadSegmentConnections(reader, segment, segmentBitMask);
+                }
+                else
+                {
+                    ReadSegmentConnections(reader, segment, segmentBitMask);
+                    ReadSegmentVertices(reader, segment);
+                    if (_levelVersion <= 1 && SegmentHasSpecialData(segmentBitMask))
+                    {
+                        ReadSegmentSpecial(reader, segment);
+                    }
+                }
+
+                if (_levelVersion <= 5)
+                {
+                    segment.Light = Fix.FromRawValue(reader.ReadUInt16() << 4);
+                }
+
+                ReadSegmentWalls(reader, segment);
+                ReadSegmentTextures(reader, segment);
+            }
+
+            // D2 retail location for segment special data
+            if (_levelVersion > 5)
+            {
+                foreach (var segment in Level.Segments)
+                {
+                    ReadSegmentSpecial(reader, segment);
+                }
+            }
+        }
+
+        private void ReadSegmentConnections(BinaryReader reader, Segment segment, byte segmentBitMask)
+        {
+            for (int sideNum = 0; sideNum < Segment.MaxSegmentSides; sideNum++)
+            {
+                if ((segmentBitMask & (1 << sideNum)) != 0)
+                {
+                    var childSegmentId = reader.ReadInt16();
+                    if (childSegmentId == -2)
+                    {
+                        segment.Sides[sideNum].Exit = true;
+                    }
+                    else
+                    {
+                        segment.Sides[sideNum].ConnectedSegment = Level.Segments[childSegmentId];
+                    }
+                }
+            }
+        }
+
+        private void ReadSegmentVertices(BinaryReader reader, Segment segment)
+        {
+            for (uint i = 0; i < Segment.MaxSegmentVerts; i++)
+            {
+                var vertexNum = reader.ReadInt16();
+                segment.Vertices[i] = Level.Vertices[vertexNum];
+                segment.Vertices[i].ConnectedSegments.Add((segment, i));
+            }
+
+            // Connect vertices to sides
+            foreach (var side in segment.Sides)
+            {
+                for (int vertexNum = 0; vertexNum < side.GetNumVertices(); vertexNum++)
+                {
+                    side.GetVertex(vertexNum).ConnectedSides.Add((side, (uint)vertexNum));
+                }
+            }
+        }
+
+        private void ReadSegmentWalls(BinaryReader reader, Segment segment)
+        {
+            byte wallsBitMask = reader.ReadByte();
+            for (uint sideNum = 0; sideNum < Segment.MaxSegmentSides; sideNum++)
+            {
+                if ((wallsBitMask & (1 << (int)sideNum)) != 0)
+                {
+                    byte wallNum = reader.ReadByte();
+                    if (wallNum != 255)
+                    {
+                        // Walls haven't been read yet so we need to record the numbers and link later
+                        _sideWallLinks[segment.Sides[sideNum]] = wallNum;
+                    }
+                }
+            }
+        }
+
+        private static bool SegmentHasSpecialData(byte segmentBitMask)
+        {
+            return (segmentBitMask & (1 << Segment.MaxSegmentSides)) != 0;
+        }
+
+        private void ReadSegmentSpecial(BinaryReader reader, Segment segment)
+        {
+            segment.Function = (SegFunction)reader.ReadByte();
+            var matcenNum = reader.ReadByte();
+            // fuelcen number
+            _ = _levelVersion > 5 ? reader.ReadByte() : reader.ReadInt16();
+
+            if (_levelVersion <= 1 && matcenNum != 0xFF)
+            {
+                _segmentMatcenLinks[segment] = matcenNum;
+            }
+
+            if (_levelVersion > 5)
+            {
+                segment.Flags = reader.ReadByte();
+                segment.Light = Fix.FromRawValue(reader.ReadInt32());
+            }
+        }
+
+        private void ReadSegmentTextures(BinaryReader reader, Segment segment)
+        {
+            for (int sideNum = 0; sideNum < Segment.MaxSegmentSides; sideNum++)
+            {
+                var side = segment.Sides[sideNum];
+                if (side.ConnectedSegment == null || _sideWallLinks.ContainsKey(side))
+                {
+                    var rawTextureIndex = reader.ReadUInt16();
+                    side.BaseTextureIndex = (ushort)(rawTextureIndex & 0x7fffu);
+                    if ((rawTextureIndex & 0x8000) == 0)
+                    {
+                        side.OverlayTextureIndex = 0;
+                    }
+                    else
+                    {
+                        rawTextureIndex = reader.ReadUInt16();
+                        side.OverlayTextureIndex = (ushort)(rawTextureIndex & 0x3fffu);
+                        side.OverlayRotation = (OverlayRotation)((rawTextureIndex & 0xc000u) >> 14);
+                    }
+
+                    for (int uv = 0; uv < side.GetNumVertices(); uv++)
+                    {
+                        var uvl = Uvl.FromRawValues(reader.ReadInt16(), reader.ReadInt16(), reader.ReadUInt16());
+                        side.Uvls[uv] = uvl;
+                    }
+                }
+            }
+        }
+
+        private void LoadGameInfo(BinaryReader reader)
+        {
+            reader.BaseStream.Seek(_gameDataOffset, SeekOrigin.Begin);
+
             // "FileInfo" segment
-            FileInfo fileInfo = new FileInfo();
-            fileInfo.signature = reader.ReadUInt16();
-            if (fileInfo.signature != 0x6705)
+            _fileInfo.signature = reader.ReadUInt16();
+            if (_fileInfo.signature != 0x6705)
             {
                 throw new InvalidDataException("Game info signature is invalid.");
             }
 
             const int MIN_GAMEINFO_VERSION = 22;
-            fileInfo.version = reader.ReadUInt16();
-            if (fileInfo.version < MIN_GAMEINFO_VERSION)
+            _fileInfo.version = reader.ReadUInt16();
+            if (_fileInfo.version < MIN_GAMEINFO_VERSION)
             {
                 throw new InvalidDataException("Game info version is invalid.");
             }
 
-            fileInfo.size = reader.ReadInt32();
+            _fileInfo.size = reader.ReadInt32();
             // This is not actually used by the game, it's from an older (probably obsolete) format
-            fileInfo.mineFilename = ReadString(reader, 15, false);
-            fileInfo.levelNumber = reader.ReadInt32();
-            fileInfo.playerOffset = reader.ReadInt32();
-            fileInfo.playerSize = reader.ReadInt32();
-            fileInfo.objectsOffset = reader.ReadInt32();
-            fileInfo.objectsCount = reader.ReadInt32();
-            fileInfo.objectsSize = reader.ReadInt32();
-            fileInfo.wallsOffset = reader.ReadInt32();
-            fileInfo.wallsCount = reader.ReadInt32();
-            fileInfo.wallsSize = reader.ReadInt32();
-            fileInfo.doorsOffset = reader.ReadInt32();
-            fileInfo.doorsCount = reader.ReadInt32();
-            fileInfo.doorsSize = reader.ReadInt32();
-            fileInfo.triggersOffset = reader.ReadInt32();
-            fileInfo.triggersCount = reader.ReadInt32();
-            fileInfo.triggersSize = reader.ReadInt32();
-            fileInfo.linksOffset = reader.ReadInt32();
-            fileInfo.linksCount = reader.ReadInt32();
-            fileInfo.linksSize = reader.ReadInt32();
-            fileInfo.reactorTriggersOffset = reader.ReadInt32();
-            fileInfo.reactorTriggersCount = reader.ReadInt32();
-            fileInfo.reactorTriggersSize = reader.ReadInt32();
-            fileInfo.matcenOffset = reader.ReadInt32();
-            fileInfo.matcenCount = reader.ReadInt32();
-            fileInfo.matcenSize = reader.ReadInt32();
+            _fileInfo.mineFilename = ReadString(reader, 15, false);
+            _fileInfo.levelNumber = reader.ReadInt32();
+            _fileInfo.playerOffset = reader.ReadInt32();
+            _fileInfo.playerSize = reader.ReadInt32();
+            _fileInfo.objectsOffset = reader.ReadInt32();
+            _fileInfo.objectsCount = reader.ReadInt32();
+            _fileInfo.objectsSize = reader.ReadInt32();
+            _fileInfo.wallsOffset = reader.ReadInt32();
+            _fileInfo.wallsCount = reader.ReadInt32();
+            _fileInfo.wallsSize = reader.ReadInt32();
+            _fileInfo.doorsOffset = reader.ReadInt32();
+            _fileInfo.doorsCount = reader.ReadInt32();
+            _fileInfo.doorsSize = reader.ReadInt32();
+            _fileInfo.triggersOffset = reader.ReadInt32();
+            _fileInfo.triggersCount = reader.ReadInt32();
+            _fileInfo.triggersSize = reader.ReadInt32();
+            _fileInfo.linksOffset = reader.ReadInt32();
+            _fileInfo.linksCount = reader.ReadInt32();
+            _fileInfo.linksSize = reader.ReadInt32();
+            _fileInfo.reactorTriggersOffset = reader.ReadInt32();
+            _fileInfo.reactorTriggersCount = reader.ReadInt32();
+            _fileInfo.reactorTriggersSize = reader.ReadInt32();
+            _fileInfo.matcenOffset = reader.ReadInt32();
+            _fileInfo.matcenCount = reader.ReadInt32();
+            _fileInfo.matcenSize = reader.ReadInt32();
 
-            if (fileInfo.version >= 29)
+            if (_fileInfo.version >= 29)
             {
-                fileInfo.deltaLightIndicesOffset = reader.ReadInt32();
-                fileInfo.deltaLightIndicesCount = reader.ReadInt32();
-                fileInfo.deltaLightIndicesSize = reader.ReadInt32();
-                fileInfo.deltaLightsOffset = reader.ReadInt32();
-                fileInfo.deltaLightsCount = reader.ReadInt32();
-                fileInfo.deltaLightsSize = reader.ReadInt32();
+                _fileInfo.deltaLightIndicesOffset = reader.ReadInt32();
+                _fileInfo.deltaLightIndicesCount = reader.ReadInt32();
+                _fileInfo.deltaLightIndicesSize = reader.ReadInt32();
+                _fileInfo.deltaLightsOffset = reader.ReadInt32();
+                _fileInfo.deltaLightsCount = reader.ReadInt32();
+                _fileInfo.deltaLightsSize = reader.ReadInt32();
             }
 
             // Level name (as seen in automap)
-            if (fileInfo.version >= 14)
+            if (_fileInfo.version >= 14)
             {
-                LevelName = ReadString(reader, 36, true);
+                Level.LevelName = ReadString(reader, 36, true);
             }
 
             // POF file names (we currently don't use this)
             var pofFileNames = new List<string>();
-            if (fileInfo.version >= 19)
+            if (_fileInfo.version >= 19)
             {
                 int numPofNames = reader.ReadInt16();
                 for (int i = 0; i < numPofNames; i++)
@@ -368,24 +355,24 @@ namespace LibDescent.Data
             // Player info (empty)
 
             // Objects
-            reader.BaseStream.Seek(fileInfo.objectsOffset, SeekOrigin.Begin);
-            for (int i = 0; i < fileInfo.objectsCount; i++)
+            reader.BaseStream.Seek(_fileInfo.objectsOffset, SeekOrigin.Begin);
+            for (int i = 0; i < _fileInfo.objectsCount; i++)
             {
-                var levelObject = ReadObject(reader, ref fileInfo);
-                Objects.Add(levelObject);
+                var levelObject = ReadObject(reader);
+                Level.Objects.Add(levelObject);
             }
 
             // Walls
-            if (fileInfo.wallsOffset != -1)
+            if (_fileInfo.wallsOffset != -1)
             {
-                reader.BaseStream.Seek(fileInfo.wallsOffset, SeekOrigin.Begin);
-                for (int i = 0; i < fileInfo.wallsCount; i++)
+                reader.BaseStream.Seek(_fileInfo.wallsOffset, SeekOrigin.Begin);
+                for (int i = 0; i < _fileInfo.wallsCount; i++)
                 {
-                    if (fileInfo.version >= 20)
+                    if (_fileInfo.version >= 20)
                     {
                         var segmentNum = reader.ReadInt32();
                         var sideNum = reader.ReadInt32();
-                        var side = Segments[segmentNum].Sides[sideNum];
+                        var side = Level.Segments[segmentNum].Sides[sideNum];
 
                         Wall wall = new Wall(side);
                         wall.HitPoints = reader.ReadInt32();
@@ -396,56 +383,70 @@ namespace LibDescent.Data
                         var triggerNum = reader.ReadByte();
                         if (triggerNum != 0xFF)
                         {
-                            levelLoadData.wallTriggerLinks[wall] = triggerNum;
+                            _wallTriggerLinks[wall] = triggerNum;
                         }
                         wall.DoorClipNumber = reader.ReadByte();
                         wall.Keys = (WallKeyFlags)reader.ReadByte();
                         _ = reader.ReadByte(); // controlling trigger - will recalculate
                         wall.CloakOpacity = reader.ReadByte();
-                        Walls.Add(wall);
+                        Level.Walls.Add(wall);
                     }
+                }
+
+                foreach (var sideWallLink in _sideWallLinks)
+                {
+                    sideWallLink.Key.Wall = Level.Walls[(int)sideWallLink.Value];
                 }
             }
 
             // Triggers
-            if (fileInfo.triggersOffset != -1)
+            if (_fileInfo.triggersOffset != -1)
             {
-                reader.BaseStream.Seek(fileInfo.triggersOffset, SeekOrigin.Begin);
-                for (int i = 0; i < fileInfo.triggersCount; i++)
+                reader.BaseStream.Seek(_fileInfo.triggersOffset, SeekOrigin.Begin);
+                for (int i = 0; i < _fileInfo.triggersCount; i++)
                 {
                     ITrigger trigger = ReadTrigger(reader);
-                    levelLoadData.triggers.Add(trigger);
+                    AddTrigger(trigger);
+                    for (int targetNum = 0; targetNum < trigger.Targets.Count; targetNum++)
+                    {
+                        trigger.Targets[targetNum].Wall?.ControllingTriggers.Add((trigger, (uint)targetNum));
+                    }
+                }
+
+                foreach (var wallTriggerLink in _wallTriggerLinks)
+                {
+                    wallTriggerLink.Key.Trigger = Level.Triggers[wallTriggerLink.Value];
                 }
             }
 
             // Reactor triggers
-            if (fileInfo.reactorTriggersOffset != -1)
+            if (_fileInfo.reactorTriggersOffset != -1)
             {
-                reader.BaseStream.Seek(fileInfo.reactorTriggersOffset, SeekOrigin.Begin);
-                for (int i = 0; i < fileInfo.reactorTriggersCount; i++)
+                reader.BaseStream.Seek(_fileInfo.reactorTriggersOffset, SeekOrigin.Begin);
+                for (int i = 0; i < _fileInfo.reactorTriggersCount; i++)
                 {
                     var numReactorTriggerTargets = reader.ReadInt16();
 
                     // Not actually counted by the number of targets, which is interesting
-                    var targets = ReadFixedLengthTargetList(reader, MaxReactorTriggerTargets);
+                    var targets = ReadFixedLengthTargetList(reader, DescentLevelCommon.MaxReactorTriggerTargets);
 
                     for (int targetNum = 0; targetNum < numReactorTriggerTargets; targetNum++)
                     {
-                        var side = Segments[targets[targetNum].segmentNum].Sides[targets[targetNum].sideNum];
-                        ReactorTriggerTargets.Add(side);
+                        var side = Level.Segments[targets[targetNum].segmentNum].Sides[targets[targetNum].sideNum];
+                        Level.ReactorTriggerTargets.Add(side);
                     }
                 }
             }
 
             // Matcens
-            if (fileInfo.matcenOffset != -1)
+            if (_fileInfo.matcenOffset != -1)
             {
-                reader.BaseStream.Seek(fileInfo.matcenOffset, SeekOrigin.Begin);
-                for (int i = 0; i < fileInfo.matcenCount; i++)
+                reader.BaseStream.Seek(_fileInfo.matcenOffset, SeekOrigin.Begin);
+                for (int i = 0; i < _fileInfo.matcenCount; i++)
                 {
                     var robotFlags = new uint[2];
                     robotFlags[0] = reader.ReadUInt32();
-                    if (fileInfo.version > 25)
+                    if (_fileInfo.version > 25)
                     {
                         robotFlags[1] = reader.ReadUInt32();
                     }
@@ -454,18 +455,21 @@ namespace LibDescent.Data
                     var segmentNum = reader.ReadInt16();
                     _ = reader.ReadInt16(); // fuelcen number - not needed
 
-                    MatCenter matcen = new MatCenter(Segments[segmentNum]);
+                    MatCenter matcen = new MatCenter(Level.Segments[segmentNum]);
                     matcen.InitializeSpawnedRobots(robotFlags);
                     matcen.HitPoints = hitPoints;
                     matcen.Interval = interval;
-                    MatCenters.Add(matcen);
+                    Level.MatCenters.Add(matcen);
+                }
+
+                foreach (var segmentMatcenLink in _segmentMatcenLinks)
+                {
+                    segmentMatcenLink.Key.MatCenter = Level.MatCenters[(int)segmentMatcenLink.Value];
                 }
             }
-
-            return fileInfo;
         }
 
-        private LevelObject ReadObject(BinaryReader reader, ref FileInfo fileInfo)
+        private LevelObject ReadObject(BinaryReader reader)
         {
             var levelObject = new LevelObject();
             levelObject.type = (ObjectType)reader.ReadSByte();
@@ -514,7 +518,7 @@ namespace LibDescent.Data
                     levelObject.aiInfo.pathLength = reader.ReadInt16();
                     levelObject.aiInfo.curPathIndex = reader.ReadInt16();
 
-                    if (fileInfo.version <= 25)
+                    if (_fileInfo.version <= 25)
                     {
                         reader.ReadInt32();
                     }
@@ -525,7 +529,7 @@ namespace LibDescent.Data
                     levelObject.explosionInfo.DeleteObject = reader.ReadInt16();
                     break;
                 case ControlType.Powerup:
-                    if (fileInfo.version >= 25)
+                    if (_fileInfo.version >= 25)
                     {
                         levelObject.powerupCount = reader.ReadInt32();
                     }
@@ -557,7 +561,7 @@ namespace LibDescent.Data
             return levelObject;
         }
 
-        private protected static string ReadString(BinaryReader reader, int maxStringLength, bool variableLength)
+        protected static string ReadString(BinaryReader reader, int maxStringLength, bool variableLength)
         {
             char[] stringBuffer = new char[maxStringLength];
             for (int i = 0; i < maxStringLength; i++)
@@ -575,7 +579,7 @@ namespace LibDescent.Data
             return new string(stringBuffer).Trim('\0');
         }
 
-        private protected static (short segmentNum, short sideNum)[] ReadFixedLengthTargetList(BinaryReader reader, int targetListLength)
+        protected static (short segmentNum, short sideNum)[] ReadFixedLengthTargetList(BinaryReader reader, int targetListLength)
         {
             var targetList = new (short segmentNum, short sideNum)[targetListLength];
             for (int i = 0; i < targetListLength; i++)
@@ -589,44 +593,53 @@ namespace LibDescent.Data
             return targetList;
         }
 
-        private protected static FixVector ReadFixVector(BinaryReader reader)
+        protected static FixVector ReadFixVector(BinaryReader reader)
         {
             return FixVector.FromRawValues(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
         }
 
-        private protected static FixAngles ReadFixAngles(BinaryReader reader)
+        protected static FixAngles ReadFixAngles(BinaryReader reader)
         {
             return FixAngles.FromRawValues(reader.ReadInt16(), reader.ReadInt16(), reader.ReadInt16());
         }
 
-        private protected FixMatrix ReadFixMatrix(BinaryReader reader)
+        protected FixMatrix ReadFixMatrix(BinaryReader reader)
         {
             return new FixMatrix(ReadFixVector(reader), ReadFixVector(reader), ReadFixVector(reader));
         }
 
-        private protected abstract void CheckLevelVersion(int version);
-        private protected abstract ITrigger ReadTrigger(BinaryReader reader);
-        private protected abstract void ApplyDeferredLoadData(ref DeferredLevelLoadData levelLoadData);
+        protected abstract void CheckLevelVersion();
+        protected abstract ITrigger ReadTrigger(BinaryReader reader);
+        protected abstract void AddTrigger(ITrigger trigger);
+        protected abstract void LoadVersionSpecificGameInfo(BinaryReader reader);
     }
 
-    public partial class D1Level
+    internal class D1LevelLoader : DescentLevelLoader
     {
-        public static D1Level CreateFromStream(Stream stream)
+        private readonly D1Level _level = new D1Level();
+
+        protected override ILevel Level => _level;
+
+        public D1LevelLoader(Stream stream)
         {
-            var level = new D1Level();
-            level.LoadFromStream(stream);
-            return level;
+            _stream = stream;
         }
 
-        private protected override void CheckLevelVersion(int version)
+        public D1Level Load()
         {
-            if (version != 1)
+            LoadLevel();
+            return _level;
+        }
+
+        protected override void CheckLevelVersion()
+        {
+            if (_levelVersion != 1)
             {
-                throw new InvalidDataException($"Level version should be 1 but was {version}.");
+                throw new InvalidDataException($"Level version should be 1 but was {_levelVersion}.");
             }
         }
 
-        private protected override ITrigger ReadTrigger(BinaryReader reader)
+        protected override ITrigger ReadTrigger(BinaryReader reader)
         {
             var trigger = new D1Trigger();
             trigger.Type = (TriggerType)reader.ReadByte();
@@ -639,96 +652,50 @@ namespace LibDescent.Data
             var targets = ReadFixedLengthTargetList(reader, D1Trigger.MaxWallsPerLink);
             for (int i = 0; i < numLinks; i++)
             {
-                var side = Segments[targets[i].segmentNum].Sides[targets[i].sideNum];
+                var side = Level.Segments[targets[i].segmentNum].Sides[targets[i].sideNum];
                 trigger.Targets.Add(side);
             }
 
             return trigger;
         }
 
-        private protected override void ApplyDeferredLoadData(ref DeferredLevelLoadData levelLoadData)
+        protected override void AddTrigger(ITrigger trigger)
         {
-            foreach (var sideWallLink in levelLoadData.sideWallLinks)
-            {
-                sideWallLink.Key.Wall = Walls[(int)sideWallLink.Value];
-            }
+            (Level as D1Level).Triggers.Add(trigger as D1Trigger);
+        }
 
-            foreach (var segmentMatcenLink in levelLoadData.segmentMatcenLinks)
-            {
-                segmentMatcenLink.Key.MatCenter = MatCenters[(int)segmentMatcenLink.Value];
-            }
-
-            foreach (var trigger in levelLoadData.triggers)
-            {
-                Triggers.Add((D1Trigger)trigger);
-                for (int targetNum = 0; targetNum < trigger.Targets.Count; targetNum++)
-                {
-                    trigger.Targets[targetNum].Wall?.ControllingTriggers.Add((trigger, (uint)targetNum));
-                }
-            }
-
-            foreach (var wallTriggerLink in levelLoadData.wallTriggerLinks)
-            {
-                wallTriggerLink.Key.Trigger = Triggers[wallTriggerLink.Value];
-            }
+        protected override void LoadVersionSpecificGameInfo(BinaryReader reader)
+        {
         }
     }
 
-    public partial class D2Level
+    internal class D2LevelLoader : DescentLevelLoader
     {
-        public static D2Level CreateFromStream(Stream stream)
+        private readonly D2Level _level = new D2Level();
+        private List<LightDelta> _lightDeltas = new List<LightDelta>();
+
+        protected override ILevel Level => _level;
+
+        public D2LevelLoader(Stream stream)
         {
-            var level = new D2Level();
-            level.LoadFromStream(stream);
-            return level;
+            _stream = stream;
         }
 
-        private protected override FileInfo LoadGameInfo(BinaryReader reader, ref DeferredLevelLoadData levelLoadData)
+        public D2Level Load()
         {
-            var fileInfo = base.LoadGameInfo(reader, ref levelLoadData);
+            LoadLevel();
+            return _level;
+        }
 
-            // Delta light indices (D2)
-            if (fileInfo.deltaLightIndicesOffset != -1)
+        protected override void CheckLevelVersion()
+        {
+            if (_levelVersion < 5)
             {
-                reader.BaseStream.Seek(fileInfo.deltaLightIndicesOffset, SeekOrigin.Begin);
-                for (int i = 0; i < fileInfo.deltaLightIndicesCount; i++)
-                {
-                    /*DynamicLightIndex index = new DynamicLightIndex();
-                    index.segnum = reader.ReadInt16();
-                    index.sidenum = reader.ReadByte();
-                    index.count = reader.ReadByte();
-                    index.index = reader.ReadInt16();
-                    dlIndexes.Add(index);*/
-                }
+                throw new InvalidDataException($"Level version should be 5 or newer but was {_levelVersion}.");
             }
-
-            // Delta lights (D2)
-            if (fileInfo.deltaLightsOffset != 0)
-            {
-                reader.BaseStream.Seek(fileInfo.deltaLightsOffset, SeekOrigin.Begin);
-                for (int i = 0; i < fileInfo.deltaLightsCount; i++)
-                {
-                    /*DynamicLight light = new DynamicLight();
-                    light.segnum = reader.ReadInt16();
-                    light.sidenum = reader.ReadByte();
-                    reader.ReadByte();
-                    light.vertLight[0] = reader.ReadByte();
-                    light.vertLight[1] = reader.ReadByte();
-                    light.vertLight[2] = reader.ReadByte();
-                    light.vertLight[3] = reader.ReadByte();
-                    deltaLights.Add(light);*/
-                }
-            }
-
-            return fileInfo;
         }
 
-        private protected override void CheckLevelVersion(int version)
-        {
-            throw new NotImplementedException();
-        }
-
-        private protected override ITrigger ReadTrigger(BinaryReader reader)
+        protected override ITrigger ReadTrigger(BinaryReader reader)
         {
             var trigger = new D2Trigger();
             trigger.Type = (TriggerType)reader.ReadByte();
@@ -741,33 +708,57 @@ namespace LibDescent.Data
             var targets = ReadFixedLengthTargetList(reader, D2Trigger.MaxWallsPerLink);
             for (int i = 0; i < numLinks; i++)
             {
-                var side = Segments[targets[i].segmentNum].Sides[targets[i].sideNum];
+                var side = Level.Segments[targets[i].segmentNum].Sides[targets[i].sideNum];
                 trigger.Targets.Add(side);
             }
 
             return trigger;
         }
 
-        private protected override void ApplyDeferredLoadData(ref DeferredLevelLoadData levelLoadData)
+        protected override void AddTrigger(ITrigger trigger)
         {
-            foreach (var sideWallLink in levelLoadData.sideWallLinks)
+            (Level as D2Level).Triggers.Add(trigger as D2Trigger);
+        }
+
+        protected override void LoadVersionSpecificGameInfo(BinaryReader reader)
+        {
+            // Delta lights (D2)
+            // Reading this first to make lights easier to link up
+            if (_fileInfo.deltaLightsOffset != 0)
             {
-                sideWallLink.Key.Wall = Walls[(int)sideWallLink.Value];
+                reader.BaseStream.Seek(_fileInfo.deltaLightsOffset, SeekOrigin.Begin);
+                for (int i = 0; i < _fileInfo.deltaLightsCount; i++)
+                {
+                    var segmentNum = reader.ReadInt16();
+                    var sideNum = reader.ReadByte();
+                    var lightDelta = new LightDelta(Level.Segments[segmentNum].Sides[sideNum]);
+                    _ = reader.ReadByte(); // dummy - probably used for dword alignment
+                    // Vertex deltas scaled by 2048 - see DL_SCALE in segment.h
+                    lightDelta.vertexDeltas[0] = Fix.FromRawValue(reader.ReadByte() * 2048);
+                    lightDelta.vertexDeltas[1] = Fix.FromRawValue(reader.ReadByte() * 2048);
+                    lightDelta.vertexDeltas[2] = Fix.FromRawValue(reader.ReadByte() * 2048);
+                    lightDelta.vertexDeltas[3] = Fix.FromRawValue(reader.ReadByte() * 2048);
+                    _lightDeltas.Add(lightDelta);
+                }
             }
 
-            foreach (var segmentMatcenLink in levelLoadData.segmentMatcenLinks)
+            // Delta light indices (D2)
+            if (_fileInfo.deltaLightIndicesOffset != -1)
             {
-                segmentMatcenLink.Key.MatCenter = MatCenters[(int)segmentMatcenLink.Value];
-            }
+                reader.BaseStream.Seek(_fileInfo.deltaLightIndicesOffset, SeekOrigin.Begin);
+                for (int i = 0; i < _fileInfo.deltaLightIndicesCount; i++)
+                {
+                    var segmentNum = reader.ReadInt16();
+                    var sideNum = reader.ReadByte();
+                    var count = reader.ReadByte();
+                    var index = reader.ReadInt16();
 
-            foreach (var trigger in levelLoadData.triggers)
-            {
-                Triggers.Add((D2Trigger)trigger);
-            }
-
-            foreach (var wallTriggerLink in levelLoadData.wallTriggerLinks)
-            {
-                wallTriggerLink.Key.Trigger = Triggers[wallTriggerLink.Value];
+                    var side = Level.Segments[segmentNum].Sides[sideNum];
+                    var dynamicLight = new DynamicLight(side);
+                    dynamicLight.LightDeltas.AddRange(_lightDeltas.GetRange(index, count));
+                    _level.DynamicLights.Add(dynamicLight);
+                    side.DynamicLight = dynamicLight;
+                }
             }
         }
     }
