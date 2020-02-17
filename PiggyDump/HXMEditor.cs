@@ -446,27 +446,19 @@ namespace Descent2Workshop
 
         private void InsertButton_Click(object sender, EventArgs e)
         {
+            int newelem = 0;
             switch (tabControl1.SelectedIndex)
             {
                 case 0:
-                    datafile.replacedRobots.Add(new Robot());
-                    ResetMaxes();
-                    if (nudElementNum.Value == -1)
-                        nudElementNum.Value = 0;
-                    else
-                        nudElementNum.Value = datafile.replacedRobots.Count - 1;
+                    newelem = datafile.AddRobot();
                     break;
                 case 1:
-                    Polymodel model = new Polymodel();
-                    model.data = new PolymodelData(0);
-                    datafile.replacedModels.Add(model);
-                    ResetMaxes();
-                    if (nudElementNum.Value == -1)
-                        nudElementNum.Value = 0;
-                    else
-                        nudElementNum.Value = datafile.replacedModels.Count - 1;
+                    newelem = datafile.AddModel();
                     break;
             }
+
+            ResetMaxes();
+            nudElementNum.Value = newelem;
         }
 
         //---------------------------------------------------------------------

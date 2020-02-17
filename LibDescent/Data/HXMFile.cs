@@ -780,5 +780,21 @@ namespace LibDescent.Data
             newModel.ID = index;
             //PolymodelData[index] = newModel.data;
         }
+
+        public int AddRobot()
+        {
+            replacedRobots.Add(new Robot());
+            RobotNames.Add("New Robot");
+            return replacedRobots.Count - 1;
+        }
+
+        public int AddModel()
+        {
+            Polymodel newModel = new Polymodel();
+            newModel.data = new PolymodelData(0);
+            replacedModels.Add(newModel);
+            ModelNames.Add("New Model");
+            return replacedModels.Count - 1;
+        }
     }
 }

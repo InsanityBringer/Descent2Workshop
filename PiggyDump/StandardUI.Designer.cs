@@ -220,6 +220,7 @@
             this.label76 = new System.Windows.Forms.Label();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.tbLog = new System.Windows.Forms.TextBox();
+            this.NewHXMMenu = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.tabPage10.SuspendLayout();
@@ -273,6 +274,7 @@
             // 
             this.NewMenu.Index = 0;
             this.NewMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.NewHXMMenu,
             this.NewVHAMMenu,
             this.NewPIGMenu,
             this.NewPOGMenu,
@@ -281,22 +283,22 @@
             // 
             // NewVHAMMenu
             // 
-            this.NewVHAMMenu.Index = 0;
+            this.NewVHAMMenu.Index = 1;
             this.NewVHAMMenu.Text = "V-HAM";
             // 
             // NewPIGMenu
             // 
-            this.NewPIGMenu.Index = 1;
+            this.NewPIGMenu.Index = 2;
             this.NewPIGMenu.Text = ".PIG";
             // 
             // NewPOGMenu
             // 
-            this.NewPOGMenu.Index = 2;
+            this.NewPOGMenu.Index = 3;
             this.NewPOGMenu.Text = ".POG";
             // 
             // NewHOGMenu
             // 
-            this.NewHOGMenu.Index = 3;
+            this.NewHOGMenu.Index = 4;
             this.NewHOGMenu.Text = ".HOG";
             this.NewHOGMenu.Click += new System.EventHandler(this.menuItem12_Click);
             // 
@@ -2036,6 +2038,12 @@
             this.tbLog.TabIndex = 2;
             this.tbLog.Text = "Descent II Workshop log";
             // 
+            // NewHXMMenu
+            // 
+            this.NewHXMMenu.Index = 0;
+            this.NewHXMMenu.Text = "HXM";
+            this.NewHXMMenu.Click += new System.EventHandler(this.NewHXMFileMenu_Click);
+            // 
             // StandardUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2281,5 +2289,6 @@
         private System.Windows.Forms.MenuItem OpenVHAMMenu;
         private System.Windows.Forms.MenuItem OpenHXMMenu;
         private System.Windows.Forms.MenuItem menuItem2;
+        private System.Windows.Forms.MenuItem NewHXMMenu;
     }
 }
