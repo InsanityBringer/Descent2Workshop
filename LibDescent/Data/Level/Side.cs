@@ -46,6 +46,7 @@ namespace LibDescent.Data
         public ushort OverlayTextureIndex { get; set; }
         public OverlayRotation OverlayRotation { get; set; }
         public Uvl[] Uvls { get; }
+        public DynamicLight DynamicLight { get; set; }
         public AnimatedLight AnimatedLight { get; set; }
 
         // Indicates if this side is the end of an exit tunnel (only valid in D1 and D2 levels)
