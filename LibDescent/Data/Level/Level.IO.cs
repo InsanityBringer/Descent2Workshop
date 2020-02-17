@@ -413,7 +413,7 @@ namespace LibDescent.Data
                 reader.BaseStream.Seek(fileInfo.triggersOffset, SeekOrigin.Begin);
                 for (int i = 0; i < fileInfo.triggersCount; i++)
                 {
-                    ITrigger trigger = LoadTrigger(reader);
+                    ITrigger trigger = ReadTrigger(reader);
                     levelLoadData.triggers.Add(trigger);
                 }
             }
@@ -605,7 +605,7 @@ namespace LibDescent.Data
         }
 
         private protected abstract void CheckLevelVersion(int version);
-        private protected abstract ITrigger LoadTrigger(BinaryReader reader);
+        private protected abstract ITrigger ReadTrigger(BinaryReader reader);
         private protected abstract void ApplyDeferredLoadData(ref DeferredLevelLoadData levelLoadData);
     }
 
@@ -626,13 +626,13 @@ namespace LibDescent.Data
             }
         }
 
-        private protected override ITrigger LoadTrigger(BinaryReader reader)
+        private protected override ITrigger ReadTrigger(BinaryReader reader)
         {
             var trigger = new D1Trigger();
             trigger.Type = (TriggerType)reader.ReadByte();
             trigger.Flags = (D1TriggerFlags)reader.ReadUInt16();
             trigger.Value = Fix.FromRawValue(reader.ReadInt32());
-            _ = reader.ReadInt32(); // time - not used
+            trigger.Time = reader.ReadInt32();
             _ = reader.ReadByte(); // link_num - does nothing
             var numLinks = reader.ReadInt16();
 
@@ -661,6 +661,10 @@ namespace LibDescent.Data
             foreach (var trigger in levelLoadData.triggers)
             {
                 Triggers.Add((D1Trigger)trigger);
+                for (int targetNum = 0; targetNum < trigger.Targets.Count; targetNum++)
+                {
+                    trigger.Targets[targetNum].Wall?.ControllingTriggers.Add((trigger, (uint)targetNum));
+                }
             }
 
             foreach (var wallTriggerLink in levelLoadData.wallTriggerLinks)
@@ -724,7 +728,7 @@ namespace LibDescent.Data
             throw new NotImplementedException();
         }
 
-        private protected override ITrigger LoadTrigger(BinaryReader reader)
+        private protected override ITrigger ReadTrigger(BinaryReader reader)
         {
             var trigger = new D2Trigger();
             trigger.Type = (TriggerType)reader.ReadByte();

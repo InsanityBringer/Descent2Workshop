@@ -209,31 +209,89 @@ namespace LibDescent.Tests
         }
 
         [Test]
-        [Ignore("Not completed yet")]
         public void TestWalls()
         {
+            Assert.AreEqual(11, level.Walls.Count);
 
+            // Wall 0 is the exit door
+            Assert.AreSame(level.Walls[0], level.Segments[10].GetSide(SegSide.Back).Wall);
+            Assert.AreSame(level.Segments[10].GetSide(SegSide.Back), level.Walls[0].Side);
+            Assert.AreSame(level.Walls[1], level.Walls[0].OppositeWall);
+            Assert.AreSame(level.Walls[0], level.Walls[1].OppositeWall);
+            Assert.AreEqual(WallType.Door, level.Walls[0].Type);
+            Assert.AreEqual(WallFlags.DoorLocked, level.Walls[0].Flags);
+            Assert.AreEqual(WallState.DoorClosed, level.Walls[0].State);
+            Assert.AreEqual(WallKeyFlags.None, level.Walls[0].Keys);
+
+            // Wall 2 is an energy center sparkle effect
+            Assert.AreEqual(WallType.Illusion, level.Walls[2].Type);
+            Assert.AreEqual((WallFlags)0, level.Walls[2].Flags);
+            Assert.AreEqual((WallState)0, level.Walls[2].State);
+
+            // Wall 8 is a red door
+            Assert.AreEqual(WallType.Door, level.Walls[8].Type);
+            Assert.AreEqual(WallFlags.DoorAuto, level.Walls[8].Flags);
+            Assert.AreEqual(WallState.DoorClosed, level.Walls[8].State);
+            Assert.AreEqual(WallKeyFlags.Red, level.Walls[8].Keys);
+
+            // Wall 10 is a fly-through trigger
+            Assert.IsNull(level.Walls[10].OppositeWall);
+            Assert.AreEqual(WallType.Open, level.Walls[10].Type);
+            Assert.AreEqual((WallFlags)0, level.Walls[10].Flags);
+            Assert.AreEqual((WallState)0, level.Walls[10].State);
         }
 
         [Test]
-        [Ignore("Not completed yet")]
         public void TestTriggers()
         {
+            Assert.AreEqual(3, level.Triggers.Count);
 
+            // Trigger 0 is the exit trigger
+            Assert.AreSame(level.Triggers[0], level.Walls[0].Trigger);
+            Assert.IsEmpty(level.Triggers[0].Targets);
+            Assert.AreEqual(D1TriggerFlags.Exit, level.Triggers[0].Flags);
+            // .rdl (D1) should not use trigger type
+            Assert.AreEqual((TriggerType)0, level.Triggers[0].Type);
+            // Value/time have no effect on this trigger but are set anyway
+            Assert.AreEqual((Fix)5, level.Triggers[0].Value);
+            Assert.AreEqual(-1, level.Triggers[0].Time);
+
+            // Trigger 2 is a matcen trigger
+            Assert.AreSame(level.Triggers[2], level.Walls[10].Trigger);
+            Assert.AreEqual(1, level.Triggers[2].Targets.Count);
+            Assert.AreSame(level.Segments[16].Sides[5], level.Triggers[2].Targets[0]);
+            Assert.AreEqual(D1TriggerFlags.MatCenter, level.Triggers[2].Flags);
+
+            // Trigger 1 is a door trigger
+            Assert.AreEqual(D1TriggerFlags.ControlDoors, level.Triggers[1].Flags);
+            Assert.AreEqual(1, level.Triggers[1].Targets.Count);
+            Assert.AreSame(level.Segments[9].Sides[4], level.Triggers[1].Targets[0]);
+            Assert.AreEqual(1, level.Segments[9].Sides[4].Wall.ControllingTriggers.Count);
+            Assert.AreSame(level.Triggers[1], level.Segments[9].Sides[4].Wall.ControllingTriggers[0].trigger);
+            Assert.AreEqual(0, level.Segments[9].Sides[4].Wall.ControllingTriggers[0].targetNum);
         }
 
         [Test]
-        [Ignore("Not completed yet")]
         public void TestReactorTriggers()
         {
-
+            Assert.AreEqual(1, level.ReactorTriggerTargets.Count);
+            Assert.AreSame(level.Segments[10].Sides[4], level.ReactorTriggerTargets[0]);
         }
 
         [Test]
-        [Ignore("Not completed yet")]
         public void TestMatcens()
         {
+            Assert.AreEqual(1, level.MatCenters.Count);
 
+            Assert.AreSame(level.MatCenters[0], level.Segments[16].MatCenter);
+            Assert.AreSame(level.Segments[16], level.MatCenters[0].Segment);
+            Assert.AreEqual(SegFunction.MatCenter, level.Segments[16].Function);
+            Assert.AreEqual(2, level.MatCenters[0].SpawnedRobotIds.Count);
+            var expectedRobotIds = new uint[] { 4, 20 };
+            Assert.That(level.MatCenters[0].SpawnedRobotIds, Is.EquivalentTo(expectedRobotIds));
+            // Hit points/interval are ignored but are part of the file format
+            Assert.AreEqual((Fix)0, level.MatCenters[0].HitPoints);
+            Assert.AreEqual((Fix)0, level.MatCenters[0].Interval);
         }
     }
 }
