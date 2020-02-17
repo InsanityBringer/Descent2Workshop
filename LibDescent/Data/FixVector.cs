@@ -20,6 +20,7 @@
     SOFTWARE.
 */
 using System;
+using System.Collections.Generic;
 using System.Numerics;
 
 namespace LibDescent.Data
@@ -67,6 +68,10 @@ namespace LibDescent.Data
             => v.Scale(d);
         public static FixVector operator *(FixVector v, double d)
             => v.Scale(d);
+        public static bool operator ==(FixVector a, FixVector b)
+            => a.Equals(b);
+        public static bool operator !=(FixVector a, FixVector b)
+            => !(a == b);
 
         public FixVector Add(FixVector other)
         {
@@ -105,6 +110,21 @@ namespace LibDescent.Data
         public FixVector Normalize()
         {
             return Scale(1.0/Mag());
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is FixVector vector &&
+                (x == vector.x) && (y == vector.y) && (z == vector.z);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 373119288;
+            hashCode = hashCode * -1521134295 + x.GetHashCode();
+            hashCode = hashCode * -1521134295 + y.GetHashCode();
+            hashCode = hashCode * -1521134295 + z.GetHashCode();
+            return hashCode;
         }
     }
 

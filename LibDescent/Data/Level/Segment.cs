@@ -59,11 +59,12 @@ namespace LibDescent.Data
         private static readonly int[,] SideVerts = { { 7, 6, 2, 3 }, { 0, 4, 7, 3 }, { 0, 1, 5, 4 }, { 2, 6, 5, 1 }, { 4, 5, 6, 7 }, { 3, 2, 1, 0 } };
         private static readonly int[] OppositeSideTable = { 2, 3, 0, 1, 5, 4 };
         private static readonly int[,] SideNeighborTable = { { 4, 3, 5, 1 }, { 2, 4, 0, 5 }, { 5, 3, 4, 1 }, { 0, 4, 2, 5 }, { 2, 3, 0, 1 }, { 0, 3, 2, 1 } };
+        // This is basically the index of vertex n+1 in the corresponding row in SideVerts, but it's awkward to calculate that so let's just cache it
+        private static readonly int[,] EdgeNeighborTable = { { 2, 0, 0, 2 }, { 3, 3, 3, 3 }, { 2, 2, 0, 0 }, { 1, 1, 1, 1 }, { 2, 1, 0, 1 }, { 2, 3, 0, 3 } };
 
         public byte special;
         public byte value;
         public byte flags;
-        public int staticLight;
 
         public Side[] Sides { get; }
         public LevelVertex[] Vertices { get; }
@@ -73,6 +74,7 @@ namespace LibDescent.Data
             get => (SegFunction)special;
             set => special = (byte)value;
         }
+        public Fix Light { get; set; }
 
         #region Read-only convenience properties
         public FixVector Center => new FixVector(
@@ -81,11 +83,11 @@ namespace LibDescent.Data
             z: Vertices.Average(v => v.Z)
             );
         // The length of the bimedian of the front and back sides
-        public Fix Length { get; }
+        public Fix Length => (GetSide(SegSide.Back).Center - GetSide(SegSide.Front).Center).Mag();
         // The length of the bimedian of the left and right sides
-        public Fix Width { get; }
+        public Fix Width => (GetSide(SegSide.Left).Center - GetSide(SegSide.Right).Center).Mag();
         // The length of the bimedian of the top and bottom sides
-        public Fix Height { get; }
+        public Fix Height => (GetSide(SegSide.Up).Center - GetSide(SegSide.Down).Center).Mag();
         #endregion
 
         public Segment(uint numSides = MaxSegmentSides, uint numVertices = MaxSegmentVerts)
@@ -98,13 +100,14 @@ namespace LibDescent.Data
 
         public IEnumerable<LevelVertex> GetSharedVertices(Segment other)
         {
-            throw new NotImplementedException();
+            return Vertices.Where(v => v.ConnectedSegments.Any(item => item.segment == other));
         }
 
         internal LevelVertex GetVertex(uint sideNum, int vertexNum) => Vertices[SideVerts[sideNum, vertexNum]];
 
         internal Side GetOppositeSide(uint sideNum) => Sides[OppositeSideTable[sideNum]];
 
-        internal Side GetSideNeighbor(uint sideNum, Edge atEdge) => Sides[SideNeighborTable[sideNum, (int)atEdge]];
+        internal (Side side, Edge edge) GetSideNeighbor(uint sideNum, Edge atEdge)
+            => (Sides[SideNeighborTable[sideNum, (int)atEdge]], (Edge)EdgeNeighborTable[sideNum, (int)atEdge]);
     }
 }

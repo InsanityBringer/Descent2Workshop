@@ -20,36 +20,31 @@
     SOFTWARE.
 */
 
-using System.Collections.Generic;
-
 namespace LibDescent.Data
 {
-    public class LevelVertex
+    public struct Uvl
     {
-        private FixVector location;
+        public Fix u;
+        public Fix v;
+        public Fix l;
 
-        public LevelVertex(FixVector location)
+        public Uvl(Fix u, Fix v, Fix l)
         {
-            this.location = location;
+            this.u = u;
+            this.v = v;
+            this.l = l;
         }
 
-        public LevelVertex(Fix x, Fix y, Fix z)
+        public static Uvl FromRawValues(short u, short v, ushort l)
         {
-            location = new FixVector(x, y, z);
+            // UVL elements are written to file as 16-bit values, but are converted to 16.16 fixed-point
+            // when loaded, using bitshifts. We do the same conversion here.
+            return new Uvl(Fix.FromRawValue(u << 5), Fix.FromRawValue(v << 5), Fix.FromRawValue(l << 1));
         }
-
-        public List<(Segment segment, uint vertexNum)> ConnectedSegments { get; } = new List<(Segment, uint)>();
-        public List<(Side side, uint vertexNum)> ConnectedSides { get; } = new List<(Side, uint)>();
-        public FixVector Location { get => location; set => location = value; }
-        public double X { get => location.x; set => location.x = value; }
-        public double Y { get => location.y; set => location.y = value; }
-        public double Z { get => location.z; set => location.z = value; }
 
         public override string ToString()
         {
-            return string.Format("Location: {0}", location.ToString());
+            return string.Format("{0}, {1}, {2}", u, v, l);
         }
-
-        public static implicit operator FixVector(LevelVertex v) => v.Location;
     }
 }

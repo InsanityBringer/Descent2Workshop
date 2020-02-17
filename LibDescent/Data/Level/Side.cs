@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace LibDescent.Data
 {
@@ -12,6 +13,21 @@ namespace LibDescent.Data
         Top
     }
 
+    public enum TriangulationType
+    {
+        None,
+        Tri012_230,
+        Tri013_123
+    }
+
+    public enum OverlayRotation
+    {
+        Rotate0 = 0,
+        Rotate90 = 1,
+        Rotate180 = 2,
+        Rotate270 = 3
+    }
+
     public class Side
     {
         private readonly Segment parentSegment;
@@ -21,14 +37,16 @@ namespace LibDescent.Data
         {
             parentSegment = parent;
             parentSegmentSideNum = sideNum;
-            Uvls = new FixVector[numVertices];
+            Uvls = new Uvl[numVertices];
         }
 
         public Wall Wall { get; set; }
         public Segment ConnectedSegment { get; set; }
         public LevelTexture BaseTexture { get; set; }
         public LevelTexture OverlayTexture { get; set; }
-        public FixVector[] Uvls { get; }
+        public OverlayRotation OverlayRotation { get; set; }
+        public Uvl[] Uvls { get; }
+        public AnimatedLight AnimatedLight { get; set; }
 
         // Indicates if this side is the end of an exit tunnel (only valid in D1 and D2 levels)
         public bool Exit { get; set; } = false;
@@ -47,13 +65,79 @@ namespace LibDescent.Data
             }
         }
 
-        public FixVector Normal { get; }
+        public TriangulationType Triangulation
+        {
+            get
+            {
+                if (GetNumVertices() < 3)
+                    throw new InvalidOperationException($"Illegal vertex count {GetNumVertices()}");
+                else if (GetNumVertices() == 3)
+                    return TriangulationType.None;
+
+                var vertices = GetAllVertices().ToList().ConvertAll(v => (Vector3)v.Location);
+                var triangle012 = Plane.CreateFromVertices(vertices[0], vertices[1], vertices[2]);
+                double dot = Vector3.Dot(triangle012.Normal, vertices[3] - vertices[1]);
+                if (Math.Abs(dot) < 0.0001)
+                    return TriangulationType.None;
+                else if (dot > 0)
+                    return TriangulationType.Tri012_230;
+                else
+                    return TriangulationType.Tri013_123;
+            }
+        }
+
+        public FixVector Normal
+        {
+            get
+            {
+                var normals = Normals;
+                return (normals.Item1 + normals.Item2).Normalize();
+            }
+        }
+
+        public Tuple<FixVector, FixVector> Normals
+        {
+            get
+            {
+                Tuple<FixVector, FixVector> result;
+                var vertices = GetAllVertices().ToList().ConvertAll(v => (Vector3)v.Location);
+                switch (Triangulation)
+                {
+                    case TriangulationType.None:
+                        {
+                            var normal = Plane.CreateFromVertices(vertices[0], vertices[1], vertices[2]).Normal;
+                            result = new Tuple<FixVector, FixVector>(normal, normal);
+                        }
+                        break;
+
+                    case TriangulationType.Tri012_230:
+                        {
+                            var normal1 = Plane.CreateFromVertices(vertices[0], vertices[1], vertices[2]).Normal;
+                            var normal2 = Plane.CreateFromVertices(vertices[2], vertices[3], vertices[0]).Normal;
+                            result = new Tuple<FixVector, FixVector>(normal1, normal2);
+                        }
+                        break;
+
+                    case TriangulationType.Tri013_123:
+                        {
+                            var normal1 = Plane.CreateFromVertices(vertices[0], vertices[1], vertices[3]).Normal;
+                            var normal2 = Plane.CreateFromVertices(vertices[1], vertices[2], vertices[3]).Normal;
+                            result = new Tuple<FixVector, FixVector>(normal1, normal2);
+                        }
+                        break;
+
+                    default:
+                        throw new InvalidOperationException("Received bad value from Triangulation property");
+                }
+                return result;
+            }
+        }
 
         // Indicates if there is a visible texture on this side
-        public bool IsVisible { get; }
+        public bool IsVisible => (ConnectedSegment == null) || (Wall != null && Wall.Type != WallType.Open);
 
         // Indicates if there is a transparent texture on this side
-        public bool IsTransparent { get; }
+        public bool IsTransparent => !IsVisible || BaseTexture.IsTransparent || OverlayTexture.IsTransparent;
         #endregion
 
         public int GetNumVertices() => Uvls.Length;
@@ -71,8 +155,16 @@ namespace LibDescent.Data
             return vertices;
         }
 
+        /// <summary>
+        /// Finds the side opposite to this side in the current segment.
+        /// </summary>
+        /// <returns>The side opposite to this side in the current segment.</returns>
         public Side GetOppositeSide() => parentSegment.GetOppositeSide(parentSegmentSideNum);
 
+        /// <summary>
+        /// Finds the side of a neighboring segment that is joined to this side, if any.
+        /// </summary>
+        /// <returns>The side joined to this side, or null if this side is not joined.</returns>
         public Side GetJoinedSide()
         {
             if (ConnectedSegment == null)
@@ -80,18 +172,22 @@ namespace LibDescent.Data
                 return null;
             }
 
-            var vertices = GetAllVertices();
-
             // An exception will be thrown if only this side is connected.
-            return ConnectedSegment.Sides.First(otherSide =>
-            {
-                if (otherSide.ConnectedSegment != parentSegment || GetNumVertices() != otherSide.GetNumVertices())
-                {
-                    return false;
-                }
+            return ConnectedSegment.Sides.First(otherSide => IsJoinedTo(otherSide, vertexList: GetAllVertices()));
+        }
 
+        internal bool IsJoinedTo(Side otherSide, bool checkVertices = true, LevelVertex[] vertexList = null)
+        {
+            if (otherSide.ConnectedSegment != parentSegment || GetNumVertices() != otherSide.GetNumVertices())
+            {
+                return false;
+            }
+
+            if (checkVertices)
+            {
                 // Do a vertex test to handle cases where multiple sides are joined (the segment will be illegal,
                 // but we still want predictable behavior)
+                var vertices = vertexList ?? GetAllVertices();
                 for (int v = 0; v < otherSide.GetNumVertices(); v++)
                 {
                     if (!vertices.Contains(otherSide.GetVertex(v)))
@@ -99,22 +195,71 @@ namespace LibDescent.Data
                         return false;
                     }
                 }
-                return true;
-            });
+            }
+            return true;
         }
 
-        public Side GetNeighbor(Edge atEdge) => parentSegment.GetSideNeighbor(parentSegmentSideNum, atEdge);
+        /// <summary>
+        /// Finds the first side that is joined to this side at a given edge, with no filtering.
+        /// Because there is no filtering, the neighboring side will always be in the same segment.
+        /// </summary>
+        /// <param name="atEdge">The edge of this side to search from.</param>
+        /// <returns>A tuple containing the neighboring side and the edge at which it is attached to this side.</returns>
+        public (Side side, Edge edge) GetNeighbor(Edge atEdge) => parentSegment.GetSideNeighbor(parentSegmentSideNum, atEdge);
 
-        public Side GetNeighbor(Edge atEdge, Func<Side, bool> predicate)
+        /// <summary>
+        /// Finds the first visible side that is joined to this side at a given edge, filtered by a specified condition.
+        /// </summary>
+        /// <param name="atEdge">The edge of this side to search from.</param>
+        /// <param name="predicate">A predicate that tests whether a given side meets the required criteria.</param>
+        /// <returns>A tuple containing the neighboring side and the edge at which it is attached to this side,
+        /// or null if no such neighboring side exists.</returns>
+        public (Side side, Edge edge)? GetNeighbor(Edge atEdge, Func<Side, bool> predicate)
         {
-            throw new NotImplementedException();
+            var sideToTest = this;
+            var edgeToTest = atEdge;
+
+            do
+            {
+                var nextNeighbor = sideToTest.parentSegment.GetSideNeighbor(sideToTest.parentSegmentSideNum, edgeToTest);
+                if (predicate(nextNeighbor.side))
+                {
+                    return nextNeighbor;
+                }
+
+                // Navigate to neighboring segment
+                var nextSideToTest = nextNeighbor.side.GetJoinedSide();
+                if (nextSideToTest == null)
+                {
+                    return null;
+                }
+
+                // Find matching edge
+                var firstEdgeVertex = sideToTest.GetVertex((int)edgeToTest);
+                sideToTest = nextSideToTest;
+                edgeToTest = (Edge)Array.IndexOf(nextSideToTest.GetAllVertices(), firstEdgeVertex);
+                if ((int)edgeToTest == -1)
+                {
+                    // Vertex not found in joined face - this is a geometry error
+                    return null;
+                }
+            } while (sideToTest.parentSegment != parentSegment);
+
+            // Side has no neighbor that matches the predicate
+            return null;
         }
 
-        public Side GetVisibleNeighbor(Edge atEdge) => GetNeighbor(atEdge, side => side.IsVisible);
+        /// <summary>
+        /// Finds the first visible side that is joined to this side at a given edge, if any.
+        /// </summary>
+        /// <param name="atEdge">The edge of this side to search from.</param>
+        /// <returns>A tuple containing the neighboring side and the edge at which it is attached to this side,
+        /// or null if no such neighboring side exists.</returns>
+        public (Side side, Edge edge)? GetVisibleNeighbor(Edge atEdge) => GetNeighbor(atEdge, side => side.IsVisible);
 
         public IEnumerable<LevelVertex> GetSharedVertices(Side other)
         {
-            throw new NotImplementedException();
+            return GetAllVertices().Where(v => v.ConnectedSides.Any(item => item.side == other));
         }
     }
 }
