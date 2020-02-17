@@ -56,5 +56,21 @@ namespace Descent2Workshop
             else
                 return string.Format("Unknown error trying to {0} {1}.\r\n", accessType, fileType);
         }
+
+        public static string FileExceptionHandler(Exception error, string context)
+        {
+            if (error is FileNotFoundException)
+            {
+                return String.Format("The specified {0} was not found.\r\n", context);
+            }
+            else if (error is UnauthorizedAccessException)
+            {
+                return String.Format("You do not have permission to access the specified {0}.\r\n", context);
+            }
+            else
+            {
+                return String.Format("Unhandled error loading {0}: {1}.\r\n", context, error.Message);
+            }
+        }
     }
 }

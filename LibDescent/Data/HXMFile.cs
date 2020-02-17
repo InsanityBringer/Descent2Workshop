@@ -38,7 +38,6 @@ namespace LibDescent.Data
     {
         public HAMFile baseFile;
         public VHAMFile augmentFile;
-        public string filename;
         public List<string> RobotNames = new List<string>();
         public List<string> ModelNames = new List<string>();
         public int sig, ver;
@@ -66,25 +65,14 @@ namespace LibDescent.Data
         }
 
         /// <summary>
-        /// Loads an HXM file from a given filename.
+        /// Loads an HXM file from a given stream.
         /// </summary>
-        /// <param name="filename">The filename of the HXM file.</param>
+        /// <param name="stream">The stream to load the HXM data from.</param>
         /// <returns></returns>
-        public int LoadDataFile(string filename)
+        public int Load(Stream stream)
         {
             BinaryReader br;
-            try
-            {
-                br = new BinaryReader(File.Open(filename, FileMode.Open));
-            }
-            catch (FileNotFoundException)
-            {
-                return -3;
-            }
-            catch (UnauthorizedAccessException)
-            {
-                return -4;
-            }
+            br = new BinaryReader(stream);
 
             HAMDataReader data = new HAMDataReader();
 
@@ -150,8 +138,7 @@ namespace LibDescent.Data
             {
                 BuildModelAnimation(robot);
             }
-            br.Close();
-            this.filename = filename;
+            br.Dispose();
             return 0;
         }
 
@@ -300,12 +287,12 @@ namespace LibDescent.Data
         }
 
         /// <summary>
-        /// Saves the HXM file to a given filename.
+        /// Saves the HXM file to a given stream.
         /// </summary>
-        /// <param name="name">The filename to write to.</param>
-        public void SaveDataFile(string name)
+        /// <param name="stream">The stream to write to.</param>
+        public void Write(Stream stream)
         {
-            BinaryWriter bw = new BinaryWriter(File.Open(name, FileMode.Create));
+            BinaryWriter bw = new BinaryWriter(stream);
             HAMDataWriter datawriter = new HAMDataWriter();
 
             replacedJoints.Clear();
@@ -355,8 +342,7 @@ namespace LibDescent.Data
                 bw.Write(replacedObjBitmapPtrs[x].data);
             }
 
-            bw.Close();
-            filename = name;
+            bw.Dispose();
         }
 
         /// <summary>

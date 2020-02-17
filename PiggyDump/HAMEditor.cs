@@ -43,6 +43,7 @@ namespace Descent2Workshop
         public bool glContextCreated = false;
         private ModelRenderer modelRenderer;
         private bool noPMView = false;
+        private string currentFilename;
 
         private int ElementNumber { get { return (int)nudElementNum.Value; } }
         private int PageNumber { get { return EditorTabs.SelectedIndex; } }
@@ -54,7 +55,7 @@ namespace Descent2Workshop
         RobotPanel robotPanel;
         WeaponPanel weaponPanel;
         
-        public HAMEditor(HAMFile data, StandardUI host)
+        public HAMEditor(HAMFile data, StandardUI host, string filename)
         {
             InitializeComponent();
             this.glControl1 = new OpenTK.GLControl();
@@ -89,7 +90,8 @@ namespace Descent2Workshop
             datafile = data;
             this.host = host;
             modelRenderer = new ModelRenderer(datafile, host.DefaultPigFile);
-            this.Text = string.Format("{0} - HAM Editor", datafile.Filename);
+            currentFilename = filename;
+            this.Text = string.Format("{0} - HAM Editor", currentFilename);
         }
 
         private void HAMEditor2_Load(object sender, EventArgs e)
@@ -1073,10 +1075,59 @@ namespace Descent2Workshop
         // BASIC MENU FUNCTIONS
         //---------------------------------------------------------------------
 
+        /// <summary>
+        /// Helper function to save a HAM file, with lots of dumb error handling that doesn't work probably.
+        /// </summary>
+        /// <param name="filename">The filename to save the file to.</param>
+        private void SaveHAMFile(string filename)
+        {
+            //Get rid of any old backups
+            try
+            {
+                File.Delete(Path.ChangeExtension(filename, "BAK"));
+            }
+            catch (DirectoryNotFoundException) { } //Discover this with our face to avoid a 1/1000000 race condition
+            catch (UnauthorizedAccessException exc)
+            {
+                host.AppendConsole(String.Format("Cannot delete old backup file {0}: Permission denied.\r\nMsg: {1}\r\n", Path.ChangeExtension(filename, "BAK"), exc.Message));
+            }
+            catch (IOException exc)
+            {
+                host.AppendConsole(String.Format("Cannot delete old backup file {0}: IO error occurred.\r\nMsg: {1}\r\n", Path.ChangeExtension(filename, "BAK"), exc.Message));
+            }
+            //Move the current file into the backup slot
+            try
+            {
+                File.Move(filename, Path.ChangeExtension(filename, "BAK"));
+            }
+            catch (DirectoryNotFoundException) { } //Discover this with our face to avoid a 1/1000000 race condition
+            catch (UnauthorizedAccessException exc)
+            {
+                host.AppendConsole(String.Format("Cannot move old HAM file {0}: Permission denied.\r\nMsg: {1}\r\n", filename, exc.Message));
+            }
+            catch (IOException exc)
+            {
+                host.AppendConsole(String.Format("Cannot move old HAM file {0}: IO error occurred.\r\nMsg: {1}\r\n", filename, exc.Message));
+            }
+            //Finally write the new file
+            FileStream stream;
+            try
+            {
+                stream = File.Open(filename, FileMode.Create);
+                datafile.Write(stream, false);
+                stream.Close();
+                stream.Dispose();
+            }
+            catch (Exception exc)
+            {
+                FileUtilities.FileExceptionHandler(exc, "HAM file");
+            }
+        }
+
         private void mnuSave_Click(object sender, EventArgs e)
         {
             bool compatObjBitmaps = (StandardUI.options.GetOption("CompatObjBitmaps", bool.FalseString) == bool.TrueString);
-            datafile.SaveDataFile(datafile.lastFilename, compatObjBitmaps);
+            SaveHAMFile(currentFilename);
         }
 
         private void mnuSaveAs_Click(object sender, EventArgs e)
@@ -1084,11 +1135,10 @@ namespace Descent2Workshop
             saveFileDialog1.Filter = "HAM Files|*.HAM";
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                datafile.lastFilename = saveFileDialog1.FileName;
                 bool compatObjBitmaps = (StandardUI.options.GetOption("CompatObjBitmaps", bool.FalseString) == bool.TrueString);
-                datafile.SaveDataFile(saveFileDialog1.FileName, compatObjBitmaps);
+                SaveHAMFile(saveFileDialog1.FileName);
             }
-            this.Text = string.Format("{0} - HAM Editor", datafile.Filename);
+            this.Text = string.Format("{0} - HAM Editor", currentFilename);
         }
     }
 }

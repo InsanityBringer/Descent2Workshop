@@ -38,6 +38,7 @@ namespace Descent2Workshop
         public StandardUI host;
         private bool isLocked = false;
         private bool glContextCreated = false;
+        private string currentFilename;
 
         private ModelTextureManager texMan = new ModelTextureManager();
 
@@ -51,7 +52,7 @@ namespace Descent2Workshop
 
         private EditorPanels.RobotPanel robotPanel;
 
-        public HXMEditor(HXMFile datafile, StandardUI host)
+        public HXMEditor(HXMFile datafile, StandardUI host, string filename)
         {
             InitializeComponent();
             //can't use GLControls with designer? eh?
@@ -75,7 +76,7 @@ namespace Descent2Workshop
             this.datafile = datafile;
             this.host = host;
             modelRenderer = new ModelRenderer(datafile.baseFile, host.DefaultPigFile);
-            this.Text = string.Format("{0} - HXM Editor", datafile.filename);
+            this.Text = string.Format("{0} - HXM Editor", currentFilename);
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -464,6 +465,58 @@ namespace Descent2Workshop
         //---------------------------------------------------------------------
         // MENU FUNCTIONS
         //---------------------------------------------------------------------
+
+        /// <summary>
+        /// Helper function to save a HAM file, with lots of dumb error handling that doesn't work probably.
+        /// </summary>
+        /// <param name="filename">The filename to save the file to.</param>
+        private void SaveHXMFile(string filename)
+        {
+            //Get rid of any old backups
+            try
+            {
+                File.Delete(Path.ChangeExtension(filename, "BAK"));
+            }
+            catch (FileNotFoundException) { }
+            catch (DirectoryNotFoundException) { } //Discover this with our face to avoid a 1/1000000 race condition
+            catch (UnauthorizedAccessException exc)
+            {
+                host.AppendConsole(String.Format("Cannot delete old backup file {0}: Permission denied.\r\nMsg: {1}\r\n", Path.ChangeExtension(filename, "BAK"), exc.Message));
+            }
+            catch (IOException exc)
+            {
+                host.AppendConsole(String.Format("Cannot delete old backup file {0}: IO error occurred.\r\nMsg: {1}\r\n", Path.ChangeExtension(filename, "BAK"), exc.Message));
+            }
+            //Move the current file into the backup slot
+            try
+            {
+                File.Move(filename, Path.ChangeExtension(filename, "BAK"));
+            }
+            catch (FileNotFoundException) { }
+            catch (DirectoryNotFoundException) { } //Discover this with our face to avoid a 1/1000000 race condition
+            catch (UnauthorizedAccessException exc)
+            {
+                host.AppendConsole(String.Format("Cannot move old HXM file {0}: Permission denied.\r\nMsg: {1}\r\n", filename, exc.Message));
+            }
+            catch (IOException exc)
+            {
+                host.AppendConsole(String.Format("Cannot move old HXM file {0}: IO error occurred.\r\nMsg: {1}\r\n", filename, exc.Message));
+            }
+            //Finally write the new file
+            FileStream stream;
+            try
+            {
+                stream = File.Open(filename, FileMode.Create);
+                datafile.Write(stream);
+                stream.Close();
+                stream.Dispose();
+            }
+            catch (Exception exc)
+            {
+                FileUtilities.FileExceptionHandler(exc, "HXM file");
+            }
+        }
+
         private void menuItem3_Click_1(object sender, EventArgs e)
         {
             saveFileDialog1.Filter = "HXM Files|*.hxm";
@@ -471,15 +524,23 @@ namespace Descent2Workshop
             {
                 if (saveFileDialog1.FileName != "")
                 {
-                    datafile.SaveDataFile(saveFileDialog1.FileName);
-                    this.Text = string.Format("{0} - HXM Editor", datafile.filename);
+                    currentFilename = saveFileDialog1.FileName;
+                    SaveHXMFile(saveFileDialog1.FileName);
+                    this.Text = string.Format("{0} - HXM Editor", currentFilename);
                 }
             }
         }
 
         private void MenuItem2_Click(object sender, EventArgs e)
         {
-            datafile.SaveDataFile(datafile.filename);
+            if (currentFilename == "")
+            {
+                menuItem3_Click_1(sender, e);
+            }
+            else
+            {
+                SaveHXMFile(currentFilename);
+            }
         }
     }
 }

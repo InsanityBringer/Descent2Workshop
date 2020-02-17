@@ -45,18 +45,6 @@ namespace LibDescent.Data
         /// Uh, i guess in case we want to verify that the ham file was actually loaded.
         /// </summary>
         public bool hasRead = false;
-        /// <summary>
-        /// Flag for the UI to check if changes have been saved. I think.
-        /// </summary>
-        public bool hasSaved = true;
-        /// <summary>
-        /// Original filename for the archive.
-        /// </summary>
-        public string Filename;
-        /// <summary>
-        /// Most recently written to filename. 
-        /// </summary>
-        public string lastFilename;
 
         //Data
         public List<ushort> Textures = new List<ushort>();
@@ -109,38 +97,23 @@ namespace LibDescent.Data
             piggyFile = pigFile;
         }
 
-        public int LoadDataFile(string filename)
+        public int Load(Stream stream)
         {
-            lastFilename = filename;
             //If a namefile isn't present, automatically generate namelists for our convenience. 
             bool generateNameLists = true;
-            Filename = filename;
             BinaryReader br;
-            try
-            {
-                br = new BinaryReader(File.Open(filename, FileMode.Open));
-            }
-            catch (FileNotFoundException)
-            {
-                return -3;
-            }
-            catch (UnauthorizedAccessException)
-            {
-                return -4;
-            }
+            br = new BinaryReader(stream);
             HAMDataReader bm = new HAMDataReader();
 
             int sig = br.ReadInt32();
             if (sig != 0x214D4148)
             {
-                br.Close();
                 br.Dispose();
                 return -1;
             }
             version = br.ReadInt32();
             if (version < 2 || version > 3)
             {
-                br.Close();
                 br.Dispose();
                 return -2;
             }
@@ -403,8 +376,8 @@ namespace LibDescent.Data
 
             ValidateReferences();
 
-            br.Close();
             hasRead = true;
+            br.Dispose();
 
             return 0;
         }
@@ -769,7 +742,7 @@ namespace LibDescent.Data
             }
         }
 
-        public void SaveDataFile(string filename, bool compatObjBitmaps)
+        public void Write(Stream stream, bool compatObjBitmaps)
         {
             //Brute force solution
             RenumberElements(HAMType.EClip);
@@ -793,7 +766,7 @@ namespace LibDescent.Data
             LoadShipGuns(PlayerShip);
 
             HAMDataWriter writer = new HAMDataWriter();
-            BinaryWriter bw = new BinaryWriter(File.Open(filename, FileMode.Create));
+            BinaryWriter bw = new BinaryWriter(stream);
             bw.Write(558711112);
             bw.Write(version);
             int returnPoint = (int)bw.BaseStream.Position;
@@ -980,9 +953,7 @@ namespace LibDescent.Data
             }
             SaveNamefile(bw);
             WriteOrphanedModels(bw);
-            bw.Close();
-
-            this.Filename = filename;
+            bw.Dispose();
         }
 
         private void LoadReactorGuns(Reactor reactor)

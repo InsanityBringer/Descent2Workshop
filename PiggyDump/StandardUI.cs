@@ -158,40 +158,87 @@ namespace Descent2Workshop
             }
         }
 
+        /// <summary>
+        /// Helper function for loading a HAM file from a file.
+        /// </summary>
+        /// <param name="filename">The filename to load from.</param>
+        /// <param name="dataFile">The HAM file to load data into.</param>
+        /// <returns></returns>
+        private bool LoadHAMFile(string filename, HAMFile dataFile)
+        {
+            FileStream stream;
+            try
+            {
+                stream = File.Open(filename, FileMode.Open);
+            }
+            catch (Exception exc)
+            {
+                AppendConsole(FileUtilities.FileExceptionHandler(exc, "HAM file"));
+                return false;
+            }
+            int res = dataFile.Load(stream);
+
+            stream.Close();
+            stream.Dispose();
+            if (res == -1)
+            {
+                AppendConsole("HAM file has invalid signature. Appears to be a V-HAM file.\r\n");
+                return false;
+            }
+            else if (res == -2)
+            {
+                AppendConsole("HAM file is unknown version.\r\n");
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Helper function for loading a HAM file from a file.
+        /// </summary>
+        /// <param name="filename">The filename to load from.</param>
+        /// <param name="dataFile">The HAM file to load data into.</param>
+        /// <returns></returns>
+        private bool LoadHXMFile(string filename, HXMFile dataFile)
+        {
+            FileStream stream;
+            try
+            {
+                stream = File.Open(filename, FileMode.Open);
+            }
+            catch (Exception exc)
+            {
+                AppendConsole(FileUtilities.FileExceptionHandler(exc, "HXM file"));
+                return false;
+            }
+            int res = dataFile.Load(stream);
+
+            stream.Close();
+            stream.Dispose();
+            if (res == -1)
+            {
+                AppendConsole("HXM file has unknown signature\r\n");
+                return false;
+            }
+            else if (res == -2)
+            {
+                AppendConsole("HXM file is unknown version.\r\n");
+                return false;
+            }
+            return true;
+        }
+
         private void menuItem4_Click(object sender, EventArgs e)
         {
             openFileDialog1.Filter = ".HAM files|*.HAM";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 HAMFile archive = new HAMFile(defaultPigFile);
-                int res = archive.LoadDataFile(openFileDialog1.FileName);
-                if (res == 0)
+                if (LoadHAMFile(openFileDialog1.FileName, archive))
                 {
-                    HAMEditor archiveEditor = new HAMEditor(archive, this);
+                    HAMEditor archiveEditor = new HAMEditor(archive, this, openFileDialog1.FileName);
                     archiveEditor.Show();
                 }
-                else if (res == -1)
-                    AppendConsole("HAM file has invalid signature. Appears to be a V-HAM file.\r\n");
-                else if (res == -2)
-                    AppendConsole("HAM file is unknown version.\r\n");
-                else if (res == -3)
-                    AppendConsole("Cannot open HAM file: File not found.\r\n");
-                else if (res == -4)
-                    AppendConsole("Cannot open HAM file: Permission denied.\r\n");
-            }
-        }
-
-        private void menuItem5_Click(object sender, EventArgs e)
-        {
-            HXMLoadDialog dialog = new HXMLoadDialog();
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                HAMFile dataFile = new HAMFile(defaultPigFile);
-                dataFile.LoadDataFile(dialog.HAMFilename);
-                HXMFile hxmFile = new HXMFile(dataFile);
-                hxmFile.LoadDataFile(dialog.HXMFilename);
-                HXMEditor editor = new HXMEditor(hxmFile, this);
-                editor.Show();
             }
         }
 
@@ -219,22 +266,13 @@ namespace Descent2Workshop
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 HAMFile archive = new HAMFile(defaultPigFile);
-                int res = archive.LoadDataFile(openFileDialog1.FileName);
-                if (res == 0)
+                if (LoadHAMFile(openFileDialog1.FileName, archive))
                 {
                     HXMFile hxm = new HXMFile(archive);
 
-                    HXMEditor editor = new HXMEditor(hxm, this);
+                    HXMEditor editor = new HXMEditor(hxm, this, "");
                     editor.Show();
                 }
-                else if (res == -1)
-                    AppendConsole("HAM file has invalid signature. Appears to be a V-HAM file.\r\n");
-                else if (res == -2)
-                    AppendConsole("HAM file is unknown version.\r\n");
-                else if (res == -3)
-                    AppendConsole("Cannot open HAM file: File not found.\r\n");
-                else if (res == -4)
-                    AppendConsole("Cannot open HAM file: Permission denied.\r\n");
             }
         }
 
@@ -302,15 +340,16 @@ namespace Descent2Workshop
         private void MnuAbout_Click(object sender, EventArgs e)
         {
 #if DEBUG
+            /* //rip for moment due to refactoring
             HAMFile datafile = new HAMFile(DefaultPigFile);
-            if (datafile.LoadDataFile("C:/Games/Descent/D2X-Rebirth/GOOD.HAM") == 0)
+            if (datafile.Load("C:/Games/Descent/D2X-Rebirth/GOOD.HAM") == 0)
             {
                 Editor.Level level = new Editor.Level();
                 level.LoadMine("C:/Games/Descent/D2X-Rebirth/d2leva-1.rl2.good");
                 Editor.EditorUI editor = new Editor.EditorUI(level, datafile);
                 editor.Show();
                 //Editor.ConvertToOverload.WriteOverloadLevel("c:/Games/Descent/D2X-Rebirth/test.overload", level);
-            }
+            }*/
             /*level.SaveMine("C:/Games/Descent/D2X-Rebirth/d2leva-1.rl2");
             Editor.Level level2 = new Editor.Level();
             level2.LoadMine("C:/Games/Descent/D2X-Rebirth/d2leva-1.rl2");*/
@@ -325,25 +364,15 @@ namespace Descent2Workshop
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 HAMFile dataFile = new HAMFile(defaultPigFile);
-                int res = dataFile.LoadDataFile(dialog.HAMFilename);
-                if (res != 0)
+                if (!LoadHAMFile(dialog.HAMFilename, dataFile))
                 {
-                    AppendConsole("Error loading base HAM file.\r\n");
+                    AppendConsole("VHAM load aborted.\r\n");
+                    return;
                 }
-                if (res == -1)
-                    AppendConsole("HAM file has invalid signature. Appears to be a V-HAM file.\r\n");
-                else if (res == -2)
-                    AppendConsole("HAM file is unknown version.\r\n");
-                else if (res == -3)
-                    AppendConsole("Cannot open HAM file: File not found.\r\n");
-                else if (res == -4)
-                    AppendConsole("Cannot open HAM file: Permission denied.\r\n");
                 VHAMFile hxmFile = new VHAMFile(dataFile);
                 hxmFile.LoadDataFile(dialog.HXMFilename);
                 VHAMEditor editor = new VHAMEditor(hxmFile, this);
                 editor.Show();
-                //HXMEditor editor = new HXMEditor(hxmFile, this);
-                //editor.Show();
             }
         }
 
@@ -454,10 +483,9 @@ namespace Descent2Workshop
             {
                 HAMFile dataFile = new HAMFile(defaultPigFile);
                 VHAMFile augmentFile = null;
-                res = dataFile.LoadDataFile(dialog.HAMFilename);
-                if (res != 0)
+                if (!LoadHAMFile(dialog.HAMFilename, dataFile))
                 {
-                    FileErrorCodeHandler(res, "HAM file");
+                    AppendConsole("HXM load aborted.\r\n");
                     return;
                 }
                 if (dialog.VHAMFilename != "")
@@ -474,9 +502,11 @@ namespace Descent2Workshop
                 if (augmentFile != null)
                     hxmFile.augmentFile = augmentFile;
 
-                hxmFile.LoadDataFile(dialog.HXMFilename);
-                HXMEditor editor = new HXMEditor(hxmFile, this);
-                editor.Show();
+                if (LoadHXMFile(dialog.HXMFilename, hxmFile))
+                {
+                    HXMEditor editor = new HXMEditor(hxmFile, this, dialog.HXMFilename);
+                    editor.Show();
+                }
             }
         }
 
