@@ -1086,6 +1086,7 @@ namespace Descent2Workshop
             {
                 File.Delete(Path.ChangeExtension(filename, "BAK"));
             }
+            catch (FileNotFoundException) { }
             catch (DirectoryNotFoundException) { } //Discover this with our face to avoid a 1/1000000 race condition
             catch (UnauthorizedAccessException exc)
             {
@@ -1100,6 +1101,7 @@ namespace Descent2Workshop
             {
                 File.Move(filename, Path.ChangeExtension(filename, "BAK"));
             }
+            catch (FileNotFoundException) { }
             catch (DirectoryNotFoundException) { } //Discover this with our face to avoid a 1/1000000 race condition
             catch (UnauthorizedAccessException exc)
             {
