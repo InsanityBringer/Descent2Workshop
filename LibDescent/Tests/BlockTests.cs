@@ -1,5 +1,6 @@
 ﻿using LibDescent.Data;
 using NUnit.Framework;
+using System;
 using System.IO;
 using System.Linq;
 
@@ -75,19 +76,19 @@ namespace LibDescent.Tests
 
             foreach (var block in blockFormats)
             {
-                Assert.AreEqual(42, block.Segments[2].Sides[4].BaseTexture.TextureIndex); // rock160
+                Assert.AreEqual(42, block.Segments[2].Sides[4].BaseTextureIndex); // rock160
                 Assert.AreEqual(new Uvl(0, 0, 0.582275390625), block.Segments[2].Sides[4].Uvls[0]);
                 Assert.AreEqual(new Uvl(0, 1, 0.59796142578125), block.Segments[2].Sides[4].Uvls[1]);
                 Assert.AreEqual(new Uvl(-1, 1, 0.715576171875), block.Segments[2].Sides[4].Uvls[2]);
                 Assert.AreEqual(new Uvl(-1, 0, 0.8023681640625), block.Segments[2].Sides[4].Uvls[3]);
 
-                Assert.AreEqual(219, block.Segments[0].Sides[2].BaseTexture.TextureIndex); // metl046 (rotated)
+                Assert.AreEqual(219, block.Segments[0].Sides[2].BaseTextureIndex); // metl046 (rotated)
                 Assert.AreEqual(new Uvl(0, 0, 0.836212158203125), block.Segments[0].Sides[2].Uvls[0]);
                 Assert.AreEqual(new Uvl(1, 0, 0.823486328125), block.Segments[0].Sides[2].Uvls[1]);
                 Assert.AreEqual(new Uvl(1, 1, 0.326934814453125), block.Segments[0].Sides[2].Uvls[2]);
                 Assert.AreEqual(new Uvl(0, 1, 0.32733154296875), block.Segments[0].Sides[2].Uvls[3]);
 
-                Assert.AreEqual(0, block.Segments[1].Sides[0].BaseTexture.TextureIndex); // rock021 (no wall)
+                Assert.AreEqual(0, block.Segments[1].Sides[0].BaseTextureIndex); // rock021 (no wall)
                 Assert.AreEqual(new Uvl(0, 0, 0.245361328125), block.Segments[1].Sides[0].Uvls[0]);
                 Assert.AreEqual(new Uvl(0, 0, 0.24090576171875), block.Segments[1].Sides[0].Uvls[1]);
                 Assert.AreEqual(new Uvl(0, 0, 0.313140869140625), block.Segments[1].Sides[0].Uvls[2]);
@@ -102,13 +103,13 @@ namespace LibDescent.Tests
 
             foreach (var block in blockFormats)
             {
-                Assert.AreEqual(341, block.Segments[2].Sides[4].OverlayTexture.TextureIndex); // misc086 (rotated 180 degrees)
+                Assert.AreEqual(341, block.Segments[2].Sides[4].OverlayTextureIndex); // misc086 (rotated 180 degrees)
                 Assert.AreEqual(OverlayRotation.Rotate180, block.Segments[2].Sides[4].OverlayRotation);
 
-                Assert.AreEqual(268, block.Segments[0].Sides[2].OverlayTexture.TextureIndex); // metl153
+                Assert.AreEqual(268, block.Segments[0].Sides[2].OverlayTextureIndex); // metl153
                 Assert.AreEqual(OverlayRotation.Rotate0, block.Segments[0].Sides[2].OverlayRotation);
 
-                Assert.AreEqual(0, block.Segments[1].Sides[0].OverlayTexture.TextureIndex); // rock021 (no wall)
+                Assert.AreEqual(0, block.Segments[1].Sides[0].OverlayTextureIndex); // rock021 (no wall)
                 Assert.AreEqual(OverlayRotation.Rotate0, block.Segments[1].Sides[0].OverlayRotation);
             }
         }
@@ -151,7 +152,8 @@ namespace LibDescent.Tests
             Assert.DoesNotThrow(() => blkBlock.WriteToStream(stream));
 
             var originalFileContents = GetArrayFromResourceStream("test.blk");
-            Assert.IsTrue(Enumerable.SequenceEqual(originalFileContents, stream.ToArray()));
+            var resultingFileContents = stream.ToArray();
+            Assert.IsTrue(Enumerable.SequenceEqual(originalFileContents, resultingFileContents));
         }
 
         [Test]
@@ -205,19 +207,13 @@ namespace LibDescent.Tests
 
             var matcen = blxBlock.MatCenters[0];
             Assert.AreSame(matcen, blxBlock.Segments[8].MatCenter);
-            Assert.AreEqual(8, matcen.segnum);
-            Assert.AreEqual(4, blxBlock.Segments[8].special);
         }
 
         [Test]
-        [Ignore(".blx file write support is no longer planned for implementation.")]
-        public void TestExtendedBlockWrite()
+        public void TestExtendedBlockWriteNotImplemented()
         {
             var stream = new MemoryStream();
-            Assert.DoesNotThrow(() => blxBlock.WriteToStream(stream));
-
-            var originalFileContents = GetArrayFromResourceStream("test.blx");
-            Assert.IsTrue(Enumerable.SequenceEqual(originalFileContents, stream.ToArray()));
+            Assert.Throws<NotImplementedException>(() => blxBlock.WriteToStream(stream));
         }
     }
 }

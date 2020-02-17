@@ -27,7 +27,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Descent2Workshop.Editor
+namespace LibDescent.Data
 {
     public enum ObjectType
     {
@@ -147,7 +147,7 @@ namespace Descent2Workshop.Editor
         public byte frameNumber;
     }
 
-    public class EditorObject
+    public class LevelObject
     {
         public ObjectType type;
         public byte id;

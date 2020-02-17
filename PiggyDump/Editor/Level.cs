@@ -92,7 +92,7 @@ namespace Descent2Workshop.Editor
         private string levelName = "";
         private int levelNumber; 
         private List<string> pofFiles = new List<string>();
-        private List<EditorObject> objects = new List<EditorObject>();
+        private List<LevelObject> objects = new List<LevelObject>();
         private List<Wall> walls = new List<Wall>();
         private List<Trigger> triggers = new List<Trigger>();
         private List<DynamicLightIndex> dlIndexes = new List<DynamicLightIndex>();
@@ -102,7 +102,7 @@ namespace Descent2Workshop.Editor
 
         public List<Segment> Segments { get => segments; }
         public List<LevelVertex> Verts { get => verts; }
-        public List<EditorObject> Objects { get => objects; }
+        public List<LevelObject> Objects { get => objects; }
 
         public int LoadMine(string filename)
         {
@@ -585,7 +585,7 @@ namespace Descent2Workshop.Editor
             int objectSig = 0;
             for (int i = 0; i < objectsCount; i++)
             {
-                EditorObject obj = ReadObject(br);
+                var obj = ReadObject(br);
                 obj.sig = objectSig;
                 objectSig++;
                 objects.Add(obj);
@@ -702,9 +702,9 @@ namespace Descent2Workshop.Editor
             return 0;
         }
 
-        private EditorObject ReadObject(BinaryReader br)
+        private LevelObject ReadObject(BinaryReader br)
         {
-            EditorObject obj = new EditorObject();
+            var obj = new LevelObject();
             obj.type = (ObjectType)br.ReadSByte();
             obj.id = br.ReadByte();
             obj.controlType = (ControlType)br.ReadByte();
@@ -888,7 +888,7 @@ namespace Descent2Workshop.Editor
                 }
             }
             int objOffset = (int)bw.BaseStream.Position;
-            foreach (EditorObject obj in objects)
+            foreach (var obj in objects)
             {
                 WriteObject(bw, obj);
             }
@@ -988,7 +988,7 @@ namespace Descent2Workshop.Editor
             return 0;
         }
 
-        private void WriteObject(BinaryWriter bw, EditorObject obj)
+        private void WriteObject(BinaryWriter bw, LevelObject obj)
         {
             bw.Write((byte)obj.type);
             bw.Write(obj.id);

@@ -20,14 +20,50 @@
     SOFTWARE.
 */
 
+using System;
+using System.Collections.Generic;
+
 namespace LibDescent.Data
 {
     public class MatCenter
     {
-        public int[] robotFlags = new int[2];
-        public int hitPoints;
-        public int interval;
-        public int segnum;
-        public int fuelcenNum;
+        public MatCenter(Segment segment)
+        {
+            Segment = segment ?? throw new ArgumentNullException(nameof(segment));
+            SpawnedRobotIds = new SortedSet<uint>();
+            HitPoints = 500;
+            Interval = 5;
+        }
+
+        public Segment Segment { get; }
+
+        public SortedSet<uint> SpawnedRobotIds { get; }
+
+        /// <summary>
+        /// The number of hit points the matcen has.
+        /// Not actually implemented in Descent or Descent 2.
+        /// </summary>
+        public Fix HitPoints { get; set; }
+
+        /// <summary>
+        /// The time between consecutive spawns from the matcen.
+        /// Descent and Descent 2 ignore this value and always use 5 seconds.
+        /// </summary>
+        public Fix Interval { get; set; }
+
+        internal void InitializeSpawnedRobots(uint[] robotListFlags)
+        {
+            SpawnedRobotIds.Clear();
+            int arrayElementSize = sizeof(uint) * 8;
+            for (int robotId = 0; robotId < robotListFlags.Length * arrayElementSize; robotId++)
+            {
+                int flagOffset;
+                int arrayIndex = Math.DivRem(robotId, arrayElementSize, out flagOffset);
+                if ((robotListFlags[arrayIndex] & (1 << flagOffset)) != 0)
+                {
+                    SpawnedRobotIds.Add((uint)robotId);
+                }
+            }
+        }
     }
 }

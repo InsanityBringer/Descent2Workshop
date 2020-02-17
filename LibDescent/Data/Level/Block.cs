@@ -10,7 +10,7 @@ namespace LibDescent.Data
     {
         List<Segment> Segments { get; }
         List<Wall> Walls { get; }
-        List<BlockTrigger> Triggers { get; }
+        List<BlxTrigger> Triggers { get; }
         List<AnimatedLight> AnimatedLights { get; }
         List<MatCenter> MatCenters { get; }
 
@@ -26,7 +26,7 @@ namespace LibDescent.Data
         public List<Wall> Walls => new List<Wall>();
 
         // Triggers is always empty for a regular block
-        public List<BlockTrigger> Triggers => new List<BlockTrigger>();
+        public List<BlxTrigger> Triggers => new List<BlxTrigger>();
 
         // AnimatedLights is always empty for a regular block
         public List<AnimatedLight> AnimatedLights => new List<AnimatedLight>();
@@ -72,9 +72,9 @@ namespace LibDescent.Data
 
                     var side = new Side(segment, sideNum);
                     segment.Sides[sideNum] = side;
-                    side.BaseTexture = LevelTexture.FromTextureIndex(BlockCommon.ReadPrimaryTextureIndex(reader, false));
+                    side.BaseTextureIndex = BlockCommon.ReadPrimaryTextureIndex(reader, false);
                     (var overlayIndex, var overlayRotation) = BlockCommon.ReadSecondaryTexture(reader, false);
-                    side.OverlayTexture = LevelTexture.FromTextureIndex(overlayIndex);
+                    side.OverlayTextureIndex = overlayIndex;
                     side.OverlayRotation = overlayRotation;
                     for (int i = 0; i < side.Uvls.Length; i++)
                     {
@@ -99,7 +99,6 @@ namespace LibDescent.Data
                 segment.Light = Fix.FromRawValue(BlockCommon.ReadValue<int>(reader, "static_light"));
                 segment.Function = SegFunction.None;
                 segment.MatCenter = null;
-                segment.value = 0xFF; // related to matcens, might be able to get rid of this
             }
 
             // Now set up segment connections
@@ -224,7 +223,44 @@ namespace LibDescent.Data
 
         public void WriteToStream(Stream stream)
         {
-            throw new NotImplementedException();
+            var writer = new StreamWriter(stream);
+            writer.WriteLine("DMB_BLOCK_FILE");
+
+            foreach (var segment in Segments)
+            {
+                writer.WriteLine($"segment {Segments.IndexOf(segment)}");
+
+                foreach (var side in segment.Sides)
+                {
+                    writer.WriteLine($"  side {Array.IndexOf(segment.Sides, side)}");
+                    writer.WriteLine($"    tmap_num {side.BaseTextureIndex}");
+                    writer.WriteLine($"    tmap_num2 {(short)(side.OverlayTextureIndex | ((ushort)side.OverlayRotation << 14))}");
+
+                    foreach (var uvl in side.Uvls)
+                    {
+                        (var u, var v, var l) = uvl.ToRawValues();
+                        writer.WriteLine($"    uvls {u} {v} {l}");
+                    }
+                }
+
+                writer.Write("  children");
+                foreach (var side in segment.Sides)
+                {
+                    var connectedSegmentId = side.ConnectedSegment != null ? Segments.IndexOf(side.ConnectedSegment) : -1;
+                    writer.Write($" {connectedSegmentId}");
+                }
+                writer.WriteLine();
+
+                foreach (var vertex in segment.Vertices)
+                {
+                    writer.WriteLine($"  vms_vector {Array.IndexOf(segment.Vertices, vertex)}" +
+                        $" {vertex.Location.x.GetRawValue()} {vertex.Location.y.GetRawValue()} {vertex.Location.z.GetRawValue()}");
+                }
+
+                writer.WriteLine($"  static_light {segment.Light.GetRawValue()}");
+            }
+
+            writer.Flush();
         }
     }
 
@@ -236,7 +272,7 @@ namespace LibDescent.Data
 
         public List<Segment> Segments { get; } = new List<Segment>();
         public List<Wall> Walls { get; } = new List<Wall>();
-        public List<BlockTrigger> Triggers { get; } = new List<BlockTrigger>();
+        public List<BlxTrigger> Triggers { get; } = new List<BlxTrigger>();
         public List<AnimatedLight> AnimatedLights { get; } = new List<AnimatedLight>();
         public List<MatCenter> MatCenters { get; } = new List<MatCenter>();
 
@@ -288,9 +324,9 @@ namespace LibDescent.Data
                     segment.Sides[sideNum] = side;
 
                     // Textures
-                    side.BaseTexture = LevelTexture.FromTextureIndex(BlockCommon.ReadPrimaryTextureIndex(reader, true));
+                    side.BaseTextureIndex = BlockCommon.ReadPrimaryTextureIndex(reader, true);
                     (var overlayIndex, var overlayRotation) = BlockCommon.ReadSecondaryTexture(reader, true);
-                    side.OverlayTexture = LevelTexture.FromTextureIndex(overlayIndex);
+                    side.OverlayTextureIndex = overlayIndex;
                     side.OverlayRotation = overlayRotation;
                     for (int i = 0; i < side.Uvls.Length; i++)
                     {
@@ -354,7 +390,7 @@ namespace LibDescent.Data
                         // 255 (0xFF) means no trigger on this wall
                         if (triggerNum != 0xFF)
                         {
-                            var trigger = new BlockTrigger();
+                            var trigger = new BlxTrigger();
                             wall.Trigger = trigger;
                             block.Triggers.Add(trigger);
 
@@ -406,19 +442,20 @@ namespace LibDescent.Data
                 }
 
                 segment.Light = Fix.FromRawValue(BlockCommon.ReadValue<int>(reader, "static_light"));
-                segment.special = BlockCommon.ReadValue<byte>(reader, "special");
+                segment.Function = (SegFunction)BlockCommon.ReadValue<byte>(reader, "special");
 
                 var matcenNum = BlockCommon.ReadValue<sbyte>(reader, "matcen_num");
                 if (matcenNum != -1)
                 {
-                    var matcen = new MatCenter();
-                    matcen.segnum = (int)segmentId;
-                    matcen.fuelcenNum = matcenNum;
+                    var matcen = new MatCenter(segment);
                     segment.MatCenter = matcen;
                     block.MatCenters.Add(matcen);
                 }
 
-                segment.value = (byte)BlockCommon.ReadValue<sbyte>(reader, "value");
+                // This is an index into the fuelcen (also used for matcens) array in D1/D2.
+                // It's relatively easy to recalculate so we don't store it.
+                BlockCommon.ReadValue<sbyte>(reader, "value");
+
                 // Child/wall bitmasks are used internally by DLE but we don't really need them
                 // - they can be recalculated
                 BlockCommon.ReadValue<byte>(reader, "child_bitmask");

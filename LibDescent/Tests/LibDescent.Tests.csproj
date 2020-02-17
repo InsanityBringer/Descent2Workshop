@@ -10,6 +10,7 @@
     <None Remove="DefaultSegment.xml" />
     <None Remove="test.blk" />
     <None Remove="test.blx" />
+    <None Remove="test.rdl" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +27,7 @@
     <EmbeddedResource Include="DefaultSegment.xml" />
     <EmbeddedResource Include="test.blk" />
     <EmbeddedResource Include="test.blx" />
+    <EmbeddedResource Include="test.rdl" />
   </ItemGroup>
 
 </Project>

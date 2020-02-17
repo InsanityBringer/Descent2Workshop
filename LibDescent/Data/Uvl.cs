@@ -42,6 +42,16 @@ namespace LibDescent.Data
             return new Uvl(Fix.FromRawValue(u << 5), Fix.FromRawValue(v << 5), Fix.FromRawValue(l << 1));
         }
 
+        public (short u, short v, ushort l) ToRawValues()
+        {
+            return ((short)(u.GetRawValue() >> 5), (short)(v.GetRawValue() >> 5), (ushort)(l.GetRawValue() >> 1));
+        }
+
+        public (double u, double v, double l) ToDoubles()
+        {
+            return (u, v, l);
+        }
+
         public override string ToString()
         {
             return string.Format("{0}, {1}, {2}", u, v, l);
