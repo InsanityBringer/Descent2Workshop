@@ -29,6 +29,16 @@ namespace LibDescent.Data
     internal abstract class DescentLevelLoader
     {
         protected Stream _stream;
+        /// <summary>
+        /// Level version info copied from D2 gamesave.cpp:
+        /// 1 -> 2  add palette name
+        /// 2 -> 3  add control center explosion time
+        /// 3 -> 4  add reactor strength
+        /// 4 -> 5  killed hostage text stuff
+        /// 5 -> 6  added Secret_return_segment and Secret_return_orient
+        /// 6 -> 7  added flickering lights
+        /// 7 -> 8  made version 8 to be not compatible with D2 1.0 & 1.1
+        /// </summary>
         protected int _levelVersion;
         protected int _mineDataOffset;
         protected int _gameDataOffset;
@@ -92,9 +102,24 @@ namespace LibDescent.Data
 
                 _mineDataOffset = reader.ReadInt32();
                 _gameDataOffset = reader.ReadInt32();
-                _ = reader.ReadInt32(); // hostageTextOffset - not used
 
+                if (_levelVersion >= 8)
+                {
+                    // Dummy Vertigo-related data
+                    _ = reader.ReadInt32();
+                    _ = reader.ReadInt16();
+                    _ = reader.ReadByte();
+                }
+
+                if (_levelVersion < 5)
+                {
+                    // Hostage text offset - not used
+                    _ = reader.ReadInt32();
+                }
+
+                LoadVersionSpecificLevelInfo(reader);
                 LoadMineData(reader);
+                LoadVersionSpecificMineData(reader);
                 LoadGameInfo(reader);
                 LoadVersionSpecificGameInfo(reader);
             }
@@ -609,6 +634,8 @@ namespace LibDescent.Data
         }
 
         protected abstract void CheckLevelVersion();
+        protected abstract void LoadVersionSpecificLevelInfo(BinaryReader reader);
+        protected abstract void LoadVersionSpecificMineData(BinaryReader reader);
         protected abstract ITrigger ReadTrigger(BinaryReader reader);
         protected abstract void AddTrigger(ITrigger trigger);
         protected abstract void LoadVersionSpecificGameInfo(BinaryReader reader);
@@ -637,6 +664,14 @@ namespace LibDescent.Data
             {
                 throw new InvalidDataException($"Level version should be 1 but was {_levelVersion}.");
             }
+        }
+
+        protected override void LoadVersionSpecificLevelInfo(BinaryReader reader)
+        {
+        }
+
+        protected override void LoadVersionSpecificMineData(BinaryReader reader)
+        {
         }
 
         protected override ITrigger ReadTrigger(BinaryReader reader)
@@ -672,6 +707,9 @@ namespace LibDescent.Data
     internal class D2LevelLoader : DescentLevelLoader
     {
         private readonly D2Level _level = new D2Level();
+        private List<(short segmentNum, short sideNum, uint mask, Fix timer, Fix delay)> _flickeringLights =
+            new List<(short, short, uint, Fix, Fix)>();
+        private int _secretReturnSegmentNum = 0;
         private List<LightDelta> _lightDeltas = new List<LightDelta>();
 
         protected override ILevel Level => _level;
@@ -689,10 +727,87 @@ namespace LibDescent.Data
 
         protected override void CheckLevelVersion()
         {
-            if (_levelVersion < 5)
+            if (_levelVersion < 2 || _levelVersion > 8)
             {
-                throw new InvalidDataException($"Level version should be 5 or newer but was {_levelVersion}.");
+                throw new InvalidDataException($"Level version should be between 2 and 8 but was {_levelVersion}.");
             }
+        }
+
+        protected override void LoadVersionSpecificLevelInfo(BinaryReader reader)
+        {
+            if (_levelVersion >= 2)
+            {
+                var paletteName = ReadString(reader, 13, true);
+                // now need to load it somehow?
+            }
+
+            if (_levelVersion >= 3)
+            {
+                _level.BaseReactorCountdownTime = reader.ReadInt32();
+            }
+            else
+            {
+                _level.BaseReactorCountdownTime = D2Level.DefaultBaseReactorCountdownTime;
+            }
+
+            if (_levelVersion >= 4)
+            {
+                _level.ReactorStrength = reader.ReadInt32();
+            }
+            else
+            {
+                _level.ReactorStrength = null;
+            }
+
+            if (_levelVersion >= 7)
+            {
+                var numFlickeringLights = reader.ReadInt32();
+                for (int i = 0; i < numFlickeringLights; i++)
+                {
+                    // Probably should really be using a struct, but this is surprisingly readable...
+                    _flickeringLights.Add((
+                        segmentNum: reader.ReadInt16(),
+                        sideNum: reader.ReadInt16(),
+                        mask: reader.ReadUInt32(),
+                        timer: Fix.FromRawValue(reader.ReadInt32()),
+                        delay: Fix.FromRawValue(reader.ReadInt32())
+                        ));
+                }
+            }
+
+            if (_levelVersion >= 6)
+            {
+                _secretReturnSegmentNum = reader.ReadInt32();
+                _level.SecretReturnOrientation = new FixMatrix(
+                    FixVector.FromRawValues(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32()),
+                    FixVector.FromRawValues(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32()),
+                    FixVector.FromRawValues(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32())
+                    );
+            }
+            else
+            {
+                _level.SecretReturnOrientation = new FixMatrix(
+                    new FixVector(1, 0, 0), new FixVector(0, 1, 0), new FixVector(0, 0, 1)
+                    );
+            }
+        }
+
+        protected override void LoadVersionSpecificMineData(BinaryReader reader)
+        {
+            // Nothing to actually read, but we do need to set up some links
+
+            foreach (var light in _flickeringLights)
+            {
+                var side = Level.Segments[light.segmentNum].Sides[light.sideNum];
+                var animatedLight = new AnimatedLight(side);
+                animatedLight.Mask = light.mask;
+                animatedLight.TimeToNextTick = light.timer;
+                animatedLight.TickLength = light.delay;
+                _level.AnimatedLights.Add(animatedLight);
+                side.AnimatedLight = animatedLight;
+            }
+
+            _level.SecretReturnSegment = _level.Segments[_secretReturnSegmentNum];
         }
 
         protected override ITrigger ReadTrigger(BinaryReader reader)
