@@ -31,6 +31,7 @@ namespace LibDescent.Data
         public Fix TickLength { get; set; }
 
         public Side Side { get; }
+        public DynamicLight DynamicLight => Side.DynamicLight;
 
         public AnimatedLight(Side side)
         {

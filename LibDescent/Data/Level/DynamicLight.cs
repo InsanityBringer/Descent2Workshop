@@ -38,7 +38,14 @@ namespace LibDescent.Data
 
     public struct LightDelta
     {
+        /// <summary>
+        /// The side whose light values are modified by the owning light source.
+        /// </summary>
         public Side targetSide;
+        /// <summary>
+        /// The amount to add to target vertices' light values when this light delta is applied.
+        /// Typically inverted (i.e. subtracted) when the light is turned off.
+        /// </summary>
         public Fix[] vertexDeltas;
 
         public LightDelta(Side targetSide)
