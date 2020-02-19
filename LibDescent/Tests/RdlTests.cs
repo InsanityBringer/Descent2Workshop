@@ -1,5 +1,6 @@
 ﻿using LibDescent.Data;
 using NUnit.Framework;
+using System.IO;
 
 namespace LibDescent.Tests
 {
@@ -93,6 +94,8 @@ namespace LibDescent.Tests
         {
             // Exit tunnel side - true
             Assert.IsTrue(level.Segments[17].GetSide(SegSide.Back).Exit);
+            // Should not read texture data
+            Assert.AreEqual(0, level.Segments[17].GetSide(SegSide.Back).BaseTextureIndex);
 
             // Joined side - false
             Assert.IsFalse(level.Segments[0].GetSide(SegSide.Back).Exit);
@@ -292,6 +295,32 @@ namespace LibDescent.Tests
             // Hit points/interval are ignored but are part of the file format
             Assert.AreEqual((Fix)0, level.MatCenters[0].HitPoints);
             Assert.AreEqual((Fix)0, level.MatCenters[0].Interval);
+        }
+
+        [Test]
+        public void TestUnconnectedSegmentConnections()
+        {
+            // D1 level 1 has a case where a segment connection is written for a side
+            // that is not connected (-1). This needs to be handled.
+            var reader = new BinaryReader(new MemoryStream(new byte[] { 0xff, 0xff }));
+            var loader = new D1LevelLoader(null);
+            var segment = new Segment();
+            for (uint sideNum = 0; sideNum < segment.Sides.Length; sideNum++)
+            {
+                segment.Sides[sideNum] = new Side(segment, sideNum);
+            }
+
+            Assert.DoesNotThrow(() => loader.ReadSegmentConnections(reader, segment, 0x01));
+            Assert.IsNull(segment.Sides[0].ConnectedSegment);
+        }
+
+        [Test]
+        [Ignore("Requires a copyrighted file to be present in output directory. For debugging only.")]
+        public void TestInbuiltLevel()
+        {
+            var stream = new FileStream("level01.rdl", FileMode.Open, FileAccess.Read);
+            var inbuiltLevel = D1Level.CreateFromStream(stream);
+            Assert.IsNotNull(inbuiltLevel);
         }
     }
 }

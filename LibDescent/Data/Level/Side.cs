@@ -30,13 +30,10 @@ namespace LibDescent.Data
 
     public class Side
     {
-        private readonly Segment parentSegment;
-        private readonly uint parentSegmentSideNum;
-
         public Side(Segment parent, uint sideNum, uint numVertices = 4)
         {
-            parentSegment = parent;
-            parentSegmentSideNum = sideNum;
+            Segment = parent;
+            SideNum = sideNum;
             Uvls = new Uvl[numVertices];
         }
 
@@ -46,12 +43,17 @@ namespace LibDescent.Data
         public ushort OverlayTextureIndex { get; set; }
         public OverlayRotation OverlayRotation { get; set; }
         public Uvl[] Uvls { get; }
+        public DynamicLight DynamicLight { get; set; }
         public AnimatedLight AnimatedLight { get; set; }
 
         // Indicates if this side is the end of an exit tunnel (only valid in D1 and D2 levels)
         public bool Exit { get; set; } = false;
 
         #region Read-only convenience properties
+        public Segment Segment { get; }
+
+        public uint SideNum { get; }
+
         public FixVector Center
         {
             get
@@ -139,7 +141,7 @@ namespace LibDescent.Data
 
         public int GetNumVertices() => Uvls.Length;
 
-        public LevelVertex GetVertex(int v) => parentSegment.GetVertex(parentSegmentSideNum, v);
+        public LevelVertex GetVertex(int v) => Segment.GetVertex(SideNum, v);
 
         // Slow, consider optimizing if it's needed often
         internal LevelVertex[] GetAllVertices()
@@ -156,7 +158,7 @@ namespace LibDescent.Data
         /// Finds the side opposite to this side in the current segment.
         /// </summary>
         /// <returns>The side opposite to this side in the current segment.</returns>
-        public Side GetOppositeSide() => parentSegment.GetOppositeSide(parentSegmentSideNum);
+        public Side GetOppositeSide() => Segment.GetOppositeSide(SideNum);
 
         /// <summary>
         /// Finds the side of a neighboring segment that is joined to this side, if any.
@@ -175,7 +177,7 @@ namespace LibDescent.Data
 
         internal bool IsJoinedTo(Side otherSide, bool checkVertices = true, LevelVertex[] vertexList = null)
         {
-            if (otherSide.ConnectedSegment != parentSegment || GetNumVertices() != otherSide.GetNumVertices())
+            if (otherSide.ConnectedSegment != Segment || GetNumVertices() != otherSide.GetNumVertices())
             {
                 return false;
             }
@@ -202,7 +204,7 @@ namespace LibDescent.Data
         /// </summary>
         /// <param name="atEdge">The edge of this side to search from.</param>
         /// <returns>A tuple containing the neighboring side and the edge at which it is attached to this side.</returns>
-        public (Side side, Edge edge) GetNeighbor(Edge atEdge) => parentSegment.GetSideNeighbor(parentSegmentSideNum, atEdge);
+        public (Side side, Edge edge) GetNeighbor(Edge atEdge) => Segment.GetSideNeighbor(SideNum, atEdge);
 
         /// <summary>
         /// Finds the first visible side that is joined to this side at a given edge, filtered by a specified condition.
@@ -218,7 +220,7 @@ namespace LibDescent.Data
 
             do
             {
-                var nextNeighbor = sideToTest.parentSegment.GetSideNeighbor(sideToTest.parentSegmentSideNum, edgeToTest);
+                var nextNeighbor = sideToTest.Segment.GetSideNeighbor(sideToTest.SideNum, edgeToTest);
                 if (predicate(nextNeighbor.side))
                 {
                     return nextNeighbor;
@@ -240,7 +242,7 @@ namespace LibDescent.Data
                     // Vertex not found in joined face - this is a geometry error
                     return null;
                 }
-            } while (sideToTest.parentSegment != parentSegment);
+            } while (sideToTest.Segment != Segment);
 
             // Side has no neighbor that matches the predicate
             return null;

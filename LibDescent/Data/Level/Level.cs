@@ -21,7 +21,7 @@
 */
 
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 
 namespace LibDescent.Data
 {
@@ -32,12 +32,12 @@ namespace LibDescent.Data
         List<Segment> Segments { get; }
         List<LevelObject> Objects { get; }
         List<Wall> Walls { get; }
-        List<ITrigger> Triggers { get; }
+        IReadOnlyList<ITrigger> Triggers { get; }
         List<Side> ReactorTriggerTargets { get; }
         List<MatCenter> MatCenters { get; }
     }
 
-    public abstract partial class DescentLevelBase
+    internal class DescentLevelCommon
     {
         public string LevelName { get; set; }
 
@@ -50,27 +50,49 @@ namespace LibDescent.Data
         public List<Wall> Walls { get; } = new List<Wall>();
 
         public const int MaxReactorTriggerTargets = 10;
-        public List<Side> ReactorTriggerTargets { get; } = new List<Side>();
+        public List<Side> ReactorTriggerTargets { get; } = new List<Side>(MaxReactorTriggerTargets);
 
         public List<MatCenter> MatCenters { get; } = new List<MatCenter>();
     }
 
-    public partial class D1Level : DescentLevelBase, ILevel
+    public class D1Level : ILevel
     {
+        private DescentLevelCommon _commonData = new DescentLevelCommon();
+
         public List<D1Trigger> Triggers { get; } = new List<D1Trigger>();
 
-        List<ITrigger> ILevel.Triggers => Triggers.ToList<ITrigger>();
+        #region ILevel implementation
+        public string LevelName { get => _commonData.LevelName; set => _commonData.LevelName = value; }
+        public List<LevelVertex> Vertices => _commonData.Vertices;
+        public List<Segment> Segments => _commonData.Segments;
+        public List<LevelObject> Objects => _commonData.Objects;
+        public List<Wall> Walls => _commonData.Walls;
+        IReadOnlyList<ITrigger> ILevel.Triggers => Triggers;
+        public List<Side> ReactorTriggerTargets => _commonData.ReactorTriggerTargets;
+        public List<MatCenter> MatCenters => _commonData.MatCenters;
+        #endregion
+
+        public static D1Level CreateFromStream(Stream stream)
+        {
+            return new D1LevelLoader(stream).Load();
+        }
     }
 
-    public partial class D2Level : DescentLevelBase, ILevel
+    public class D2Level : ILevel
     {
+        private DescentLevelCommon _commonData = new DescentLevelCommon();
+
+        public List<D2Trigger> Triggers { get; } = new List<D2Trigger>();
+
         public Palette Palette { get; set; }
+
+        public const int DefaultBaseReactorCountdownTime = 30;
 
         /// <summary>
         /// The countdown time when the reactor is destroyed, on Insane difficulty.
         /// Lower difficulties use multiples of this value.
         /// </summary>
-        public int BaseReactorCountdownTime { get; set; } = 30;
+        public int BaseReactorCountdownTime { get; set; } = DefaultBaseReactorCountdownTime;
 
         /// <summary>
         /// How many "shields" the reactor has.
@@ -78,14 +100,28 @@ namespace LibDescent.Data
         /// </summary>
         public int? ReactorStrength { get; set; } = null;
 
-        public List<D2Trigger> Triggers { get; } = new List<D2Trigger>();
-
-        List<ITrigger> ILevel.Triggers => Triggers.ToList<ITrigger>();
+        public List<DynamicLight> DynamicLights { get; } = new List<DynamicLight>();
 
         public List<AnimatedLight> AnimatedLights { get; } = new List<AnimatedLight>();
 
         public Segment SecretReturnSegment { get; set; }
 
         public FixMatrix SecretReturnOrientation { get; set; }
+
+        #region ILevel implementation
+        public string LevelName { get => _commonData.LevelName; set => _commonData.LevelName = value; }
+        public List<LevelVertex> Vertices => _commonData.Vertices;
+        public List<Segment> Segments => _commonData.Segments;
+        public List<LevelObject> Objects => _commonData.Objects;
+        public List<Wall> Walls => _commonData.Walls;
+        IReadOnlyList<ITrigger> ILevel.Triggers => Triggers;
+        public List<Side> ReactorTriggerTargets => _commonData.ReactorTriggerTargets;
+        public List<MatCenter> MatCenters => _commonData.MatCenters;
+        #endregion
+
+        public static D2Level CreateFromStream(Stream stream)
+        {
+            return new D2LevelLoader(stream).Load();
+        }
     }
 }
