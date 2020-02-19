@@ -196,7 +196,7 @@ namespace LibDescent.Data
             }
         }
 
-        private void ReadSegmentConnections(BinaryReader reader, Segment segment, byte segmentBitMask)
+        internal void ReadSegmentConnections(BinaryReader reader, Segment segment, byte segmentBitMask)
         {
             for (int sideNum = 0; sideNum < Segment.MaxSegmentSides; sideNum++)
             {
@@ -207,7 +207,7 @@ namespace LibDescent.Data
                     {
                         segment.Sides[sideNum].Exit = true;
                     }
-                    else
+                    else if (childSegmentId >= 0) // -1 = disconnected
                     {
                         segment.Sides[sideNum].ConnectedSegment = Level.Segments[childSegmentId];
                     }
