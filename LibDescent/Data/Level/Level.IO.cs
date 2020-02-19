@@ -263,7 +263,7 @@ namespace LibDescent.Data
             // fuelcen number
             _ = _levelVersion > 5 ? reader.ReadByte() : reader.ReadInt16();
 
-            if (_levelVersion <= 1 && matcenNum != 0xFF)
+            if (matcenNum != 0xFF)
             {
                 _segmentMatcenLinks[segment] = matcenNum;
             }
@@ -280,7 +280,7 @@ namespace LibDescent.Data
             for (int sideNum = 0; sideNum < Segment.MaxSegmentSides; sideNum++)
             {
                 var side = segment.Sides[sideNum];
-                if (side.ConnectedSegment == null || _sideWallLinks.ContainsKey(side))
+                if ((side.ConnectedSegment == null && !side.Exit) || _sideWallLinks.ContainsKey(side))
                 {
                     var rawTextureIndex = reader.ReadUInt16();
                     side.BaseTextureIndex = (ushort)(rawTextureIndex & 0x7fffu);
@@ -400,7 +400,7 @@ namespace LibDescent.Data
                         var side = Level.Segments[segmentNum].Sides[sideNum];
 
                         Wall wall = new Wall(side);
-                        wall.HitPoints = reader.ReadInt32();
+                        wall.HitPoints = Fix.FromRawValue(reader.ReadInt32());
                         _ = reader.ReadInt32(); // opposite wall - will recalculate
                         wall.Type = (WallType)reader.ReadByte();
                         wall.Flags = (WallFlags)reader.ReadByte();
@@ -778,10 +778,12 @@ namespace LibDescent.Data
             if (_levelVersion >= 6)
             {
                 _secretReturnSegmentNum = reader.ReadInt32();
+                // Secret return matrix is actually serialized in a different order from every other matrix
+                // in the RDL/RL2 format... so use named parameters to avoid problems
                 _level.SecretReturnOrientation = new FixMatrix(
-                    FixVector.FromRawValues(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32()),
-                    FixVector.FromRawValues(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32()),
-                    FixVector.FromRawValues(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32())
+                    right: FixVector.FromRawValues(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32()),
+                    forward: FixVector.FromRawValues(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32()),
+                    up: FixVector.FromRawValues(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32())
                     );
             }
             else
@@ -817,7 +819,7 @@ namespace LibDescent.Data
             trigger.Flags = (D2TriggerFlags)reader.ReadByte();
             var numLinks = reader.ReadSByte();
             reader.ReadByte(); //padding byte
-            trigger.Value = reader.ReadInt32();
+            trigger.Value = Fix.FromRawValue(reader.ReadInt32());
             trigger.Time = reader.ReadInt32();
 
             var targets = ReadFixedLengthTargetList(reader, D2Trigger.MaxWallsPerLink);

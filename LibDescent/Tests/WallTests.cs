@@ -24,7 +24,7 @@ namespace LibDescent.Tests
             wall = block.Segments[3].GetSide(SegSide.Left).Wall;
             Assert.IsNotNull(wall);
             Assert.AreEqual(WallType.Door, wall.Type);
-            Assert.AreEqual(0, wall.HitPoints);
+            Assert.AreEqual((Fix)0, wall.HitPoints);
             Assert.AreEqual(WallFlags.DoorLocked | WallFlags.DoorAuto, wall.Flags);
             Assert.AreEqual((WallState)0, wall.State);
             Assert.AreEqual(18, wall.DoorClipNumber);

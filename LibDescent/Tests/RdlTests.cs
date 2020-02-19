@@ -94,6 +94,8 @@ namespace LibDescent.Tests
         {
             // Exit tunnel side - true
             Assert.IsTrue(level.Segments[17].GetSide(SegSide.Back).Exit);
+            // Should not read texture data
+            Assert.AreEqual(0, level.Segments[17].GetSide(SegSide.Back).BaseTextureIndex);
 
             // Joined side - false
             Assert.IsFalse(level.Segments[0].GetSide(SegSide.Back).Exit);

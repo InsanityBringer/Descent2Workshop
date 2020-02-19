@@ -11,6 +11,7 @@
     <None Remove="test.blk" />
     <None Remove="test.blx" />
     <None Remove="test.rdl" />
+    <None Remove="test.rl2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +29,7 @@
     <EmbeddedResource Include="test.blk" />
     <EmbeddedResource Include="test.blx" />
     <EmbeddedResource Include="test.rdl" />
+    <EmbeddedResource Include="test.rl2" />
   </ItemGroup>
 
 </Project>
