@@ -252,6 +252,12 @@ namespace LibDescent.Tests
         }
 
         [Test]
+        public void TestPaletteName()
+        {
+            Assert.AreEqual("groupa.256", level.PaletteName);
+        }
+
+        [Test]
         public void TestSecretExit()
         {
             Assert.AreSame(level.Segments[6], level.SecretReturnSegment);

@@ -84,7 +84,7 @@ namespace LibDescent.Data
 
         public List<D2Trigger> Triggers { get; } = new List<D2Trigger>();
 
-        public Palette Palette { get; set; }
+        public string PaletteName { get; set; }
 
         public const int DefaultBaseReactorCountdownTime = 30;
 
@@ -122,6 +122,23 @@ namespace LibDescent.Data
         public static D2Level CreateFromStream(Stream stream)
         {
             return new D2LevelLoader(stream).Load();
+        }
+    }
+
+    public static partial class Extensions
+    {
+        // It's not clear why .NET doesn't define this already, but it doesn't.
+        // Remove if that changes.
+        public static int IndexOf<T>(this IReadOnlyList<T> list, T obj)
+        {
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].Equals(obj))
+                {
+                    return i;
+                }
+            }
+            return -1;
         }
     }
 }
