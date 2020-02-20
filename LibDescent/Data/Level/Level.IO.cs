@@ -23,9 +23,49 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace LibDescent.Data
 {
+    internal struct FileInfo
+    {
+        public ushort signature;
+        public ushort version;
+        public int size;
+        public string mineFilename;
+        public int levelNumber;
+        public int playerOffset;
+        public int playerSize;
+        public int objectsOffset;
+        public int objectsCount;
+        public int objectsSize;
+        public int wallsOffset;
+        public int wallsCount;
+        public int wallsSize;
+        public int doorsOffset;
+        public int doorsCount;
+        public int doorsSize;
+        public int triggersOffset;
+        public int triggersCount;
+        public int triggersSize;
+        public int linksOffset;
+        public int linksCount;
+        public int linksSize;
+        public int reactorTriggersOffset;
+        public int reactorTriggersCount;
+        public int reactorTriggersSize;
+        public int matcenOffset;
+        public int matcenCount;
+        public int matcenSize;
+        public int deltaLightIndicesOffset;
+        public int deltaLightIndicesCount;
+        public int deltaLightIndicesSize;
+        public int deltaLightsOffset;
+        public int deltaLightsCount;
+        public int deltaLightsSize;
+    }
+
     internal abstract class DescentLevelLoader
     {
         protected Stream _stream;
@@ -48,44 +88,6 @@ namespace LibDescent.Data
         private Dictionary<Wall, byte> _wallTriggerLinks = new Dictionary<Wall, byte>();
 
         protected abstract ILevel Level { get; }
-
-        protected struct FileInfo
-        {
-            public ushort signature;
-            public ushort version;
-            public int size;
-            public string mineFilename;
-            public int levelNumber;
-            public int playerOffset;
-            public int playerSize;
-            public int objectsOffset;
-            public int objectsCount;
-            public int objectsSize;
-            public int wallsOffset;
-            public int wallsCount;
-            public int wallsSize;
-            public int doorsOffset;
-            public int doorsCount;
-            public int doorsSize;
-            public int triggersOffset;
-            public int triggersCount;
-            public int triggersSize;
-            public int linksOffset;
-            public int linksCount;
-            public int linksSize;
-            public int reactorTriggersOffset;
-            public int reactorTriggersCount;
-            public int reactorTriggersSize;
-            public int matcenOffset;
-            public int matcenCount;
-            public int matcenSize;
-            public int deltaLightIndicesOffset;
-            public int deltaLightIndicesCount;
-            public int deltaLightIndicesSize;
-            public int deltaLightsOffset;
-            public int deltaLightsCount;
-            public int deltaLightsSize;
-        }
 
         protected void LoadLevel()
         {
@@ -737,8 +739,7 @@ namespace LibDescent.Data
         {
             if (_levelVersion >= 2)
             {
-                var paletteName = ReadString(reader, 13, true);
-                // now need to load it somehow?
+                _level.PaletteName = ReadString(reader, 13, true);
             }
 
             if (_levelVersion >= 3)
@@ -877,6 +878,776 @@ namespace LibDescent.Data
                     side.DynamicLight = dynamicLight;
                 }
             }
+        }
+    }
+
+    internal abstract class DescentLevelWriter
+    {
+        protected Stream _stream;
+        protected List<Segment> _fuelcens = new List<Segment>();
+        protected List<string> _pofFiles = new List<string>();
+        protected abstract ILevel Level { get; }
+        protected abstract int LevelVersion { get; }
+        protected abstract ushort GameDataVersion { get; }
+        private const int GameDataSize = 143;
+
+        protected void WriteLevel()
+        {
+            using (var writer = new BinaryWriter(_stream))
+            {
+                writer.Write(0x504C564C); // signature, "PLVL"
+                writer.Write(LevelVersion);
+                long pointerTable = writer.BaseStream.Position;
+                writer.Write(0); // mine data pointer
+                writer.Write(0); // game data pointer
+                if (LevelVersion >= 8)
+                {
+                    // Dummy Vertigo-related data
+                    writer.Write(0);
+                    writer.Write((short)0);
+                    writer.Write((byte)0);
+                }
+                if (LevelVersion < 5)
+                {
+                    writer.Write(0); // hostage text pointer
+                }
+
+                WriteVersionSpecificLevelInfo(writer);
+
+                int mineDataPointer = (int)writer.BaseStream.Position;
+                WriteMineData(writer);
+
+                int gameDataPointer = (int)writer.BaseStream.Position;
+                WriteGameData(writer);
+
+                int hostageTextPointer = (int)writer.BaseStream.Position;
+
+                // Go back and write pointers
+                writer.BaseStream.Seek(pointerTable, SeekOrigin.Begin);
+                writer.Write(mineDataPointer);
+                writer.Write(gameDataPointer);
+                if (LevelVersion >= 8)
+                {
+                    // Skip Vertigo data (this will never actually be needed, but...)
+                    writer.BaseStream.Seek(7, SeekOrigin.Current);
+                }
+                if (LevelVersion < 5)
+                {
+                    writer.Write(hostageTextPointer);
+                }
+            }
+        }
+
+        private void WriteMineData(BinaryWriter writer)
+        {
+            writer.Write((byte)0); // compiled mine version
+            writer.Write((short)Level.Vertices.Count);
+            writer.Write((short)Level.Segments.Count);
+
+            foreach (var vertex in Level.Vertices)
+            {
+                WriteFixVector(writer, vertex.Location);
+            }
+
+            // Generate fuelcen list before writing segments
+            foreach (var segment in Level.Segments)
+            {
+                if (SegmentIsFuelcen(segment))
+                {
+                    _fuelcens.Add(segment);
+                }
+            }
+
+            foreach (var segment in Level.Segments)
+            {
+                writer.Write(GetSegmentBitMask(segment));
+                if (LevelVersion == 5)
+                {
+                    if (SegmentHasSpecialData(segment))
+                    {
+                        WriteSegmentSpecialData(writer, segment);
+                    }
+                    WriteSegmentVertices(writer, segment);
+                    WriteSegmentConnections(writer, segment);
+                }
+                else
+                {
+                    WriteSegmentConnections(writer, segment);
+                    WriteSegmentVertices(writer, segment);
+                    if (LevelVersion <= 1 && SegmentHasSpecialData(segment))
+                    {
+                        WriteSegmentSpecialData(writer, segment);
+                    }
+                }
+
+                if (LevelVersion <= 5)
+                {
+                    writer.Write((ushort)(segment.Light.GetRawValue() >> 4));
+                }
+
+                WriteSegmentWalls(writer, segment);
+                WriteSegmentTextures(writer, segment);
+            }
+
+            if (LevelVersion > 5)
+            {
+                foreach (var segment in Level.Segments)
+                {
+                    WriteSegmentSpecialData(writer, segment);
+                }
+            }
+        }
+
+        private byte GetSegmentBitMask(Segment segment)
+        {
+            byte segmentBitMask = 0;
+
+            for (uint sideNum = 0; sideNum < Segment.MaxSegmentSides; sideNum++)
+            {
+                var side = segment.Sides[sideNum];
+                if (side.ConnectedSegment != null || side.Exit)
+                {
+                    segmentBitMask |= (byte)(1 << (int)sideNum);
+                }
+
+                if (SegmentHasSpecialData(segment))
+                {
+                    segmentBitMask |= (1 << Segment.MaxSegmentSides);
+                }
+            }
+
+            return segmentBitMask;
+        }
+
+        private bool SegmentHasSpecialData(Segment segment)
+        {
+            if (LevelVersion > 5)
+            {
+                // Static light is now in special data, it's always needed
+                return true;
+            }
+            if (segment.Function != SegFunction.None)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private void WriteSegmentSpecialData(BinaryWriter writer, Segment segment)
+        {
+            writer.Write((byte)segment.Function);
+            byte matcenIndex = (segment.MatCenter == null) ? (byte)0xFF :
+                (byte)Level.MatCenters.IndexOf(segment.MatCenter);
+            writer.Write(matcenIndex);
+            var fuelcenIndex = SegmentIsFuelcen(segment) ?
+                _fuelcens.IndexOf(segment) : -1;
+            if (LevelVersion > 5)
+            {
+                writer.Write((byte)fuelcenIndex);
+            }
+            else
+            {
+                writer.Write((short)fuelcenIndex);
+            }
+            writer.Write(segment.Flags);
+            writer.Write(segment.Light.GetRawValue());
+        }
+
+        private bool SegmentIsFuelcen(Segment segment)
+        {
+            switch (segment.Function)
+            {
+                case SegFunction.FuelCenter:
+                case SegFunction.RepairCenter:
+                case SegFunction.Reactor:
+                case SegFunction.MatCenter:
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+
+        private void WriteSegmentVertices(BinaryWriter writer, Segment segment)
+        {
+            foreach (var vertex in segment.Vertices)
+            {
+                writer.Write((ushort)Level.Vertices.IndexOf(vertex));
+            }
+        }
+
+        private void WriteSegmentConnections(BinaryWriter writer, Segment segment)
+        {
+            foreach (var side in segment.Sides)
+            {
+                if (side.ConnectedSegment != null)
+                {
+                    writer.Write((short)Level.Segments.IndexOf(side.ConnectedSegment));
+                }
+                else if (side.Exit)
+                {
+                    writer.Write((short)-2);
+                }
+                // We don't write -1s since the bitmask shouldn't be set for those
+            }
+        }
+
+        private void WriteSegmentWalls(BinaryWriter writer, Segment segment)
+        {
+            byte wallsBitMask = 0;
+            for (int sideNum = 0; sideNum < Segment.MaxSegmentSides; sideNum++)
+            {
+                if (segment.Sides[sideNum].Wall != null)
+                {
+                    wallsBitMask |= (byte)(1 << sideNum);
+                }
+            }
+            writer.Write(wallsBitMask);
+
+            foreach (var side in segment.Sides)
+            {
+                if (side.Wall != null)
+                {
+                    writer.Write((byte)Level.Walls.IndexOf(side.Wall));
+                }
+            }
+        }
+
+        private void WriteSegmentTextures(BinaryWriter writer, Segment segment)
+        {
+            foreach (var side in segment.Sides)
+            {
+                if ((side.ConnectedSegment == null && !side.Exit) || side.Wall != null)
+                {
+                    ushort rawTextureIndex = side.BaseTextureIndex;
+                    if (side.OverlayTextureIndex != 0)
+                    {
+                        rawTextureIndex |= 0x8000;
+                    }
+                    writer.Write(rawTextureIndex);
+
+                    if (side.OverlayTextureIndex != 0)
+                    {
+                        writer.Write(side.OverlayTextureIndex);
+                    }
+
+                    foreach (var uvl in side.Uvls)
+                    {
+                        var rawUvl = uvl.ToRawValues();
+                        writer.Write(rawUvl.u);
+                        writer.Write(rawUvl.v);
+                        writer.Write(rawUvl.l);
+                    }
+                }
+            }
+        }
+
+        private void WriteGameData(BinaryWriter writer)
+        {
+            long fileInfoOffset = writer.BaseStream.Position;
+            FileInfo fileInfo = new FileInfo();
+            fileInfo.signature = 0x6705;
+            fileInfo.version = GameDataVersion;
+            fileInfo.size = GameDataSize;
+            fileInfo.mineFilename = ""; // Not used, leave blank
+            fileInfo.levelNumber = 0; // Doesn't seem to be used by Descent
+
+            // We'll have to rewrite FileInfo later, but write it now to make space
+            WriteFileInfo(writer, ref fileInfo);
+
+            if (GameDataVersion >= 14)
+            {
+                var encodedLevelName = EncodeString(Level.LevelName, 36, true);
+                if (GameDataVersion >= 31)
+                {
+                    // Newline-terminated
+                    encodedLevelName[encodedLevelName.Length - 1] = (byte)'\n';
+                }
+                writer.Write(encodedLevelName);
+            }
+
+            // POF file names
+            if (GameDataVersion >= 19)
+            {
+                writer.Write((short)_pofFiles.Count);
+                foreach (string pofName in _pofFiles)
+                {
+                    writer.Write(EncodeString(pofName, 13, false));
+                }
+            }
+
+            // Player info (empty)
+            fileInfo.playerOffset = (int)writer.BaseStream.Position;
+            fileInfo.playerSize = 0;
+
+            // Objects
+            fileInfo.objectsOffset = (int)writer.BaseStream.Position;
+            fileInfo.objectsCount = Level.Objects.Count;
+            foreach (var levelObject in Level.Objects)
+            {
+                WriteObject(writer, levelObject);
+            }
+            fileInfo.objectsSize = (int)writer.BaseStream.Position - fileInfo.objectsOffset;
+
+            // Walls
+            fileInfo.wallsOffset = (Level.Walls.Count > 0) ?
+                (int)writer.BaseStream.Position : -1;
+            fileInfo.wallsCount = Level.Walls.Count;
+            if (GameDataVersion >= 20)
+            {
+                foreach (var wall in Level.Walls)
+                {
+                    writer.Write(Level.Segments.IndexOf(wall.Side.Segment));
+                    writer.Write(wall.Side.SideNum);
+                    writer.Write(wall.HitPoints.GetRawValue());
+                    writer.Write(wall.OppositeWall != null ? Level.Walls.IndexOf(wall.OppositeWall) : -1);
+                    writer.Write((byte)wall.Type);
+                    writer.Write((byte)wall.Flags);
+                    writer.Write((byte)wall.State);
+                    writer.Write((byte)(wall.Trigger != null ? Level.Triggers.IndexOf(wall.Trigger) : 0xFF));
+                    writer.Write(wall.DoorClipNumber);
+                    writer.Write((byte)wall.Keys);
+                    // We can only write one controlling trigger, so use the first one
+                    var controllingTriggerIndex = (wall.ControllingTriggers.Count > 0) ?
+                        Level.Triggers.IndexOf(wall.ControllingTriggers[0].trigger) : -1;
+                    writer.Write((byte)controllingTriggerIndex);
+                    writer.Write(wall.CloakOpacity);
+                }
+            }
+            fileInfo.wallsSize = (Level.Walls.Count > 0) ?
+                (int)writer.BaseStream.Position - fileInfo.wallsOffset : 0;
+
+            fileInfo.doorsOffset = -1;
+            fileInfo.doorsCount = 0;
+            fileInfo.doorsSize = 0;
+
+            // Triggers
+            fileInfo.triggersOffset = (Level.Triggers.Count > 0) ?
+                (int)writer.BaseStream.Position : -1;
+            fileInfo.triggersCount = Level.Triggers.Count;
+            foreach (var trigger in Level.Triggers)
+            {
+                WriteTrigger(writer, trigger);
+            }
+            fileInfo.triggersSize = (Level.Triggers.Count > 0) ?
+                (int)writer.BaseStream.Position - fileInfo.triggersOffset : 0;
+
+            fileInfo.linksOffset = -1;
+            fileInfo.linksCount = 0;
+            fileInfo.linksSize = 0;
+
+            // Reactor triggers
+            fileInfo.reactorTriggersOffset = (Level.ReactorTriggerTargets.Count > 0) ?
+                (int)writer.BaseStream.Position : -1;
+            fileInfo.reactorTriggersCount = (Level.ReactorTriggerTargets.Count > 0) ?
+                1 : 0;
+            if (Level.ReactorTriggerTargets.Count > 0)
+            {
+                writer.Write((short)Level.ReactorTriggerTargets.Count);
+                for (int targetNum = 0; targetNum < DescentLevelCommon.MaxReactorTriggerTargets; targetNum++)
+                {
+                    if (targetNum < Level.ReactorTriggerTargets.Count)
+                    {
+                        var segmentNum = Level.Segments.IndexOf(Level.ReactorTriggerTargets[targetNum].Segment);
+                        writer.Write((short)segmentNum);
+                    }
+                    else
+                    {
+                        writer.Write((short)0);
+                    }
+                }
+
+                for (int targetNum = 0; targetNum < DescentLevelCommon.MaxReactorTriggerTargets; targetNum++)
+                {
+                    if (targetNum < Level.ReactorTriggerTargets.Count)
+                    {
+                        writer.Write((short)Level.ReactorTriggerTargets[targetNum].SideNum);
+                    }
+                    else
+                    {
+                        writer.Write((short)0);
+                    }
+                }
+            }
+            fileInfo.reactorTriggersSize = (Level.ReactorTriggerTargets.Count > 0) ?
+                (int)writer.BaseStream.Position - fileInfo.reactorTriggersOffset : 0;
+
+            // Matcens
+            fileInfo.matcenOffset = (Level.MatCenters.Count > 0) ?
+                (int)writer.BaseStream.Position : -1;
+            fileInfo.matcenCount = Level.MatCenters.Count;
+            foreach (var matcen in Level.MatCenters)
+            {
+                var robotFlags = new byte[2];
+                foreach (uint robotId in matcen.SpawnedRobotIds)
+                {
+                    if (robotId < 32)
+                    {
+                        robotFlags[0] |= (byte)(1 << (int)robotId);
+                    }
+                    else if (robotId < 64)
+                    {
+                        robotFlags[1] |= (byte)(1 << (int)(robotId - 32));
+                    }
+                }
+
+                writer.Write(robotFlags[0]);
+                if (GameDataVersion > 25)
+                {
+                    writer.Write(robotFlags[1]);
+                }
+                writer.Write(matcen.HitPoints.GetRawValue());
+                writer.Write(matcen.Interval.GetRawValue());
+                writer.Write(Level.Segments.IndexOf(matcen.Segment));
+                writer.Write(_fuelcens.IndexOf(matcen.Segment));
+            }
+            fileInfo.matcenSize = (Level.MatCenters.Count > 0) ?
+                (int)writer.BaseStream.Position - fileInfo.matcenOffset : 0;
+
+            if (GameDataVersion >= 29)
+            {
+                WriteDynamicLights(writer, ref fileInfo);
+            }
+
+            // Rewrite FileInfo with updated data
+            writer.BaseStream.Seek(fileInfoOffset, SeekOrigin.Begin);
+            WriteFileInfo(writer, ref fileInfo);
+        }
+
+        private void WriteFileInfo(BinaryWriter writer, ref FileInfo fileInfo)
+        {
+            writer.Write(fileInfo.signature);
+            writer.Write(fileInfo.version);
+            writer.Write(fileInfo.size);
+            writer.Write(EncodeString(fileInfo.mineFilename, 15, false));
+            writer.Write(fileInfo.levelNumber);
+            writer.Write(fileInfo.playerOffset);
+            writer.Write(fileInfo.playerSize);
+            writer.Write(fileInfo.objectsOffset);
+            writer.Write(fileInfo.objectsCount);
+            writer.Write(fileInfo.objectsSize);
+            writer.Write(fileInfo.wallsOffset);
+            writer.Write(fileInfo.wallsCount);
+            writer.Write(fileInfo.wallsSize);
+            writer.Write(fileInfo.doorsOffset);
+            writer.Write(fileInfo.doorsCount);
+            writer.Write(fileInfo.doorsSize);
+            writer.Write(fileInfo.triggersOffset);
+            writer.Write(fileInfo.triggersCount);
+            writer.Write(fileInfo.triggersSize);
+            writer.Write(fileInfo.linksOffset);
+            writer.Write(fileInfo.linksCount);
+            writer.Write(fileInfo.linksSize);
+            writer.Write(fileInfo.reactorTriggersOffset);
+            writer.Write(fileInfo.reactorTriggersCount);
+            writer.Write(fileInfo.reactorTriggersSize);
+            writer.Write(fileInfo.matcenOffset);
+            writer.Write(fileInfo.matcenCount);
+            writer.Write(fileInfo.matcenSize);
+
+            if (GameDataVersion >= 29)
+            {
+                writer.Write(fileInfo.deltaLightIndicesOffset);
+                writer.Write(fileInfo.deltaLightIndicesCount);
+                writer.Write(fileInfo.deltaLightIndicesSize);
+                writer.Write(fileInfo.deltaLightsOffset);
+                writer.Write(fileInfo.deltaLightsCount);
+                writer.Write(fileInfo.deltaLightsSize);
+            }
+        }
+
+        private void WriteObject(BinaryWriter writer, LevelObject levelObject)
+        {
+            writer.Write((byte)levelObject.type);
+            writer.Write(levelObject.id);
+            writer.Write((byte)levelObject.controlType);
+            writer.Write((byte)levelObject.moveType);
+            writer.Write((byte)levelObject.renderType);
+            writer.Write(levelObject.flags);
+            writer.Write(levelObject.segnum);
+            WriteFixVector(writer, levelObject.position);
+            WriteFixMatrix(writer, levelObject.orientation);
+            writer.Write(levelObject.size);
+            writer.Write(levelObject.shields);
+            WriteFixVector(writer, levelObject.lastPos);
+            writer.Write(levelObject.containsType);
+            writer.Write(levelObject.containsId);
+            writer.Write(levelObject.containsCount);
+
+            switch (levelObject.moveType)
+            {
+                case MovementType.Physics:
+                    WriteFixVector(writer, levelObject.physicsInfo.velocity);
+                    WriteFixVector(writer, levelObject.physicsInfo.thrust);
+                    writer.Write(levelObject.physicsInfo.mass);
+                    writer.Write(levelObject.physicsInfo.drag);
+                    writer.Write(levelObject.physicsInfo.brakes);
+                    WriteFixVector(writer, levelObject.physicsInfo.angVel);
+                    WriteFixVector(writer, levelObject.physicsInfo.rotThrust);
+                    writer.Write(levelObject.physicsInfo.turnroll);
+                    writer.Write(levelObject.physicsInfo.flags);
+                    break;
+                case MovementType.Spinning:
+                    WriteFixVector(writer, levelObject.spinRate);
+                    break;
+            }
+            switch (levelObject.controlType)
+            {
+                case ControlType.AI:
+                    writer.Write(levelObject.aiInfo.behavior);
+                    for (int i = 0; i < AIInfo.NumAIFlags; i++)
+                        writer.Write(levelObject.aiInfo.aiFlags[i]);
+
+                    writer.Write(levelObject.aiInfo.hideSegment);
+                    writer.Write(levelObject.aiInfo.hideIndex);
+                    writer.Write(levelObject.aiInfo.pathLength);
+                    writer.Write(levelObject.aiInfo.curPathIndex);
+
+                    break;
+                case ControlType.Explosion:
+                    writer.Write(levelObject.explosionInfo.SpawnTime);
+                    writer.Write(levelObject.explosionInfo.DeleteTime);
+                    writer.Write(levelObject.explosionInfo.DeleteObject);
+                    break;
+                case ControlType.Powerup:
+                    if (GameDataVersion >= 25)
+                    {
+                        writer.Write(levelObject.powerupCount);
+                    }
+                    break;
+            }
+            switch (levelObject.renderType)
+            {
+                case RenderType.Polyobj:
+                    {
+                        writer.Write(levelObject.modelInfo.modelNum);
+                        for (int i = 0; i < Polymodel.MAX_SUBMODELS; i++)
+                        {
+                            WriteFixAngles(writer, levelObject.modelInfo.animAngles[i]);
+                        }
+                        writer.Write(levelObject.modelInfo.flags);
+                        writer.Write(levelObject.modelInfo.textureOverride);
+                    }
+                    break;
+                case RenderType.WeaponVClip:
+                case RenderType.Hostage:
+                case RenderType.Powerup:
+                case RenderType.Fireball:
+                    writer.Write(levelObject.spriteInfo.vclipNum);
+                    writer.Write(levelObject.spriteInfo.frameTime);
+                    writer.Write(levelObject.spriteInfo.frameNumber);
+                    break;
+            }
+        }
+
+        protected static byte[] EncodeString(string input, int maxLength, bool variableLength)
+        {
+            if (variableLength)
+            {
+                // Null-terminate variable length strings
+                return Encoding.ASCII.GetBytes(input.Substring(0, maxLength - 1) + '\0');
+            }
+            else
+            {
+                byte[] stringBuffer = new byte[maxLength];
+                Encoding.ASCII.GetBytes(input.Substring(0, maxLength)).CopyTo(stringBuffer, 0);
+                return stringBuffer;
+            }
+        }
+
+        protected static void WriteFixVector(BinaryWriter writer, FixVector vector)
+        {
+            writer.Write(vector.x.GetRawValue());
+            writer.Write(vector.y.GetRawValue());
+            writer.Write(vector.z.GetRawValue());
+        }
+
+        protected static void WriteFixAngles(BinaryWriter writer, FixAngles angles)
+        {
+            writer.Write(angles.p);
+            writer.Write(angles.b);
+            writer.Write(angles.h);
+        }
+
+        protected static void WriteFixMatrix(BinaryWriter writer, FixMatrix matrix)
+        {
+            WriteFixVector(writer, matrix.right);
+            WriteFixVector(writer, matrix.up);
+            WriteFixVector(writer, matrix.forward);
+        }
+
+        protected abstract void WriteVersionSpecificLevelInfo(BinaryWriter writer);
+        protected abstract void WriteTrigger(BinaryWriter writer, ITrigger trigger);
+        protected abstract void WriteDynamicLights(BinaryWriter writer, ref FileInfo fileInfo);
+    }
+
+    internal class D1LevelWriter : DescentLevelWriter
+    {
+        private readonly D1Level _level;
+
+        protected override ILevel Level => _level;
+        protected override int LevelVersion => 1;
+        protected override ushort GameDataVersion => 25;
+
+        protected override void WriteDynamicLights(BinaryWriter writer, ref FileInfo fileInfo)
+        {
+            // Only needed for D2, shouldn't be called for D1
+            throw new NotImplementedException();
+        }
+
+        protected override void WriteTrigger(BinaryWriter writer, ITrigger trigger)
+        {
+            var d1trigger = (D1Trigger)trigger;
+            writer.Write((byte)d1trigger.Type);
+            writer.Write((ushort)d1trigger.Flags);
+            writer.Write(((Fix)d1trigger.Value).GetRawValue());
+            writer.Write(d1trigger.Time);
+            writer.Write((byte)0); // link_num
+            writer.Write((sbyte)d1trigger.Targets.Count);
+
+            for (int i = 0; i < D1Trigger.MaxWallsPerLink; i++)
+            {
+                if (i < d1trigger.Targets.Count)
+                {
+                    writer.Write((short)Level.Segments.IndexOf(d1trigger.Targets[i].Segment));
+                }
+                else
+                {
+                    writer.Write((short)0);
+                }
+            }
+            for (int i = 0; i < D1Trigger.MaxWallsPerLink; i++)
+            {
+                if (i < d1trigger.Targets.Count)
+                {
+                    writer.Write(d1trigger.Targets[i].SideNum);
+                }
+                else
+                {
+                    writer.Write((short)0);
+                }
+            }
+        }
+
+        protected override void WriteVersionSpecificLevelInfo(BinaryWriter writer)
+        {
+        }
+    }
+
+    internal class D2LevelWriter : DescentLevelWriter
+    {
+        private readonly D2Level _level;
+
+        protected override ILevel Level => _level;
+        protected override int LevelVersion { get; }
+        protected override ushort GameDataVersion => 32;
+
+        public D2LevelWriter(D2Level level, bool vertigoCompatible)
+        {
+            _level = level;
+            LevelVersion = vertigoCompatible ? 8 : 7;
+        }
+
+        protected override void WriteVersionSpecificLevelInfo(BinaryWriter writer)
+        {
+            var encodedPaletteName = EncodeString(_level.PaletteName, 13, true);
+            // Newline-terminated
+            encodedPaletteName[encodedPaletteName.Length - 1] = (byte)'\n';
+            writer.Write(encodedPaletteName);
+
+            writer.Write(_level.BaseReactorCountdownTime);
+            writer.Write(_level.ReactorStrength.HasValue ? _level.ReactorStrength.Value : -1);
+
+            writer.Write(_level.AnimatedLights.Count);
+            foreach (var light in _level.AnimatedLights)
+            {
+                writer.Write(Level.Segments.IndexOf(light.Side.Segment));
+                writer.Write(light.Side.SideNum);
+                writer.Write(light.Mask);
+                writer.Write(light.TimeToNextTick.GetRawValue());
+                writer.Write(light.TickLength.GetRawValue());
+            }
+
+            writer.Write(Level.Segments.IndexOf(_level.SecretReturnSegment));
+            WriteFixMatrix(writer, _level.SecretReturnOrientation);
+        }
+
+        protected override void WriteTrigger(BinaryWriter writer, ITrigger trigger)
+        {
+            var d2trigger = (D2Trigger)trigger;
+            writer.Write((byte)d2trigger.Type);
+            writer.Write((byte)d2trigger.Flags);
+            writer.Write((sbyte)d2trigger.Targets.Count);
+            writer.Write((byte)0); // padding byte
+            writer.Write(((Fix)d2trigger.Value).GetRawValue());
+            writer.Write(d2trigger.Time);
+            for (int i = 0; i < D2Trigger.MaxWallsPerLink; i++)
+            {
+                if (i < d2trigger.Targets.Count)
+                {
+                    writer.Write((short)Level.Segments.IndexOf(d2trigger.Targets[i].Segment));
+                }
+                else
+                {
+                    writer.Write((short)0);
+                }
+            }
+            for (int i = 0; i < D2Trigger.MaxWallsPerLink; i++)
+            {
+                if (i < d2trigger.Targets.Count)
+                {
+                    writer.Write(d2trigger.Targets[i].SideNum);
+                }
+                else
+                {
+                    writer.Write((short)0);
+                }
+            }
+        }
+
+        protected override void WriteDynamicLights(BinaryWriter writer, ref FileInfo fileInfo)
+        {
+            // Need to concatenate all light deltas for all dynamic lights into a list
+            var lightDeltas = new List<LightDelta>();
+
+            fileInfo.deltaLightIndicesOffset = (_level.DynamicLights.Count > 0) ?
+                (int)writer.BaseStream.Position : -1;
+            fileInfo.deltaLightIndicesCount = _level.DynamicLights.Count;
+            foreach (var light in _level.DynamicLights)
+            {
+                // If we run out of space for light deltas, stop writing more
+                var numDeltasToAdd = Math.Min(light.LightDeltas.Count, sbyte.MaxValue);
+                numDeltasToAdd = Math.Min(numDeltasToAdd, short.MaxValue - lightDeltas.Count);
+
+                writer.Write((short)Level.Segments.IndexOf(light.Source.Segment));
+                writer.Write((byte)light.Source.SideNum);
+                writer.Write((byte)numDeltasToAdd);
+                writer.Write((short)lightDeltas.Count);
+                lightDeltas.AddRange(light.LightDeltas.Take(numDeltasToAdd));
+
+                if (lightDeltas.Count == short.MaxValue)
+                {
+                    break;
+                }
+            }
+            fileInfo.deltaLightIndicesSize = (_level.DynamicLights.Count > 0) ?
+                (int)writer.BaseStream.Position - fileInfo.deltaLightIndicesOffset : 0;
+
+            fileInfo.deltaLightsOffset = (lightDeltas.Count > 0) ?
+                (int)writer.BaseStream.Position : -1;
+            fileInfo.deltaLightsCount = lightDeltas.Count;
+            foreach (var lightDelta in lightDeltas)
+            {
+                writer.Write((short)Level.Segments.IndexOf(lightDelta.targetSide.Segment));
+                writer.Write((byte)lightDelta.targetSide.SideNum);
+                writer.Write((byte)0);
+                writer.Write((byte)(lightDelta.vertexDeltas[0].GetRawValue() / 2048));
+                writer.Write((byte)(lightDelta.vertexDeltas[1].GetRawValue() / 2048));
+                writer.Write((byte)(lightDelta.vertexDeltas[2].GetRawValue() / 2048));
+                writer.Write((byte)(lightDelta.vertexDeltas[3].GetRawValue() / 2048));
+            }
+            fileInfo.deltaLightsSize = (lightDeltas.Count > 0) ?
+                (int)writer.BaseStream.Position - fileInfo.deltaLightsOffset : 0;
         }
     }
 }
