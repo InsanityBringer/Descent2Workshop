@@ -150,7 +150,7 @@ namespace Descent2Workshop
                 int err = 0;
                 try
                 {
-                    datafile.SaveDataFile(saveFileDialog1.FileName);
+                    datafile.Write(saveFileDialog1.FileName);
                 }
                 catch (Exception exc)
                 {
@@ -173,7 +173,7 @@ namespace Descent2Workshop
             int err = 0;
             try
             {
-                datafile.SaveDataFile(datafile.filename);
+                datafile.Write(datafile.filename);
             }
             catch (Exception exc)
             {

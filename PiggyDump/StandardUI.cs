@@ -92,7 +92,7 @@ namespace Descent2Workshop
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 HOGFile archive = new HOGFile();
-                archive.LoadDataFile(openFileDialog1.FileName);
+                archive.Read(openFileDialog1.FileName);
                 HOGEditor archiveEditor = new HOGEditor(archive, this);
                 archiveEditor.Show();
             }
@@ -381,7 +381,7 @@ namespace Descent2Workshop
             HOGFile defaultHOG = new HOGFile();
             try
             {
-                defaultHOG.LoadDataFile(filename);
+                defaultHOG.Read(filename);
                 AppendConsole("Loaded default HOG file!\r\n");
                 options.SetOption("HOGFile", filename);
             }

@@ -26,15 +26,34 @@ using System.IO;
 
 namespace LibDescent.Data
 {
+    /// <summary>
+    /// Represents a HOG file, a composite data file containing one or more lumps. 
+    /// </summary>
     public class HOGFile
     {
+        /// <summary>
+        /// Persistient stream to the HOG file, to allow loading lump data on demand.
+        /// </summary>
         private BinaryReader fileStream;
+        /// <summary>
+        /// A list of all the HOG lumps.
+        /// </summary>
         private List<HOGLump> lumps = new List<HOGLump>();
 
+        /// <summary>
+        /// The amount of lumps in the current HOG file.
+        /// </summary>
         public int NumLumps { get { return lumps.Count; } }
+        /// <summary>
+        /// The current filename that the HOG file is read from and written to. 
+        /// </summary>
         public string filename;
         
-        public void LoadDataFile(string name)
+        /// <summary>
+        /// Reads the data of a HOG file specified by filename.
+        /// </summary>
+        /// <param name="name">The filename to read the HOG file from.</param>
+        public void Read(string name)
         {
             BinaryReader br = new BinaryReader(File.Open(name, FileMode.Open, FileAccess.Read, FileShare.Read));
             fileStream = br;
@@ -87,7 +106,11 @@ namespace LibDescent.Data
             }
         }
 
-        public void SaveDataFile(string filename)
+        /// <summary>
+        /// Writes the current contents of the HOG file to a file with the given filename.
+        /// </summary>
+        /// <param name="filename">The filename to write the HOG file to.</param>
+        public void Write(string filename)
         {
             string tempFilename = Path.ChangeExtension(filename, ".newtmp");
             BinaryWriter bw = new BinaryWriter(File.Open(tempFilename, FileMode.Create));
@@ -142,6 +165,11 @@ namespace LibDescent.Data
             this.filename = filename;
         }
 
+        /// <summary>
+        /// Gets the number of a lump of a given filename.
+        /// </summary>
+        /// <param name="filename">The filename to find.</param>
+        /// <returns>The number of the lump if it exists, or -1 if it does not exist.</returns>
         public int GetLumpNum(string filename)
         {
             //TODO: Dictionary lookup
@@ -155,13 +183,25 @@ namespace LibDescent.Data
             return -1;
         }
 
+        /// <summary>
+        /// Gets the header information for a given lump.
+        /// </summary>
+        /// <param name="id">The number of the lump to get the header of.</param>
+        /// <returns>The lump header.</returns>
         public HOGLump GetLumpHeader(int id)
         {
+            if (id < 0 || id >= lumps.Count) return null;
             return lumps[id];
         }
 
+        /// <summary>
+        /// Gets the raw data of a given lump.
+        /// </summary>
+        /// <param name="id">The number of the lump to get the data of.</param>
+        /// <returns>A byte[] array of the lump's data.</returns>
         public byte[] GetLumpData(int id)
         {
+            if (id < 0 || id >= lumps.Count) return null;
             if (lumps[id].offset == -1)
                 return lumps[id].data;
 
@@ -169,11 +209,31 @@ namespace LibDescent.Data
             return fileStream.ReadBytes(lumps[id].size);
         }
 
+        /// <summary>
+        /// Opens a lump in a stream for reading.
+        /// </summary>
+        /// <param name="id">The number of the lump to open.</param>
+        /// <returns></returns>
+        public Stream OpenLump(int id)
+        {
+            if (id < 0 || id >= lumps.Count) return null;
+            byte[] data = GetLumpData(id);
+            return new MemoryStream(data);
+        }
+
+        /// <summary>
+        /// Adds a lump to the HOG file.
+        /// </summary>
+        /// <param name="lump">The lump to add.</param>
         public void AddLump(HOGLump lump)
         {
             lumps.Add(lump);
         }
 
+        /// <summary>
+        /// Deletes a lump from the HOG file by number.
+        /// </summary>
+        /// <param name="id">The number of the lump to delete.</param>
         public void DeleteLump(int id)
         {
             lumps.RemoveAt(id);
