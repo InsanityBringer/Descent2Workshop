@@ -1442,15 +1442,16 @@ namespace LibDescent.Data
 
         protected static byte[] EncodeString(string input, int maxLength, bool variableLength)
         {
+            // Variable-length strings are null-terminated, so have to leave space for that
+            int stringLength = Math.Min(input.Length, variableLength ? maxLength - 1 : maxLength);
             if (variableLength)
             {
-                // Null-terminate variable length strings
-                return Encoding.ASCII.GetBytes(input.Substring(0, maxLength - 1) + '\0');
+                return Encoding.ASCII.GetBytes(input.Substring(0, stringLength) + '\0');
             }
             else
             {
                 byte[] stringBuffer = new byte[maxLength];
-                Encoding.ASCII.GetBytes(input.Substring(0, maxLength)).CopyTo(stringBuffer, 0);
+                Encoding.ASCII.GetBytes(input.Substring(0, stringLength)).CopyTo(stringBuffer, 0);
                 return stringBuffer;
             }
         }
@@ -1488,6 +1489,17 @@ namespace LibDescent.Data
         protected override ILevel Level => _level;
         protected override int LevelVersion => 1;
         protected override ushort GameDataVersion => 25;
+
+        public D1LevelWriter(D1Level level, Stream stream)
+        {
+            _stream = stream;
+            _level = level;
+        }
+
+        public void Write()
+        {
+            WriteLevel();
+        }
 
         protected override void WriteDynamicLights(BinaryWriter writer, ref FileInfo fileInfo)
         {
@@ -1542,10 +1554,16 @@ namespace LibDescent.Data
         protected override int LevelVersion { get; }
         protected override ushort GameDataVersion => 32;
 
-        public D2LevelWriter(D2Level level, bool vertigoCompatible)
+        public D2LevelWriter(D2Level level, Stream stream, bool vertigoCompatible)
         {
+            _stream = stream;
             _level = level;
             LevelVersion = vertigoCompatible ? 8 : 7;
+        }
+
+        public void Write()
+        {
+            WriteLevel();
         }
 
         protected override void WriteVersionSpecificLevelInfo(BinaryWriter writer)

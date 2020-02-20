@@ -322,5 +322,16 @@ namespace LibDescent.Tests
             var inbuiltLevel = D1Level.CreateFromStream(stream);
             Assert.IsNotNull(inbuiltLevel);
         }
+
+        [Test]
+        public void TestSaveLevel()
+        {
+            var stream = new MemoryStream();
+            Assert.DoesNotThrow(() => level.WriteToStream(stream));
+
+            var originalFileContents = TestUtils.GetArrayFromResourceStream("test.rdl");
+            var resultingFileContents = stream.ToArray();
+            Assert.That(resultingFileContents, Is.EqualTo(originalFileContents));
+        }
     }
 }

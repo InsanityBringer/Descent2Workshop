@@ -1,9 +1,6 @@
 ﻿using LibDescent.Data;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.IO;
 
 namespace LibDescent.Tests
 {
@@ -315,6 +312,17 @@ namespace LibDescent.Tests
             Assert.AreEqual(0b00110011001100110011001100110011, level.AnimatedLights[0].Mask);
             Assert.AreEqual((Fix)0.25, level.AnimatedLights[1].TickLength);
             Assert.AreEqual(0b11001100110011001100110011001100, level.AnimatedLights[1].Mask);
+        }
+
+        [Test]
+        public void TestSaveLevel()
+        {
+            var stream = new MemoryStream();
+            Assert.DoesNotThrow(() => level.WriteToStream(stream));
+
+            var originalFileContents = TestUtils.GetArrayFromResourceStream("test.rl2");
+            var resultingFileContents = stream.ToArray();
+            Assert.That(resultingFileContents, Is.EqualTo(originalFileContents));
         }
     }
 }
