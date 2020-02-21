@@ -91,7 +91,8 @@ namespace LibDescent.Data
 
         protected void LoadLevel()
         {
-            using (var reader = new BinaryReader(_stream))
+            // Don't dispose of the stream, let the caller do that
+            using (var reader = new BinaryReader(_stream, Encoding.ASCII, true))
             {
                 int signature = reader.ReadInt32();
                 const int expectedSignature = 'P' * 0x1000000 + 'L' * 0x10000 + 'V' * 0x100 + 'L';
@@ -893,7 +894,8 @@ namespace LibDescent.Data
 
         protected void WriteLevel()
         {
-            using (var writer = new BinaryWriter(_stream))
+            // Don't dispose of the stream, let the caller do that
+            using (var writer = new BinaryWriter(_stream, Encoding.ASCII, true))
             {
                 writer.Write(0x504C564C); // signature, "PLVL"
                 writer.Write(LevelVersion);

@@ -1,18 +1,49 @@
 ﻿using LibDescent.Data;
 using NUnit.Framework;
+using System.Collections;
 using System.IO;
 
 namespace LibDescent.Tests
 {
+    [TestFixtureSource("TestData")]
     class RdlTests
     {
-        private D1Level level;
+        private readonly D1Level level;
 
-        [SetUp]
-        public void Setup()
+        public static IEnumerable TestData
         {
-            var stream = GetType().Assembly.GetManifestResourceStream(GetType(), "test.rdl");
-            level = D1Level.CreateFromStream(stream);
+            get
+            {
+                // First case - test level (saved by DLE)
+                D1Level level;
+                using (var stream = TestUtils.GetResourceStream("test.rdl"))
+                {
+                    level = D1Level.CreateFromStream(stream);
+                }
+                yield return new TestFixtureData(level);
+
+                // Second case - output of D1Level.WriteToStream
+                using (var stream = new MemoryStream())
+                {
+                    level.WriteToStream(stream);
+                    stream.Seek(0, SeekOrigin.Begin);
+                    level = D1Level.CreateFromStream(stream);
+                }
+                yield return new TestFixtureData(level);
+
+                // This can be used to debug specific cases (e.g. copyrighted levels).
+                // Level must be placed in the working directory of the test.
+                //using (var stream = new FileStream("level01.rdl", FileMode.Open, FileAccess.Read))
+                //{
+                //    level = D1Level.CreateFromStream(stream);
+                //}
+                //yield return new TestFixtureData(level);
+            }
+        }
+
+        public RdlTests(D1Level level)
+        {
+            this.level = level;
         }
 
         [Test]
@@ -315,15 +346,6 @@ namespace LibDescent.Tests
         }
 
         [Test]
-        [Ignore("Requires a copyrighted file to be present in output directory. For debugging only.")]
-        public void TestInbuiltLevel()
-        {
-            var stream = new FileStream("level01.rdl", FileMode.Open, FileAccess.Read);
-            var inbuiltLevel = D1Level.CreateFromStream(stream);
-            Assert.IsNotNull(inbuiltLevel);
-        }
-
-        [Test]
         public void TestSaveLevel()
         {
             var stream = new MemoryStream();
@@ -331,6 +353,9 @@ namespace LibDescent.Tests
 
             var originalFileContents = TestUtils.GetArrayFromResourceStream("test.rdl");
             var resultingFileContents = stream.ToArray();
+
+            new FileStream("test_lib.rdl", FileMode.OpenOrCreate, FileAccess.Write).Write(resultingFileContents);
+
             Assert.That(resultingFileContents, Is.EqualTo(originalFileContents));
         }
     }
