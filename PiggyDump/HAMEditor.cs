@@ -37,7 +37,7 @@ namespace Descent2Workshop
         private static HAMType[] typeTable = { HAMType.TMAPInfo, HAMType.VClip, HAMType.EClip, HAMType.WClip, HAMType.Robot, HAMType.Weapon,
             HAMType.Model, HAMType.Sound, HAMType.Reactor, HAMType.Powerup, HAMType.Ship, HAMType.Gauge, HAMType.Cockpit, HAMType.XLAT };
         public int[] texturelist;
-        public HAMFile datafile;
+        public EditorHAMFile datafile;
         public StandardUI host;
         public bool isLocked = false;
         public bool glContextCreated = false;
@@ -55,7 +55,7 @@ namespace Descent2Workshop
         RobotPanel robotPanel;
         WeaponPanel weaponPanel;
         
-        public HAMEditor(HAMFile data, StandardUI host, string filename)
+        public HAMEditor(EditorHAMFile data, StandardUI host, string filename)
         {
             InitializeComponent();
             this.glControl1 = new OpenTK.GLControl();
@@ -145,7 +145,7 @@ namespace Descent2Workshop
                     InitWeaponPanel();
                     break;
                 case 6:
-                    nudElementNum.Maximum = datafile.PolygonModels.Count - 1;
+                    nudElementNum.Maximum = datafile.Models.Count - 1;
                     InitModelPanel();
                     break;
                 case 7:
@@ -402,7 +402,8 @@ namespace Descent2Workshop
         public void UpdateTexturePanel(int num)
         {
             TMAPInfo texture = datafile.TMapInfo[num];
-            texturePanel.Update(datafile, num, texture);
+            //TODO: This may need to take a reference to the EditorHAMFile isntead
+            texturePanel.Update(datafile.BaseFile, datafile.piggyFile, num, texture);
         }
 
         public void UpdateGaguePanel(int num)
@@ -492,7 +493,7 @@ namespace Descent2Workshop
 
         private void UpdateModelPanel(int num)
         {
-            Polymodel model = datafile.PolygonModels[num];
+            Polymodel model = datafile.Models[num];
             txtModelNumModels.Text = model.n_models.ToString();
             txtModelDataSize.Text = model.model_data_size.ToString();
             txtModelRadius.Text = model.rad.ToString();
@@ -511,7 +512,7 @@ namespace Descent2Workshop
             txtElemName.Text = datafile.ModelNames[num];
             if (!noPMView)
             {
-                Polymodel mainmodel = datafile.PolygonModels[(int)nudElementNum.Value];
+                Polymodel mainmodel = datafile.Models[(int)nudElementNum.Value];
                 modelRenderer.SetModel(mainmodel);
                 glControl1.Invalidate();
             }
@@ -534,7 +535,7 @@ namespace Descent2Workshop
             for (int i = 0; i < datafile.VClips.Count; i++)
                 cbPlayerExplosion.Items.Add(datafile.VClipNames[i]);
             cbPlayerModel.Items.Clear(); cbMarkerModel.Items.Clear();
-            for (int i = 0; i < datafile.PolygonModels.Count; i++)
+            for (int i = 0; i < datafile.Models.Count; i++)
             {
                 cbPlayerModel.Items.Add(datafile.ModelNames[i]);
                 cbMarkerModel.Items.Add(datafile.ModelNames[i]);
@@ -771,7 +772,7 @@ namespace Descent2Workshop
 
         private void btnImportModel_Click(object sender, EventArgs e)
         {
-            ImportModel(datafile.PolygonModels[ElementNumber]);
+            ImportModel(datafile.Models[ElementNumber]);
         }
 
         private void btnExportModel_Click(object sender, EventArgs e)
@@ -781,7 +782,7 @@ namespace Descent2Workshop
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 BinaryWriter bw = new BinaryWriter(File.Open(saveFileDialog1.FileName, FileMode.Create));
-                POFWriter.SerializePolymodel(bw, datafile.PolygonModels[ElementNumber], short.Parse(StandardUI.options.GetOption("PMVersion", "8")));
+                POFWriter.SerializePolymodel(bw, datafile.Models[ElementNumber], short.Parse(StandardUI.options.GetOption("PMVersion", "8")));
                 bw.Close();
                 bw.Dispose();
             }
@@ -804,7 +805,9 @@ namespace Descent2Workshop
                 Polymodel model = POFReader.ReadPOFFile(openFileDialog1.FileName, traceto);
                 model.ExpandSubmodels();
                 //int numTextures = model.n_textures;
-                datafile.ReplaceModel(ElementNumber, model);
+                //TODO: does this work?
+                //datafile.ReplaceModel(ElementNumber, model);
+                datafile.Models[ElementNumber] = model;
                 UpdateModelPanel(ElementNumber);
             }
         }
@@ -813,7 +816,7 @@ namespace Descent2Workshop
         {
             if (isLocked)
                 return;
-            Polymodel model = datafile.PolygonModels[ElementNumber];
+            Polymodel model = datafile.Models[ElementNumber];
             ComboBox comboBox = (ComboBox)sender;
             switch (comboBox.Tag)
             {
@@ -989,12 +992,12 @@ namespace Descent2Workshop
                 sw.Dispose();
                 string modelPath = Path.GetDirectoryName(saveFileDialog1.FileName);
                 Polymodel model;
-                if (datafile.PolygonModels.Count >= 160)
+                if (datafile.Models.Count >= 160)
                 {
                     //for (int i = 0; i < datafile.PolygonModels.Count; i++)
                     foreach (int i in BitmapTableFile.pofIndicies)
                     {
-                        model = datafile.PolygonModels[i];
+                        model = datafile.Models[i];
                         BinaryWriter bw = new BinaryWriter(File.Open(String.Format("{0}{1}{2}", modelPath, Path.DirectorySeparatorChar, BitmapTableFile.pofNames[i]), FileMode.Create));
                         POFWriter.SerializePolymodel(bw, model, 8);
                         bw.Close();

@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using LibDescent.Data;
+using LibDescent.Edit;
 
 namespace Descent2Workshop.EditorPanels
 {
@@ -31,7 +27,7 @@ namespace Descent2Workshop.EditorPanels
         private TextBox[] EvadeSpeedControls = new TextBox[5];
 
         //HXM file for showing HXM data
-        private HXMFile hxmFile;
+        private EditorHXMFile hxmFile;
 
         public RobotPanel()
         {
@@ -91,7 +87,7 @@ namespace Descent2Workshop.EditorPanels
             cbRobotModel.Items.AddRange(ModelNames.ToArray<string>());
         }
 
-        public void InitHXM(HXMFile hxmFile)
+        public void InitHXM(EditorHXMFile hxmFile)
         {
             this.hxmFile = hxmFile;
             HXMGroupBox.Visible = true;

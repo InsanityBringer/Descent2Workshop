@@ -59,7 +59,7 @@ namespace LibDescent.Edit
             148, 149, 150, 153, 154, 155, 159, 160 };
 
         //TODO: This isn't internationalization safe, because c# makes it more painful than it needs to be to format something specifically
-        public static string GenerateBitmapsTable(HAMFile datafile, PIGFile piggyFile, SNDFile sndFile)
+        public static string GenerateBitmapsTable(EditorHAMFile datafile, PIGFile piggyFile, SNDFile sndFile)
         {
             StringBuilder stringBuilder = new StringBuilder();
             Robot robot; Weapon weapon; VClip vclip;
@@ -106,7 +106,7 @@ namespace LibDescent.Edit
             return stringBuilder.ToString();
         }
 
-        public static void TableWriteEClips(HAMFile datafile, StringBuilder stringBuilder, PIGFile piggyFile, int start)
+        public static void TableWriteEClips(EditorHAMFile datafile, StringBuilder stringBuilder, PIGFile piggyFile, int start)
         {
             int eclipCount = CountValidEClips(datafile);
             bool extra;
@@ -198,7 +198,7 @@ namespace LibDescent.Edit
             }
         }
 
-        public static void TableWriteWalls(HAMFile datafile, StringBuilder stringBuilder, PIGFile piggyFile)
+        public static void TableWriteWalls(EditorHAMFile datafile, StringBuilder stringBuilder, PIGFile piggyFile)
         {
             PIGImage img, frame;
             TMAPInfo info;
@@ -260,7 +260,7 @@ namespace LibDescent.Edit
             }
         }
 
-        public static int TableWriteTextures(HAMFile datafile, StringBuilder stringBuilder, PIGFile piggyFile)
+        public static int TableWriteTextures(EditorHAMFile datafile, StringBuilder stringBuilder, PIGFile piggyFile)
         {
             PIGImage img;
             TMAPInfo info;
@@ -318,7 +318,7 @@ namespace LibDescent.Edit
         }
 
 
-        public static int CountValidEClips(HAMFile datafile)
+        public static int CountValidEClips(EditorHAMFile datafile)
         {
             int count = 0;
             foreach (EClip clip in datafile.EClips)
@@ -329,7 +329,7 @@ namespace LibDescent.Edit
             return count;
         }
 
-        private static void TableWriteVClip(HAMFile datafile, StringBuilder stringBuilder, VClip clip, int id, PIGFile piggyFile)
+        private static void TableWriteVClip(EditorHAMFile datafile, StringBuilder stringBuilder, VClip clip, int id, PIGFile piggyFile)
         {
             if (clip.play_time != 0)
             {
@@ -340,7 +340,7 @@ namespace LibDescent.Edit
             }
         }
 
-        private static void TableWriteWeapon(HAMFile datafile, StringBuilder stringBuilder, Weapon weapon, PIGFile piggyFile, int id)
+        private static void TableWriteWeapon(EditorHAMFile datafile, StringBuilder stringBuilder, Weapon weapon, PIGFile piggyFile, int id)
         {
             if (weapon.render_type == 0)
                 stringBuilder.Append("$WEAPON_UNUSED ");
@@ -429,7 +429,7 @@ namespace LibDescent.Edit
             stringBuilder.Append("\n");
         }
 
-        private static void TableWriteCockpits(HAMFile datafile, StringBuilder stringBuilder, PIGFile piggyFile)
+        private static void TableWriteCockpits(EditorHAMFile datafile, StringBuilder stringBuilder, PIGFile piggyFile)
         {
             stringBuilder.Append("$COCKPIT\n");
             foreach (ushort index in datafile.Cockpits)
@@ -438,7 +438,7 @@ namespace LibDescent.Edit
             }
         }
 
-        private static void TableWritePowerups(HAMFile datafile, StringBuilder stringBuilder)
+        private static void TableWritePowerups(EditorHAMFile datafile, StringBuilder stringBuilder)
         {
             Powerup powerup;
             for (int i = 0; i < datafile.Powerups.Count; i++)
@@ -459,7 +459,7 @@ namespace LibDescent.Edit
             }
         }
 
-        private static void TableWriteGauges(HAMFile datafile, StringBuilder stringBuilder, PIGFile piggyFile)
+        private static void TableWriteGauges(EditorHAMFile datafile, StringBuilder stringBuilder, PIGFile piggyFile)
         {
             stringBuilder.Append("$GAUGES");
             string name = "", lastname;
@@ -488,7 +488,7 @@ namespace LibDescent.Edit
             stringBuilder.Append("\n");
         }
 
-        private static void TableWriteGaugesHires(HAMFile datafile, StringBuilder stringBuilder, PIGFile piggyFile)
+        private static void TableWriteGaugesHires(EditorHAMFile datafile, StringBuilder stringBuilder, PIGFile piggyFile)
         {
             stringBuilder.Append("$GAUGES_HIRES");
             string name = "", lastname;
@@ -517,7 +517,7 @@ namespace LibDescent.Edit
             stringBuilder.Append("\n");
         }
 
-        private static void TableWriteSound(HAMFile datafile, StringBuilder stringBuilder, int id, SNDFile sndFile)
+        private static void TableWriteSound(EditorHAMFile datafile, StringBuilder stringBuilder, int id, SNDFile sndFile)
         {
             int altID;
             if (datafile.Sounds[id] != 255)
@@ -531,7 +531,7 @@ namespace LibDescent.Edit
             }
         }
 
-        private static void TableWritePlayerShip(HAMFile datafile, StringBuilder stringBuilder, Ship ship, PIGFile pigFile)
+        private static void TableWritePlayerShip(EditorHAMFile datafile, StringBuilder stringBuilder, Ship ship, PIGFile pigFile)
         {
             stringBuilder.Append("$MARKER ");
             WriteModel(datafile, stringBuilder, datafile.PlayerShip.markerModel);
@@ -555,14 +555,14 @@ namespace LibDescent.Edit
             stringBuilder.Append("\n");
         }
 
-        private static void TableWriteReactor(HAMFile datafile, StringBuilder stringBuilder, Reactor reactor)
+        private static void TableWriteReactor(EditorHAMFile datafile, StringBuilder stringBuilder, Reactor reactor)
         {
             stringBuilder.Append("$REACTOR ");
             WriteModel(datafile, stringBuilder, reactor.model_id);
             stringBuilder.Append("\n");
         }
 
-        private static void TableWriteRobotAI(HAMFile datafile, StringBuilder stringBuilder, Robot robot, int id)
+        private static void TableWriteRobotAI(EditorHAMFile datafile, StringBuilder stringBuilder, Robot robot, int id)
         {
             stringBuilder.AppendFormat("$ROBOT_AI {0} ", id);
             for (int i = 0; i < 5; i++)
@@ -601,7 +601,7 @@ namespace LibDescent.Edit
             stringBuilder.Append("\n");
         }
 
-        private static void TableWriteRobot(HAMFile datafile, StringBuilder stringBuilder, Robot robot, int id)
+        private static void TableWriteRobot(EditorHAMFile datafile, StringBuilder stringBuilder, Robot robot, int id)
         {
             stringBuilder.Append("$ROBOT ");
             WriteModel(datafile, stringBuilder, robot.model_num);
@@ -671,14 +671,14 @@ namespace LibDescent.Edit
             stringBuilder.Append("\n");
         }
 
-        private static void WriteModel(HAMFile datafile, StringBuilder stringBuilder, int id, bool hack = false)
+        private static void WriteModel(EditorHAMFile datafile, StringBuilder stringBuilder, int id, bool hack = false)
         {
             if (id < 0)
             {
                 stringBuilder.Append("fixme.pof ");
                 return;
             }
-            Polymodel model = datafile.PolygonModels[id];
+            Polymodel model = datafile.Models[id];
             //stringBuilder.AppendFormat("model{0}.pof ", id);
             stringBuilder.AppendFormat("{0} ", pofNames[id]);
             if (!hack)

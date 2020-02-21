@@ -28,6 +28,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using OpenTK.Graphics.OpenGL;
 using LibDescent.Data;
+using LibDescent.Edit;
 
 namespace Descent2Workshop
 {
@@ -56,7 +57,7 @@ namespace Descent2Workshop
             return id;
         }
 
-        public List<int> LoadPolymodelTextures(Polymodel model, PIGFile pigFile, HAMFile hamFile)
+        public List<int> LoadPolymodelTextures(Polymodel model, PIGFile pigFile, EditorHAMFile hamFile)
         {
             List<int> textureIDs = new List<int>();
             Bitmap image; EClip clip;

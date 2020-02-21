@@ -26,25 +26,16 @@ using System.IO;
 
 namespace LibDescent.Data
 {
-    public class VHAMFile : IElementManager
+    public class VHAMFile
     {
         public HAMFile baseFile;
-        public PIGFile piggyFile;
 
-        public string lastFilename;
-        public string datafile;
-
-        public List<Robot> Robots = new List<Robot>();
-        public List<Weapon> Weapons = new List<Weapon>();
-        public List<Polymodel> Models = new List<Polymodel>();
-        public List<JointPos> Joints = new List<JointPos>();
-        public List<ushort> ObjBitmaps = new List<ushort>();
-        public List<ushort> ObjBitmapPointers = new List<ushort>();
-
-        //Namelists
-        public List<string> RobotNames = new List<string>();
-        public List<string> WeaponNames = new List<string>();
-        public List<string> ModelNames = new List<string>();
+        public List<Robot> Robots { get; private set; }
+        public List<Weapon> Weapons { get; private set; }
+        public List<Polymodel> Models { get; private set; }
+        public List<JointPos> Joints { get; private set; }
+        public List<ushort> ObjBitmaps { get; private set; }
+        public List<ushort> ObjBitmapPointers { get; private set; }
 
         //ARGH
         //VHAM elements are loaded at fixed locations
@@ -62,28 +53,20 @@ namespace LibDescent.Data
         public VHAMFile(HAMFile baseFile)
         {
             this.baseFile = baseFile;
-            this.piggyFile = baseFile.piggyFile;
+            Robots = new List<Robot>();
+            Weapons = new List<Weapon>();
+            Models = new List<Polymodel>();
+            Joints = new List<JointPos>();
+            ObjBitmaps = new List<ushort>();
+            ObjBitmapPointers = new List<ushort>();
         }
 
-        public int LoadDataFile(string filename)
+        public int Read(Stream stream)
         {
-            lastFilename = filename;
-            //If a namefile isn't present, automatically generate namelists for our convenience. 
-            bool generateNameLists = true;
-            datafile = filename;
             BinaryReader br;
-            try
-            {
-                br = new BinaryReader(File.Open(filename, FileMode.Open));
-            }
-            catch (FileNotFoundException)
-            {
-                return -3;
-            }
-            catch (UnauthorizedAccessException)
-            {
-                return -4;
-            }
+
+            br = new BinaryReader(stream);
+
             HAMDataReader bm = new HAMDataReader();
             int sig = br.ReadInt32();
             if (sig != 0x5848414D)
@@ -135,7 +118,6 @@ namespace LibDescent.Data
                 {
                     modeldata.InterpreterData[y] = br.ReadByte();
                 }
-                modeldata.BuildPolymodelData(x, Models[x], "");
                 Models[x].data = modeldata;
                 //PolymodelData.Add(modeldata);
             }
@@ -157,292 +139,10 @@ namespace LibDescent.Data
             {
                 ObjBitmapPointers.Add(br.ReadUInt16());
             }
-            foreach (Robot robot in Robots)
-            {
-                BuildModelAnimation(robot);
-            }
-            BuildModelTextureTables();
-            BuildReferenceLists();
 
-            if (generateNameLists)
-            {
-                for (int i = 0; i < Weapons.Count; i++)
-                {
-                    WeaponNames.Add(String.Format("New Weapon {0}", i+1));
-                }
-                for (int i = 0; i < Robots.Count; i++)
-                {
-                    RobotNames.Add(String.Format("New Robot {0}", i+1));
-                }
-                for (int i = 0; i < Models.Count; i++)
-                {
-                    ModelNames.Add(String.Format("New Model {0}", i+1));
-                }
-            }
-
-            br.Close();
+            br.Dispose();
 
             return 0;
-        }
-
-        private void BuildModelAnimation(Robot robot)
-        {
-            //this shouldn't happen?
-            if (robot.model_num == -1) return;
-            //If the robot is referring to a base HAM file model, reject it
-            if (robot.model_num < N_D2_POLYGON_MODELS) return;
-            Polymodel model = Models[robot.model_num - N_D2_POLYGON_MODELS];
-            List<FixAngles> jointlist = new List<FixAngles>();
-            model.numGuns = robot.n_guns;
-            for (int i = 0; i < Polymodel.MAX_GUNS; i++)
-            {
-                model.gunPoints[i] = robot.gun_points[i];
-                model.gunDirs[i] = FixVector.FromRawValues(65536, 0, 0);
-                model.gunSubmodels[i] = robot.gun_submodels[i];
-            }
-            int[,] jointmapping = new int[10, 5];
-            for (int m = 0; m < Polymodel.MAX_SUBMODELS; m++)
-            {
-                for (int f = 0; f < Robot.NUM_ANIMATION_STATES; f++)
-                {
-                    jointmapping[m, f] = -1;
-                }
-            }
-            int basejoint = 0;
-            for (int m = 0; m < Polymodel.MAX_GUNS + 1; m++)
-            {
-                for (int f = 0; f < Robot.NUM_ANIMATION_STATES; f++)
-                {
-                    Robot.jointlist robotjointlist = robot.anim_states[m, f];
-                    basejoint = robotjointlist.offset;
-                    for (int j = 0; j < robotjointlist.n_joints; j++)
-                    {
-                        JointPos joint = GetJoint(basejoint);
-                        jointmapping[joint.jointnum, f] = basejoint;
-                        model.isAnimated = true;
-                        basejoint++;
-                    }
-                }
-            }
-
-            for (int m = 1; m < Polymodel.MAX_SUBMODELS; m++)
-            {
-                for (int f = 0; f < Robot.NUM_ANIMATION_STATES; f++)
-                {
-                    int jointnum = jointmapping[m, f];
-                    if (jointnum != -1)
-                    {
-                        JointPos joint = GetJoint(jointnum);
-                        model.animationMatrix[m, f].p = joint.angles.p;
-                        model.animationMatrix[m, f].b = joint.angles.b;
-                        model.animationMatrix[m, f].h = joint.angles.h;
-                    }
-                }
-            }
-        }
-
-        //Variation of the HAM one, only applies to new models
-        public void BuildModelTextureTables()
-        {
-            //Write down unanimated texture names
-            Dictionary<int, string> TextureNames = new Dictionary<int, string>();
-            //Write down EClip IDs for tracking animated texture names
-            Dictionary<int, string> EClipNames = new Dictionary<int, string>();
-            EClip clip;
-            for (int i = 0; i < baseFile.EClips.Count; i++)
-            {
-                clip = baseFile.EClips[i];
-                if (clip.changing_object_texture != -1)
-                {
-                    EClipNames.Add(clip.changing_object_texture, baseFile.EClipNames[i]);
-                }
-            }
-            ushort bitmap; string name;
-            for (int i = 0; i < N_D2_OBJBITMAPS + ObjBitmaps.Count; i++)
-            {
-                bitmap = GetObjBitmap(i);
-                if (bitmap == 0) continue;
-                PIGImage image = piggyFile.images[bitmap];
-                name = image.name.ToLower();
-                if (!image.isAnimated)
-                {
-                    TextureNames.Add(i, name);
-                }
-            }
-            foreach (Polymodel model in Models)
-            {
-                model.useTexList = true;
-                int textureID, pointer;
-                for (int i = model.first_texture; i < (model.first_texture + model.n_textures); i++)
-                {
-                    pointer = GetObjBitmapPointer(i);
-                    textureID = GetObjBitmap(pointer);
-                    if (EClipNames.ContainsKey(pointer))
-                    {
-                        model.textureList.Add(EClipNames[pointer]);
-                    }
-                    else if (TextureNames.ContainsKey(pointer))
-                    {
-                        model.textureList.Add(TextureNames[pointer]);
-                    }
-                }
-                Console.Write("Addon model texture list: [");
-                foreach (string texture in model.textureList)
-                {
-                    Console.Write("{0} ", texture);
-                }
-                Console.WriteLine("]");
-            }
-        }
-
-        //Reference counting. When adding and deleting elements, we must check that nothing is actually referencing
-        //an element being deleted, to avoid baaad problem.
-        //this is annoying and sucks aaa
-        private void BuildReferenceLists()
-        {
-        }
-
-        public int GetNumRobots()
-        {
-            //More robots in the base file than the augment file would add. This is a horrible situation
-            if (baseFile.Robots.Count > (N_D2_ROBOT_TYPES + Robots.Count))
-                return baseFile.Robots.Count;
-
-            return N_D2_ROBOT_TYPES + Robots.Count;
-        }
-
-        public int GetNumWeapons()
-        {
-            //More robots in the base file than the augment file would add. This is a horrible situation
-            if (baseFile.Weapons.Count > (N_D2_WEAPON_TYPES + Weapons.Count))
-                return baseFile.Weapons.Count;
-
-            return N_D2_WEAPON_TYPES + Weapons.Count;
-        }
-
-        public int GetNumModels()
-        {
-            //More robots in the base file than the augment file would add. This is a horrible situation
-            if (baseFile.PolygonModels.Count > (N_D2_POLYGON_MODELS + Models.Count))
-                return baseFile.PolygonModels.Count;
-
-            return N_D2_POLYGON_MODELS + Models.Count;
-        }
-
-        //Convenience members to access elements by their absolute ID, when needed
-        public Robot GetRobot(int id)
-        {
-            if (id >= 0 && id < baseFile.Robots.Count && id < N_D2_ROBOT_TYPES)
-                return baseFile.Robots[id];
-            else if (id >= N_D2_ROBOT_TYPES)
-                return Robots[id - N_D2_ROBOT_TYPES];
-            //sorry, you get null and you better like it
-            return null;
-        }
-
-        public Weapon GetWeapon(int id)
-        {
-            if (id >= 0 && id < baseFile.Weapons.Count && id < N_D2_WEAPON_TYPES)
-                return baseFile.Weapons[id];
-            else if (id >= N_D2_WEAPON_TYPES)
-                return Weapons[id - N_D2_WEAPON_TYPES];
-            return null;
-        }
-
-        public Polymodel GetModel(int id)
-        {
-            if (id >= 0 && id < baseFile.PolygonModels.Count && id < N_D2_POLYGON_MODELS)
-                return baseFile.PolygonModels[id];
-            else if (id >= N_D2_POLYGON_MODELS)
-                return Models[id - N_D2_POLYGON_MODELS];
-            return null;
-        }
-
-        public JointPos GetJoint(int id)
-        {
-            if (id >= 0 && id < baseFile.Joints.Count && id < N_D2_ROBOT_JOINTS)
-                return baseFile.Joints[id];
-            else if (id >= N_D2_ROBOT_JOINTS)
-                return Joints[id- N_D2_ROBOT_JOINTS];
-            return new JointPos(); //shouldn't happen
-        }
-
-        public ushort GetObjBitmap(int id)
-        {
-            if (id >= 0 && id < baseFile.ObjBitmaps.Count && (id < N_D2_OBJBITMAPS || id >= ObjBitmaps.Count + N_D2_OBJBITMAPS))
-                return baseFile.ObjBitmaps[id];
-            else if (id >= N_D2_OBJBITMAPS)
-                return ObjBitmaps[id - N_D2_OBJBITMAPS];
-            return 0;
-        }
-
-        public ushort GetObjBitmapPointer(int id)
-        {
-            if (id >= 0 && id < baseFile.ObjBitmaps.Count && (id < N_D2_OBJBITMAPPTRS || id >= ObjBitmapPointers.Count + N_D2_OBJBITMAPPTRS))
-                return baseFile.ObjBitmapPointers[id];
-            else if (id >= N_D2_OBJBITMAPPTRS)
-                return ObjBitmapPointers[id - N_D2_OBJBITMAPPTRS];
-            return 0;
-        }
-
-        //same for strings
-        public string GetRobotName(int id)
-        {
-            if (id >= 0 && id < baseFile.Robots.Count && id < N_D2_ROBOT_TYPES)
-                return baseFile.RobotNames[id];
-            else if (id >= N_D2_ROBOT_TYPES)
-                return RobotNames[id - N_D2_ROBOT_TYPES];
-            return "<undefined>";
-        }
-
-        public string GetWeaponName(int id)
-        {
-            if (id >= 0 && id < baseFile.Weapons.Count && id < N_D2_WEAPON_TYPES)
-                return baseFile.WeaponNames[id];
-            else if (id >= N_D2_WEAPON_TYPES)
-                return WeaponNames[id - N_D2_WEAPON_TYPES];
-            return "<undefined>";
-        }
-
-        public string GetModelName(int id)
-        {
-            if (id >= 0 && id < baseFile.PolygonModels.Count && id < N_D2_POLYGON_MODELS)
-                return baseFile.ModelNames[id];
-            else if (id >= N_D2_POLYGON_MODELS)
-                return ModelNames[id - N_D2_POLYGON_MODELS];
-            return "<undefined>";
-        }
-
-        //These shouldn't be called. Probably. They will inevitably be called
-        public TMAPInfo GetTMAPInfo(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        //Passthrough nonedited elements to the base file. 
-        public VClip GetVClip(int id)
-        {
-            return baseFile.GetVClip(id);
-        }
-
-        public EClip GetEClip(int id)
-        {
-            return baseFile.GetEClip(id);
-        }
-
-        public WClip GetWClip(int id)
-        {
-            return baseFile.GetWClip(id);
-        }
-
-        public Powerup GetPowerup(int id)
-        {
-            return baseFile.GetPowerup(id);
-        }
-
-        public Reactor GetReactor(int id)
-        {
-            return baseFile.GetReactor(id);
         }
     }
 }

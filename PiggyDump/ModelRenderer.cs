@@ -26,6 +26,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LibDescent.Data;
+using LibDescent.Edit;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -36,7 +37,7 @@ namespace Descent2Workshop
         private int frame = -1;
         private Polymodel model;
         private PIGFile piggyFile;
-        private HAMFile dataFile;
+        private EditorHAMFile dataFile;
         private List<int> textureList;
         private ModelTextureManager texMan = new ModelTextureManager();
         private bool wireframe = false;
@@ -69,7 +70,7 @@ namespace Descent2Workshop
             this.piggyFile = piggyFile;
         }
 
-        public ModelRenderer(HAMFile dataFile, PIGFile piggyFile)
+        public ModelRenderer(EditorHAMFile dataFile, PIGFile piggyFile)
         {
             this.piggyFile = piggyFile;
             this.dataFile = dataFile;

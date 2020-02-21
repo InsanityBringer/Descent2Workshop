@@ -76,10 +76,6 @@ namespace LibDescent.Data
                             {
                                 model.submodels.Add(new Submodel());
                             }
-                            /*double minl = Math.Sqrt(((model.mins.x / 65536.0d) * (model.mins.x / 65536.0d)) + ((model.mins.y / 65536.0d)* (model.mins.y / 65536.0d)) + (model.mins.z / 65536.0d) *(model.mins.z / 65536.0d));
-                            double maxl = Math.Sqrt(((model.maxs.x / 65536.0d) * (model.maxs.x / 65536.0d)) + ((model.maxs.y / 65536.0d) * (model.maxs.y / 65536.0d)) + (model.maxs.z / 65536.0d) * (model.maxs.z / 65536.0d));
-                            double radl = Math.Max(minl, maxl);
-                            model.rad = (int)(radl * 65536.0d);*/
                         }
                         break;
                     //SOBJ
@@ -169,7 +165,6 @@ namespace LibDescent.Data
                     model.data.GetSubmodelMinMaxs(i, model);
                 }
             }
-            model.data.BuildPolymodelData(0, model, traceto);
 
             br.Close();
             return model;

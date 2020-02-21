@@ -26,15 +26,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using LibDescent.Data;
-//using OpenTK.Graphics;
+using LibDescent.Edit;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
 
 namespace Descent2Workshop
 {
     public partial class HXMEditor : Form
     {
-        public HXMFile datafile;
+        public EditorHXMFile datafile;
         public StandardUI host;
         private bool isLocked = false;
         private bool glContextCreated = false;
@@ -52,7 +51,7 @@ namespace Descent2Workshop
 
         private EditorPanels.RobotPanel robotPanel;
 
-        public HXMEditor(HXMFile datafile, StandardUI host, string filename)
+        public HXMEditor(EditorHXMFile datafile, StandardUI host, string filename)
         {
             InitializeComponent();
             //can't use GLControls with designer? eh?
@@ -75,7 +74,7 @@ namespace Descent2Workshop
 
             this.datafile = datafile;
             this.host = host;
-            modelRenderer = new ModelRenderer(datafile.baseFile, host.DefaultPigFile);
+            modelRenderer = new ModelRenderer(datafile.BaseHAM, host.DefaultPigFile);
             this.Text = string.Format("{0} - HXM Editor", currentFilename);
         }
 
@@ -163,7 +162,7 @@ namespace Descent2Workshop
                 WeaponNames.Add(datafile.GetWeaponName(i));
             }
 
-            robotPanel.Init(datafile.baseFile.VClipNames, datafile.baseFile.SoundNames, RobotNames, WeaponNames, datafile.baseFile.PowerupNames, ModelNames);
+            robotPanel.Init(datafile.BaseHAM.VClipNames, datafile.BaseHAM.SoundNames, RobotNames, WeaponNames, datafile.BaseHAM.PowerupNames, ModelNames);
             robotPanel.InitHXM(datafile);
         }
 
@@ -232,7 +231,7 @@ namespace Descent2Workshop
             for (int i = 0; i < numNewTextures; i++)
             {
                 ushort index = datafile.GetObjBitmap(i + model.BaseTexture);
-                if (datafile.baseFile.piggyFile.images[index].isAnimated)
+                if (datafile.BaseHAM.piggyFile.images[index].isAnimated)
                 {
                     AnimatedWarningLabel.Visible = true;
                 }
@@ -346,7 +345,9 @@ namespace Descent2Workshop
                 Polymodel model = POFReader.ReadPOFFile(openFileDialog1.FileName, traceto);
                 model.ExpandSubmodels();
                 //int numTextures = model.n_textures;
-                datafile.ReplaceModel(ElementNumber, model);
+                //datafile.ReplaceModel(ElementNumber, model);
+                datafile.replacedModels[ElementNumber] = model;
+                model.replacementID = ReplacedElementComboBox.SelectedIndex;
                 UpdateModelPanel(ElementNumber);
             }
         }

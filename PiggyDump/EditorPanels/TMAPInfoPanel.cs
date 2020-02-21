@@ -15,6 +15,7 @@ namespace Descent2Workshop.EditorPanels
     {
         //TMAPInfos can only be in HAM files, so it's safe to have this
         private HAMFile datafile;
+        private PIGFile piggyFile;
         private int textureID; //Needed to look up and set
         private TMAPInfo info;
         private bool isLocked = false;
@@ -45,11 +46,12 @@ namespace Descent2Workshop.EditorPanels
             pictureBox.Image = img;
         }
 
-        public void Update(HAMFile datafile, int textureID, TMAPInfo info)
+        public void Update(HAMFile datafile, PIGFile piggyFile, int textureID, TMAPInfo info)
         {
             isLocked = true;
             this.textureID = textureID;
             this.datafile = datafile;
+            this.piggyFile = piggyFile;
             this.info = info;
 
             txtTexID.Text = datafile.Textures[textureID].ToString();
@@ -66,7 +68,7 @@ namespace Descent2Workshop.EditorPanels
             cbTexBlueGoal.Checked = ((info.flags & TMAPInfo.TMI_GOAL_BLUE) != 0);
             cbTexHoardGoal.Checked = ((info.flags & TMAPInfo.TMI_GOAL_HOARD) != 0);
 
-            UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, datafile.Textures[textureID]), pbTexPrev);
+            UpdatePictureBox(PiggyBitmapConverter.GetBitmap(piggyFile, datafile.Textures[textureID]), pbTexPrev);
             isLocked = false;
         }
 
@@ -94,7 +96,7 @@ namespace Descent2Workshop.EditorPanels
                 {
                     case "0":
                         datafile.Textures[textureID] = ushort.Parse(textBox.Text);
-                        UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, datafile.Textures[textureID]), pbTexPrev);
+                        UpdatePictureBox(PiggyBitmapConverter.GetBitmap(piggyFile, datafile.Textures[textureID]), pbTexPrev);
                         break;
                     case "1":
                         info.lighting = double.Parse(textBox.Text);
@@ -159,13 +161,13 @@ namespace Descent2Workshop.EditorPanels
         private void RemapSingleImage_Click(object sender, EventArgs e)
         {
             Button button = (Button)sender;
-            ImageSelector selector = new ImageSelector(datafile.piggyFile, false);
+            ImageSelector selector = new ImageSelector(piggyFile, false);
             if (selector.ShowDialog() == DialogResult.OK)
             {
                 isLocked = true;
                 int value = selector.Selection;
                 datafile.Textures[textureID] = (ushort)value;
-                UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, value), pbTexPrev);
+                UpdatePictureBox(PiggyBitmapConverter.GetBitmap(piggyFile, value), pbTexPrev);
                 txtTexID.Text = value.ToString();
                 isLocked = false;
             }

@@ -69,11 +69,7 @@ namespace LibDescent.Data
         /// List of this submodel's children.
         /// </summary>
         public List<Submodel> Children = new List<Submodel>();
-        //public FixVector[] points = new FixVector[1000];
-        /// <summary>
-        /// List of this submodel's faces, for rendering.
-        /// </summary>
-        public List<PolymodelFace> faces = new List<PolymodelFace>();
+
         public int ID;
     }
 

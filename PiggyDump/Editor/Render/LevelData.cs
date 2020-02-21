@@ -131,7 +131,8 @@ namespace Descent2Workshop.Editor.Render
             shadowShader.LinkShader();
             GLUtilities.ErrorCheck("Shadow render init");
 
-            InitPalette(baseRenderer.State.EditorData.piggyFile.PiggyPalette.GetLinear());
+            //[ISB] TODO THIS NEEDS FIXING
+            //InitPalette(baseRenderer.State.EditorData.piggyFile.PiggyPalette.GetLinear());
 
             transformBuffer.Init();
             pickBuffer.Init();
@@ -163,11 +164,12 @@ namespace Descent2Workshop.Editor.Render
             int tex1 = chain.texture1;
             if (!textureMapping.ContainsKey(tex1))
             {
-                ushort texture = baseRenderer.State.EditorData.Textures[tex1];
+                //[ISB] TODO THIS NEEDS TO BE FIXED
+                /*ushort texture = baseRenderer.State.EditorData.Textures[tex1];
                 PIGImage img = baseRenderer.State.EditorData.piggyFile.images[texture];
                 GL.ActiveTexture(TextureUnit.Texture0);
                 int textureID = LoadTexture(img.GetData(), img.width, img.height);
-                textureMapping.Add(tex1, textureID);
+                textureMapping.Add(tex1, textureID);*/
             }
             GL.ActiveTexture(TextureUnit.Texture0);
             int textureName = textureMapping[tex1];
@@ -179,11 +181,12 @@ namespace Descent2Workshop.Editor.Render
             {
                 if (!textureMapping.ContainsKey(tex2))
                 {
-                    ushort texture = baseRenderer.State.EditorData.Textures[tex2];
+                    //TODO NEEDS TO BE FIXED
+                    /*ushort texture = baseRenderer.State.EditorData.Textures[tex2];
                     PIGImage img = baseRenderer.State.EditorData.piggyFile.images[texture];
                     GL.ActiveTexture(TextureUnit.Texture1);
                     int textureID = LoadTexture(img.GetData(), img.width, img.height);
-                    textureMapping.Add(tex2, textureID);
+                    textureMapping.Add(tex2, textureID);*/
                 }
                 GL.ActiveTexture(TextureUnit.Texture1);
                 textureName = textureMapping[tex2];

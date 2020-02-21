@@ -25,6 +25,7 @@ using System.Windows.Forms;
 using System.IO;
 using OpenTK.Graphics;
 using LibDescent.Data;
+using LibDescent.Edit;
 
 namespace Descent2Workshop
 {
@@ -163,8 +164,8 @@ namespace Descent2Workshop
         /// </summary>
         /// <param name="filename">The filename to load from.</param>
         /// <param name="dataFile">The HAM file to load data into.</param>
-        /// <returns></returns>
-        private bool LoadHAMFile(string filename, HAMFile dataFile)
+        /// <returns>True if no error, false if an error occurred.</returns>
+        private bool LoadHAMFile(string filename, EditorHAMFile dataFile)
         {
             FileStream stream;
             try
@@ -176,7 +177,7 @@ namespace Descent2Workshop
                 AppendConsole(FileUtilities.FileExceptionHandler(exc, "HAM file"));
                 return false;
             }
-            int res = dataFile.Load(stream);
+            int res = dataFile.Read(stream);
 
             stream.Close();
             stream.Dispose();
@@ -198,8 +199,8 @@ namespace Descent2Workshop
         /// </summary>
         /// <param name="filename">The filename to load from.</param>
         /// <param name="dataFile">The HAM file to load data into.</param>
-        /// <returns></returns>
-        private bool LoadHXMFile(string filename, HXMFile dataFile)
+        /// <returns>True if no error, false if an error occurred.</returns>
+        private bool LoadHXMFile(string filename, EditorHXMFile dataFile)
         {
             FileStream stream;
             try
@@ -211,7 +212,7 @@ namespace Descent2Workshop
                 AppendConsole(FileUtilities.FileExceptionHandler(exc, "HXM file"));
                 return false;
             }
-            int res = dataFile.Load(stream);
+            int res = dataFile.Read(stream);
 
             stream.Close();
             stream.Dispose();
@@ -228,12 +229,47 @@ namespace Descent2Workshop
             return true;
         }
 
+        /// <summary>
+        /// Helper function for loading a V-HAM file from a file.
+        /// </summary>
+        /// <param name="filename">The filename to load from.</param>
+        /// <param name="dataFile">The HAM file to load data into.</param>
+        /// <returns>True if no error, false if an error occurred.</returns>
+        private bool LoadVHAMFile(string filename, EditorVHAMFile dataFile)
+        {
+            FileStream stream;
+            try
+            {
+                stream = File.Open(filename, FileMode.Open);
+            }
+            catch (Exception exc)
+            {
+                AppendConsole(FileUtilities.FileExceptionHandler(exc, "VHAM file"));
+                return false;
+            }
+            int res = dataFile.Read(stream);
+
+            stream.Close();
+            stream.Dispose();
+            if (res == -1)
+            {
+                AppendConsole("V-HAM file has invalid signature.\r\n");
+                return false;
+            }
+            else if (res == -2)
+            {
+                AppendConsole("V-HAM file is unknown version.\r\n");
+                return false;
+            }
+            return true;
+        }
+
         private void menuItem4_Click(object sender, EventArgs e)
         {
             openFileDialog1.Filter = ".HAM files|*.HAM";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                HAMFile archive = new HAMFile(defaultPigFile);
+                EditorHAMFile archive = new EditorHAMFile(defaultPigFile);
                 if (LoadHAMFile(openFileDialog1.FileName, archive))
                 {
                     HAMEditor archiveEditor = new HAMEditor(archive, this, openFileDialog1.FileName);
@@ -265,10 +301,10 @@ namespace Descent2Workshop
             openFileDialog1.Filter = ".HAM files|*.HAM";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                HAMFile archive = new HAMFile(defaultPigFile);
+                EditorHAMFile archive = new EditorHAMFile(defaultPigFile);
                 if (LoadHAMFile(openFileDialog1.FileName, archive))
                 {
-                    HXMFile hxm = new HXMFile(archive);
+                    EditorHXMFile hxm = new EditorHXMFile(archive);
 
                     HXMEditor editor = new HXMEditor(hxm, this, "");
                     editor.Show();
@@ -363,16 +399,18 @@ namespace Descent2Workshop
             VHAMLoadDialog dialog = new VHAMLoadDialog();
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                HAMFile dataFile = new HAMFile(defaultPigFile);
+                EditorHAMFile dataFile = new EditorHAMFile(defaultPigFile);
                 if (!LoadHAMFile(dialog.HAMFilename, dataFile))
                 {
                     AppendConsole("VHAM load aborted.\r\n");
                     return;
                 }
-                VHAMFile hxmFile = new VHAMFile(dataFile);
-                hxmFile.LoadDataFile(dialog.HXMFilename);
-                VHAMEditor editor = new VHAMEditor(hxmFile, this);
-                editor.Show();
+                EditorVHAMFile hxmFile = new EditorVHAMFile(dataFile);
+                if (LoadVHAMFile(dialog.HXMFilename, hxmFile))
+                {
+                    VHAMEditor editor = new VHAMEditor(hxmFile, this);
+                    editor.Show();
+                }
             }
         }
 
@@ -481,8 +519,8 @@ namespace Descent2Workshop
             int res;
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                HAMFile dataFile = new HAMFile(defaultPigFile);
-                VHAMFile augmentFile = null;
+                EditorHAMFile dataFile = new EditorHAMFile(defaultPigFile);
+                EditorVHAMFile augmentFile = null;
                 if (!LoadHAMFile(dialog.HAMFilename, dataFile))
                 {
                     AppendConsole("HXM load aborted.\r\n");
@@ -490,15 +528,14 @@ namespace Descent2Workshop
                 }
                 if (dialog.VHAMFilename != "")
                 {
-                    augmentFile = new VHAMFile(dataFile);
-                    res = augmentFile.LoadDataFile(dialog.VHAMFilename);
-                    if (res != 0)
+                    augmentFile = new EditorVHAMFile(dataFile);
+                    if (!LoadVHAMFile(dialog.VHAMFilename, augmentFile))
                     {
-                        FileErrorCodeHandler(res, "VHAM file");
+                        AppendConsole("HXM load aborted.\r\n");
                         return;
                     }
                 }
-                HXMFile hxmFile = new HXMFile(dataFile);
+                EditorHXMFile hxmFile = new EditorHXMFile(dataFile);
                 if (augmentFile != null)
                     hxmFile.augmentFile = augmentFile;
 

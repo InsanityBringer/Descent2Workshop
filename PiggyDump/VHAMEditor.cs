@@ -21,6 +21,7 @@
 */
 
 using LibDescent.Data;
+using LibDescent.Edit;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -40,7 +41,7 @@ namespace Descent2Workshop
         private static HAMType[] typeTable = { HAMType.TMAPInfo, HAMType.VClip, HAMType.EClip, HAMType.WClip, HAMType.Robot, HAMType.Weapon,
             HAMType.Model, HAMType.Sound, HAMType.Reactor, HAMType.Powerup, HAMType.Ship, HAMType.Gauge, HAMType.Cockpit, HAMType.XLAT };
         public int[] texturelist;
-        public VHAMFile datafile;
+        public EditorVHAMFile datafile;
         public StandardUI host;
         public bool isLocked = false;
         public bool glContextCreated = false;
@@ -50,7 +51,7 @@ namespace Descent2Workshop
         private RobotPanel robotPanel;
         private WeaponPanel weaponPanel;
 
-        public VHAMEditor(VHAMFile data, StandardUI host)
+        public VHAMEditor(EditorVHAMFile data, StandardUI host)
         {
             InitializeComponent();
             this.glControl1 = new OpenTK.GLControl();
@@ -75,7 +76,7 @@ namespace Descent2Workshop
                 this.tabPage3.Controls.Add(this.glControl1);
             datafile = data;
             this.host = host;
-            modelRenderer = new ModelRenderer(datafile.baseFile, host.DefaultPigFile);
+            modelRenderer = new ModelRenderer(datafile.BaseHAM, datafile.BaseHAM.piggyFile);
         }
 
         private void VHAMEditor_Load(object sender, EventArgs e)
@@ -157,7 +158,7 @@ namespace Descent2Workshop
             List<string> modelList = new List<string>();
             for (int i = 0; i < datafile.GetNumModels(); i++)
                 modelList.Add(datafile.GetModelName(i));
-            weaponPanel.Init(datafile.baseFile.SoundNames, datafile.baseFile.VClipNames, weaponList, modelList, datafile.piggyFile);
+            weaponPanel.Init(datafile.BaseHAM.SoundNames, datafile.BaseHAM.VClipNames, weaponList, modelList, datafile.BaseHAM.piggyFile);
         }
 
         private void InitRobotPanel()
@@ -172,7 +173,7 @@ namespace Descent2Workshop
             for (int i = 0; i < datafile.GetNumModels(); i++)
                 modelList.Add(datafile.GetModelName(i));
 
-            robotPanel.Init(datafile.baseFile.VClipNames, datafile.baseFile.SoundNames, robotList, weaponList, datafile.baseFile.PowerupNames, modelList);
+            robotPanel.Init(datafile.BaseHAM.VClipNames, datafile.BaseHAM.SoundNames, robotList, weaponList, datafile.BaseHAM.PowerupNames, modelList);
         }
 
         private void InitModelPanel()

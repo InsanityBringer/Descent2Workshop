@@ -1,4 +1,5 @@
 ﻿using LibDescent.Data;
+using LibDescent.Edit;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,7 +15,7 @@ namespace Descent2Workshop
     public partial class ElementList : Form
     {
         public int ElementNumber { get { return ElementListBox.SelectedIndex; } }
-        public ElementList(HAMFile datafile, HAMType type)
+        public ElementList(EditorHAMFile datafile, HAMType type)
         {
             InitializeComponent();
             switch (type)
