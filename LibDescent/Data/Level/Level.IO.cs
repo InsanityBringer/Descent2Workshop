@@ -892,6 +892,12 @@ namespace LibDescent.Data
         protected abstract ushort GameDataVersion { get; }
         private const int GameDataSize = 143;
 
+        /// <summary>
+        /// The .POF file names to write into the level, for consumers that need it.
+        /// Referenced by (non-robot) objects with a PolyObj render type.
+        /// </summary>
+        public List<string> PofFiles => _pofFiles;
+
         public void Write()
         {
             // Don't dispose of the stream, let the caller do that
