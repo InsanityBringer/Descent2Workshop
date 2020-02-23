@@ -66,7 +66,7 @@ namespace LibDescent.Data
         public int deltaLightsSize;
     }
 
-    internal abstract class DescentLevelLoader
+    internal abstract class DescentLevelReader
     {
         protected Stream _stream;
         /// <summary>
@@ -644,13 +644,13 @@ namespace LibDescent.Data
         protected abstract void LoadVersionSpecificGameInfo(BinaryReader reader);
     }
 
-    internal class D1LevelLoader : DescentLevelLoader
+    internal class D1LevelReader : DescentLevelReader
     {
         private readonly D1Level _level = new D1Level();
 
         protected override ILevel Level => _level;
 
-        public D1LevelLoader(Stream stream)
+        public D1LevelReader(Stream stream)
         {
             _stream = stream;
         }
@@ -707,7 +707,7 @@ namespace LibDescent.Data
         }
     }
 
-    internal class D2LevelLoader : DescentLevelLoader
+    internal class D2LevelReader : DescentLevelReader
     {
         private readonly D2Level _level = new D2Level();
         private List<(short segmentNum, short sideNum, uint mask, Fix timer, Fix delay)> _flickeringLights =
@@ -717,7 +717,7 @@ namespace LibDescent.Data
 
         protected override ILevel Level => _level;
 
-        public D2LevelLoader(Stream stream)
+        public D2LevelReader(Stream stream)
         {
             _stream = stream;
         }
@@ -892,7 +892,7 @@ namespace LibDescent.Data
         protected abstract ushort GameDataVersion { get; }
         private const int GameDataSize = 143;
 
-        protected void WriteLevel()
+        public void Write()
         {
             // Don't dispose of the stream, let the caller do that
             using (var writer = new BinaryWriter(_stream, Encoding.ASCII, true))
@@ -1051,8 +1051,12 @@ namespace LibDescent.Data
             {
                 writer.Write((short)fuelcenIndex);
             }
-            writer.Write(segment.Flags);
-            writer.Write(segment.Light.GetRawValue());
+
+            if (LevelVersion > 5)
+            {
+                writer.Write(segment.Flags);
+                writer.Write(segment.Light.GetRawValue());
+            }
         }
 
         private bool SegmentIsFuelcen(Segment segment)
@@ -1130,7 +1134,9 @@ namespace LibDescent.Data
 
                     if (side.OverlayTextureIndex != 0)
                     {
-                        writer.Write(side.OverlayTextureIndex);
+                        rawTextureIndex = side.OverlayTextureIndex;
+                        rawTextureIndex |= (ushort)(((ushort)side.OverlayRotation) << 14);
+                        writer.Write(rawTextureIndex);
                     }
 
                     foreach (var uvl in side.Uvls)
@@ -1280,16 +1286,16 @@ namespace LibDescent.Data
             fileInfo.matcenCount = Level.MatCenters.Count;
             foreach (var matcen in Level.MatCenters)
             {
-                var robotFlags = new byte[2];
+                var robotFlags = new uint[2];
                 foreach (uint robotId in matcen.SpawnedRobotIds)
                 {
                     if (robotId < 32)
                     {
-                        robotFlags[0] |= (byte)(1 << (int)robotId);
+                        robotFlags[0] |= 1u << (int)robotId;
                     }
                     else if (robotId < 64)
                     {
-                        robotFlags[1] |= (byte)(1 << (int)(robotId - 32));
+                        robotFlags[1] |= 1u << (int)(robotId - 32);
                     }
                 }
 
@@ -1300,8 +1306,8 @@ namespace LibDescent.Data
                 }
                 writer.Write(matcen.HitPoints.GetRawValue());
                 writer.Write(matcen.Interval.GetRawValue());
-                writer.Write(Level.Segments.IndexOf(matcen.Segment));
-                writer.Write(_fuelcens.IndexOf(matcen.Segment));
+                writer.Write((short)Level.Segments.IndexOf(matcen.Segment));
+                writer.Write((short)_fuelcens.IndexOf(matcen.Segment));
             }
             fileInfo.matcenSize = (Level.MatCenters.Count > 0) ?
                 (int)writer.BaseStream.Position - fileInfo.matcenOffset : 0;
@@ -1405,6 +1411,13 @@ namespace LibDescent.Data
                     writer.Write(levelObject.aiInfo.pathLength);
                     writer.Write(levelObject.aiInfo.curPathIndex);
 
+                    if (GameDataVersion <= 25)
+                    {
+                        // Follow path start/end segment; not needed
+                        writer.Write((short)0);
+                        writer.Write((short)0);
+                    }
+
                     break;
                 case ControlType.Explosion:
                     writer.Write(levelObject.explosionInfo.SpawnTime);
@@ -1498,11 +1511,6 @@ namespace LibDescent.Data
             _level = level;
         }
 
-        public void Write()
-        {
-            WriteLevel();
-        }
-
         protected override void WriteDynamicLights(BinaryWriter writer, ref FileInfo fileInfo)
         {
             // Only needed for D2, shouldn't be called for D1
@@ -1517,7 +1525,7 @@ namespace LibDescent.Data
             writer.Write(((Fix)d1trigger.Value).GetRawValue());
             writer.Write(d1trigger.Time);
             writer.Write((byte)0); // link_num
-            writer.Write((sbyte)d1trigger.Targets.Count);
+            writer.Write((short)d1trigger.Targets.Count);
 
             for (int i = 0; i < D1Trigger.MaxWallsPerLink; i++)
             {
@@ -1534,7 +1542,7 @@ namespace LibDescent.Data
             {
                 if (i < d1trigger.Targets.Count)
                 {
-                    writer.Write(d1trigger.Targets[i].SideNum);
+                    writer.Write((short)d1trigger.Targets[i].SideNum);
                 }
                 else
                 {
@@ -1563,11 +1571,6 @@ namespace LibDescent.Data
             LevelVersion = vertigoCompatible ? 8 : 7;
         }
 
-        public void Write()
-        {
-            WriteLevel();
-        }
-
         protected override void WriteVersionSpecificLevelInfo(BinaryWriter writer)
         {
             var encodedPaletteName = EncodeString(_level.PaletteName, 13, true);
@@ -1581,15 +1584,17 @@ namespace LibDescent.Data
             writer.Write(_level.AnimatedLights.Count);
             foreach (var light in _level.AnimatedLights)
             {
-                writer.Write(Level.Segments.IndexOf(light.Side.Segment));
-                writer.Write(light.Side.SideNum);
+                writer.Write((short)Level.Segments.IndexOf(light.Side.Segment));
+                writer.Write((short)light.Side.SideNum);
                 writer.Write(light.Mask);
                 writer.Write(light.TimeToNextTick.GetRawValue());
                 writer.Write(light.TickLength.GetRawValue());
             }
 
             writer.Write(Level.Segments.IndexOf(_level.SecretReturnSegment));
-            WriteFixMatrix(writer, _level.SecretReturnOrientation);
+            WriteFixVector(writer, _level.SecretReturnOrientation.right);
+            WriteFixVector(writer, _level.SecretReturnOrientation.forward);
+            WriteFixVector(writer, _level.SecretReturnOrientation.up);
         }
 
         protected override void WriteTrigger(BinaryWriter writer, ITrigger trigger)
@@ -1616,7 +1621,7 @@ namespace LibDescent.Data
             {
                 if (i < d2trigger.Targets.Count)
                 {
-                    writer.Write(d2trigger.Targets[i].SideNum);
+                    writer.Write((short)d2trigger.Targets[i].SideNum);
                 }
                 else
                 {

@@ -74,7 +74,7 @@ namespace LibDescent.Data
 
         public static D1Level CreateFromStream(Stream stream)
         {
-            return new D1LevelLoader(stream).Load();
+            return new D1LevelReader(stream).Load();
         }
 
         public void WriteToStream(Stream stream)
@@ -126,7 +126,7 @@ namespace LibDescent.Data
 
         public static D2Level CreateFromStream(Stream stream)
         {
-            return new D2LevelLoader(stream).Load();
+            return new D2LevelReader(stream).Load();
         }
 
         public void WriteToStream(Stream stream)

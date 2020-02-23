@@ -334,7 +334,7 @@ namespace LibDescent.Tests
             // D1 level 1 has a case where a segment connection is written for a side
             // that is not connected (-1). This needs to be handled.
             var reader = new BinaryReader(new MemoryStream(new byte[] { 0xff, 0xff }));
-            var loader = new D1LevelLoader(null);
+            var loader = new D1LevelReader(null);
             var segment = new Segment();
             for (uint sideNum = 0; sideNum < segment.Sides.Length; sideNum++)
             {
@@ -344,18 +344,32 @@ namespace LibDescent.Tests
             Assert.DoesNotThrow(() => loader.ReadSegmentConnections(reader, segment, 0x01));
             Assert.IsNull(segment.Sides[0].ConnectedSegment);
         }
+    }
 
+    class RdlWriteTests
+    {
         [Test]
         public void TestSaveLevel()
         {
-            var stream = new MemoryStream();
-            Assert.DoesNotThrow(() => level.WriteToStream(stream));
+            D1Level level;
+            using (var stream = TestUtils.GetResourceStream("test.rdl"))
+            {
+                level = D1Level.CreateFromStream(stream);
+            }
 
-            var originalFileContents = TestUtils.GetArrayFromResourceStream("test.rdl");
-            var resultingFileContents = stream.ToArray();
+            // Write the level and then re-load it. We don't save the same way as DLE
+            // so the output won't match.
+            // So we need to compare against something we saved earlier.
+            var memoryStream = new MemoryStream();
+            level.WriteToStream(memoryStream);
+            memoryStream.Seek(0, SeekOrigin.Begin);
+            level = D1Level.CreateFromStream(memoryStream);
+            memoryStream.Seek(0, SeekOrigin.Begin);
 
-            new FileStream("test_lib.rdl", FileMode.OpenOrCreate, FileAccess.Write).Write(resultingFileContents);
-
+            // Now do the test
+            var originalFileContents = memoryStream.ToArray();
+            Assert.DoesNotThrow(() => level.WriteToStream(memoryStream));
+            var resultingFileContents = memoryStream.ToArray();
             Assert.That(resultingFileContents, Is.EqualTo(originalFileContents));
         }
     }
