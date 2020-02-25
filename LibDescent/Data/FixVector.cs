@@ -153,6 +153,34 @@ namespace LibDescent.Data
             this.right = right; this.up = up; this.forward = forward;
         }
 
+        public FixMatrix(FixAngles angs)
+        {
+            Fix sinp = Math.Sin((angs.p / 16384.0) * (Math.PI * 2));
+            Fix cosp = Math.Cos((angs.p / 16384.0) * (Math.PI * 2));
+            Fix sinb = Math.Sin((angs.b / 16384.0) * (Math.PI * 2));
+            Fix cosb = Math.Cos((angs.b / 16384.0) * (Math.PI * 2));
+            Fix sinh = Math.Sin((angs.h / 16384.0) * (Math.PI * 2));
+            Fix cosh = Math.Cos((angs.h / 16384.0) * (Math.PI * 2));
+
+            Fix sbsh = sinb * sinh;
+            Fix cbch = cosb * cosh;
+            Fix cbsh = cosb * sinh;
+            Fix sbch = sinb * cosh;
+
+            right.x = cbch + (sinp * sbsh);
+            up.z = sbsh + (sinp * cbch);
+
+            up.x = (sinp * cbsh) - sbch;
+            right.z = (sinp * sbch) - cbsh;
+
+            forward.x = sinh * cosp;
+            right.y = sinb * cosp;
+            up.y = cosb * cosp;
+            forward.z = cosh * cosp;
+
+            forward.y = -sinp;
+        }
+
         public static FixMatrix operator +(FixMatrix a)
             => a.Scale(1);
         public static FixMatrix operator -(FixMatrix a)
@@ -200,6 +228,24 @@ namespace LibDescent.Data
                     this.forward.x * other.up.x + this.up.x * other.up.y + this.right.x * other.up.z,
                     this.forward.x * other.right.x + this.up.x * other.right.y + this.right.x * other.right.z)
             );
+        }
+        public FixMatrix Transpose()
+        {
+            return new FixMatrix(
+                right: new FixVector(
+                    this.right.x,
+                    this.up.x,
+                    this.forward.x),
+                up: new FixVector(
+                    this.right.y,
+                    this.up.y,
+                    this.forward.y),
+                forward: new FixVector(
+                    this.right.z,
+                    this.up.z,
+                    this.forward.z)
+                );
+
         }
 
         public override string ToString()
