@@ -57,7 +57,7 @@ namespace Descent2Workshop
             return id;
         }
 
-        public List<int> LoadPolymodelTextures(Polymodel model, PIGFile pigFile, EditorHAMFile hamFile)
+        public List<int> LoadPolymodelTextures(Polymodel model, PIGFile pigFile, Palette palette, EditorHAMFile hamFile)
         {
             List<int> textureIDs = new List<int>();
             Bitmap image; EClip clip;
@@ -66,11 +66,11 @@ namespace Descent2Workshop
                 if (hamFile.EClipNameMapping.ContainsKey(textureName.ToLower()))
                 {
                     clip = hamFile.EClipNameMapping[textureName.ToLower()];
-                    image = PiggyBitmapConverter.GetBitmap(pigFile, clip.vc.frames[0]);
+                    image = PiggyBitmapConverter.GetBitmap(pigFile, palette, clip.vc.frames[0]);
                 }
                 else
                 {
-                    image = PiggyBitmapConverter.GetBitmap(pigFile, textureName);
+                    image = PiggyBitmapConverter.GetBitmap(pigFile, palette, textureName);
                 }
                 textureIDs.Add(LoadTexture(image));
             }
@@ -78,13 +78,13 @@ namespace Descent2Workshop
             return textureIDs;
         }
 
-        public List<int> LoadPolymodelTextures(Polymodel model, PIGFile pigFile)
+        public List<int> LoadPolymodelTextures(Polymodel model, Palette palette, PIGFile pigFile)
         {
             List<int> textureIDs = new List<int>();
             Bitmap image;
             foreach (string textureName in model.textureList)
             {
-                image = PiggyBitmapConverter.GetBitmap(pigFile, textureName);
+                image = PiggyBitmapConverter.GetBitmap(pigFile, palette, textureName);
                 textureIDs.Add(LoadTexture(image));
             }
 

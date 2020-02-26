@@ -16,6 +16,7 @@ namespace Descent2Workshop.EditorPanels
         private Weapon weapon;
         //Needed to remap graphics
         private PIGFile piggyFile; //aaa
+        private Palette palette; //aaaaaaaaaaaaaaaaaaaa
         private bool isLocked = false;
 
         private TextBox[] SpeedBoxes = new TextBox[5];
@@ -27,9 +28,10 @@ namespace Descent2Workshop.EditorPanels
             DmgBoxes[0] = txtWeaponStr; DmgBoxes[1] = Damage1; DmgBoxes[2] = Damage2; DmgBoxes[3] = Damage3; DmgBoxes[4] = Damage4;
         }
 
-        public void Init(List<string> SoundNames, List<string> VClipNames, List<string> WeaponNames, List<string> ModelNames, PIGFile piggyFile)
+        public void Init(List<string> SoundNames, List<string> VClipNames, List<string> WeaponNames, List<string> ModelNames, PIGFile piggyFile, Palette palette)
         {
             this.piggyFile = piggyFile;
+            this.palette = palette;
             isLocked = true;
             cbWeaponFireSound.Items.Clear(); cbWeaponFireSound.Items.Add("None");
             cbWeaponRobotHitSound.Items.Clear(); cbWeaponRobotHitSound.Items.Add("None");
@@ -252,7 +254,7 @@ namespace Descent2Workshop.EditorPanels
         private void RemapSingleImage_Click(object sender, EventArgs e)
         {
             Button button = (Button)sender;
-            ImageSelector selector = new ImageSelector(piggyFile, false);
+            ImageSelector selector = new ImageSelector(piggyFile, palette, false);
             if (selector.ShowDialog() == DialogResult.OK)
             {
                 isLocked = true;

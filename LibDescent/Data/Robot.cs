@@ -35,77 +35,216 @@ namespace LibDescent.Data
             public short offset;
         }
 
-        public int model_num;							// which polygon model? //1
-        
-        public FixVector[] gun_points = new FixVector[Polymodel.MAX_GUNS];			// where each gun model is
-        public byte[] gun_submodels = new byte[Polymodel.MAX_GUNS];		// which submodel is each gun in?
-        
-        public short exp1_vclip_num; //2
-        public short exp1_sound_num; //3
-        
-        public short exp2_vclip_num; //4 
-        public short exp2_sound_num; //5
-        
-        public sbyte weapon_type; //6
-        public sbyte weapon_type2; //7
-        public sbyte n_guns;								// how many different gun positions //8
-        public sbyte contains_id;						//	ID of powerup this robot can contain.
-        
-        public sbyte contains_count;					//	Max number of things this instance can contain.
-        public sbyte contains_prob;						//	Probability that this instance will contain something in N/16
-        public sbyte contains_type;						//	Type of thing contained, robot or powerup, in bitmaps.tbl, !0=robot, 0=powerup
-        public sbyte kamikaze; 
-        
-        public short score_value;						//	Score from this robot.
+        /// <summary>
+        /// which polygon model?
+        /// </summary>
+        public int model_num;
+        /// <summary>
+        /// where each gun model is
+        /// </summary>
+        public FixVector[] gun_points = new FixVector[Polymodel.MAX_GUNS];
+        /// <summary>
+        /// which submodel is each gun in?
+        /// </summary>
+        public byte[] gun_submodels = new byte[Polymodel.MAX_GUNS];
+        /// <summary>
+        /// VClip shown when robot is hit.
+        /// </summary>
+        public short exp1_vclip_num;
+        /// <summary>
+        /// Sound played when robot is hit.
+        /// </summary>
+        public short exp1_sound_num;
+        /// <summary>
+        /// VClip shown when robot is killed.
+        /// </summary>
+        public short exp2_vclip_num;
+        /// <summary>
+        /// Sound played when robot is killed.
+        /// </summary>
+        public short exp2_sound_num;
+        /// <summary>
+        /// ID of weapon type fired.
+        /// </summary>
+        public sbyte weapon_type;
+        /// <summary>
+        /// Secondary weapon number, -1 means none, otherwise gun #0 fires this weapon.
+        /// </summary>
+        public sbyte weapon_type2;
+        /// <summary>
+        /// how many different gun positions
+        /// </summary>
+        public sbyte n_guns;
+        /// <summary>
+        /// ID of powerup this robot can contain.
+        /// </summary>
+        public sbyte contains_id;
+        /// <summary>
+        /// Max number of things this instance can contain.
+        /// </summary>
+        public sbyte contains_count;
+        /// <summary>
+        /// Probability that this instance will contain something in N/16
+        /// </summary>
+        public sbyte contains_prob;
+        /// <summary>
+        /// Type of thing contained, robot or powerup, in bitmaps.tbl, 2=robot, 7=powerup. 
+        /// </summary>
+        public sbyte contains_type; //[ISB] Should be instance of ObjectType tbh
+        /// <summary>
+        /// !0 means commits suicide when hits you, strength thereof. 0 means no.
+        /// </summary>
+        public sbyte kamikaze;
+        /// <summary>
+        /// Score from this robot.
+        /// </summary>
+        public short score_value;
+        /// <summary>
+        /// Dies with badass explosion, and strength thereof, 0 means NO.
+        /// </summary>
         public byte badass;
+        /// <summary>
+        /// Points of energy drained at each collision.
+        /// </summary>
         public byte energy_drain;
-        
-        public Fix lighting;							// should this be here or with polygon model?
-        public Fix strength;							// Initial shields of robot
-
-        public Fix mass;										// how heavy is this thing?
-        public Fix drag;										// how much drag does it have?
-
-        public Fix[] field_of_view = new Fix[NUM_DIFFICULTY_LEVELS];					// compare this value with forward_vector.dot.vector_to_player, if field_of_view <, then robot can see player
-        public Fix[] firing_wait = new Fix[NUM_DIFFICULTY_LEVELS];						//	time in seconds between shots
-        public Fix[] firing_wait2 = new Fix[NUM_DIFFICULTY_LEVELS];						//	time in seconds between shots
-        public Fix[] turn_time = new Fix[NUM_DIFFICULTY_LEVELS];						// time in seconds to rotate 360 degrees in a dimension
-        public Fix[] max_speed = new Fix[NUM_DIFFICULTY_LEVELS];						//	maximum speed attainable by this robot
-        public Fix[] circle_distance = new Fix[NUM_DIFFICULTY_LEVELS];				//	distance at which robot circles player
-
-        public sbyte[] rapidfire_count = new sbyte[NUM_DIFFICULTY_LEVELS];				//	number of shots fired rapidly
-        public sbyte[] evade_speed = new sbyte[NUM_DIFFICULTY_LEVELS];						//	rate at which robot can evade shots, 0=none, 4=very fast
-        public sbyte cloak_type;								//	0=never, 1=always, 2=except-when-firing
-        public sbyte attack_type;							//	0=firing, 1=charge (like green guy)
-
-        public byte see_sound;								//	sound robot makes when it first sees the player
-        public byte attack_sound;							//	sound robot makes when it attacks the player
-        public byte claw_sound;								//	sound robot makes as it claws you (attack_type should be 1)
+        /// <summary>
+        /// should this be here or with polygon model?
+        /// </summary>
+        public Fix lighting;
+        /// <summary>
+        /// Initial shields of robot
+        /// </summary>
+        public Fix strength;
+        /// <summary>
+        /// how heavy is this thing?
+        /// </summary>
+        public Fix mass;
+        /// <summary>
+        /// how much drag does it have?
+        /// </summary>
+        public Fix drag;
+        /// <summary>
+        /// compare this value with forward_vector.dot.vector_to_player, if field_of_view <, then robot can see player
+        /// </summary>
+        public Fix[] field_of_view = new Fix[NUM_DIFFICULTY_LEVELS];
+        /// <summary>
+        /// time in seconds between shots
+        /// </summary>
+        public Fix[] firing_wait = new Fix[NUM_DIFFICULTY_LEVELS];
+        /// <summary>
+        /// time in seconds between shots. For gun 2
+        /// </summary>
+        public Fix[] firing_wait2 = new Fix[NUM_DIFFICULTY_LEVELS];
+        /// <summary>
+        /// time in seconds to rotate 360 degrees in a dimension
+        /// </summary>
+        public Fix[] turn_time = new Fix[NUM_DIFFICULTY_LEVELS];
+        public Fix[] fire_power = new Fix[NUM_DIFFICULTY_LEVELS]; //Descent 1 waste data
+        public Fix[] shield = new Fix[NUM_DIFFICULTY_LEVELS]; //Retained for serialization reasons. 
+        /// <summary>
+        /// maximum speed attainable by this robot
+        /// </summary>
+        public Fix[] max_speed = new Fix[NUM_DIFFICULTY_LEVELS];
+        /// <summary>
+        /// distance at which robot circles player
+        /// </summary>
+        public Fix[] circle_distance = new Fix[NUM_DIFFICULTY_LEVELS];
+        /// <summary>
+        /// number of shots fired rapidly
+        /// </summary>
+        public sbyte[] rapidfire_count = new sbyte[NUM_DIFFICULTY_LEVELS];
+        /// <summary>
+        /// rate at which robot can evade shots, 0=none, 4=very fast
+        /// </summary>
+        public sbyte[] evade_speed = new sbyte[NUM_DIFFICULTY_LEVELS];
+        /// <summary>
+        /// 0=never, 1=always, 2=except-when-firing
+        /// </summary>
+        public sbyte cloak_type;
+        /// <summary>
+        /// 0=firing, 1=charge (like green guy)
+        /// </summary>
+        public sbyte attack_type;
+        /// <summary>
+        /// sound robot makes when it first sees the player
+        /// </summary>
+        public byte see_sound;
+        /// <summary>
+        /// sound robot makes when it attacks the player
+        /// </summary>
+        public byte attack_sound;
+        /// <summary>
+        /// sound robot makes as it claws you (attack_type should be 1)
+        /// </summary>
+        public byte claw_sound;
+        /// <summary>
+        /// sound robot makes after you die if this code was ever actually enabled and used.
+        /// </summary>
         public byte taunt_sound;
-        
-        public sbyte boss_flag;								//	0 = not boss, 1 = boss.  Is that surprising?
-        public sbyte companion;								//	Companion robot, leads you to things.
-        public sbyte smart_blobs;							//	how many smart blobs are emitted when this guy dies!
-        public sbyte energy_blobs;							//	how many smart blobs are emitted when this guy gets hit by energy weapon!
-
-        public sbyte thief;									//	!0 means this guy can steal when he collides with you!
-        public sbyte pursuit;									//	!0 means pursues player after he goes around a corner.  4 = 4/2 pursue up to 4/2 seconds after becoming invisible if up to 4 segments away
-        public sbyte lightcast;								//	Amount of light cast. 1 is default.  10 is very large.
-        public sbyte death_roll;								//	0 = dies without death roll. !0 means does death roll, larger = faster and louder
-
-        public byte	flags;									// misc properties, and by that a single flag that is literally not used in the final game. heeeh
+        /// <summary>
+        /// 0 = not boss, 1 = boss.  Is that surprising?
+        /// </summary>
+        public sbyte boss_flag;
+        /// <summary>
+        /// Companion robot, leads you to things.
+        /// </summary>
+        public sbyte companion;
+        /// <summary>
+        /// how many smart blobs are emitted when this guy dies! if this code was ever actually enabled and used.
+        /// </summary>
+        public sbyte smart_blobs;
+        /// <summary>
+        /// how many smart blobs are emitted when this guy gets hit by energy weapon!
+        /// </summary>
+        public sbyte energy_blobs;
+        /// <summary>
+        /// !0 means this guy can steal when he collides with you!
+        /// </summary>
+        public sbyte thief;
+        /// <summary>
+        /// !0 means pursues player after he goes around a corner.  4 = 4/2 pursue up to 4/2 seconds after becoming invisible if up to 4 segments away
+        /// </summary>
+        public sbyte pursuit;
+        /// <summary>
+        /// Amount of light cast. 1 is default.  10 is very large.
+        /// </summary>
+        public sbyte lightcast;
+        /// <summary>
+        /// 0 = dies without death roll. !0 means does death roll, larger = faster and louder
+        /// </summary>
+        public sbyte death_roll;
+        /// <summary>
+        /// misc properties, and by that a single flag that is literally not used in the final game. heeeh
+        /// </summary>
+        public byte	flags;
         //three bytes pad
+        /// <summary>
+        /// if has deathroll, what sound?
+        /// </summary>
+        public byte deathroll_sound;
+        /// <summary>
+        /// apply this light to robot itself. stored as 4:4 fixed-point
+        /// </summary>
+        public byte glow;
+        /// <summary>
+        /// Default behavior.
+        /// </summary>
+        public byte behavior;
+        /// <summary>
+        /// 255 = perfect, less = more likely to miss.  0 != random, would look stupid.  0=45 degree spread. 
+        /// </summary>
+        public byte aim;
 
-        public byte deathroll_sound;						// if has deathroll, what sound?
-        public byte glow;										// apply this light to robot itself. stored as 4:4 fixed-point
-        public byte behavior;								//	Default behavior.
-        public byte aim;										//	255 = perfect, less = more likely to miss.  0 != random, would look stupid.  0=45 degree spread.  Specify in bitmaps.tbl in range 0.0..1.0
-
-        //animation info
+        /// <summary>
+        /// animation info
+        /// </summary>
         public jointlist[,] anim_states = new jointlist[Polymodel.MAX_GUNS+1, NUM_ANIMATION_STATES];
         public int baseJoint = 0; //for HXM files aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
-        public int always_0xabcd;							// debugging
+        /// <summary>
+        /// debugging. Retained for serializaiton purposes. 
+        /// </summary>
+        public int always_0xabcd;
 
         public int replacementID;
         public int ID;

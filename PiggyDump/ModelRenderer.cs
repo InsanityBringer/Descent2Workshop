@@ -37,6 +37,7 @@ namespace Descent2Workshop
         private int frame = -1;
         private Polymodel model;
         private PIGFile piggyFile;
+        private Palette palette;
         private EditorHAMFile dataFile;
         private List<int> textureList;
         private ModelTextureManager texMan = new ModelTextureManager();
@@ -54,8 +55,6 @@ namespace Descent2Workshop
         private FixVector cameraPoint = new FixVector(0.0, 0.0, 0.0);
         private FixVector cameraFacing = new FixVector(0.0, 0.0, 1.0);
 
-        private FixVector currentOffset;
-
         public bool Wireframe { get => wireframe; set => wireframe = value; }
         public bool ShowRadius { get => showRadius; set => showRadius = value; }
         public bool ShowBBs { get => showBBs; set => showBBs = value; }
@@ -65,15 +64,17 @@ namespace Descent2Workshop
         public int Frame { get => frame; set => frame = value; }
         public bool EmulateSoftware { get => emulateSoftware; set => emulateSoftware = value; }
 
-        public ModelRenderer(PIGFile piggyFile)
+        public ModelRenderer(PIGFile piggyFile, Palette palette)
         {
             this.piggyFile = piggyFile;
+            this.palette = palette;
         }
 
-        public ModelRenderer(EditorHAMFile dataFile, PIGFile piggyFile)
+        public ModelRenderer(EditorHAMFile dataFile, PIGFile piggyFile, Palette palette)
         {
             this.piggyFile = piggyFile;
             this.dataFile = dataFile;
+            this.palette = palette;
         }
 
         public void SetModel(Polymodel model)
@@ -83,9 +84,9 @@ namespace Descent2Workshop
             this.model = model;
             frame = -1;
             if (dataFile == null)
-                textureList = texMan.LoadPolymodelTextures(model, piggyFile);
+                textureList = texMan.LoadPolymodelTextures(model, palette, piggyFile);
             else
-                textureList = texMan.LoadPolymodelTextures(model, piggyFile, dataFile);
+                textureList = texMan.LoadPolymodelTextures(model, piggyFile, palette, dataFile);
         }
 
         public void Init()

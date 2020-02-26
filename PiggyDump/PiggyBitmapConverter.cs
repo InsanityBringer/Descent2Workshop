@@ -11,11 +11,10 @@ namespace Descent2Workshop
 {
     public class PiggyBitmapConverter
     {
-        public static Bitmap GetBitmap(PIGFile piggyFile, int index)
+        public static Bitmap GetBitmap(PIGFile piggyFile, Palette palette, int index)
         {
             PIGImage image = piggyFile.GetImage(index);
             Bitmap bitmap = new Bitmap(image.width, image.height);
-            Palette palette = piggyFile.PiggyPalette;
             int[] rgbData = new int[image.width * image.height];
             byte[] rawData = image.GetData();
             byte b;
@@ -33,11 +32,10 @@ namespace Descent2Workshop
             return bitmap;
         }
 
-        public static Bitmap GetBitmap(PIGFile piggyFile, string name)
+        public static Bitmap GetBitmap(PIGFile piggyFile, Palette palette, string name)
         {
             PIGImage image = piggyFile.GetImage(name);
             Bitmap bitmap = new Bitmap(image.width, image.height);
-            Palette palette = piggyFile.PiggyPalette;
             int[] rgbData = new int[image.width * image.height];
             byte[] rawData = image.GetData();
             byte b;

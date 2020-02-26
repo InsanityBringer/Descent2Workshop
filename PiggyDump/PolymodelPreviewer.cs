@@ -74,7 +74,7 @@ namespace Descent2Workshop
                 chkAnimation.Enabled = false;
             }
             this.host = host;
-            this.renderer = new ModelRenderer(host.DefaultPigFile);
+            this.renderer = new ModelRenderer(host.DefaultPigFile, host.DefaultPalette);
         }
 
         public double GetFloatFromFixed(int fixedvalue)

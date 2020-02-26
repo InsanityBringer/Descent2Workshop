@@ -38,20 +38,20 @@ namespace LibDescent.Data
         {
             int numFrames = 0;
             int nextFrame = 0;
-            PIGImage img = piggyFile.images[firstFrame];
+            PIGImage img = piggyFile.Bitmaps[firstFrame];
             if (img.isAnimated)
             {
                 //Clear the old animation
                 for (int i = 0; i < 30; i++) frames[i] = 0;
 
                 frames[numFrames] = (ushort)(firstFrame + numFrames);
-                img = piggyFile.images[firstFrame + numFrames + 1];
+                img = piggyFile.Bitmaps[firstFrame + numFrames + 1];
                 numFrames++;
                 while (img.frame == numFrames)
                 {
-                    if (firstFrame + numFrames + 1 >= piggyFile.images.Count) break; 
+                    if (firstFrame + numFrames + 1 >= piggyFile.Bitmaps.Count) break; 
                     frames[numFrames] = (ushort)(firstFrame + numFrames);
-                    img = piggyFile.images[firstFrame + numFrames + 1];
+                    img = piggyFile.Bitmaps[firstFrame + numFrames + 1];
                     numFrames++;
                     nextFrame++;
                 }

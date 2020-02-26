@@ -22,13 +22,7 @@
 
 using LibDescent.Data;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Descent2Workshop
@@ -46,29 +40,24 @@ namespace Descent2Workshop
             }
         }
         private PIGFile pigFile;
+        private Palette palette;
         private bool animOnly;
 
-        private int selection = 0;
-        public int Selection
-        {
-            get
-            {
-                return selection;
-            }
-        }
-        public ImageSelector(PIGFile pigFile, bool animOnly)
+        public int Selection { get; private set; }
+        public ImageSelector(PIGFile pigFile, Palette palette, bool animOnly)
         {
             InitializeComponent();
             this.pigFile = pigFile;
+            this.palette = palette;
             this.animOnly = animOnly;
         }
 
         private void ImageSelector_Load(object sender, EventArgs e)
         {
             PIGImage img;
-            for (int i = 0; i < pigFile.images.Count; i++)
+            for (int i = 0; i < pigFile.Bitmaps.Count; i++)
             {
-                img = pigFile.images[i];
+                img = pigFile.Bitmaps[i];
                 ListEntry entry;
                 entry.Name = img.name;
                 entry.id = i;
@@ -93,8 +82,8 @@ namespace Descent2Workshop
                 image.Dispose();
             }
             ListEntry entry = (ListEntry)listBox1.Items[listBox1.SelectedIndex];
-            selection = entry.id;
-            pictureBox1.Image = PiggyBitmapConverter.GetBitmap(pigFile, entry.id);
+            Selection = entry.id;
+            pictureBox1.Image = PiggyBitmapConverter.GetBitmap(pigFile, palette, entry.id);
         }
     }
 }

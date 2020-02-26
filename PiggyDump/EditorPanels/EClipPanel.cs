@@ -15,13 +15,14 @@ namespace Descent2Workshop.EditorPanels
     {
         private EClip clip;
         private PIGFile piggyFile;
+        private Palette palette;
         private bool isLocked = false;
         public EClipPanel()
         {
             InitializeComponent();
         }
 
-        public void Init(List<string> VClipNames, List<string> EClipNames, List<string> SoundNames)
+        public void Init(List<string> VClipNames, List<string> EClipNames, List<string> SoundNames, Palette palette)
         {
             cbEClipBreakEClip.Items.Clear(); cbEClipBreakEClip.Items.Add("None");
             cbEClipMineCritical.Items.Clear(); cbEClipMineCritical.Items.Add("None");
@@ -31,6 +32,7 @@ namespace Descent2Workshop.EditorPanels
             cbEClipMineCritical.Items.AddRange(EClipNames.ToArray());
             cbEClipBreakVClip.Items.AddRange(VClipNames.ToArray());
             cbEClipBreakSound.Items.AddRange(SoundNames.ToArray());
+            this.palette = palette;
         }
 
         public void Stop()
@@ -88,7 +90,7 @@ namespace Descent2Workshop.EditorPanels
                 pbEffectFramePreview.Image = null;
                 temp.Dispose();
             }
-            pbEffectFramePreview.Image = PiggyBitmapConverter.GetBitmap(piggyFile, clip.vc.frames[frame]);
+            pbEffectFramePreview.Image = PiggyBitmapConverter.GetBitmap(piggyFile, palette, clip.vc.frames[frame]);
         }
 
         private void EClipFixedProperty_TextChanged(object sender, EventArgs e)
@@ -175,7 +177,7 @@ namespace Descent2Workshop.EditorPanels
         private void RemapMultiImage_Click(object sender, EventArgs e)
         {
             Button button = (Button)sender;
-            ImageSelector selector = new ImageSelector(piggyFile, true);
+            ImageSelector selector = new ImageSelector(piggyFile, palette, true);
             if (selector.ShowDialog() == DialogResult.OK)
             {
                 int value = selector.Selection;
@@ -193,7 +195,7 @@ namespace Descent2Workshop.EditorPanels
         private void RemapSingleImage_Click(object sender, EventArgs e)
         {
             Button button = (Button)sender;
-            ImageSelector selector = new ImageSelector(piggyFile, false);
+            ImageSelector selector = new ImageSelector(piggyFile, palette, false);
             if (selector.ShowDialog() == DialogResult.OK)
             {
                 isLocked = true;

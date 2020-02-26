@@ -21,12 +21,7 @@
 */
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using LibDescent.Data;
@@ -36,19 +31,21 @@ namespace Descent2Workshop
     public partial class PIGEditor : Form
     {
         public PIGFile datafile;
+        private Palette palette;
         public StandardUI host;
-        public PIGEditor(PIGFile data)
+        public PIGEditor(PIGFile data, Palette palette)
         {
             datafile = data;
             InitializeComponent();
             this.Text = string.Format("{0} - PIG Editor", datafile.filename);
+            this.palette = palette;
         }
 
         private void PIGEditor_Load(object sender, EventArgs e)
         {
-            for (int x = 0; x < datafile.images.Count; x++)
+            for (int x = 0; x < datafile.Bitmaps.Count; x++)
             {
-                PIGImage image = (PIGImage)datafile.images[x];
+                PIGImage image = (PIGImage)datafile.Bitmaps[x];
                 ListViewItem lvi = new ListViewItem(image.name);
                 lvi.SubItems.Add(image.GetSize().ToString());
                 if (image.isAnimated)
@@ -76,12 +73,12 @@ namespace Descent2Workshop
                 pictureBox1.Image = null;
                 temp.Dispose();
             }
-            PIGImage image = datafile.images[listView1.SelectedIndices[0]];
-            pictureBox1.Image = PiggyBitmapConverter.GetBitmap(datafile, listView1.SelectedIndices[0]);
+            PIGImage image = datafile.Bitmaps[listView1.SelectedIndices[0]];
+            pictureBox1.Image = PiggyBitmapConverter.GetBitmap(datafile, palette, listView1.SelectedIndices[0]);
             TransparentCheck.Checked = (image.flags & PIGImage.BM_FLAG_TRANSPARENT) != 0;
             SupertransparentCheck.Checked = (image.flags & PIGImage.BM_FLAG_SUPER_TRANSPARENT) != 0;
             NoLightingCheck.Checked = (image.flags & PIGImage.BM_FLAG_NO_LIGHTING) != 0;
-            Color color = Color.FromArgb(datafile.PiggyPalette.GetDrawingColorH(image.averageIndex));
+            Color color = Color.FromArgb(palette.GetDrawingColorH(image.averageIndex));
             ColorPreview.BackColor = color;
             pictureBox1.Refresh();
         }
@@ -97,7 +94,7 @@ namespace Descent2Workshop
             {
                 if (saveFileDialog1.FileName != "")
                 {
-                    datafile.SaveDataFile(saveFileDialog1.FileName);
+                    datafile.Write(saveFileDialog1.FileName);
                     this.Text = string.Format("{0} - PIG Editor", datafile.filename);
                 }
             }
@@ -126,7 +123,7 @@ namespace Descent2Workshop
         private void DeleteAt(int index)
         {
             listView1.Items.RemoveAt(index);
-            datafile.images.RemoveAt(index);
+            datafile.Bitmaps.RemoveAt(index);
         }
 
         private void listView1_KeyPress(object sender, KeyPressEventArgs e)
@@ -135,7 +132,7 @@ namespace Descent2Workshop
 
         private string ImageFilename(int index)
         {
-            PIGImage image = datafile.images[index];
+            PIGImage image = datafile.Bitmaps[index];
             if (!image.isAnimated)
             {
                 return image.name;
@@ -164,7 +161,7 @@ namespace Descent2Workshop
                     string directory = Path.GetDirectoryName(saveFileDialog1.FileName);
                     foreach (int index in listView1.SelectedIndices)
                     {
-                        Bitmap img = PiggyBitmapConverter.GetBitmap(datafile, index);
+                        Bitmap img = PiggyBitmapConverter.GetBitmap(datafile, palette, index);
                         string newpath = directory + Path.DirectorySeparatorChar + ImageFilename(index) + ".png";
                         img.Save(newpath);
                         img.Dispose();
@@ -174,7 +171,7 @@ namespace Descent2Workshop
                 {
                     if (saveFileDialog1.FileName != "")
                     {
-                        Bitmap img = PiggyBitmapConverter.GetBitmap(datafile, listView1.SelectedIndices[0]);
+                        Bitmap img = PiggyBitmapConverter.GetBitmap(datafile, palette, listView1.SelectedIndices[0]);
                         img.Save(saveFileDialog1.FileName);
                         img.Dispose();
                     }

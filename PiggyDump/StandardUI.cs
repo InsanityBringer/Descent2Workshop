@@ -40,6 +40,7 @@ namespace Descent2Workshop
 
         public SNDFile DefaultSoundFile { get => defaultSoundFile; }
         public PIGFile DefaultPigFile { get => defaultPigFile; }
+        public Palette DefaultPalette { get; private set; }
 
         public StandardUI()
         {
@@ -106,7 +107,7 @@ namespace Descent2Workshop
             archiveEditor.Show();
         }
 
-        private void mnuSetDefaultPIG_Click(object sender, EventArgs e)
+        private void LoadPIGMenu_Click(object sender, EventArgs e)
         {
             if (defaultHogFile == null)
             {
@@ -123,9 +124,9 @@ namespace Descent2Workshop
                 if (lumpIndex != -1) newPalette = new Palette(defaultHogFile.GetLumpData(lumpIndex));
                 else newPalette = new Palette(); //If the palette couldn't be located, make a default grayscale palette
 
-                PIGFile archive = new PIGFile(newPalette);
-                archive.LoadDataFile(openFileDialog1.FileName);
-                PIGEditor archiveEditor = new PIGEditor(archive);
+                PIGFile archive = new PIGFile();
+                archive.Read(openFileDialog1.FileName);
+                PIGEditor archiveEditor = new PIGEditor(archive, newPalette);
                 archiveEditor.host = this;
                 archiveEditor.Show();
             }
@@ -376,19 +377,23 @@ namespace Descent2Workshop
         private void MnuAbout_Click(object sender, EventArgs e)
         {
 #if DEBUG
-            /* //rip for moment due to refactoring
-            HAMFile datafile = new HAMFile(DefaultPigFile);
-            if (datafile.Load("C:/Games/Descent/D2X-Rebirth/GOOD.HAM") == 0)
+            Descent1PIGFile piggyFile = new Descent1PIGFile();
+            Stream stream = File.Open("C:/Games/Descent/DESCENT.PIG", FileMode.Open);
+            piggyFile.Read(stream);
+            stream.Close();
+            stream.Dispose();
+            Palette newPalette; int lumpIndex;
+
+            lumpIndex = defaultHogFile.GetLumpNum("DEFAULT.256");
+            if (lumpIndex != -1) newPalette = new Palette(defaultHogFile.GetLumpData(lumpIndex));
+            else newPalette = new Palette(); //If the palette couldn't be located, make a default grayscale palette
+            PIGFile test = new PIGFile();
+            for (int i = 1; i < piggyFile.Bitmaps.Count; i++)
             {
-                Editor.Level level = new Editor.Level();
-                level.LoadMine("C:/Games/Descent/D2X-Rebirth/d2leva-1.rl2.good");
-                Editor.EditorUI editor = new Editor.EditorUI(level, datafile);
-                editor.Show();
-                //Editor.ConvertToOverload.WriteOverloadLevel("c:/Games/Descent/D2X-Rebirth/test.overload", level);
-            }*/
-            /*level.SaveMine("C:/Games/Descent/D2X-Rebirth/d2leva-1.rl2");
-            Editor.Level level2 = new Editor.Level();
-            level2.LoadMine("C:/Games/Descent/D2X-Rebirth/d2leva-1.rl2");*/
+                test.Bitmaps.Add(piggyFile.Bitmaps[i]);
+            }
+            PIGEditor editor = new PIGEditor(test, newPalette);
+            editor.Show();
 #else
             AppendConsole("Descent II Workshop by ISB... heh\n");
 #endif
@@ -440,11 +445,12 @@ namespace Descent2Workshop
             lumpIndex = defaultHogFile.GetLumpNum(paletteName);
             if (lumpIndex != -1) newPalette = new Palette(defaultHogFile.GetLumpData(lumpIndex));
             else newPalette = new Palette(); //If the palette couldn't be located, make a default grayscale palette
+            DefaultPalette = newPalette;
 
-            PIGFile defaultPIG = new PIGFile(newPalette);
+            PIGFile defaultPIG = new PIGFile();
             try
             {
-                defaultPIG.LoadDataFile(filename);
+                defaultPIG.Read(filename);
                 AppendConsole("Loaded default PIG file!\r\n");
                 options.SetOption("PIGFile", filename);
             }
@@ -516,7 +522,6 @@ namespace Descent2Workshop
         private void OpenHXMMenu_Click(object sender, EventArgs e)
         {
             HXMLoadDialog dialog = new HXMLoadDialog();
-            int res;
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 EditorHAMFile dataFile = new EditorHAMFile(defaultPigFile);

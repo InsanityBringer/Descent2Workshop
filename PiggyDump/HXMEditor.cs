@@ -47,6 +47,8 @@ namespace Descent2Workshop
         private OpenTK.GLControl glControl1;
         private ModelRenderer modelRenderer;
 
+        private Palette palette;
+
         private int ElementNumber { get { return (int)nudElementNum.Value; } }
 
         private EditorPanels.RobotPanel robotPanel;
@@ -74,7 +76,8 @@ namespace Descent2Workshop
 
             this.datafile = datafile;
             this.host = host;
-            modelRenderer = new ModelRenderer(datafile.BaseHAM, host.DefaultPigFile);
+            palette = host.DefaultPalette;
+            modelRenderer = new ModelRenderer(datafile.BaseHAM, host.DefaultPigFile, palette);
             this.Text = string.Format("{0} - HXM Editor", currentFilename);
         }
 
@@ -231,7 +234,7 @@ namespace Descent2Workshop
             for (int i = 0; i < numNewTextures; i++)
             {
                 ushort index = datafile.GetObjBitmap(i + model.BaseTexture);
-                if (datafile.BaseHAM.piggyFile.images[index].isAnimated)
+                if (datafile.BaseHAM.piggyFile.Bitmaps[index].isAnimated)
                 {
                     AnimatedWarningLabel.Visible = true;
                 }

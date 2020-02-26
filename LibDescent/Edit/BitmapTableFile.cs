@@ -126,13 +126,13 @@ namespace LibDescent.Edit
                     if (clip.vc.play_time > 0)
                     {
                         stringBuilder.AppendFormat("$ECLIP clip_num={0} time={1} abm_flag=1 ", clip.ID, clip.vc.play_time);
-                        img = piggyFile.images[clip.vc.frames[0]];
+                        img = piggyFile.Bitmaps[clip.vc.frames[0]];
                         if (clip.changing_wall_texture != -1)
                         {
                             if (clip.crit_clip != -1)
                                 stringBuilder.AppendFormat("crit_clip={0} ", clip.crit_clip);
                             if (clip.dest_bm_num != -1)
-                                stringBuilder.AppendFormat("dest_bm={0}.bbm ", piggyFile.images[datafile.Textures[clip.dest_bm_num]].name);
+                                stringBuilder.AppendFormat("dest_bm={0}.bbm ", piggyFile.Bitmaps[datafile.Textures[clip.dest_bm_num]].name);
                             if (clip.dest_vclip != 0)
                                 stringBuilder.AppendFormat("dest_vclip={0} ", clip.dest_vclip);
                             if (clip.dest_eclip != -1)
@@ -186,7 +186,7 @@ namespace LibDescent.Edit
                     if (clip.vc.play_time > 0)
                     {
                         stringBuilder.AppendFormat("$ECLIP clip_num={0} time={1} abm_flag=1 ", clip.ID, clip.vc.play_time);
-                        img = piggyFile.images[clip.vc.frames[0]];
+                        img = piggyFile.Bitmaps[clip.vc.frames[0]];
                         stringBuilder.Append("obj_eclip=1 ");
                         if ((img.flags & PIGImage.BM_FLAG_NO_LIGHTING) != 0)
                             stringBuilder.Append("vlighting=-1 ");
@@ -212,7 +212,7 @@ namespace LibDescent.Edit
                 if (clip.play_time != 0)
                 {
                     info = datafile.TMapInfo[clip.frames[0]];
-                    img = piggyFile.images[datafile.Textures[clip.frames[0]]];
+                    img = piggyFile.Bitmaps[datafile.Textures[clip.frames[0]]];
                     stringBuilder.AppendFormat("$WCLIP clip_num={0} time={1} abm_flag=1 ", i, clip.play_time);
                     if (clip.open_sound != -1)
                         stringBuilder.AppendFormat("open_sound={0} ", clip.open_sound);
@@ -247,7 +247,7 @@ namespace LibDescent.Edit
                         stringBuilder.Append("force_field ");
                     for (int f = 0; f < clip.num_frames; f++) //Need to scan all frames for superx
                     {
-                        frame = piggyFile.images[datafile.Textures[clip.frames[f]]];
+                        frame = piggyFile.Bitmaps[datafile.Textures[clip.frames[f]]];
                         if ((frame.flags & PIGImage.BM_FLAG_SUPER_TRANSPARENT) != 0)
                             superx = true;
                     }
@@ -271,7 +271,7 @@ namespace LibDescent.Edit
             for (int i = 0; i < firstEClip; i++)
             {
                 extra = false;
-                img = piggyFile.images[datafile.Textures[i]];
+                img = piggyFile.Bitmaps[datafile.Textures[i]];
                 info = datafile.TMapInfo[i];
                 if (img.isAnimated && info.eclip_num == -1) //Probably a WClip so don't write yet. 
                     continue;
@@ -307,7 +307,7 @@ namespace LibDescent.Edit
                         stringBuilder.AppendFormat("slide={0:F1} {1:F1} ", info.slide_u / 256.0f, info.slide_v / 256.0f);
                     if (info.destroyed != -1)
                     {
-                        img = piggyFile.images[datafile.Textures[info.destroyed]];
+                        img = piggyFile.Bitmaps[datafile.Textures[info.destroyed]];
                         stringBuilder.AppendFormat("destroyed={0}.bbm ", img.name);
                         i++;
                     }
@@ -336,7 +336,7 @@ namespace LibDescent.Edit
                 stringBuilder.AppendFormat("$VCLIP clip_num={0} time={1} abm_flag=1 vlighting={2} sound_num={3} ", id, clip.play_time, clip.light_value, clip.sound_num);
                 if ((clip.flags & 1) != 0)
                     stringBuilder.Append("rod_flag=1");
-                stringBuilder.AppendFormat("\n{0}.abm\n", piggyFile.images[clip.frames[0]].name);
+                stringBuilder.AppendFormat("\n{0}.abm\n", piggyFile.Bitmaps[clip.frames[0]].name);
             }
         }
 
@@ -349,7 +349,7 @@ namespace LibDescent.Edit
                 stringBuilder.Append("$WEAPON ");
                 if (weapon.render_type == 1)
                 {
-                    stringBuilder.AppendFormat("blob_bmp={0}.bbm ", piggyFile.images[weapon.bitmap].name);
+                    stringBuilder.AppendFormat("blob_bmp={0}.bbm ", piggyFile.Bitmaps[weapon.bitmap].name);
                 }
                 else if (weapon.render_type == 2)
                 {
@@ -368,7 +368,7 @@ namespace LibDescent.Edit
                 }
                 else if (weapon.render_type == 255)
                 {
-                    stringBuilder.AppendFormat("none_bmp={0}.bbm ", piggyFile.images[weapon.bitmap].name);
+                    stringBuilder.AppendFormat("none_bmp={0}.bbm ", piggyFile.Bitmaps[weapon.bitmap].name);
                 }
                 stringBuilder.AppendFormat("mass={0} ", weapon.mass);
                 stringBuilder.AppendFormat("drag={0} ", weapon.drag);
@@ -419,9 +419,9 @@ namespace LibDescent.Edit
                 if (weapon.flash != 0)
                     stringBuilder.AppendFormat("flash={0} ", weapon.flash);
                 if (weapon.picture != 0)
-                    stringBuilder.AppendFormat("picture={0}.bbm ", piggyFile.images[weapon.picture].name);
+                    stringBuilder.AppendFormat("picture={0}.bbm ", piggyFile.Bitmaps[weapon.picture].name);
                 if (weapon.hires_picture != 0)
-                    stringBuilder.AppendFormat("hires_picture={0}.bbm ", piggyFile.images[weapon.hires_picture].name);
+                    stringBuilder.AppendFormat("hires_picture={0}.bbm ", piggyFile.Bitmaps[weapon.hires_picture].name);
 
                 stringBuilder.AppendFormat(" ;{0}", datafile.WeaponNames[id]);
 
@@ -434,7 +434,7 @@ namespace LibDescent.Edit
             stringBuilder.Append("$COCKPIT\n");
             foreach (ushort index in datafile.Cockpits)
             {
-                stringBuilder.AppendFormat("{0}.bbm\n", piggyFile.images[index].name);
+                stringBuilder.AppendFormat("{0}.bbm\n", piggyFile.Bitmaps[index].name);
             }
         }
 
@@ -469,7 +469,7 @@ namespace LibDescent.Edit
                 id = datafile.Gauges[i];
                 if (id != 0)
                 {
-                    PIGImage img = piggyFile.images[id];
+                    PIGImage img = piggyFile.Bitmaps[id];
                     lastname = name;
                     name = img.name;
                     if (lastname != name)
@@ -498,7 +498,7 @@ namespace LibDescent.Edit
                 id = datafile.GaugesHires[i];
                 if (id != 0)
                 {
-                    PIGImage img = piggyFile.images[id];
+                    PIGImage img = piggyFile.Bitmaps[id];
                     lastname = name;
                     name = img.name;
                     if (lastname != name)
@@ -549,7 +549,7 @@ namespace LibDescent.Edit
             for (int i = 0; i < 14; i++)
             {
                 int bitmapID = datafile.ObjBitmaps[datafile.ObjBitmapPointers[datafile.FirstMultiBitmapNum + i]];
-                string name = pigFile.images[bitmapID].name;
+                string name = pigFile.Bitmaps[bitmapID].name;
                 stringBuilder.AppendFormat("{0}.bbm ", name);
             }
             stringBuilder.Append("\n");

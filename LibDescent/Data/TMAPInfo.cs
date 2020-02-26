@@ -40,6 +40,9 @@ namespace LibDescent.Data
         public ushort texture;
         public int ID;
 
+        //Descent 1 extra data
+        public byte[] filename = new byte[13];
+
         public void updateFlags(int flag, bool set)
         {
             int flagvalue = 1 << flag;

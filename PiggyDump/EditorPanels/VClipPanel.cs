@@ -15,6 +15,7 @@ namespace Descent2Workshop.EditorPanels
     {
         private VClip clip;
         private PIGFile piggyFile;
+        private Palette palette;
         private bool isLocked = false;
         public VClipPanel()
         {
@@ -37,14 +38,15 @@ namespace Descent2Workshop.EditorPanels
                 pbAnimFramePreview.Image = null;
                 temp.Dispose();
             }
-            pbAnimFramePreview.Image = PiggyBitmapConverter.GetBitmap(piggyFile, clip.frames[frame]);
+            pbAnimFramePreview.Image = PiggyBitmapConverter.GetBitmap(piggyFile, palette, clip.frames[frame]);
         }
 
-        public void Update(VClip clip, PIGFile piggyFile)
+        public void Update(VClip clip, PIGFile piggyFile, Palette palette)
         {
             isLocked = true;
             this.clip = clip;
             this.piggyFile = piggyFile;
+            this.palette = palette;
             txtAnimFrameSpeed.Text = clip.frame_time.ToString();
             txtAnimTotalTime.Text = clip.play_time.ToString();
             txtAnimLight.Text = clip.light_value.ToString();
@@ -115,7 +117,7 @@ namespace Descent2Workshop.EditorPanels
         private void RemapMultiImage_Click(object sender, EventArgs e)
         {
             Button button = (Button)sender;
-            ImageSelector selector = new ImageSelector(piggyFile, true);
+            ImageSelector selector = new ImageSelector(piggyFile, palette, true);
             if (selector.ShowDialog() == DialogResult.OK)
             {
                 int value = selector.Selection;
@@ -186,7 +188,7 @@ namespace Descent2Workshop.EditorPanels
         private void RemapSingleImage_Click(object sender, EventArgs e)
         {
             Button button = (Button)sender;
-            ImageSelector selector = new ImageSelector(piggyFile, false);
+            ImageSelector selector = new ImageSelector(piggyFile, palette, false);
             if (selector.ShowDialog() == DialogResult.OK)
             {
                 isLocked = true;

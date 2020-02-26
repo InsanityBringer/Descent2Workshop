@@ -47,6 +47,7 @@ namespace Descent2Workshop
         public bool glContextCreated = false;
         private ModelRenderer modelRenderer;
         private bool noPMView = false;
+        private Palette palette;
 
         private RobotPanel robotPanel;
         private WeaponPanel weaponPanel;
@@ -76,7 +77,8 @@ namespace Descent2Workshop
                 this.tabPage3.Controls.Add(this.glControl1);
             datafile = data;
             this.host = host;
-            modelRenderer = new ModelRenderer(datafile.BaseHAM, datafile.BaseHAM.piggyFile);
+            palette = host.DefaultPalette;
+            modelRenderer = new ModelRenderer(datafile.BaseHAM, datafile.BaseHAM.piggyFile, palette);
         }
 
         private void VHAMEditor_Load(object sender, EventArgs e)
@@ -158,7 +160,7 @@ namespace Descent2Workshop
             List<string> modelList = new List<string>();
             for (int i = 0; i < datafile.GetNumModels(); i++)
                 modelList.Add(datafile.GetModelName(i));
-            weaponPanel.Init(datafile.BaseHAM.SoundNames, datafile.BaseHAM.VClipNames, weaponList, modelList, datafile.BaseHAM.piggyFile);
+            weaponPanel.Init(datafile.BaseHAM.SoundNames, datafile.BaseHAM.VClipNames, weaponList, modelList, datafile.BaseHAM.piggyFile, palette);
         }
 
         private void InitRobotPanel()

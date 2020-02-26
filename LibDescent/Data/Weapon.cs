@@ -24,59 +24,166 @@ namespace LibDescent.Data
 {
     public class Weapon
     {
-        public byte render_type;				// How to draw 0=crash, 1=blob, 2=object, 3=vclip, 255=invis
-        public byte persistent;					//	0 = dies when it hits something, 1 = continues (eg, fusion cannon)
-        public short model_num;					// Model num if rendertype==2.
-        public short model_num_inner;			// Model num of inner part if rendertype==2.
-
-        public sbyte flash_vclip;				// What vclip to use for muzzle flash
-        public sbyte robot_hit_vclip;			// What vclip for impact with robot
-        public short flash_sound;				// What sound to play when fired
-
-        public sbyte wall_hit_vclip;			// What vclip for impact with wall
-        public byte fire_count;					//	Number of bursts fired from EACH GUN per firing.  For weapons which fire from both sides, 3*fire_count shots will be fired.
-        public short robot_hit_sound;			// What sound for impact with robot
-       
-        public byte ammo_usage;					//	How many units of ammunition it uses.
-        public sbyte weapon_vclip;				//	Vclip to render for the weapon, itself.
-        public short wall_hit_sound;			// What sound for impact with wall
-        
-        public byte destroyable;				//	If !0, this weapon can be destroyed by another weapon.
-        public byte matter;						//	Flag: set if this object is matter (as opposed to energy)
-        public byte bounce;						//	Flag: set if this object bounces off walls
-        public byte homing_flag;				//	Set if this weapon can home in on a target.
-
-        public byte speedvar; //	allowed variance in speed below average, /128: 64 = 50% meaning if speed = 100, can be 50..100
-
+        /// <summary>
+        /// How to draw 0=crash, 1=blob, 2=object, 3=vclip, 255=invis
+        /// </summary>
+        public byte render_type;
+        /// <summary>
+        /// 0 = dies when it hits something, 1 = continues (eg, fusion cannon)
+        /// </summary>
+        public byte persistent;
+        /// <summary>
+        /// Model num if rendertype==2.
+        /// </summary>
+        public short model_num;
+        /// <summary>
+        /// Model num of inner part if rendertype==2.
+        /// </summary>
+        public short model_num_inner;
+        /// <summary>
+        /// What vclip to use for muzzle flash
+        /// </summary>
+        public sbyte flash_vclip;
+        /// <summary>
+        /// What vclip for impact with robot
+        /// </summary>
+        public sbyte robot_hit_vclip;
+        /// <summary>
+        /// What sound to play when fired
+        /// </summary>
+        public short flash_sound;
+        /// <summary>
+        /// What vclip for impact with wall
+        /// </summary>
+        public sbyte wall_hit_vclip;
+        /// <summary>
+        /// Number of bursts fired from EACH GUN per firing.  For weapons which fire from both sides, 3*fire_count shots will be fired.
+        /// </summary>
+        public byte fire_count;
+        /// <summary>
+        /// What sound for impact with robot
+        /// </summary>
+        public short robot_hit_sound;
+        /// <summary>
+        /// How many units of ammunition it uses.
+        /// </summary>
+        public byte ammo_usage;
+        /// <summary>
+        /// Vclip to render for the weapon, itself.
+        /// </summary>
+        public sbyte weapon_vclip;
+        /// <summary>
+        /// What sound for impact with wall
+        /// </summary>
+        public short wall_hit_sound;
+        /// <summary>
+        /// If !0, this weapon can be destroyed by another weapon.
+        /// </summary>
+        public byte destroyable;
+        /// <summary>
+        /// Flag: set if this object is matter (as opposed to energy)
+        /// </summary>
+        public byte matter;
+        /// <summary>
+        /// 1==always bounces, 2=bounces twice 
+        /// </summary>
+        public byte bounce;
+        /// <summary>
+        /// Set if this weapon can home in on a target.
+        /// </summary>
+        public byte homing_flag;
+        /// <summary>
+        /// allowed variance in speed below average, /128: 64 = 50% meaning if speed = 100, can be 50..100
+        /// </summary>
+        public byte speedvar; 
+        /// <summary>
+        /// In practice this is actually "placeable"
+        /// </summary>
         public byte flags;
-
+        /// <summary>
+        /// Flash effect
+        /// </summary>
         public sbyte flash;
+        /// <summary>
+        /// Size of blobs in F1_0/16 units.  Player afterburner size = 2.5.
+        /// </summary>
         public sbyte afterburner_size;
-
+        /// <summary>
+        /// ID of weapon to drop if this contains children.  -1 means no children.
+        /// </summary>
         public sbyte children;
-
-        public Fix energy_usage;				//	How much fuel is consumed to fire this weapon.
-        public Fix fire_wait;					//	Time until this weapon can be fired again.
-
+        /// <summary>
+        /// How much fuel is consumed to fire this weapon.
+        /// </summary>
+        public Fix energy_usage;
+        /// <summary>
+        /// Time until this weapon can be fired again.
+        /// </summary>
+        public Fix fire_wait;
+        /// <summary>
+        /// Scale damage by this amount when applying to player in multiplayer.  F1_0 means no change.
+        /// </summary>
         public Fix multi_damage_scale;
-
-        public ushort bitmap;				// Pointer to bitmap if rendertype==0 or 1.
-
-        public Fix blob_size;					// Size of blob if blob type
-        public Fix flash_size;					// How big to draw the flash
-        public Fix impact_size;				// How big of an impact
-        public Fix[] strength = new Fix[5];				// How much damage it can inflict
-        public Fix[] speed = new Fix[5];					// How fast it can move, difficulty level based.
-        public Fix mass;							// How much mass it has
-        public Fix drag;							// How much drag it has
-        public Fix thrust;						//	How much thrust it has
-        public Fix po_len_to_width_ratio;	// For polyobjects, the ratio of len/width. (10 maybe?)
-        public Fix light;						//	Amount of light this weapon casts.
-        public Fix lifetime;					//	Lifetime in seconds of this weapon.
-        public Fix damage_radius;				//	Radius of damage caused by weapon, used for missiles (not lasers) to apply to damage to things it did not hit
-        
-        public ushort picture;				// a picture of the weapon for the cockpit
-        public ushort hires_picture;                // a picture of the weapon for the cockpit
+        /// <summary>
+        /// Pointer to bitmap if rendertype==0 or 1.
+        /// </summary>
+        public ushort bitmap;
+        /// <summary>
+        /// Size of blob if blob type
+        /// </summary>
+        public Fix blob_size;
+        /// <summary>
+        /// How big to draw the flash
+        /// </summary>
+        public Fix flash_size;
+        /// <summary>
+        /// How big of an impact
+        /// </summary>
+        public Fix impact_size;
+        /// <summary>
+        /// How much damage it can inflict
+        /// </summary>
+        public Fix[] strength = new Fix[5];
+        /// <summary>
+        /// How fast it can move, difficulty level based.
+        /// </summary>
+        public Fix[] speed = new Fix[5];
+        /// <summary>
+        /// How much mass it has
+        /// </summary>
+        public Fix mass;
+        /// <summary>
+        /// How much drag it has
+        /// </summary>
+        public Fix drag;
+        /// <summary>
+        /// How much thrust it has
+        /// </summary>
+        public Fix thrust;
+        /// <summary>
+        /// For polyobjects, the ratio of len/width. (10 maybe?)
+        /// </summary>
+        public Fix po_len_to_width_ratio;
+        /// <summary>
+        /// Amount of light this weapon casts.
+        /// </summary>
+        public Fix light;
+        /// <summary>
+        /// Lifetime in seconds of this weapon.
+        /// </summary>
+        public Fix lifetime;
+        /// <summary>
+        /// Radius of damage caused by weapon, used for missiles (not lasers) to apply to damage to things it did not hit
+        /// </summary>
+        public Fix damage_radius;
+        /// <summary>
+        /// a picture of the weapon for the cockpit
+        /// </summary>
+        public ushort picture;
+        /// <summary>
+        /// a hires picture of the above
+        /// </summary>
+        public ushort hires_picture;
 
         public int ID;
 

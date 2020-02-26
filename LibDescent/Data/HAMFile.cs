@@ -248,7 +248,7 @@ namespace LibDescent.Data
                 }
                 else
                 {
-                    Weapons.Add(bm.ReadWeaponInfoOld(br));
+                    Weapons.Add(bm.ReadWeaponInfoVersion2(br));
                 }
                 Weapons[x].ID = x;
             }

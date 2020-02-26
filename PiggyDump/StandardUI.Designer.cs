@@ -340,7 +340,7 @@
             // 
             this.OpenPIGMenu.Index = 7;
             this.OpenPIGMenu.Text = "Open .PIG...";
-            this.OpenPIGMenu.Click += new System.EventHandler(this.mnuSetDefaultPIG_Click);
+            this.OpenPIGMenu.Click += new System.EventHandler(this.LoadPIGMenu_Click);
             // 
             // OpenPOGMenu
             // 

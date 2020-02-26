@@ -83,20 +83,17 @@ namespace LibDescent.Data
             isAnimated = ((frameData & 64) != 0);
         }
 
-        public void LoadData(BinaryReader br)
+        //Descent 1 version
+        //This code seriously needs a cleanup
+        public PIGImage(int mx, int my, byte framed, byte flag, byte average, int dataOffset, string imagename)
         {
-            long curpos = br.BaseStream.Position;
-            br.BaseStream.Seek(offset, SeekOrigin.Current);
-            if ((flags & BM_FLAG_RLE) != 0)
-            {
-                int compressedSize = br.ReadInt32();
-                data = br.ReadBytes(compressedSize-4);
-            }
-            else
-            {
-                data = br.ReadBytes(width * height);
-            }
-            br.BaseStream.Seek(curpos, SeekOrigin.Begin);
+            baseWidth = mx; baseHeight = my; flags = flag; averageIndex = average; frameData = framed; offset = dataOffset; this.extension = 0;
+            width = baseWidth; height = baseHeight;
+            if ((frameData & 128) != 0)
+                width += 256;
+            name = imagename;
+            frame = ((int)frameData & (int)animdata);
+            isAnimated = ((frameData & 64) != 0);
         }
 
         public int GetSize()

@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.ElementListBox = new System.Windows.Forms.ListBox();
-            this.CancelButton = new System.Windows.Forms.Button();
+            this.CancelDialogButton = new System.Windows.Forms.Button();
             this.SelectButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -43,15 +43,15 @@
             this.ElementListBox.TabIndex = 1;
             this.ElementListBox.DoubleClick += new System.EventHandler(this.ElementListBox_DoubleClick);
             // 
-            // CancelButton
+            // CancelDialogButton
             // 
-            this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelButton.Location = new System.Drawing.Point(418, 530);
-            this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(75, 23);
-            this.CancelButton.TabIndex = 2;
-            this.CancelButton.Text = "Cancel";
-            this.CancelButton.UseVisualStyleBackColor = true;
+            this.CancelDialogButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.CancelDialogButton.Location = new System.Drawing.Point(418, 530);
+            this.CancelDialogButton.Name = "CancelDialogButton";
+            this.CancelDialogButton.Size = new System.Drawing.Size(75, 23);
+            this.CancelDialogButton.TabIndex = 2;
+            this.CancelDialogButton.Text = "Cancel";
+            this.CancelDialogButton.UseVisualStyleBackColor = true;
             // 
             // SelectButton
             // 
@@ -70,7 +70,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(505, 561);
             this.Controls.Add(this.SelectButton);
-            this.Controls.Add(this.CancelButton);
+            this.Controls.Add(this.CancelDialogButton);
             this.Controls.Add(this.ElementListBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -86,7 +86,7 @@
         #endregion
 
         private System.Windows.Forms.ListBox ElementListBox;
-        private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.Button CancelDialogButton;
         private System.Windows.Forms.Button SelectButton;
     }
 }

@@ -99,7 +99,7 @@ namespace LibDescent.Edit
             {
                 bitmap = GetObjBitmap(i);
                 //if (bitmap == 0) continue;
-                PIGImage image = BaseHAM.piggyFile.images[bitmap];
+                PIGImage image = BaseHAM.piggyFile.Bitmaps[bitmap];
                 name = image.name.ToLower();
                 if (!image.isAnimated)
                 {
