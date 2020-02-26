@@ -37,13 +37,16 @@ namespace LibDescent.Data
             }
         }
 
-        public Palette(byte[] data)
+        public Palette(byte[] data, bool rescale = true)
         {
             for (int c = 0; c < 255; c++)
             {
                 for (int x = 0; x < 3; x++)
                 {
-                    palette[c, x] = (byte)(data[c * 3 + x] * 255 / 63);
+                    if (rescale)
+                        palette[c, x] = (byte)(data[c * 3 + x] * 255 / 63);
+                    else
+                        palette[c, x] = data[c * 3 + x];
                 }
             }
         }
