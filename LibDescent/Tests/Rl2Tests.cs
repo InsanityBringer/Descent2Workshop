@@ -1,21 +1,41 @@
 ﻿using LibDescent.Data;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Collections;
+using System.IO;
 
 namespace LibDescent.Tests
 {
+    [TestFixtureSource("TestData")]
     class Rl2Tests
     {
-        private D2Level level;
+        private readonly D2Level level;
 
-        [SetUp]
-        public void Setup()
+        public static IEnumerable TestData
         {
-            var stream = GetType().Assembly.GetManifestResourceStream(GetType(), "test.rl2");
-            level = D2Level.CreateFromStream(stream);
+            get
+            {
+                // First case - test level (saved by DLE)
+                D2Level level;
+                using (var stream = TestUtils.GetResourceStream("test.rl2"))
+                {
+                    level = D2Level.CreateFromStream(stream);
+                }
+                yield return new TestFixtureData(level);
+
+                // Second case - output of D2Level.WriteToStream
+                using (var stream = new MemoryStream())
+                {
+                    level.WriteToStream(stream);
+                    stream.Seek(0, SeekOrigin.Begin);
+                    level = D2Level.CreateFromStream(stream);
+                }
+                yield return new TestFixtureData(level);
+            }
+        }
+
+        public Rl2Tests(D2Level level)
+        {
+            this.level = level;
         }
 
         [Test]
@@ -252,6 +272,12 @@ namespace LibDescent.Tests
         }
 
         [Test]
+        public void TestPaletteName()
+        {
+            Assert.AreEqual("groupa.256", level.PaletteName);
+        }
+
+        [Test]
         public void TestSecretExit()
         {
             Assert.AreSame(level.Segments[6], level.SecretReturnSegment);
@@ -309,6 +335,34 @@ namespace LibDescent.Tests
             Assert.AreEqual(0b00110011001100110011001100110011, level.AnimatedLights[0].Mask);
             Assert.AreEqual((Fix)0.25, level.AnimatedLights[1].TickLength);
             Assert.AreEqual(0b11001100110011001100110011001100, level.AnimatedLights[1].Mask);
+        }
+    }
+
+    class Rl2WriteTests
+    {
+        [Test]
+        public void TestSaveLevel()
+        {
+            D2Level level;
+            using (var stream = TestUtils.GetResourceStream("test.rl2"))
+            {
+                level = D2Level.CreateFromStream(stream);
+            }
+
+            // Write the level and then re-load it. We don't save the same way as DLE
+            // so the output won't match.
+            // So we need to compare against something we saved earlier.
+            var memoryStream = new MemoryStream();
+            level.WriteToStream(memoryStream);
+            memoryStream.Seek(0, SeekOrigin.Begin);
+            level = D2Level.CreateFromStream(memoryStream);
+            memoryStream.Seek(0, SeekOrigin.Begin);
+
+            // Now do the test
+            var originalFileContents = memoryStream.ToArray();
+            Assert.DoesNotThrow(() => level.WriteToStream(memoryStream));
+            var resultingFileContents = memoryStream.ToArray();
+            Assert.That(resultingFileContents, Is.EqualTo(originalFileContents));
         }
     }
 }

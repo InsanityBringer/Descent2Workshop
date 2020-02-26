@@ -21,14 +21,6 @@ namespace LibDescent.Tests
             blxBlock = ExtendedBlock.CreateFromStream(blxStream);
         }
 
-        private byte[] GetArrayFromResourceStream(string resourceName)
-        {
-            var resourceStream = GetType().Assembly.GetManifestResourceStream(GetType(), resourceName);
-            var memoryStream = new MemoryStream();
-            resourceStream.CopyTo(memoryStream);
-            return memoryStream.ToArray();
-        }
-
         [Test]
         public void TestBlockSegments()
         {
@@ -151,7 +143,7 @@ namespace LibDescent.Tests
             var stream = new MemoryStream();
             Assert.DoesNotThrow(() => blkBlock.WriteToStream(stream));
 
-            var originalFileContents = GetArrayFromResourceStream("test.blk");
+            var originalFileContents = TestUtils.GetArrayFromResourceStream("test.blk");
             var resultingFileContents = stream.ToArray();
             Assert.IsTrue(Enumerable.SequenceEqual(originalFileContents, resultingFileContents));
         }
