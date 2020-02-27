@@ -124,19 +124,28 @@ namespace Descent2Workshop
                 GL.Enable(EnableCap.DepthTest);
             GL.Enable(EnableCap.CullFace);
 
-            GL.Scale(-1.0, 1.0, 1.0);
-            GL.Rotate(pitch, 1.0, 0.0, 0.0);
-            GL.Rotate(angle, 0.0, 1.0, 0.0);
+            //GL.Scale(-1.0, 1.0, 1.0);
+            //GL.Rotate(pitch, 1.0, 0.0, 0.0);
+            //GL.Rotate(angle, 0.0, 1.0, 0.0);
 
             double angler = angle * Math.PI / 180.0;
             double pitchr = pitch * Math.PI / 180.0;
 
             cameraPoint = new FixVector(-32.0 * Math.Sin(angler) * Math.Cos(pitchr), 32.0 * Math.Sin(pitchr) , 32.0 * Math.Cos(angler) * Math.Cos(pitchr));
 
-            lightVector.x = 1 * Math.Sin((Math.PI * 2)-angler + (Math.PI / 4));
+            /*lightVector.x = 1 * Math.Sin((Math.PI * 2)-angler + (Math.PI / 4));
             lightVector.y = .5;
             lightVector.z = 1 * Math.Cos((Math.PI * 2) - angler + (Math.PI / 4));
-            lightVector = lightVector.Normalize();
+            lightVector = lightVector.Normalize();*/
+
+            Matrix4 hack = Matrix4.Identity;
+            hack = Matrix4.CreateScale(-1.0f, 1.0f, 1.0f) * hack;
+            hack = Matrix4.CreateRotationX((float)pitchr) * hack;
+            hack = Matrix4.CreateRotationY((float)angler) * hack;
+
+            GL.LoadMatrix(ref hack);
+
+            lightVector = new FixVector(hack.Column2.X, hack.Column2.Y, hack.Column2.Z);
 
             //Console.WriteLine("x: {0} y: {1} z: {2} angle: {3} pitch: {4}", cameraPoint.x, cameraPoint.y, cameraPoint.z, angle, pitch);
 
@@ -382,7 +391,7 @@ namespace Descent2Workshop
                             FixVector point = GetFixVector(data, ref offset);
                             FixVector normal = GetFixVector(data, ref offset);
                             short texture = GetShort(data, ref offset);
-                            Fix shade = Math.Max(0.0d, normal.Dot(lightVector)) * .5 + .5;
+                            Fix shade = Math.Max(0.0d, normal.Dot(lightVector)) * .75 + .25;
 
                             short[] points = new short[pointc]; //TODO: seems wasteful to do all these allocations?
                             FixVector[] uvls = new FixVector[pointc];
