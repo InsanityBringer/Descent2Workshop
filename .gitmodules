@@ -1,0 +1,3 @@
+[submodule "LibDescent"]
+	path = LibDescent
+	url = https://github.com/InsanityBringer/LibDescent
