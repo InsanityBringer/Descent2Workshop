@@ -89,12 +89,12 @@ namespace Descent2Workshop.EditorPanels
                 {
                     case "1":
                         int totalTimeFix = (int)(value * 65536);
-                        clip.play_time = Fix.FromRawValue(totalTimeFix);
-                        clip.frame_time = Fix.FromRawValue(totalTimeFix / clip.num_frames);
+                        clip.play_time = new Fix(totalTimeFix);
+                        clip.frame_time = new Fix(totalTimeFix / clip.num_frames);
                         txtAnimFrameSpeed.Text = clip.frame_time.ToString();
                         break;
                     case "2":
-                        clip.light_value = Fix.FromRawValue((int)(value * 65536));
+                        clip.light_value = new Fix((int)(value * 65536));
                         break;
                 }
             }

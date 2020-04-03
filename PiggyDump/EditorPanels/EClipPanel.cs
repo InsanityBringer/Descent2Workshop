@@ -105,15 +105,15 @@ namespace Descent2Workshop.EditorPanels
                 {
                     case "1":
                         int totalTimeFix = (int)(value * 65536);
-                        clip.vc.play_time = Fix.FromRawValue(totalTimeFix);
-                        clip.vc.frame_time = Fix.FromRawValue(totalTimeFix / clip.vc.num_frames);
+                        clip.vc.play_time = new Fix(totalTimeFix);
+                        clip.vc.frame_time = new Fix(totalTimeFix / clip.vc.num_frames);
                         txtEffectFrameSpeed.Text = clip.vc.frame_time.ToString();
                         break;
                     case "2":
-                        clip.vc.light_value = Fix.FromRawValue((int)(value * 65536));
+                        clip.vc.light_value = new Fix((int)(value * 65536));
                         break;
                     case "3":
-                        clip.dest_size = Fix.FromRawValue((int)(value * 65536));
+                        clip.dest_size = new Fix((int)(value * 65536));
                         break;
                     case "4":
                         clip.dest_bm_num = int.Parse(textBox.Text);

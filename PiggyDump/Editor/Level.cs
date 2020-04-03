@@ -43,9 +43,9 @@ namespace Descent2Workshop.Editor
             // one fix 16.16 takes 32b, so for 64b we can fit 3*21b (16.5)
             // therefore we shift 11 to get a 16.5
 
-            long xi = location.x.GetRawValue() >> 11;
-            long yi = location.y.GetRawValue() >> 11;
-            long zi = location.z.GetRawValue() >> 11;
+            long xi = location.x.Value >> 11;
+            long yi = location.y.Value >> 11;
+            long zi = location.z.Value >> 11;
 
             long code = xi + (yi << 21) + (zi << 42);
 
@@ -337,9 +337,9 @@ namespace Descent2Workshop.Editor
 
                         for (int uv = 0; uv < 4; uv++)
                         {
-                            seg.sides[side].uvls[uv].x = Fix.FromRawValue(br.ReadInt16() << 5);
-                            seg.sides[side].uvls[uv].y = Fix.FromRawValue(br.ReadInt16() << 5);
-                            seg.sides[side].uvls[uv].z = Fix.FromRawValue(br.ReadUInt16() << 1);
+                            seg.sides[side].uvls[uv].x = new Fix(br.ReadInt16() << 5);
+                            seg.sides[side].uvls[uv].y = new Fix(br.ReadInt16() << 5);
+                            seg.sides[side].uvls[uv].z = new Fix(br.ReadUInt16() << 1);
                         }
                     }
                     else
@@ -1075,9 +1075,9 @@ namespace Descent2Workshop.Editor
         private FixVector ReadFixVec(BinaryReader br)
         {
             FixVector vec;
-            vec.x = Fix.FromRawValue(br.ReadInt32());
-            vec.y = Fix.FromRawValue(br.ReadInt32());
-            vec.z = Fix.FromRawValue(br.ReadInt32());
+            vec.x = new Fix(br.ReadInt32());
+            vec.y = new Fix(br.ReadInt32());
+            vec.z = new Fix(br.ReadInt32());
             return vec;
         }
 

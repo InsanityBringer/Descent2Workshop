@@ -739,7 +739,7 @@ namespace Descent2Workshop
                 {
                     case "1":
                         int totalTimeFix = (int)(value * 65536);
-                        clip.play_time = Fix.FromRawValue(totalTimeFix);
+                        clip.play_time = new Fix(totalTimeFix);
                         break;
                     case "2":
                         clip.filename = textBox.Text.ToCharArray();
@@ -869,10 +869,10 @@ namespace Descent2Workshop
                 switch (textBox.Tag)
                 {
                     case "3":
-                        powerup.size = Fix.FromRawValue((int)(value * 65536.0));
+                        powerup.size = value;
                         break;
                     case "4":
-                        powerup.light = Fix.FromRawValue((int)(value * 65536.0));
+                        powerup.light = value;
                         break;
                 }
             }
