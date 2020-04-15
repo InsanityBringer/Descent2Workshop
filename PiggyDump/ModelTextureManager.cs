@@ -61,12 +61,12 @@ namespace Descent2Workshop
         {
             List<int> textureIDs = new List<int>();
             Bitmap image; EClip clip;
-            foreach (string textureName in model.textureList)
+            foreach (string textureName in model.TextureList)
             {
                 if (hamFile.EClipNameMapping.ContainsKey(textureName.ToLower()))
                 {
                     clip = hamFile.EClipNameMapping[textureName.ToLower()];
-                    image = PiggyBitmapConverter.GetBitmap(pigFile, palette, clip.vc.frames[0]);
+                    image = PiggyBitmapConverter.GetBitmap(pigFile, palette, clip.vc.Frames[0]);
                 }
                 else
                 {
@@ -82,7 +82,7 @@ namespace Descent2Workshop
         {
             List<int> textureIDs = new List<int>();
             Bitmap image;
-            foreach (string textureName in model.textureList)
+            foreach (string textureName in model.TextureList)
             {
                 image = PiggyBitmapConverter.GetBitmap(pigFile, palette, textureName);
                 textureIDs.Add(LoadTexture(image));

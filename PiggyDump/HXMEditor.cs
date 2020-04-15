@@ -198,11 +198,11 @@ namespace Descent2Workshop
         {
             Polymodel model = datafile.replacedModels[(int)nudElementNum.Value];
             //Polymodel model = datafile.PolygonModels[num];
-            txtModelNumModels.Text = model.n_models.ToString();
-            txtModelDataSize.Text = model.model_data_size.ToString();
-            txtModelRadius.Text = model.rad.ToString();
-            txtModelTextureCount.Text = model.n_textures.ToString();
-            cbModelLowDetail.SelectedIndex = model.simpler_model;
+            txtModelNumModels.Text = model.NumSubmodels.ToString();
+            txtModelDataSize.Text = model.ModelIDTASize.ToString();
+            txtModelRadius.Text = model.Radius.ToString();
+            txtModelTextureCount.Text = model.NumTextures.ToString();
+            cbModelLowDetail.SelectedIndex = model.SimplerModels;
             cbModelDyingModel.SelectedIndex = model.DyingModelnum + 1;
             cbModelDeadModel.SelectedIndex = model.DeadModelnum + 1;
 
@@ -227,8 +227,8 @@ namespace Descent2Workshop
         {
             int numNewTextures = datafile.CountUniqueObjBitmaps(model);
             ModelNumTextures.Text = numNewTextures.ToString();
-            ModelNumPointers.Text = model.n_textures.ToString();
-            ModelBasePointerSpinner.Value = model.first_texture;
+            ModelNumPointers.Text = model.NumTextures.ToString();
+            ModelBasePointerSpinner.Value = model.FirstTexture;
             ModelBaseTextureSpinner.Value = model.BaseTexture;
 
             for (int i = 0; i < numNewTextures; i++)
@@ -332,7 +332,7 @@ namespace Descent2Workshop
 
         private void ImportModel(Polymodel original)
         {
-            int oldNumTextures = original.n_textures;
+            int oldNumTextures = original.NumTextures;
 
             List<string> newTextureNames = new List<string>();
             openFileDialog1.Filter = "Parallax Object Files|*.pof";
@@ -365,7 +365,7 @@ namespace Descent2Workshop
             switch (comboBox.Tag)
             {
                 case "1":
-                    model.simpler_model = (byte)comboBox.SelectedIndex;
+                    model.SimplerModels = (byte)comboBox.SelectedIndex;
                     break;
                 case "2":
                     model.DyingModelnum = comboBox.SelectedIndex - 1;
@@ -421,7 +421,7 @@ namespace Descent2Workshop
                 return;
             if (datafile.replacedModels.Count == 0) return;
             Polymodel model = datafile.replacedModels[ElementNumber];
-            model.first_texture = (ushort)ModelBasePointerSpinner.Value;
+            model.FirstTexture = (ushort)ModelBasePointerSpinner.Value;
         }
 
         //---------------------------------------------------------------------

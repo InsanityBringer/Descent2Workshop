@@ -108,7 +108,7 @@ namespace Descent2Workshop
         public void Draw()
         {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            if (model.data.InterpreterData.Length == 0) return;
+            if (model.Data.InterpreterData.Length == 0) return;
             GL.CullFace(CullFaceMode.Front);
             if (wireframe)
                 GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
@@ -149,7 +149,7 @@ namespace Descent2Workshop
 
             //Console.WriteLine("x: {0} y: {1} z: {2} angle: {3} pitch: {4}", cameraPoint.x, cameraPoint.y, cameraPoint.z, angle, pitch);
 
-            Execute(model.data.InterpreterData, 0, model, model.submodels[0]);
+            Execute(model.Data.InterpreterData, 0, model, model.Submodels[0]);
             //DrawSubobject(model, model.submodels[0]);
 
             if (ShowRadius)
@@ -160,13 +160,13 @@ namespace Descent2Workshop
                 GL.Disable(EnableCap.Texture2D);
 
                 //Draw the radius
-                double radius = (double)model.rad;
-                double minx = (double)model.mins.x;
-                double miny = (double)model.mins.y;
-                double minz = (double)model.mins.z;
-                double maxx = (double)model.maxs.x;
-                double maxy = (double)model.maxs.y;
-                double maxz = (double)model.maxs.z;
+                double radius = (double)model.Radius;
+                double minx = (double)model.Mins.x;
+                double miny = (double)model.Mins.y;
+                double minz = (double)model.Mins.z;
+                double maxx = (double)model.Maxs.x;
+                double maxy = (double)model.Maxs.y;
+                double maxz = (double)model.Maxs.z;
                 GL.Begin(PrimitiveType.LineLoop);
                 GL.Color3(0.0, 0.0, 1.0);
                 double radx, rady, radang;
@@ -366,7 +366,7 @@ namespace Descent2Workshop
 
                             if (showNormals)
                             {
-                                normal = normal.Scale(.25 * mainModel.rad);
+                                normal = normal.Scale(.25 * mainModel.Radius);
                                 GL.Color3(1.0f, 1.0f, 1.0f);
                                 GL.Begin(PrimitiveType.Lines);
                                 {
@@ -429,7 +429,7 @@ namespace Descent2Workshop
                             if (showNormals)
                             {
                                 GL.Disable(EnableCap.Texture2D); //TODO: waaaay too many state changes
-                                normal = normal.Scale(.25 * mainModel.rad);
+                                normal = normal.Scale(.25 * mainModel.Radius);
                                 GL.Color3(1.0f, 1.0f, 1.0f);
                                 GL.Begin(PrimitiveType.Lines);
                                 {
@@ -482,7 +482,7 @@ namespace Descent2Workshop
                             short modelOffset = GetShort(data, ref offset);
                             offset += 2;
 
-                            Submodel newModel = mainModel.submodels[submodelNum];
+                            Submodel newModel = mainModel.Submodels[submodelNum];
                             GL.PushMatrix();
                             GL.Translate(submodelOffset.x, submodelOffset.y, submodelOffset.z);
                             if (frame >= 0)

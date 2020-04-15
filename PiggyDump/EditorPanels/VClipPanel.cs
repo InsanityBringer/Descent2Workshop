@@ -30,7 +30,7 @@ namespace Descent2Workshop.EditorPanels
 
         private void UpdateAnimationFrame(int frame)
         {
-            txtAnimFrameNum.Text = clip.frames[frame].ToString();
+            txtAnimFrameNum.Text = clip.Frames[frame].ToString();
 
             if (pbAnimFramePreview.Image != null)
             {
@@ -38,7 +38,7 @@ namespace Descent2Workshop.EditorPanels
                 pbAnimFramePreview.Image = null;
                 temp.Dispose();
             }
-            pbAnimFramePreview.Image = PiggyBitmapConverter.GetBitmap(piggyFile, palette, clip.frames[frame]);
+            pbAnimFramePreview.Image = PiggyBitmapConverter.GetBitmap(piggyFile, palette, clip.Frames[frame]);
         }
 
         public void Update(VClip clip, PIGFile piggyFile, Palette palette)
@@ -47,12 +47,12 @@ namespace Descent2Workshop.EditorPanels
             this.clip = clip;
             this.piggyFile = piggyFile;
             this.palette = palette;
-            txtAnimFrameSpeed.Text = clip.frame_time.ToString();
-            txtAnimTotalTime.Text = clip.play_time.ToString();
-            txtAnimLight.Text = clip.light_value.ToString();
-            cbVClipSound.SelectedIndex = clip.sound_num + 1;
-            txtAnimFrameCount.Text = clip.num_frames.ToString();
-            VClipRodFlag.Checked = ((clip.flags & 1) == 1);
+            txtAnimFrameSpeed.Text = clip.FrameTime.ToString();
+            txtAnimTotalTime.Text = clip.PlayTime.ToString();
+            txtAnimLight.Text = clip.LightValue.ToString();
+            cbVClipSound.SelectedIndex = clip.SoundNum + 1;
+            txtAnimFrameCount.Text = clip.NumFrames.ToString();
+            VClipRodFlag.Checked = clip.DrawAsRod;
 
             nudAnimFrame.Value = 0;
             UpdateAnimationFrame(0);
@@ -88,13 +88,12 @@ namespace Descent2Workshop.EditorPanels
                 switch (textBox.Tag)
                 {
                     case "1":
-                        int totalTimeFix = (int)(value * 65536);
-                        clip.play_time = new Fix(totalTimeFix);
-                        clip.frame_time = new Fix(totalTimeFix / clip.num_frames);
-                        txtAnimFrameSpeed.Text = clip.frame_time.ToString();
+                        clip.PlayTime = value;
+                        clip.FrameTime = clip.PlayTime / clip.NumFrames;
+                        txtAnimFrameSpeed.Text = clip.FrameTime.ToString();
                         break;
                     case "2":
-                        clip.light_value = new Fix((int)(value * 65536));
+                        clip.LightValue = value;
                         break;
                 }
             }
@@ -105,13 +104,13 @@ namespace Descent2Workshop.EditorPanels
             if (isLocked)
                 return;
             ComboBox comboBox = (ComboBox)sender;
-            clip.sound_num = (short)(comboBox.SelectedIndex - 1);
+            clip.SoundNum = (short)(comboBox.SelectedIndex - 1);
         }
 
         private void VClipRodFlag_CheckedChanged(object sender, EventArgs e)
         {
             if (isLocked) return;
-            clip.flags = VClipRodFlag.Checked ? 1 : 0;
+            clip.DrawAsRod = VClipRodFlag.Checked;
         }
 
         private void RemapMultiImage_Click(object sender, EventArgs e)
@@ -123,8 +122,8 @@ namespace Descent2Workshop.EditorPanels
                 int value = selector.Selection;
                 isLocked = true;
                 clip.RemapVClip(value, piggyFile);
-                txtAnimFrameCount.Text = clip.num_frames.ToString();
-                txtAnimFrameSpeed.Text = clip.frame_time.ToString();
+                txtAnimFrameCount.Text = clip.NumFrames.ToString();
+                txtAnimFrameSpeed.Text = clip.FrameTime.ToString();
                 nudAnimFrame.Value = 0;
                 UpdateAnimationFrame(0);
                 isLocked = false;
@@ -142,10 +141,10 @@ namespace Descent2Workshop.EditorPanels
                 switch (textBox.Tag)
                 {
                     case "1":
-                        clip.num_frames = value;
+                        clip.NumFrames = value;
                         break;
                     case "2":
-                        clip.frames[(int)nudAnimFrame.Value] = (ushort)value;
+                        clip.Frames[(int)nudAnimFrame.Value] = (ushort)value;
                         UpdateAnimationFrame((int)nudAnimFrame.Value);
                         break;
                 }
@@ -158,9 +157,9 @@ namespace Descent2Workshop.EditorPanels
             {
                 txtAnimTotalTime.Enabled = txtAnimFrameCount.Enabled = txtAnimFrameNum.Enabled = false;
                 RemapAnimationButton.Enabled = nudAnimFrame.Enabled = false;
-                if (clip.num_frames < 0) return;
+                if (clip.NumFrames < 0) return;
                 //Ah, the horribly imprecise timer. Oh well
-                AnimTimer.Interval = (int)(1000.0 * clip.frame_time);
+                AnimTimer.Interval = (int)(1000.0 * clip.FrameTime);
                 if (AnimTimer.Interval < 10) AnimTimer.Interval = 10;
                 AnimTimer.Start();
             }
@@ -174,12 +173,12 @@ namespace Descent2Workshop.EditorPanels
 
         private void AnimTimer_Tick(object sender, EventArgs e)
         {
-            if (clip.num_frames < 0) return;
+            if (clip.NumFrames < 0) return;
             int currentFrame = (int)nudAnimFrame.Value;
             isLocked = true;
             UpdateAnimationFrame(currentFrame);
             currentFrame++;
-            if (currentFrame >= clip.num_frames)
+            if (currentFrame >= clip.NumFrames)
                 currentFrame = 0;
             nudAnimFrame.Value = currentFrame;
             isLocked = false;
@@ -193,7 +192,7 @@ namespace Descent2Workshop.EditorPanels
             {
                 isLocked = true;
                 int value = selector.Selection;
-                clip.frames[(int)nudAnimFrame.Value] = (ushort)value;
+                clip.Frames[(int)nudAnimFrame.Value] = (ushort)value;
                 UpdateAnimationFrame((int)nudAnimFrame.Value);
                 txtAnimFrameNum.Text = value.ToString();
                 isLocked = false;

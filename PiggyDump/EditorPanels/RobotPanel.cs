@@ -98,36 +98,36 @@ namespace Descent2Workshop.EditorPanels
         {
             isLocked = true;
             this.robot = robot;
-            cbRobotAttackSound.SelectedIndex = robot.attack_sound;
-            cbRobotClawSound.SelectedIndex = robot.claw_sound;
-            txtRobotDrag.Text = robot.drag.ToString();
-            txtRobotDropProb.Text = robot.contains_prob.ToString();
-            txtRobotDrops.Text = robot.contains_count.ToString();
-            txtRobotLight.Text = robot.lighting.ToString();
-            txtRobotMass.Text = robot.mass.ToString();
-            txtRobotScore.Text = robot.score_value.ToString();
-            cbRobotHitSound.SelectedIndex = robot.exp1_sound_num;
-            cbRobotDeathSound.SelectedIndex = robot.exp2_sound_num;
-            cbRobotSeeSound.SelectedIndex = robot.see_sound;
-            txtRobotShield.Text = robot.strength.ToString();
-            cbRobotTauntSound.SelectedIndex = robot.taunt_sound;
-            txtRobotAim.Text = robot.aim.ToString();
-            txtRobotBadass.Text = robot.badass.ToString();
-            txtRobotDeathBlobs.Text = robot.smart_blobs.ToString();
-            txtRobotDeathRolls.Text = robot.death_roll.ToString();
-            txtRobotEnergyDrain.Text = robot.energy_drain.ToString();
-            txtRobotHitBlobs.Text = robot.energy_blobs.ToString();
-            txtRobotGlow.Text = robot.glow.ToString();
-            txtRobotPursuit.Text = robot.pursuit.ToString();
-            cbRobotDyingSound.SelectedIndex = robot.deathroll_sound;
-            txtRobotLightcast.Text = robot.lightcast.ToString();
+            cbRobotAttackSound.SelectedIndex = robot.AttackSound;
+            cbRobotClawSound.SelectedIndex = robot.ClawSound;
+            txtRobotDrag.Text = robot.Drag.ToString();
+            txtRobotDropProb.Text = robot.ContainsProbability.ToString();
+            txtRobotDrops.Text = robot.ContainsCount.ToString();
+            txtRobotLight.Text = robot.Lighting.ToString();
+            txtRobotMass.Text = robot.Mass.ToString();
+            txtRobotScore.Text = robot.ScoreValue.ToString();
+            cbRobotHitSound.SelectedIndex = robot.HitSoundNum;
+            cbRobotDeathSound.SelectedIndex = robot.DeathSoundNum;
+            cbRobotSeeSound.SelectedIndex = robot.SeeSound;
+            txtRobotShield.Text = robot.Strength.ToString();
+            cbRobotTauntSound.SelectedIndex = robot.TauntSound;
+            txtRobotAim.Text = robot.Aim.ToString();
+            txtRobotBadass.Text = robot.DeathExplosionRadius.ToString();
+            txtRobotDeathBlobs.Text = robot.SmartBlobsOnDeath.ToString();
+            txtRobotDeathRolls.Text = robot.DeathRollTime.ToString();
+            txtRobotEnergyDrain.Text = robot.EnergyDrain.ToString();
+            txtRobotHitBlobs.Text = robot.SmartBlobsOnHit.ToString();
+            txtRobotGlow.Text = robot.Glow.ToString();
+            txtRobotPursuit.Text = robot.Pursuit.ToString();
+            cbRobotDyingSound.SelectedIndex = robot.DeathRollSound;
+            txtRobotLightcast.Text = robot.LightCast.ToString();
 
-            cbRobotCompanion.Checked = robot.companion != 0;
-            cbRobotClaw.Checked = robot.attack_type != 0;
-            cbRobotThief.Checked = robot.thief != 0;
-            cbKamikaze.Checked = robot.kamikaze != 0;
+            cbRobotCompanion.Checked = robot.Companion;
+            cbRobotClaw.Checked = robot.AttackType == RobotAttackType.Melee ? true : false;
+            cbRobotThief.Checked = robot.Thief;
+            cbKamikaze.Checked = robot.Kamikaze != 0;
 
-            int dropType = robot.contains_type;
+            int dropType = robot.ContainsType;
             if (dropType == 2)
                 dropType = 1;
             else
@@ -136,27 +136,22 @@ namespace Descent2Workshop.EditorPanels
             UpdateRobotDropTypes(dropType, robot);
             cbRobotDropType.SelectedIndex = dropType;
 
-            cbRobotHitVClip.SelectedIndex = robot.exp1_vclip_num + 1;
-            cbRobotDeathVClip.SelectedIndex = robot.exp2_vclip_num + 1;
-            cbRobotModel.SelectedIndex = robot.model_num;
-            cbRobotWeapon1.SelectedIndex = robot.weapon_type;
-            cbRobotWeapon2.SelectedIndex = robot.weapon_type2 + 1;
-            if (robot.behavior >= 128)
+            cbRobotHitVClip.SelectedIndex = robot.HitVClipNum + 1;
+            cbRobotDeathVClip.SelectedIndex = robot.DeathVClipNum + 1;
+            cbRobotModel.SelectedIndex = robot.ModelNum;
+            cbRobotWeapon1.SelectedIndex = robot.WeaponType;
+            cbRobotWeapon2.SelectedIndex = robot.WeaponTypeSecondary + 1;
+            if (robot.Behavior >= RobotAIType.Still)
             {
-                cbRobotAI.SelectedIndex = robot.behavior - 128;
+                cbRobotAI.SelectedIndex = (int)robot.Behavior - 128;
             }
             else cbRobotAI.SelectedIndex = 0;
 
-            int bossMode = robot.boss_flag;
-            if (bossMode > 20)
+            RobotBossType bossMode = robot.BossFlag;
+            if (bossMode > RobotBossType.RedFatty)
                 bossMode -= 18;
-            cmRobotBoss.SelectedIndex = bossMode;
-            cmRobotCloak.SelectedIndex = robot.cloak_type;
-
-            if (robot.behavior != 0)
-                cbRobotAI.SelectedIndex = robot.behavior - 0x80;
-            else
-                cbRobotAI.SelectedIndex = 0;
+            cmRobotBoss.SelectedIndex = (int)bossMode;
+            cmRobotCloak.SelectedIndex = (int)robot.CloakType;
 
             UpdateRobotAI();
             if (hxmFile != null)
@@ -168,7 +163,7 @@ namespace Descent2Workshop.EditorPanels
 
         private void UpdateRobotAnimation()
         {
-            if (robot.model_num >= hxmFile.GetNumModels())
+            if (robot.ModelNum >= hxmFile.GetNumModels())
             {
                 BaseJointSpinner.Value = 0;
                 NumJointsTextBox.Text = "0";
@@ -177,7 +172,7 @@ namespace Descent2Workshop.EditorPanels
             else
             {
                 UnallocatedModelWarning.Visible = false;
-                if (hxmFile.GetModel(robot.model_num).isAnimated)
+                if (hxmFile.GetModel(robot.ModelNum).isAnimated)
                 {
                     RobotAnimationCheckbox.Checked = true;
                     BaseJointSpinner.Value = (Decimal)robot.baseJoint;
@@ -185,7 +180,7 @@ namespace Descent2Workshop.EditorPanels
                 else
                     RobotAnimationCheckbox.Checked = false;
 
-                NumJointsTextBox.Text = (Robot.NUM_ANIMATION_STATES * (hxmFile.GetModel(robot.model_num).n_models - 1)).ToString();
+                NumJointsTextBox.Text = (Robot.NUM_ANIMATION_STATES * (hxmFile.GetModel(robot.ModelNum).NumSubmodels - 1)).ToString();
             }
         }
 
@@ -196,13 +191,13 @@ namespace Descent2Workshop.EditorPanels
             {
                 for (int i = 0; i < PowerupNames.Count; i++)
                     cbRobotDropItem.Items.Add(PowerupNames[i]);
-                cbRobotDropItem.SelectedIndex = robot.contains_id;
+                cbRobotDropItem.SelectedIndex = robot.ContainsID;
             }
             else
             {
                 for (int i = 0; i < RobotNames.Count; i++)
                     cbRobotDropItem.Items.Add(RobotNames[i]);
-                cbRobotDropItem.SelectedIndex = robot.contains_id;
+                cbRobotDropItem.SelectedIndex = robot.ContainsID;
             }
             //cbRobotDropItem.SelectedIndex = 0;
         }
@@ -211,14 +206,14 @@ namespace Descent2Workshop.EditorPanels
         {
             for (int num = 0; num < 5; num++)
             {
-                CircleDistControls[num].Text = robot.circle_distance[num].ToString();
-                EvadeSpeedControls[num].Text = robot.evade_speed[num].ToString();
-                FireWaitControls[num].Text = robot.firing_wait[num].ToString();
-                FireWait2Controls[num].Text = robot.firing_wait2[num].ToString();
-                FieldOfViewControls[num].Text = ((int)(Math.Round(Math.Acos(robot.field_of_view[num]) * 180 / Math.PI, MidpointRounding.AwayFromZero))).ToString();
-                MaxSpeedControls[num].Text = robot.max_speed[num].ToString();
-                TurnTimeControls[num].Text = robot.turn_time[num].ToString();
-                FireCountControls[num].Text = robot.rapidfire_count[num].ToString();
+                CircleDistControls[num].Text = robot.CircleDistance[num].ToString();
+                EvadeSpeedControls[num].Text = robot.EvadeSpeed[num].ToString();
+                FireWaitControls[num].Text = robot.FiringWait[num].ToString();
+                FireWait2Controls[num].Text = robot.FiringWaitSecondary[num].ToString();
+                FieldOfViewControls[num].Text = ((int)(Math.Round(Math.Acos(robot.FieldOfView[num]) * 180 / Math.PI, MidpointRounding.AwayFromZero))).ToString();
+                MaxSpeedControls[num].Text = robot.MaxSpeed[num].ToString();
+                TurnTimeControls[num].Text = robot.TurnTime[num].ToString();
+                FireCountControls[num].Text = robot.RapidfireCount[num].ToString();
             }
         }
 
@@ -295,7 +290,7 @@ namespace Descent2Workshop.EditorPanels
         {
             if (isLocked)
                 return;
-            robot.cloak_type = (sbyte)cmRobotCloak.SelectedIndex;
+            robot.CloakType = (RobotCloakType)cmRobotCloak.SelectedIndex;
         }
 
         private void RobotBoss_SelectedIndexChanged(object sender, EventArgs e)
@@ -307,7 +302,7 @@ namespace Descent2Workshop.EditorPanels
             {
                 bosstype += 18;
             }
-            robot.boss_flag = (sbyte)bosstype;
+            robot.BossFlag = (RobotBossType)bosstype;
         }
 
         private void RobotAI_SelectedIndexChanged(object sender, EventArgs e)
@@ -315,7 +310,7 @@ namespace Descent2Workshop.EditorPanels
             if (isLocked)
                 return;
             int bosstype = cbRobotAI.SelectedIndex;
-            robot.behavior = (byte)(bosstype + 0x80);
+            robot.Behavior = (RobotAIType)(bosstype + 0x80);
         }
 
         private void RobotDropType_SelectedIndexChanged(object sender, EventArgs e)
@@ -335,16 +330,16 @@ namespace Descent2Workshop.EditorPanels
             switch (input.Tag)
             {
                 case "0":
-                    robot.thief = (sbyte)(input.Checked ? 1 : 0);
+                    robot.Thief = input.Checked;
                     break;
                 case "1":
-                    robot.kamikaze = (sbyte)(input.Checked ? 1 : 0);
+                    robot.Kamikaze = (sbyte)(input.Checked ? 1 : 0);
                     break;
                 case "2":
-                    robot.companion = (sbyte)(input.Checked ? 1 : 0);
+                    robot.Companion = input.Checked;
                     break;
                 case "3":
-                    robot.attack_type = (sbyte)(input.Checked ? 1 : 0);
+                    robot.AttackType = input.Checked ? RobotAttackType.Melee : RobotAttackType.Ranged;
                     break;
             }
         }
@@ -481,9 +476,9 @@ namespace Descent2Workshop.EditorPanels
         {
             if (isLocked)
                 return;
-            if (robot.model_num < hxmFile.GetNumModels())
+            if (robot.ModelNum < hxmFile.GetNumModels())
             {
-                Polymodel model = hxmFile.GetModel(robot.model_num);
+                Polymodel model = hxmFile.GetModel(robot.ModelNum);
                 model.isAnimated = RobotAnimationCheckbox.Checked;
             }
         }

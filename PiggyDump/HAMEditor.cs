@@ -232,7 +232,7 @@ namespace Descent2Workshop
                     break;
                 case 8:
                     Reactor reactor = datafile.Reactors[val];
-                    cbReactorModel.SelectedIndex = reactor.model_id;
+                    cbReactorModel.SelectedIndex = reactor.ModelNum;
                     break;
                 case 9:
                     UpdatePowerupPanel(val);
@@ -454,16 +454,16 @@ namespace Descent2Workshop
         public void UpdateWClipPanel(int num)
         {
             WClip animation = datafile.WClips[num];
-            txtWallTotalTime.Text = animation.play_time.ToString();
-            cbWallOpenSound.SelectedIndex = animation.open_sound + 1;
-            cbWallCloseSound.SelectedIndex = animation.close_sound + 1;
-            txtWallFilename.Text = new string(animation.filename);
-            txtWallFrames.Text = animation.num_frames.ToString();
+            txtWallTotalTime.Text = animation.PlayTime.ToString();
+            cbWallOpenSound.SelectedIndex = animation.OpenSound + 1;
+            cbWallCloseSound.SelectedIndex = animation.CloseSound + 1;
+            txtWallFilename.Text = new string(animation.Filename);
+            txtWallFrames.Text = animation.NumFrames.ToString();
 
-            cbWallExplodeOpen.Checked = (animation.flags & 1) != 0;
-            cbWallShootable.Checked = (animation.flags & 2) != 0;
-            cbWallOnPrimaryTMAP.Checked = (animation.flags & 4) != 0;
-            cbWallHidden.Checked = (animation.flags & 8) != 0;
+            cbWallExplodeOpen.Checked = animation.Explodes;
+            cbWallShootable.Checked = animation.Blastable;
+            cbWallOnPrimaryTMAP.Checked = animation.PrimaryTMap;
+            cbWallHidden.Checked = animation.SecretDoor;
 
             nudWFrame.Value = 0;
             UpdateWallFrame(0);
@@ -498,20 +498,20 @@ namespace Descent2Workshop
         private void UpdateModelPanel(int num)
         {
             Polymodel model = datafile.Models[num];
-            txtModelNumModels.Text = model.n_models.ToString();
-            txtModelDataSize.Text = model.model_data_size.ToString();
-            txtModelRadius.Text = model.rad.ToString();
-            txtModelTextureCount.Text = model.n_textures.ToString();
-            cbModelLowDetail.SelectedIndex = model.simpler_model;
+            txtModelNumModels.Text = model.NumSubmodels.ToString();
+            txtModelDataSize.Text = model.ModelIDTASize.ToString();
+            txtModelRadius.Text = model.Radius.ToString();
+            txtModelTextureCount.Text = model.NumTextures.ToString();
+            cbModelLowDetail.SelectedIndex = model.SimplerModels;
             cbModelDyingModel.SelectedIndex = model.DyingModelnum + 1;
             cbModelDeadModel.SelectedIndex = model.DeadModelnum + 1;
 
-            txtModelMinX.Text = model.mins.x.ToString();
-            txtModelMinY.Text = model.mins.y.ToString();
-            txtModelMinZ.Text = model.mins.z.ToString();
-            txtModelMaxX.Text = model.maxs.x.ToString();
-            txtModelMaxY.Text = model.maxs.y.ToString();
-            txtModelMaxZ.Text = model.maxs.z.ToString();
+            txtModelMinX.Text = model.Mins.x.ToString();
+            txtModelMinY.Text = model.Mins.y.ToString();
+            txtModelMinZ.Text = model.Mins.z.ToString();
+            txtModelMaxX.Text = model.Maxs.x.ToString();
+            txtModelMaxY.Text = model.Maxs.y.ToString();
+            txtModelMaxZ.Text = model.Maxs.z.ToString();
 
             txtElemName.Text = datafile.ModelNames[num];
             if (!noPMView)
@@ -525,10 +525,10 @@ namespace Descent2Workshop
         private void UpdatePowerupPanel(int num)
         {
             Powerup powerup = datafile.Powerups[num];
-            cbPowerupPickupSound.SelectedIndex = powerup.hit_sound;
-            cbPowerupSprite.SelectedIndex = powerup.vclip_num;
-            txtPowerupSize.Text = powerup.size.ToString();
-            txtPowerupLight.Text = powerup.light.ToString();
+            cbPowerupPickupSound.SelectedIndex = powerup.HitSound;
+            cbPowerupSprite.SelectedIndex = powerup.VClipNum;
+            txtPowerupSize.Text = powerup.Size.ToString();
+            txtPowerupLight.Text = powerup.Light.ToString();
             txtElemName.Text = datafile.PowerupNames[num];
         }
 
@@ -545,19 +545,19 @@ namespace Descent2Workshop
                 cbMarkerModel.Items.Add(datafile.ModelNames[i]);
             }
 
-            txtShipBrakes.Text = ship.brakes.ToString();
-            txtShipDrag.Text = ship.drag.ToString();
-            txtShipMass.Text = ship.mass.ToString();
-            txtShipMaxRotThrust.Text = ship.max_rotthrust.ToString();
-            txtShipRevThrust.Text = ship.reverse_thrust.ToString();
-            txtShipThrust.Text = ship.max_thrust.ToString();
-            txtShipWiggle.Text = ship.wiggle.ToString();
+            txtShipBrakes.Text = ship.Brakes.ToString();
+            txtShipDrag.Text = ship.Drag.ToString();
+            txtShipMass.Text = ship.Mass.ToString();
+            txtShipMaxRotThrust.Text = ship.MaxRotationThrust.ToString();
+            txtShipRevThrust.Text = ship.ReverseThrust.ToString();
+            txtShipThrust.Text = ship.MaxThrust.ToString();
+            txtShipWiggle.Text = ship.Wiggle.ToString();
             nudShipTextures.Value = nudShipTextures.Minimum;
             UpdateShipTextures(0);
             //This can thereoetically null, but it never will except on deformed data that descent itself probably wouldn't like
-            cbPlayerExplosion.SelectedIndex = ship.expl_vclip_num;
-            cbMarkerModel.SelectedIndex = ship.markerModel;
-            cbPlayerModel.SelectedIndex = ship.model_num;
+            cbPlayerExplosion.SelectedIndex = ship.DeathVClipNum;
+            cbMarkerModel.SelectedIndex = ship.MarkerModel;
+            cbPlayerModel.SelectedIndex = ship.ModelNum;
 
             txtElemName.Text = "Ship";
         }
@@ -576,7 +576,7 @@ namespace Descent2Workshop
         private void UpdateWallFrame(int frame)
         {
             WClip animation = datafile.WClips[(int)nudElementNum.Value];
-            txtWallCurrentFrame.Text = animation.frames[frame].ToString();
+            txtWallCurrentFrame.Text = animation.Frames[frame].ToString();
 
             if (pbWallAnimPreview.Image != null)
             {
@@ -584,7 +584,7 @@ namespace Descent2Workshop
                 pbWallAnimPreview.Image = null;
                 temp.Dispose();
             }
-            pbWallAnimPreview.Image = PiggyBitmapConverter.GetBitmap(datafile.piggyFile, palette, datafile.Textures[animation.frames[frame]]);
+            pbWallAnimPreview.Image = PiggyBitmapConverter.GetBitmap(datafile.piggyFile, palette, datafile.Textures[animation.Frames[frame]]);
         }
 
         private void UpdateXLATPanel(int num)
@@ -705,10 +705,10 @@ namespace Descent2Workshop
             switch (comboBox.Tag)
             {
                 case "1":
-                    clip.open_sound = (short)(comboBox.SelectedIndex - 1);
+                    clip.OpenSound = (short)(comboBox.SelectedIndex - 1);
                     break;
                 case "2":
-                    clip.close_sound = (short)(comboBox.SelectedIndex - 1);
+                    clip.CloseSound = (short)(comboBox.SelectedIndex - 1);
                     break;
             }
         }
@@ -720,10 +720,10 @@ namespace Descent2Workshop
             CheckBox checkBox = (CheckBox)sender;
             WClip clip = datafile.WClips[ElementNumber];
             int bit = int.Parse((string)checkBox.Tag);
-            if ((clip.flags & bit) != 0)
-                clip.flags -= (short)bit;
+            if ((clip.Flags & bit) != 0)
+                clip.Flags &= (short)~bit;
             else
-                clip.flags |= (short)bit;
+                clip.Flags |= (short)bit;
         }
 
         private void WallProperty_TextChanged(object sender, EventArgs e)
@@ -733,16 +733,19 @@ namespace Descent2Workshop
             TextBox textBox = (TextBox)sender;
             WClip clip = datafile.WClips[ElementNumber];
             double value;
+            char[] hack;
             if (double.TryParse(textBox.Text, out value))
             {
                 switch (textBox.Tag)
                 {
                     case "1":
                         int totalTimeFix = (int)(value * 65536);
-                        clip.play_time = new Fix(totalTimeFix);
+                        clip.PlayTime = new Fix(totalTimeFix);
                         break;
                     case "2":
-                        clip.filename = textBox.Text.ToCharArray();
+                        hack = textBox.Text.ToCharArray();
+                        Array.Clear(clip.Filename, 0, 13);
+                        Array.Copy(hack, clip.Filename, Math.Min(13, hack.Length));
                         break;
                 }
             }
@@ -794,7 +797,7 @@ namespace Descent2Workshop
 
         private void ImportModel(Polymodel original)
         {
-            int oldNumTextures = original.n_textures;
+            int oldNumTextures = original.NumTextures;
 
             List<string> newTextureNames = new List<string>();
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
@@ -825,7 +828,7 @@ namespace Descent2Workshop
             switch (comboBox.Tag)
             {
                 case "1":
-                    model.simpler_model = (byte)comboBox.SelectedIndex;
+                    model.SimplerModels = (byte)comboBox.SelectedIndex;
                     break;
                 case "2":
                     model.DyingModelnum = comboBox.SelectedIndex - 1;
@@ -849,10 +852,10 @@ namespace Descent2Workshop
             switch (comboBox.Tag)
             {
                 case "1":
-                    powerup.vclip_num = comboBox.SelectedIndex;
+                    powerup.VClipNum = comboBox.SelectedIndex;
                     break;
                 case "2":
-                    powerup.hit_sound = comboBox.SelectedIndex;
+                    powerup.HitSound = comboBox.SelectedIndex;
                     break;
             }
         }
@@ -869,10 +872,10 @@ namespace Descent2Workshop
                 switch (textBox.Tag)
                 {
                     case "3":
-                        powerup.size = value;
+                        powerup.Size = value;
                         break;
                     case "4":
-                        powerup.light = value;
+                        powerup.Light = value;
                         break;
                 }
             }
@@ -886,7 +889,7 @@ namespace Descent2Workshop
         {
             if (isLocked) return;
             Reactor reactor = datafile.Reactors[ElementNumber];
-            reactor.model_id = cbReactorModel.SelectedIndex;
+            reactor.ModelNum = cbReactorModel.SelectedIndex;
         }
 
         //---------------------------------------------------------------------
@@ -928,13 +931,13 @@ namespace Descent2Workshop
             switch (comboBox.Tag)
             {
                 case "0":
-                    datafile.PlayerShip.model_num = (comboBox.SelectedIndex);
+                    datafile.PlayerShip.ModelNum = (comboBox.SelectedIndex);
                     break;
                 case "1":
-                    datafile.PlayerShip.expl_vclip_num = (comboBox.SelectedIndex);
+                    datafile.PlayerShip.DeathVClipNum = (comboBox.SelectedIndex);
                     break;
                 case "2":
-                    datafile.PlayerShip.markerModel = (comboBox.SelectedIndex);
+                    datafile.PlayerShip.MarkerModel = (comboBox.SelectedIndex);
                     break;
             }
         }

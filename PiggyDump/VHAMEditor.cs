@@ -214,20 +214,20 @@ namespace Descent2Workshop
         private void UpdateModelPanel(int num)
         {
             Polymodel model = datafile.Models[num];
-            txtModelNumModels.Text = model.n_models.ToString();
-            txtModelDataSize.Text = model.model_data_size.ToString();
-            txtModelRadius.Text = ((float)(model.rad)).ToString();
-            txtModelTextureCount.Text = model.n_textures.ToString();
-            cbModelLowDetail.SelectedIndex = model.simpler_model + 1;
+            txtModelNumModels.Text = model.NumSubmodels.ToString();
+            txtModelDataSize.Text = model.ModelIDTASize.ToString();
+            txtModelRadius.Text = ((float)(model.Radius)).ToString();
+            txtModelTextureCount.Text = model.NumTextures.ToString();
+            cbModelLowDetail.SelectedIndex = model.SimplerModels + 1;
             cbModelDyingModel.SelectedIndex = model.DyingModelnum + 1;
             cbModelDeadModel.SelectedIndex = model.DeadModelnum + 1;
 
-            txtModelMinX.Text = ((float)(model.mins.x)).ToString();
-            txtModelMinY.Text = ((float)(model.mins.y)).ToString();
-            txtModelMinZ.Text = ((float)(model.mins.z)).ToString();
-            txtModelMaxX.Text = ((float)(model.maxs.x)).ToString();
-            txtModelMaxY.Text = ((float)(model.maxs.y)).ToString();
-            txtModelMaxZ.Text = ((float)(model.maxs.z)).ToString();
+            txtModelMinX.Text = ((float)(model.Mins.x)).ToString();
+            txtModelMinY.Text = ((float)(model.Mins.y)).ToString();
+            txtModelMinZ.Text = ((float)(model.Mins.z)).ToString();
+            txtModelMaxX.Text = ((float)(model.Maxs.x)).ToString();
+            txtModelMaxY.Text = ((float)(model.Maxs.y)).ToString();
+            txtModelMaxZ.Text = ((float)(model.Maxs.z)).ToString();
 
             txtElemName.Text = datafile.ModelNames[num];
             if (!noPMView)

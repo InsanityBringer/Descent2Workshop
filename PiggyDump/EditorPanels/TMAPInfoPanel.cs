@@ -57,18 +57,18 @@ namespace Descent2Workshop.EditorPanels
             this.info = info;
 
             txtTexID.Text = datafile.Textures[textureID].ToString();
-            txtTexLight.Text = info.lighting.ToString();
-            txtTexDamage.Text = info.damage.ToString();
-            cbTexEClip.SelectedIndex = info.eclip_num + 1;
-            txtTexSlideU.Text = GetFloatFromFixed88(info.slide_u).ToString();
-            txtTexSlideV.Text = GetFloatFromFixed88(info.slide_v).ToString();
-            txtTexDestroyed.Text = info.destroyed.ToString();
-            cbTexLava.Checked = ((info.flags & TMAPInfo.TMI_VOLATILE) != 0);
-            cbTexWater.Checked = ((info.flags & TMAPInfo.TMI_WATER) != 0);
-            cbTexForcefield.Checked = ((info.flags & TMAPInfo.TMI_FORCE_FIELD) != 0);
-            cbTexRedGoal.Checked = ((info.flags & TMAPInfo.TMI_GOAL_RED) != 0);
-            cbTexBlueGoal.Checked = ((info.flags & TMAPInfo.TMI_GOAL_BLUE) != 0);
-            cbTexHoardGoal.Checked = ((info.flags & TMAPInfo.TMI_GOAL_HOARD) != 0);
+            txtTexLight.Text = info.Lighting.ToString();
+            txtTexDamage.Text = info.Damage.ToString();
+            cbTexEClip.SelectedIndex = info.EClipNum + 1;
+            txtTexSlideU.Text = GetFloatFromFixed88(info.SlideU).ToString();
+            txtTexSlideV.Text = GetFloatFromFixed88(info.SlideV).ToString();
+            txtTexDestroyed.Text = info.DestroyedID.ToString();
+            cbTexLava.Checked = info.Volatile;
+            cbTexWater.Checked = info.Water;
+            cbTexForcefield.Checked = info.ForceField;
+            cbTexRedGoal.Checked = info.RedGoal;
+            cbTexBlueGoal.Checked = info.BlueGoal;
+            cbTexHoardGoal.Checked = info.HoardGoal;
 
             UpdatePictureBox(PiggyBitmapConverter.GetBitmap(piggyFile, palette, datafile.Textures[textureID]), pbTexPrev);
             isLocked = false;
@@ -79,10 +79,12 @@ namespace Descent2Workshop.EditorPanels
             if (isLocked)
                 return;
             TMAPInfo tmapinfo = datafile.TMapInfo[textureID];
-
-            CheckBox check = (CheckBox)sender;
-            int flagvalue = int.Parse(check.Tag.ToString());
-            tmapinfo.updateFlags(flagvalue, check.Checked);
+            tmapinfo.Volatile = cbTexLava.Checked;
+            tmapinfo.Water = cbTexWater.Checked;
+            tmapinfo.ForceField = cbTexForcefield.Checked;
+            tmapinfo.RedGoal = cbTexRedGoal.Checked;
+            tmapinfo.BlueGoal = cbTexBlueGoal.Checked;
+            tmapinfo.HoardGoal = cbTexHoardGoal.Checked;
         }
 
         private void TextureProperty_TextChanged(object sender, EventArgs e)
@@ -101,19 +103,19 @@ namespace Descent2Workshop.EditorPanels
                         UpdatePictureBox(PiggyBitmapConverter.GetBitmap(piggyFile, palette, datafile.Textures[textureID]), pbTexPrev);
                         break;
                     case "1":
-                        info.lighting = double.Parse(textBox.Text);
+                        info.Lighting = double.Parse(textBox.Text);
                         break;
                     case "2":
-                        info.damage = double.Parse(textBox.Text);
+                        info.Damage = double.Parse(textBox.Text);
                         break;
                     case "4":
-                        info.slide_u = (short)(double.Parse(textBox.Text) * 256.0d);
+                        info.SlideU = (short)(double.Parse(textBox.Text) * 256.0d);
                         break;
                     case "5":
-                        info.slide_v = (short)(double.Parse(textBox.Text) * 256.0d);
+                        info.SlideV = (short)(double.Parse(textBox.Text) * 256.0d);
                         break;
                     case "6":
-                        info.destroyed = short.Parse(textBox.Text);
+                        info.DestroyedID = short.Parse(textBox.Text);
                         break;
                 }
             }
@@ -131,33 +133,33 @@ namespace Descent2Workshop.EditorPanels
             TMAPInfo tmapInfo = datafile.TMapInfo[textureID];
             if (clip == null)
             {
-                tmapInfo.eclip_num = -1;
+                tmapInfo.EClipNum = -1;
             }
             else
             {
-                int clipCurrentID = clip.GetCurrentTMap();
+                int clipCurrentID = clip.ChangingWallTexture;
                 if (clipCurrentID != -1 && clipCurrentID != textureID)
                 {
                     if (MessageBox.Show("This EClip is already assigned to another wall texture, do you want to change it?", "EClip in use", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         TMAPInfo oldTMapInfo = datafile.TMapInfo[clipCurrentID];
-                        oldTMapInfo.eclip_num = -1;
-                        clip.changing_wall_texture = (short)textureID;
+                        oldTMapInfo.EClipNum = -1;
+                        clip.ChangingWallTexture = (short)textureID;
 
                     }
                     else
                     {
-                        cbTexEClip.SelectedIndex = tmapInfo.eclip_num + 1;
+                        cbTexEClip.SelectedIndex = tmapInfo.EClipNum + 1;
                         return;
                     }
                 }
                 //this was commented out and I have no idea if there was a good reason for it
                 else
                 {
-                    clip.changing_wall_texture = (short)textureID;
+                    clip.ChangingWallTexture = (short)textureID;
                 }
             }
-            tmapInfo.eclip_num = (short)eclipNum;
+            tmapInfo.EClipNum = (short)eclipNum;
         }
 
         private void RemapSingleImage_Click(object sender, EventArgs e)

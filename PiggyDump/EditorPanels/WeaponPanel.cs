@@ -69,54 +69,54 @@ namespace Descent2Workshop.EditorPanels
             isLocked = true;
             this.weapon = weapon;
 
-            int rendernum = weapon.render_type;
+            int rendernum = (int)weapon.RenderType;
 
-            if (rendernum == 255)
+            if (rendernum == (int)WeaponRenderType.Invisible)
             {
                 rendernum = 4;
             }
 
             cbWeaponRenderMode.SelectedIndex = rendernum;
 
-            txtWeaponABSize.Text = weapon.afterburner_size.ToString();
-            txtWeaponAmmoUse.Text = weapon.ammo_usage.ToString();
-            txtWeaponBlindSize.Text = weapon.flash.ToString();
-            cbWeaponBounce.SelectedIndex = weapon.bounce;
-            txtWeaponCockpitImage.Text = weapon.picture.ToString();
-            txtWeaponCockpitImageh.Text = weapon.hires_picture.ToString();
-            txtWeaponDrag.Text = weapon.drag.ToString();
-            txtWeaponEnergyUsage.Text = weapon.energy_usage.ToString();
-            txtWeaponExplosionSize.Text = weapon.damage_radius.ToString();
-            txtWeaponFireWait.Text = weapon.fire_wait.ToString();
-            txtWeaponFlashSize.Text = weapon.flash_size.ToString();
-            txtWeaponImpactSize.Text = weapon.impact_size.ToString();
-            txtWeaponLifetime.Text = weapon.lifetime.ToString();
-            txtWeaponLight.Text = weapon.light.ToString();
-            txtWeaponMass.Text = weapon.mass.ToString();
-            txtWeaponMPScale.Text = weapon.multi_damage_scale.ToString();
-            txtWeaponPolyLWRatio.Text = weapon.po_len_to_width_ratio.ToString();
-            txtWeaponProjectileCount.Text = weapon.fire_count.ToString();
-            txtWeaponProjectileSize.Text = weapon.blob_size.ToString();
-            txtWeaponSpeedvar.Text = weapon.speedvar.ToString();
-            txtWeaponStaticSprite.Text = weapon.bitmap.ToString();
-            txtWeaponThrust.Text = weapon.thrust.ToString();
+            txtWeaponABSize.Text = weapon.AfterburnerSize.ToString();
+            txtWeaponAmmoUse.Text = weapon.AmmoUsage.ToString();
+            txtWeaponBlindSize.Text = weapon.Flash.ToString();
+            cbWeaponBounce.SelectedIndex = (int)weapon.Bounce;
+            txtWeaponCockpitImage.Text = weapon.CockpitPicture.ToString();
+            txtWeaponCockpitImageh.Text = weapon.HiresCockpitPicture.ToString();
+            txtWeaponDrag.Text = weapon.Drag.ToString();
+            txtWeaponEnergyUsage.Text = weapon.EnergyUsage.ToString();
+            txtWeaponExplosionSize.Text = weapon.DamageRadius.ToString();
+            txtWeaponFireWait.Text = weapon.FireWait.ToString();
+            txtWeaponFlashSize.Text = weapon.FlashSize.ToString();
+            txtWeaponImpactSize.Text = weapon.ImpactSize.ToString();
+            txtWeaponLifetime.Text = weapon.Lifetime.ToString();
+            txtWeaponLight.Text = weapon.Light.ToString();
+            txtWeaponMass.Text = weapon.Mass.ToString();
+            txtWeaponMPScale.Text = weapon.MultiDamageScale.ToString();
+            txtWeaponPolyLWRatio.Text = weapon.POLenToWidthRatio.ToString();
+            txtWeaponProjectileCount.Text = weapon.FireCount.ToString();
+            txtWeaponProjectileSize.Text = weapon.BlobSize.ToString();
+            txtWeaponSpeedvar.Text = weapon.SpeedVariance.ToString();
+            txtWeaponStaticSprite.Text = weapon.Bitmap.ToString();
+            txtWeaponThrust.Text = weapon.Thrust.ToString();
 
-            cbWeaponDestroyable.Checked = weapon.destroyable != 0;
-            cbWeaponHoming.Checked = weapon.homing_flag != 0;
-            cbWeaponIsMatter.Checked = weapon.matter != 0;
-            cbWeaponPlacable.Checked = (weapon.flags & 1) != 0;
-            cbWeaponRipper.Checked = weapon.persistent != 0;
+            cbWeaponDestroyable.Checked = weapon.Destroyable;
+            cbWeaponHoming.Checked = weapon.HomingFlag;
+            cbWeaponIsMatter.Checked = weapon.Matter;
+            cbWeaponPlacable.Checked = (weapon.Flags & 1) != 0;
+            cbWeaponRipper.Checked = weapon.Persistent;
 
-            cbWeaponChildren.SelectedIndex = weapon.children + 1;
-            cbWeaponFireSound.SelectedIndex = weapon.flash_sound + 1;
-            cbWeaponRobotHitSound.SelectedIndex = weapon.robot_hit_sound + 1;
-            cbWeaponWallHitSound.SelectedIndex = weapon.wall_hit_sound + 1;
-            cbWeaponModel1.SelectedIndex = weapon.model_num + 1;
-            cbWeaponModel2.SelectedIndex = weapon.model_num_inner + 1;
-            cbWeaponWallHit.SelectedIndex = weapon.wall_hit_vclip + 1;
-            cbWeaponRobotHit.SelectedIndex = weapon.robot_hit_vclip + 1;
-            cbWeaponMuzzleFlash.SelectedIndex = weapon.flash_vclip + 1;
-            cbWeaponVClip.SelectedIndex = weapon.weapon_vclip + 1;
+            cbWeaponChildren.SelectedIndex = weapon.Children + 1;
+            cbWeaponFireSound.SelectedIndex = weapon.FiringSound + 1;
+            cbWeaponRobotHitSound.SelectedIndex = weapon.RobotHitSound + 1;
+            cbWeaponWallHitSound.SelectedIndex = weapon.WallHitSound + 1;
+            cbWeaponModel1.SelectedIndex = weapon.ModelNum + 1;
+            cbWeaponModel2.SelectedIndex = weapon.ModelNumInner + 1;
+            cbWeaponWallHit.SelectedIndex = weapon.WallHitVclip + 1;
+            cbWeaponRobotHit.SelectedIndex = weapon.RobotHitVClip + 1;
+            cbWeaponMuzzleFlash.SelectedIndex = weapon.MuzzleFlashVClip + 1;
+            cbWeaponVClip.SelectedIndex = weapon.WeaponVClip + 1;
 
             UpdateWeaponGraphicControls();
             UpdateWeaponPower();
@@ -145,8 +145,8 @@ namespace Descent2Workshop.EditorPanels
         {
             for (int num = 0; num < 5; num++)
             {
-                DmgBoxes[num].Text = weapon.strength[num].ToString();
-                SpeedBoxes[num].Text = weapon.speed[num].ToString();
+                DmgBoxes[num].Text = weapon.Strength[num].ToString();
+                SpeedBoxes[num].Text = weapon.Speed[num].ToString();
             }
         }
 
@@ -197,19 +197,19 @@ namespace Descent2Workshop.EditorPanels
             switch (checkBox.Tag)
             {
                 case "1":
-                    weapon.destroyable = (byte)(checkBox.Checked ? 1 : 0);
+                    weapon.Destroyable = checkBox.Checked;
                     break;
                 case "2":
-                    weapon.persistent = (byte)(checkBox.Checked ? 1 : 0);
+                    weapon.Persistent = checkBox.Checked;
                     break;
                 case "3":
-                    weapon.matter = (byte)(checkBox.Checked ? 1 : 0);
+                    weapon.Matter = checkBox.Checked;
                     break;
                 case "4":
-                    weapon.homing_flag = (byte)(checkBox.Checked ? 1 : 0);
+                    weapon.HomingFlag = checkBox.Checked;
                     break;
                 case "5":
-                    weapon.flags = (byte)(checkBox.Checked ? 1 : 0);
+                    weapon.Flags = (byte)(checkBox.Checked ? 1 : 0);
                     break;
             }
         }
@@ -223,7 +223,7 @@ namespace Descent2Workshop.EditorPanels
             {
                 weapontype = 255;
             }
-            weapon.render_type = (byte)weapontype;
+            weapon.RenderType = (WeaponRenderType)weapontype;
             UpdateWeaponGraphicControls();
         }
 
@@ -236,7 +236,7 @@ namespace Descent2Workshop.EditorPanels
 
         private void WeaponCalculateLW_Click(object sender, EventArgs e)
         {
-            if (weapon.render_type == 2)
+            if (weapon.RenderType == WeaponRenderType.Object)
             {
                 /*Polymodel model = datafile.PolygonModels[weapon.model_num];
                 double width = Math.Abs(model.mins.x / 65536.0d) + Math.Abs(model.maxs.x / 65536.0d);
@@ -263,14 +263,14 @@ namespace Descent2Workshop.EditorPanels
                 {
                     case "1":
                         txtWeaponCockpitImage.Text = (value).ToString();
-                        weapon.picture = (ushort)value;
+                        weapon.CockpitPicture = (ushort)value;
                         break;
                     case "2":
                         txtWeaponCockpitImageh.Text = (value).ToString();
-                        weapon.hires_picture = (ushort)value;
+                        weapon.HiresCockpitPicture = (ushort)value;
                         break;
                     case "3":
-                        weapon.bitmap = (ushort)(value);
+                        weapon.Bitmap = (ushort)(value);
                         txtWeaponStaticSprite.Text = (value).ToString();
                         break;
                 }
