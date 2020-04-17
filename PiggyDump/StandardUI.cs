@@ -125,10 +125,17 @@ namespace Descent2Workshop
                 else newPalette = new Palette(); //If the palette couldn't be located, make a default grayscale palette
 
                 PIGFile archive = new PIGFile();
-                archive.Read(openFileDialog1.FileName);
-                PIGEditor archiveEditor = new PIGEditor(archive, newPalette);
-                archiveEditor.host = this;
-                archiveEditor.Show();
+                string statusMsg;
+                if (FileUtilities.LoadDataFile(openFileDialog1.FileName, archive, out statusMsg))
+                {
+                    PIGEditor archiveEditor = new PIGEditor(archive, newPalette, openFileDialog1.FileName);
+                    archiveEditor.host = this;
+                    archiveEditor.Show();
+                }
+                else
+                {
+                    MessageBox.Show(statusMsg, "Error loading PIG file.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -392,7 +399,7 @@ namespace Descent2Workshop
             {
                 test.Bitmaps.Add(piggyFile.Bitmaps[i]);
             }
-            PIGEditor editor = new PIGEditor(test, newPalette);
+            PIGEditor editor = new PIGEditor(test, newPalette, "ara ara");
             editor.Show();
 #else
             AppendConsole("Descent II Workshop by ISB... heh\n");
@@ -450,14 +457,25 @@ namespace Descent2Workshop
             PIGFile defaultPIG = new PIGFile();
             try
             {
-                defaultPIG.Read(filename);
-                AppendConsole("Loaded default PIG file!\r\n");
-                options.SetOption("PIGFile", filename);
+                /*defaultPIG.Read(filename);
+                AppendConsole("Loaded default PIG file!\r\n");*/
+                string statusMsg;
+                if (FileUtilities.LoadDataFile(filename, defaultPIG, out statusMsg))
+                {
+                    options.SetOption("PIGFile", filename);
+                    AppendConsole("Loaded default PIG file!\r\n");
+                }
+                else
+                {
+                    AppendConsole("Failed to load default PIG file:\r\n");
+                    AppendConsole(statusMsg);
+                    defaultPIG = null;
+                }
+                
             }
-            catch (Exception exc)
+            catch (Exception)
             {
                 AppendConsole("Failed to load default PIG file!\r\n");
-                FileExceptionHandler(exc, "PIG file");
                 defaultPIG = null;
             }
             return defaultPIG;
@@ -497,21 +515,6 @@ namespace Descent2Workshop
             {
                 AppendConsole(String.Format("Unhandled error loading {0}: {1}.\r\n", context, error.Message));
             }
-        }
-
-        //Dear brave reader who's decided to look at my shitty code
-        //when you change your mind on things while working a project for roughly 8 years
-        //stupid things like these two functions happen. 
-        private void FileErrorCodeHandler(int code, string context)
-        {
-            if (code == -1)
-                AppendConsole(String.Format("{0} has invalid signature and may be corrupt, or of the wrong format.\r\n", context));
-            else if (code == -2)
-                AppendConsole(String.Format("{0} is unknown version.\r\n", context));
-            else if (code == -3)
-                AppendConsole(String.Format("The specified {0} was not found.\r\n", context));
-            else if (code == -4)
-                AppendConsole(String.Format("You do not have permission to access the specified {0}.\r\n", context));
         }
 
         private bool CheckReadyForUse()
@@ -561,6 +564,31 @@ namespace Descent2Workshop
                 font.LoadFont(openFileDialog1.FileName);
                 FontViewer viewer = new FontViewer(font);
                 viewer.Show();
+            }
+        }
+
+        private void OpenPOGMenu_Click(object sender, EventArgs e)
+        {
+            if (defaultHogFile == null)
+            {
+                MessageBox.Show("A default HOG file must be loaded before loading a POG file");
+                return;
+            }
+            openFileDialog1.Filter = ".POG files|*.POG";
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                POGFile archive = new POGFile();
+                string statusMsg;
+                if (FileUtilities.LoadDataFile(openFileDialog1.FileName, archive, out statusMsg))
+                {
+                    POGEditor archiveEditor = new POGEditor(archive, defaultHogFile, openFileDialog1.FileName);
+                    archiveEditor.host = this;
+                    archiveEditor.Show();
+                }
+                else
+                {
+                    MessageBox.Show(statusMsg, "Error loading POG file.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
     }

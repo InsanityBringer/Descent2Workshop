@@ -32,12 +32,14 @@ namespace Descent2Workshop
     {
         public PIGFile datafile;
         private Palette palette;
+        private string filename;
         public StandardUI host;
-        public PIGEditor(PIGFile data, Palette palette)
+        public PIGEditor(PIGFile data, Palette palette, string filename)
         {
             datafile = data;
+            this.filename = filename;
             InitializeComponent();
-            this.Text = string.Format("{0} - PIG Editor", datafile.filename);
+            this.Text = string.Format("{0} - PIG Editor", filename);
             this.palette = palette;
         }
 
@@ -75,9 +77,10 @@ namespace Descent2Workshop
             }
             PIGImage image = datafile.Bitmaps[listView1.SelectedIndices[0]];
             pictureBox1.Image = PiggyBitmapConverter.GetBitmap(datafile, palette, listView1.SelectedIndices[0]);
-            TransparentCheck.Checked = (image.flags & PIGImage.BM_FLAG_TRANSPARENT) != 0;
-            SupertransparentCheck.Checked = (image.flags & PIGImage.BM_FLAG_SUPER_TRANSPARENT) != 0;
-            NoLightingCheck.Checked = (image.flags & PIGImage.BM_FLAG_NO_LIGHTING) != 0;
+            TransparentCheck.Checked = image.Transparent;
+            SupertransparentCheck.Checked = image.SuperTransparent;
+            NoLightingCheck.Checked = image.NoLighting;
+            CompressCheckBox.Checked = image.RLECompressed;
             Color color = Color.FromArgb(palette.GetDrawingColorH(image.averageIndex));
             ColorPreview.BackColor = color;
             pictureBox1.Refresh();
@@ -88,14 +91,27 @@ namespace Descent2Workshop
 
         }
 
+        private void DoSave(string filename)
+        {
+            string statusMsg;
+            if (!FileUtilities.SaveDataFile(filename, datafile, out statusMsg))
+            {
+                MessageBox.Show(statusMsg, "Error saving PIG file.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                filename = saveFileDialog1.FileName;
+                Text = string.Format("{0} - PIG Editor", filename);
+            }
+        }
+
         private void SaveAsMenu_Click(object sender, EventArgs e)
         {
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 if (saveFileDialog1.FileName != "")
                 {
-                    datafile.Write(saveFileDialog1.FileName);
-                    this.Text = string.Format("{0} - PIG Editor", datafile.filename);
+                    DoSave(saveFileDialog1.FileName);
                 }
             }
         }

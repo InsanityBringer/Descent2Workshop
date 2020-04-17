@@ -32,6 +32,7 @@
             this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
             this.FileMenu = new System.Windows.Forms.MenuItem();
             this.NewMenu = new System.Windows.Forms.MenuItem();
+            this.NewHXMMenu = new System.Windows.Forms.MenuItem();
             this.NewVHAMMenu = new System.Windows.Forms.MenuItem();
             this.NewPIGMenu = new System.Windows.Forms.MenuItem();
             this.NewPOGMenu = new System.Windows.Forms.MenuItem();
@@ -220,7 +221,6 @@
             this.label76 = new System.Windows.Forms.Label();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.tbLog = new System.Windows.Forms.TextBox();
-            this.NewHXMMenu = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.tabPage10.SuspendLayout();
@@ -280,6 +280,12 @@
             this.NewPOGMenu,
             this.NewHOGMenu});
             this.NewMenu.Text = "New";
+            // 
+            // NewHXMMenu
+            // 
+            this.NewHXMMenu.Index = 0;
+            this.NewHXMMenu.Text = "HXM";
+            this.NewHXMMenu.Click += new System.EventHandler(this.NewHXMFileMenu_Click);
             // 
             // NewVHAMMenu
             // 
@@ -346,6 +352,7 @@
             // 
             this.OpenPOGMenu.Index = 8;
             this.OpenPOGMenu.Text = "Open .POG...";
+            this.OpenPOGMenu.Click += new System.EventHandler(this.OpenPOGMenu_Click);
             // 
             // OpenSNDMenu
             // 
@@ -2037,12 +2044,6 @@
             this.tbLog.Size = new System.Drawing.Size(404, 165);
             this.tbLog.TabIndex = 2;
             this.tbLog.Text = "Descent II Workshop log";
-            // 
-            // NewHXMMenu
-            // 
-            this.NewHXMMenu.Index = 0;
-            this.NewHXMMenu.Text = "HXM";
-            this.NewHXMMenu.Click += new System.EventHandler(this.NewHXMFileMenu_Click);
             // 
             // StandardUI
             // 

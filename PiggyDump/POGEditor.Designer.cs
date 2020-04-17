@@ -1,6 +1,6 @@
 ﻿namespace Descent2Workshop
 {
-    partial class PIGEditor
+    partial class POGEditor
     {
         /// <summary>
         /// Required designer variable.
@@ -31,35 +31,39 @@
             this.components = new System.ComponentModel.Container();
             this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
             this.menuItem1 = new System.Windows.Forms.MenuItem();
-            this.SaveMenu = new System.Windows.Forms.MenuItem();
-            this.SaveAsMenu = new System.Windows.Forms.MenuItem();
+            this.menuItem2 = new System.Windows.Forms.MenuItem();
+            this.menuItem3 = new System.Windows.Forms.MenuItem();
             this.menuItem4 = new System.Windows.Forms.MenuItem();
-            this.CloseMenu = new System.Windows.Forms.MenuItem();
+            this.menuItem5 = new System.Windows.Forms.MenuItem();
             this.menuItem6 = new System.Windows.Forms.MenuItem();
-            this.InsertMenu = new System.Windows.Forms.MenuItem();
-            this.ImportMenu = new System.Windows.Forms.MenuItem();
-            this.DeleteMenu = new System.Windows.Forms.MenuItem();
+            this.menuItem7 = new System.Windows.Forms.MenuItem();
+            this.menuItem8 = new System.Windows.Forms.MenuItem();
+            this.menuItem9 = new System.Windows.Forms.MenuItem();
             this.menuItem10 = new System.Windows.Forms.MenuItem();
-            this.ExportMenu = new System.Windows.Forms.MenuItem();
+            this.menuItem11 = new System.Windows.Forms.MenuItem();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.button4 = new System.Windows.Forms.Button();
             this.TransparentCheck = new System.Windows.Forms.CheckBox();
+            this.ColorPreview = new System.Windows.Forms.Label();
             this.SupertransparentCheck = new System.Windows.Forms.CheckBox();
             this.NoLightingCheck = new System.Windows.Forms.CheckBox();
-            this.ColorPreview = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.label2 = new System.Windows.Forms.Label();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.button1 = new System.Windows.Forms.Button();
+            this.PaletteComboBox = new System.Windows.Forms.ComboBox();
             this.CompressCheckBox = new System.Windows.Forms.CheckBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -72,89 +76,115 @@
             // 
             this.menuItem1.Index = 0;
             this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.SaveMenu,
-            this.SaveAsMenu,
+            this.menuItem2,
+            this.menuItem3,
             this.menuItem4,
-            this.CloseMenu});
+            this.menuItem5});
             this.menuItem1.Text = "File";
             // 
-            // SaveMenu
+            // menuItem2
             // 
-            this.SaveMenu.Index = 0;
-            this.SaveMenu.Text = "Save";
+            this.menuItem2.Index = 0;
+            this.menuItem2.Text = "Save";
             // 
-            // SaveAsMenu
+            // menuItem3
             // 
-            this.SaveAsMenu.Index = 1;
-            this.SaveAsMenu.Text = "Save As...";
-            this.SaveAsMenu.Click += new System.EventHandler(this.SaveAsMenu_Click);
+            this.menuItem3.Index = 1;
+            this.menuItem3.Text = "Save As...";
             // 
             // menuItem4
             // 
             this.menuItem4.Index = 2;
             this.menuItem4.Text = "-";
             // 
-            // CloseMenu
+            // menuItem5
             // 
-            this.CloseMenu.Index = 3;
-            this.CloseMenu.Text = "Close Window";
+            this.menuItem5.Index = 3;
+            this.menuItem5.Text = "Close Window";
             // 
             // menuItem6
             // 
             this.menuItem6.Index = 1;
             this.menuItem6.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.InsertMenu,
-            this.ImportMenu,
-            this.DeleteMenu,
+            this.menuItem7,
+            this.menuItem8,
+            this.menuItem9,
             this.menuItem10,
-            this.ExportMenu});
+            this.menuItem11});
             this.menuItem6.Text = "Edit";
             // 
-            // InsertMenu
+            // menuItem7
             // 
-            this.InsertMenu.Index = 0;
-            this.InsertMenu.Text = "Insert...";
+            this.menuItem7.Index = 0;
+            this.menuItem7.Text = "Insert...";
             // 
-            // ImportMenu
+            // menuItem8
             // 
-            this.ImportMenu.Index = 1;
-            this.ImportMenu.Text = "Import Over...";
+            this.menuItem8.Index = 1;
+            this.menuItem8.Text = "Import Over...";
             // 
-            // DeleteMenu
+            // menuItem9
             // 
-            this.DeleteMenu.Index = 2;
-            this.DeleteMenu.Text = "Delete";
-            this.DeleteMenu.Click += new System.EventHandler(this.DeleteMenu_Click);
+            this.menuItem9.Index = 2;
+            this.menuItem9.Text = "Delete";
             // 
             // menuItem10
             // 
             this.menuItem10.Index = 3;
             this.menuItem10.Text = "-";
             // 
-            // ExportMenu
+            // menuItem11
             // 
-            this.ExportMenu.Index = 4;
-            this.ExportMenu.Text = "Export...";
-            this.ExportMenu.Click += new System.EventHandler(this.ExportMenu_Click);
+            this.menuItem11.Index = 4;
+            this.menuItem11.Text = "Export...";
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.PaletteComboBox);
+            this.splitContainer1.Panel1.Controls.Add(this.button1);
+            this.splitContainer1.Panel1.Controls.Add(this.numericUpDown1);
+            this.splitContainer1.Panel1.Controls.Add(this.label2);
+            this.splitContainer1.Panel1.Controls.Add(this.listView1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.CompressCheckBox);
+            this.splitContainer1.Panel2.Controls.Add(this.pictureBox1);
+            this.splitContainer1.Panel2.Controls.Add(this.button4);
+            this.splitContainer1.Panel2.Controls.Add(this.TransparentCheck);
+            this.splitContainer1.Panel2.Controls.Add(this.ColorPreview);
+            this.splitContainer1.Panel2.Controls.Add(this.SupertransparentCheck);
+            this.splitContainer1.Panel2.Controls.Add(this.NoLightingCheck);
+            this.splitContainer1.Size = new System.Drawing.Size(857, 536);
+            this.splitContainer1.SplitterDistance = 357;
+            this.splitContainer1.TabIndex = 13;
             // 
             // listView1
             // 
+            this.listView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3,
             this.columnHeader4});
-            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.FullRowSelect = true;
             this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(0, 0);
+            this.listView1.Location = new System.Drawing.Point(0, 37);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(314, 515);
+            this.listView1.Size = new System.Drawing.Size(355, 499);
             this.listView1.TabIndex = 3;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
             this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
-            this.listView1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.listView1_KeyPress);
             // 
             // columnHeader1
             // 
@@ -181,17 +211,24 @@
             // 
             // pictureBox1
             // 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pictureBox1.Location = new System.Drawing.Point(0, 37);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(491, 478);
+            this.pictureBox1.Size = new System.Drawing.Size(496, 499);
             this.pictureBox1.TabIndex = 4;
             this.pictureBox1.TabStop = false;
             // 
-            // saveFileDialog1
+            // button4
             // 
-            this.saveFileDialog1.Filter = "PIG Files|*.pig";
+            this.button4.Location = new System.Drawing.Point(405, 8);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 11;
+            this.button4.Text = "Calculate";
+            this.button4.UseVisualStyleBackColor = true;
             // 
             // TransparentCheck
             // 
@@ -202,6 +239,13 @@
             this.TransparentCheck.TabIndex = 6;
             this.TransparentCheck.Text = "Transparent";
             this.TransparentCheck.UseVisualStyleBackColor = true;
+            // 
+            // ColorPreview
+            // 
+            this.ColorPreview.Location = new System.Drawing.Point(374, 13);
+            this.ColorPreview.Name = "ColorPreview";
+            this.ColorPreview.Size = new System.Drawing.Size(25, 14);
+            this.ColorPreview.TabIndex = 10;
             // 
             // SupertransparentCheck
             // 
@@ -223,45 +267,52 @@
             this.NoLightingCheck.Text = "No Lighting";
             this.NoLightingCheck.UseVisualStyleBackColor = true;
             // 
-            // ColorPreview
+            // label2
             // 
-            this.ColorPreview.Location = new System.Drawing.Point(369, 13);
-            this.ColorPreview.Name = "ColorPreview";
-            this.ColorPreview.Size = new System.Drawing.Size(25, 14);
-            this.ColorPreview.TabIndex = 10;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 13);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(58, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Replacing:";
             // 
-            // button4
+            // numericUpDown1
             // 
-            this.button4.Location = new System.Drawing.Point(400, 8);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 11;
-            this.button4.Text = "Calculate";
-            this.button4.UseVisualStyleBackColor = true;
+            this.numericUpDown1.Location = new System.Drawing.Point(76, 11);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            2620,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(44, 20);
+            this.numericUpDown1.TabIndex = 5;
             // 
-            // splitContainer1
+            // button1
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
+            this.button1.Location = new System.Drawing.Point(126, 8);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "Choose...";
+            this.button1.UseVisualStyleBackColor = true;
             // 
-            // splitContainer1.Panel1
+            // PaletteComboBox
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.listView1);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.CompressCheckBox);
-            this.splitContainer1.Panel2.Controls.Add(this.pictureBox1);
-            this.splitContainer1.Panel2.Controls.Add(this.button4);
-            this.splitContainer1.Panel2.Controls.Add(this.TransparentCheck);
-            this.splitContainer1.Panel2.Controls.Add(this.ColorPreview);
-            this.splitContainer1.Panel2.Controls.Add(this.SupertransparentCheck);
-            this.splitContainer1.Panel2.Controls.Add(this.NoLightingCheck);
-            this.splitContainer1.Size = new System.Drawing.Size(809, 515);
-            this.splitContainer1.SplitterDistance = 314;
-            this.splitContainer1.TabIndex = 12;
+            this.PaletteComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.PaletteComboBox.FormattingEnabled = true;
+            this.PaletteComboBox.Items.AddRange(new object[] {
+            "groupa.256",
+            "water.256",
+            "fire.256",
+            "ice.256",
+            "alien1.256",
+            "alien2.256"});
+            this.PaletteComboBox.Location = new System.Drawing.Point(233, 10);
+            this.PaletteComboBox.Name = "PaletteComboBox";
+            this.PaletteComboBox.Size = new System.Drawing.Size(121, 21);
+            this.PaletteComboBox.TabIndex = 7;
+            this.PaletteComboBox.SelectedIndexChanged += new System.EventHandler(this.PaletteComboBox_SelectedIndexChanged);
             // 
             // CompressCheckBox
             // 
@@ -273,23 +324,24 @@
             this.CompressCheckBox.Text = "Compress";
             this.CompressCheckBox.UseVisualStyleBackColor = true;
             // 
-            // PIGEditor
+            // POGEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(809, 515);
+            this.ClientSize = new System.Drawing.Size(857, 536);
             this.Controls.Add(this.splitContainer1);
             this.Menu = this.mainMenu1;
-            this.Name = "PIGEditor";
-            this.Text = "PIGEditor";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PIGEditor_FormClosing);
-            this.Load += new System.EventHandler(this.PIGEditor_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.Name = "POGEditor";
+            this.Text = "POGEditor";
+            this.Load += new System.EventHandler(this.POGEditor_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -298,29 +350,32 @@
 
         private System.Windows.Forms.MainMenu mainMenu1;
         private System.Windows.Forms.MenuItem menuItem1;
-        private System.Windows.Forms.MenuItem SaveMenu;
-        private System.Windows.Forms.MenuItem SaveAsMenu;
+        private System.Windows.Forms.MenuItem menuItem2;
+        private System.Windows.Forms.MenuItem menuItem3;
         private System.Windows.Forms.MenuItem menuItem4;
-        private System.Windows.Forms.MenuItem CloseMenu;
+        private System.Windows.Forms.MenuItem menuItem5;
+        private System.Windows.Forms.MenuItem menuItem6;
+        private System.Windows.Forms.MenuItem menuItem7;
+        private System.Windows.Forms.MenuItem menuItem8;
+        private System.Windows.Forms.MenuItem menuItem9;
+        private System.Windows.Forms.MenuItem menuItem10;
+        private System.Windows.Forms.MenuItem menuItem11;
+        private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button button4;
         private System.Windows.Forms.CheckBox TransparentCheck;
+        private System.Windows.Forms.Label ColorPreview;
         private System.Windows.Forms.CheckBox SupertransparentCheck;
         private System.Windows.Forms.CheckBox NoLightingCheck;
-        private System.Windows.Forms.Label ColorPreview;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.MenuItem menuItem6;
-        private System.Windows.Forms.MenuItem InsertMenu;
-        private System.Windows.Forms.MenuItem ImportMenu;
-        private System.Windows.Forms.MenuItem DeleteMenu;
-        private System.Windows.Forms.MenuItem menuItem10;
-        private System.Windows.Forms.MenuItem ExportMenu;
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox PaletteComboBox;
         private System.Windows.Forms.CheckBox CompressCheckBox;
     }
 }
