@@ -34,6 +34,7 @@ namespace Descent2Workshop
         private Palette palette;
         private string filename;
         public StandardUI host;
+        private bool isLocked = false;
         public PIGEditor(PIGFile data, Palette palette, string filename)
         {
             datafile = data;
@@ -193,6 +194,26 @@ namespace Descent2Workshop
                     }
                 }
             }
+        }
+
+        private void CompressCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 0) return;
+            if (isLocked) return; //will call ourselves in case of an error
+            isLocked = true;
+            bool currentState = !CompressCheckBox.Checked;
+            try
+            {
+                PIGImage img = datafile.Bitmaps[listView1.SelectedIndices[0]];
+                img.RLECompressed = CompressCheckBox.Checked;
+                listView1.Items[listView1.SelectedIndices[0]].SubItems[1].Text = img.GetSize().ToString();
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(string.Format("Error compressing image:\r\n{0}", exc.Message));
+                CompressCheckBox.Checked = currentState;
+            }
+            isLocked = false;
         }
     }
 }

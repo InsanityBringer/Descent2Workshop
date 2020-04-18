@@ -272,6 +272,7 @@
             this.CompressCheckBox.TabIndex = 12;
             this.CompressCheckBox.Text = "Compress";
             this.CompressCheckBox.UseVisualStyleBackColor = true;
+            this.CompressCheckBox.CheckedChanged += new System.EventHandler(this.CompressCheckBox_CheckedChanged);
             // 
             // PIGEditor
             // 
