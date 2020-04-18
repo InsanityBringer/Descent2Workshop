@@ -175,28 +175,10 @@ namespace Descent2Workshop
         /// <returns>True if no error, false if an error occurred.</returns>
         private bool LoadHAMFile(string filename, EditorHAMFile dataFile)
         {
-            FileStream stream;
-            try
+            string statusMsg;
+            if (!FileUtilities.LoadDataFile(filename, dataFile, out statusMsg))
             {
-                stream = File.Open(filename, FileMode.Open);
-            }
-            catch (Exception exc)
-            {
-                AppendConsole(FileUtilities.FileExceptionHandler(exc, "HAM file"));
-                return false;
-            }
-            int res = dataFile.Read(stream);
-
-            stream.Close();
-            stream.Dispose();
-            if (res == -1)
-            {
-                AppendConsole("HAM file has invalid signature. Appears to be a V-HAM file.\r\n");
-                return false;
-            }
-            else if (res == -2)
-            {
-                AppendConsole("HAM file is unknown version.\r\n");
+                MessageBox.Show(statusMsg, "Error loading HAM file.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             return true;
@@ -210,28 +192,10 @@ namespace Descent2Workshop
         /// <returns>True if no error, false if an error occurred.</returns>
         private bool LoadHXMFile(string filename, EditorHXMFile dataFile)
         {
-            FileStream stream;
-            try
+            string statusMsg;
+            if (!FileUtilities.LoadDataFile(filename, dataFile, out statusMsg))
             {
-                stream = File.Open(filename, FileMode.Open);
-            }
-            catch (Exception exc)
-            {
-                AppendConsole(FileUtilities.FileExceptionHandler(exc, "HXM file"));
-                return false;
-            }
-            int res = dataFile.Read(stream);
-
-            stream.Close();
-            stream.Dispose();
-            if (res == -1)
-            {
-                AppendConsole("HXM file has unknown signature\r\n");
-                return false;
-            }
-            else if (res == -2)
-            {
-                AppendConsole("HXM file is unknown version.\r\n");
+                MessageBox.Show(statusMsg, "Error loading HXM file.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             return true;
@@ -245,28 +209,10 @@ namespace Descent2Workshop
         /// <returns>True if no error, false if an error occurred.</returns>
         private bool LoadVHAMFile(string filename, EditorVHAMFile dataFile)
         {
-            FileStream stream;
-            try
+            string statusMsg;
+            if (!FileUtilities.LoadDataFile(filename, dataFile, out statusMsg))
             {
-                stream = File.Open(filename, FileMode.Open);
-            }
-            catch (Exception exc)
-            {
-                AppendConsole(FileUtilities.FileExceptionHandler(exc, "VHAM file"));
-                return false;
-            }
-            int res = dataFile.Read(stream);
-
-            stream.Close();
-            stream.Dispose();
-            if (res == -1)
-            {
-                AppendConsole("V-HAM file has invalid signature.\r\n");
-                return false;
-            }
-            else if (res == -2)
-            {
-                AppendConsole("V-HAM file is unknown version.\r\n");
+                MessageBox.Show(statusMsg, "Error loading V-HAM file.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             return true;

@@ -1126,7 +1126,7 @@ namespace Descent2Workshop
             try
             {
                 stream = File.Open(filename, FileMode.Create);
-                datafile.Write(stream, false);
+                datafile.Write(stream);
                 stream.Close();
                 stream.Dispose();
             }

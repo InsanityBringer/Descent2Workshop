@@ -108,7 +108,7 @@ namespace Descent2Workshop
         public void Draw()
         {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            if (model.Data.InterpreterData.Length == 0) return;
+            if (model.InterpreterData.Length == 0) return;
             GL.CullFace(CullFaceMode.Front);
             if (wireframe)
                 GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
@@ -149,7 +149,7 @@ namespace Descent2Workshop
 
             //Console.WriteLine("x: {0} y: {1} z: {2} angle: {3} pitch: {4}", cameraPoint.x, cameraPoint.y, cameraPoint.z, angle, pitch);
 
-            Execute(model.Data.InterpreterData, 0, model, model.Submodels[0]);
+            Execute(model.InterpreterData, 0, model, model.Submodels[0]);
             //DrawSubobject(model, model.submodels[0]);
 
             if (ShowRadius)

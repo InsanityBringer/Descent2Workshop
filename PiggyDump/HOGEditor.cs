@@ -42,7 +42,7 @@ namespace Descent2Workshop
             InitializeComponent();
             datafile = data;
             this.host = host;
-            this.Text = string.Format("{0} - Hog Editor", datafile.filename);
+            this.Text = string.Format("{0} - Hog Editor", datafile.Filename);
         }
 
         private void HOGEditor_Load(object sender, EventArgs e)
@@ -163,7 +163,7 @@ namespace Descent2Workshop
                 }
                 else
                 {
-                    this.Text = string.Format("{0} - Hog Editor", datafile.filename);
+                    this.Text = string.Format("{0} - Hog Editor", datafile.Filename);
                 }
             }
         }
@@ -173,7 +173,7 @@ namespace Descent2Workshop
             int err = 0;
             try
             {
-                datafile.Write(datafile.filename);
+                datafile.Write(datafile.Filename);
             }
             catch (Exception exc)
             {
