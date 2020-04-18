@@ -52,7 +52,7 @@
             this.SupertransparentCheck = new System.Windows.Forms.CheckBox();
             this.NoLightingCheck = new System.Windows.Forms.CheckBox();
             this.ColorPreview = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
+            this.CalculateAverageButton = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.CompressCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -230,14 +230,15 @@
             this.ColorPreview.Size = new System.Drawing.Size(25, 14);
             this.ColorPreview.TabIndex = 10;
             // 
-            // button4
+            // CalculateAverageButton
             // 
-            this.button4.Location = new System.Drawing.Point(400, 8);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 11;
-            this.button4.Text = "Calculate";
-            this.button4.UseVisualStyleBackColor = true;
+            this.CalculateAverageButton.Location = new System.Drawing.Point(400, 8);
+            this.CalculateAverageButton.Name = "CalculateAverageButton";
+            this.CalculateAverageButton.Size = new System.Drawing.Size(75, 23);
+            this.CalculateAverageButton.TabIndex = 11;
+            this.CalculateAverageButton.Text = "Calculate";
+            this.CalculateAverageButton.UseVisualStyleBackColor = true;
+            this.CalculateAverageButton.Click += new System.EventHandler(this.CalculateAverageButton_Click);
             // 
             // splitContainer1
             // 
@@ -254,7 +255,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.CompressCheckBox);
             this.splitContainer1.Panel2.Controls.Add(this.pictureBox1);
-            this.splitContainer1.Panel2.Controls.Add(this.button4);
+            this.splitContainer1.Panel2.Controls.Add(this.CalculateAverageButton);
             this.splitContainer1.Panel2.Controls.Add(this.TransparentCheck);
             this.splitContainer1.Panel2.Controls.Add(this.ColorPreview);
             this.splitContainer1.Panel2.Controls.Add(this.SupertransparentCheck);
@@ -313,7 +314,7 @@
         private System.Windows.Forms.CheckBox SupertransparentCheck;
         private System.Windows.Forms.CheckBox NoLightingCheck;
         private System.Windows.Forms.Label ColorPreview;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button CalculateAverageButton;
         private System.Windows.Forms.MenuItem menuItem6;
         private System.Windows.Forms.MenuItem InsertMenu;
         private System.Windows.Forms.MenuItem ImportMenu;

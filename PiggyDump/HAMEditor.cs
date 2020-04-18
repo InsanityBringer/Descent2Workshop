@@ -424,7 +424,7 @@ namespace Descent2Workshop
                 pbGagueLores.Image = null;
                 temp.Dispose();
             }
-            pbGagueLores.Image = PiggyBitmapConverter.GetBitmap(datafile.piggyFile, palette, gague);
+            pbGagueLores.Image = PiggyBitmapUtilities.GetBitmap(datafile.piggyFile, palette, gague);
 
             if (pbGagueHires.Image != null)
             {
@@ -432,7 +432,7 @@ namespace Descent2Workshop
                 pbGagueHires.Image = null;
                 temp.Dispose();
             }
-            pbGagueHires.Image = PiggyBitmapConverter.GetBitmap(datafile.piggyFile, palette, hiresgague);
+            pbGagueHires.Image = PiggyBitmapUtilities.GetBitmap(datafile.piggyFile, palette, hiresgague);
         }
 
         public void UpdateVClipPanel(int num)
@@ -569,8 +569,8 @@ namespace Descent2Workshop
 
         private void UpdateShipTextures(int id)
         {
-            UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, palette, datafile.multiplayerBitmaps[id * 2]), pbWeaponTexture);
-            UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, palette, datafile.multiplayerBitmaps[id * 2 + 1]), pbWingTex);
+            UpdatePictureBox(PiggyBitmapUtilities.GetBitmap(datafile.piggyFile, palette, datafile.multiplayerBitmaps[id * 2]), pbWeaponTexture);
+            UpdatePictureBox(PiggyBitmapUtilities.GetBitmap(datafile.piggyFile, palette, datafile.multiplayerBitmaps[id * 2 + 1]), pbWingTex);
         }
 
         private void UpdateWallFrame(int frame)
@@ -584,7 +584,7 @@ namespace Descent2Workshop
                 pbWallAnimPreview.Image = null;
                 temp.Dispose();
             }
-            pbWallAnimPreview.Image = PiggyBitmapConverter.GetBitmap(datafile.piggyFile, palette, datafile.Textures[animation.Frames[frame]]);
+            pbWallAnimPreview.Image = PiggyBitmapUtilities.GetBitmap(datafile.piggyFile, palette, datafile.Textures[animation.Frames[frame]]);
         }
 
         private void UpdateXLATPanel(int num)
@@ -598,7 +598,7 @@ namespace Descent2Workshop
                 pbBitmapSrc.Image = null;
                 temp.Dispose();
             }
-            pbBitmapSrc.Image = PiggyBitmapConverter.GetBitmap(datafile.piggyFile, palette, num);
+            pbBitmapSrc.Image = PiggyBitmapUtilities.GetBitmap(datafile.piggyFile, palette, num);
 
             if (pbBitmapDest.Image != null)
             {
@@ -606,7 +606,7 @@ namespace Descent2Workshop
                 pbBitmapDest.Image = null;
                 temp.Dispose();
             }
-            pbBitmapDest.Image = PiggyBitmapConverter.GetBitmap(datafile.piggyFile, palette, dst);
+            pbBitmapDest.Image = PiggyBitmapUtilities.GetBitmap(datafile.piggyFile, palette, dst);
         }
 
         private void UpdateCockpitPanel(int num)
@@ -620,7 +620,7 @@ namespace Descent2Workshop
                 pbCockpit.Image = null;
                 temp.Dispose();
             }
-            pbCockpit.Image = PiggyBitmapConverter.GetBitmap(datafile.piggyFile, palette, cockpit);
+            pbCockpit.Image = PiggyBitmapUtilities.GetBitmap(datafile.piggyFile, palette, cockpit);
         }
 
         private void UpdateSoundPanel(int num)
@@ -675,17 +675,17 @@ namespace Descent2Workshop
                     case "7":
                         txtGagueLores.Text = (value).ToString();
                         datafile.Gauges[ElementNumber] = (ushort)(value);
-                        UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, palette, value), pbGagueLores);
+                        UpdatePictureBox(PiggyBitmapUtilities.GetBitmap(datafile.piggyFile, palette, value), pbGagueLores);
                         break;
                     case "8":
                         txtGagueHires.Text = (value).ToString();
                         datafile.GaugesHires[ElementNumber] = (ushort)(value);
-                        UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, palette, value), pbGagueHires);
+                        UpdatePictureBox(PiggyBitmapUtilities.GetBitmap(datafile.piggyFile, palette, value), pbGagueHires);
                         break;
                     case "9":
                         txtCockpitID.Text = (value).ToString();
                         datafile.Cockpits[ElementNumber] = (ushort)(value);
-                        UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, palette, value), pbCockpit);
+                        UpdatePictureBox(PiggyBitmapUtilities.GetBitmap(datafile.piggyFile, palette, value), pbCockpit);
                         break;
                 }
                 isLocked = false;
@@ -957,11 +957,11 @@ namespace Descent2Workshop
                 {
                     case "1":
                         datafile.Gauges[ElementNumber] = value;
-                        UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, palette, value - 1), pbGagueLores);
+                        UpdatePictureBox(PiggyBitmapUtilities.GetBitmap(datafile.piggyFile, palette, value - 1), pbGagueLores);
                         break;
                     case "2":
                         datafile.GaugesHires[ElementNumber] = value;
-                        UpdatePictureBox(PiggyBitmapConverter.GetBitmap(datafile.piggyFile, palette, value - 1), pbGagueHires);
+                        UpdatePictureBox(PiggyBitmapUtilities.GetBitmap(datafile.piggyFile, palette, value - 1), pbGagueHires);
                         break;
                 }
             }

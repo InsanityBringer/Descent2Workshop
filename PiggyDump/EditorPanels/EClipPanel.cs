@@ -90,7 +90,7 @@ namespace Descent2Workshop.EditorPanels
                 pbEffectFramePreview.Image = null;
                 temp.Dispose();
             }
-            pbEffectFramePreview.Image = PiggyBitmapConverter.GetBitmap(piggyFile, palette, clip.vc.Frames[frame]);
+            pbEffectFramePreview.Image = PiggyBitmapUtilities.GetBitmap(piggyFile, palette, clip.vc.Frames[frame]);
         }
 
         private void EClipFixedProperty_TextChanged(object sender, EventArgs e)

@@ -91,12 +91,12 @@ namespace Descent2Workshop
                 temp.Dispose();
             }
             PIGImage image = datafile.Bitmaps[listView1.SelectedIndices[0]];
-            pictureBox1.Image = PiggyBitmapConverter.GetBitmap(datafile.Bitmaps[id], currentPalette);
+            pictureBox1.Image = PiggyBitmapUtilities.GetBitmap(datafile.Bitmaps[id], currentPalette);
             TransparentCheck.Checked = image.Transparent;
             SupertransparentCheck.Checked = image.SuperTransparent;
             NoLightingCheck.Checked = image.NoLighting;
             CompressCheckBox.Checked = image.RLECompressed;
-            Color color = Color.FromArgb(currentPalette.GetDrawingColorH(image.averageIndex));
+            Color color = Color.FromArgb(currentPalette.GetRGBAValue(image.averageIndex));
             ColorPreview.BackColor = color;
             pictureBox1.Refresh();
         }

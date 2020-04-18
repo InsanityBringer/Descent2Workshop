@@ -76,15 +76,17 @@ namespace Descent2Workshop
                 pictureBox1.Image = null;
                 temp.Dispose();
             }
+            isLocked = true;
             PIGImage image = datafile.Bitmaps[listView1.SelectedIndices[0]];
-            pictureBox1.Image = PiggyBitmapConverter.GetBitmap(datafile, palette, listView1.SelectedIndices[0]);
+            pictureBox1.Image = PiggyBitmapUtilities.GetBitmap(datafile, palette, listView1.SelectedIndices[0]);
             TransparentCheck.Checked = image.Transparent;
             SupertransparentCheck.Checked = image.SuperTransparent;
             NoLightingCheck.Checked = image.NoLighting;
             CompressCheckBox.Checked = image.RLECompressed;
-            Color color = Color.FromArgb(palette.GetDrawingColorH(image.averageIndex));
+            Color color = Color.FromArgb(palette.GetRGBAValue(image.averageIndex));
             ColorPreview.BackColor = color;
             pictureBox1.Refresh();
+            isLocked = false;
         }
 
         private void PIGEditor_FormClosing(object sender, FormClosingEventArgs e)
@@ -178,7 +180,7 @@ namespace Descent2Workshop
                     string directory = Path.GetDirectoryName(saveFileDialog1.FileName);
                     foreach (int index in listView1.SelectedIndices)
                     {
-                        Bitmap img = PiggyBitmapConverter.GetBitmap(datafile, palette, index);
+                        Bitmap img = PiggyBitmapUtilities.GetBitmap(datafile, palette, index);
                         string newpath = directory + Path.DirectorySeparatorChar + ImageFilename(index) + ".png";
                         img.Save(newpath);
                         img.Dispose();
@@ -188,7 +190,7 @@ namespace Descent2Workshop
                 {
                     if (saveFileDialog1.FileName != "")
                     {
-                        Bitmap img = PiggyBitmapConverter.GetBitmap(datafile, palette, listView1.SelectedIndices[0]);
+                        Bitmap img = PiggyBitmapUtilities.GetBitmap(datafile, palette, listView1.SelectedIndices[0]);
                         img.Save(saveFileDialog1.FileName);
                         img.Dispose();
                     }
@@ -214,6 +216,22 @@ namespace Descent2Workshop
                 CompressCheckBox.Checked = currentState;
             }
             isLocked = false;
+        }
+
+        private void CalculateAverageButton_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 0) return;
+            PIGImage image;
+            for (int i = 0; i < listView1.SelectedItems.Count; i++)
+            {
+                image = datafile.Bitmaps[listView1.SelectedIndices[i]];
+                PiggyBitmapUtilities.SetAverageColor(image, palette);
+                
+            }
+            image = datafile.Bitmaps[listView1.SelectedIndices[0]];
+            Color color = Color.FromArgb(palette.GetRGBAValue(image.averageIndex));
+            ColorPreview.BackColor = color;
+            pictureBox1.Refresh();
         }
     }
 }

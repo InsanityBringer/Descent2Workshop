@@ -38,7 +38,7 @@ namespace Descent2Workshop.EditorPanels
                 pbAnimFramePreview.Image = null;
                 temp.Dispose();
             }
-            pbAnimFramePreview.Image = PiggyBitmapConverter.GetBitmap(piggyFile, palette, clip.Frames[frame]);
+            pbAnimFramePreview.Image = PiggyBitmapUtilities.GetBitmap(piggyFile, palette, clip.Frames[frame]);
         }
 
         public void Update(VClip clip, PIGFile piggyFile, Palette palette)

@@ -70,7 +70,7 @@ namespace Descent2Workshop.EditorPanels
             cbTexBlueGoal.Checked = info.BlueGoal;
             cbTexHoardGoal.Checked = info.HoardGoal;
 
-            UpdatePictureBox(PiggyBitmapConverter.GetBitmap(piggyFile, palette, datafile.Textures[textureID]), pbTexPrev);
+            UpdatePictureBox(PiggyBitmapUtilities.GetBitmap(piggyFile, palette, datafile.Textures[textureID]), pbTexPrev);
             isLocked = false;
         }
 
@@ -100,7 +100,7 @@ namespace Descent2Workshop.EditorPanels
                 {
                     case "0":
                         datafile.Textures[textureID] = ushort.Parse(textBox.Text);
-                        UpdatePictureBox(PiggyBitmapConverter.GetBitmap(piggyFile, palette, datafile.Textures[textureID]), pbTexPrev);
+                        UpdatePictureBox(PiggyBitmapUtilities.GetBitmap(piggyFile, palette, datafile.Textures[textureID]), pbTexPrev);
                         break;
                     case "1":
                         info.Lighting = double.Parse(textBox.Text);
@@ -171,7 +171,7 @@ namespace Descent2Workshop.EditorPanels
                 isLocked = true;
                 int value = selector.Selection;
                 datafile.Textures[textureID] = (ushort)value;
-                UpdatePictureBox(PiggyBitmapConverter.GetBitmap(piggyFile, palette, value), pbTexPrev);
+                UpdatePictureBox(PiggyBitmapUtilities.GetBitmap(piggyFile, palette, value), pbTexPrev);
                 txtTexID.Text = value.ToString();
                 isLocked = false;
             }

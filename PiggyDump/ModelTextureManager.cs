@@ -66,11 +66,11 @@ namespace Descent2Workshop
                 if (hamFile.EClipNameMapping.ContainsKey(textureName.ToLower()))
                 {
                     clip = hamFile.EClipNameMapping[textureName.ToLower()];
-                    image = PiggyBitmapConverter.GetBitmap(pigFile, palette, clip.vc.Frames[0]);
+                    image = PiggyBitmapUtilities.GetBitmap(pigFile, palette, clip.vc.Frames[0]);
                 }
                 else
                 {
-                    image = PiggyBitmapConverter.GetBitmap(pigFile, palette, textureName);
+                    image = PiggyBitmapUtilities.GetBitmap(pigFile, palette, textureName);
                 }
                 textureIDs.Add(LoadTexture(image));
             }
@@ -84,7 +84,7 @@ namespace Descent2Workshop
             Bitmap image;
             foreach (string textureName in model.TextureList)
             {
-                image = PiggyBitmapConverter.GetBitmap(pigFile, palette, textureName);
+                image = PiggyBitmapUtilities.GetBitmap(pigFile, palette, textureName);
                 textureIDs.Add(LoadTexture(image));
             }
 

@@ -196,7 +196,7 @@
     <Compile Include="HXMEditor.Designer.cs">
       <DependentUpon>HXMEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="PiggyBitmapConverter.cs" />
+    <Compile Include="PiggyBitmapUtilities.cs" />
     <Compile Include="POGEditor.cs">
       <SubType>Form</SubType>
     </Compile>
