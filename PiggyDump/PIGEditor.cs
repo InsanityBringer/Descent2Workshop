@@ -21,6 +21,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
@@ -44,22 +45,30 @@ namespace Descent2Workshop
             this.palette = palette;
         }
 
+        private ListViewItem GeneratePiggyEntry(int i)
+        {
+            PIGImage image = datafile.Bitmaps[i];
+            ListViewItem lvi = new ListViewItem(image.Name);
+            lvi.SubItems.Add(i.ToString());
+            lvi.SubItems.Add(image.GetSize().ToString());
+            lvi.SubItems.Add(string.Format("{0}x{1}", image.Width, image.Height));
+            if (image.IsAnimated)
+            {
+                lvi.SubItems.Add(image.Frame.ToString());
+            }
+            else
+            {
+                lvi.SubItems.Add("-1");
+            }
+
+            return lvi;
+        }
+
         private void PIGEditor_Load(object sender, EventArgs e)
         {
             for (int x = 0; x < datafile.Bitmaps.Count; x++)
             {
-                PIGImage image = (PIGImage)datafile.Bitmaps[x];
-                ListViewItem lvi = new ListViewItem(image.name);
-                lvi.SubItems.Add(image.GetSize().ToString());
-                if (image.isAnimated)
-                {
-                    lvi.SubItems.Add(image.frame.ToString());
-                }
-                else
-                {
-                    lvi.SubItems.Add("-1");
-                }
-                lvi.SubItems.Add(x.ToString());
+                ListViewItem lvi = GeneratePiggyEntry(x);
                 listView1.Items.Add(lvi);
             }
         }
@@ -83,7 +92,7 @@ namespace Descent2Workshop
             SupertransparentCheck.Checked = image.SuperTransparent;
             NoLightingCheck.Checked = image.NoLighting;
             CompressCheckBox.Checked = image.RLECompressed;
-            Color color = Color.FromArgb(palette.GetRGBAValue(image.averageIndex));
+            Color color = Color.FromArgb(palette.GetRGBAValue(image.AverageIndex));
             ColorPreview.BackColor = color;
             pictureBox1.Refresh();
             isLocked = false;
@@ -131,18 +140,55 @@ namespace Descent2Workshop
                 else
                     DeleteAt(index);
             }
-            //Fix the indicies of all items
-            for (int i = index-1; i < listView1.Items.Count; i++)
-            {
-                ListViewItem item = listView1.Items[i];
-                item.SubItems[3].Text = i.ToString();
-            }
+            RebuildListFrom(index);
         }
 
         private void DeleteAt(int index)
         {
             listView1.Items.RemoveAt(index);
             datafile.Bitmaps.RemoveAt(index);
+        }
+
+        private void RebuildItem(ListViewItem item)
+        {
+            PIGImage image;
+            int i = item.Index;
+
+            image = datafile.Bitmaps[i];
+            item.SubItems[1].Text = i.ToString();
+            /*item.SubItems[1].Text = image.Name;
+            item.SubItems[2].Text = image.GetSize().ToString();
+            item.SubItems[3].Text = string.Format("{0}x{1}", image.Width, image.Height);
+            if (image.IsAnimated)
+            {
+                item.SubItems[4].Text = image.Frame.ToString();
+            }
+            else
+            {
+                item.SubItems[4].Text = "-1";
+            }*/
+        }
+
+        private void RebuildListFrom(int index)
+        {
+            //PIGImage image;
+            for (int i = index; i < listView1.Items.Count; i++)
+            {
+                //image = datafile.Bitmaps[i];
+                ListViewItem item = listView1.Items[i];
+                item.SubItems[1].Text = i.ToString();
+                /*item.SubItems[0].Text = image.Name;
+                item.SubItems[2].Text = image.GetSize().ToString();
+                item.SubItems[3].Text = string.Format("{0}x{1}", image.Width, image.Height);
+                if (image.IsAnimated)
+                {
+                    item.SubItems[4].Text = image.Frame.ToString();
+                }
+                else
+                {
+                    item.SubItems[4].Text = "-1";
+                }*/
+            }
         }
 
         private void listView1_KeyPress(object sender, KeyPressEventArgs e)
@@ -152,13 +198,13 @@ namespace Descent2Workshop
         private string ImageFilename(int index)
         {
             PIGImage image = datafile.Bitmaps[index];
-            if (!image.isAnimated)
+            if (!image.IsAnimated)
             {
-                return image.name;
+                return image.Name;
             }
             else
             {
-                return String.Format("{0}+{1}", image.name, image.frame);
+                return String.Format("{0}+{1}", image.Name, image.DFlags);
             }
         }
 
@@ -229,9 +275,95 @@ namespace Descent2Workshop
                 
             }
             image = datafile.Bitmaps[listView1.SelectedIndices[0]];
-            Color color = Color.FromArgb(palette.GetRGBAValue(image.averageIndex));
+            Color color = Color.FromArgb(palette.GetRGBAValue(image.AverageIndex));
             ColorPreview.BackColor = color;
             pictureBox1.Refresh();
+        }
+
+        private void InsertMenu_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.Multiselect = true;
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                foreach (string name in openFileDialog1.FileNames)
+                {
+                    Bitmap img = new Bitmap(name);
+                    PIGImage bitmap = PiggyBitmapUtilities.CreatePIGImage(img, palette, Path.GetFileName(name).Substring(0, Math.Min(Path.GetFileName(name).Length, 8)));
+                    datafile.Bitmaps.Add(bitmap);
+                    ListViewItem lvi = GeneratePiggyEntry(datafile.Bitmaps.Count - 1);
+                    listView1.Items.Add(lvi);
+                    img.Dispose();
+                }
+            }
+        }
+
+        private void MoveUpMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedIndices.Count == 0) return;
+            int baseIndex = int.MaxValue;
+            int index;
+            PIGImage image;
+            ListViewItem temp;
+
+            int[] test = new int[listView1.SelectedIndices.Count];
+            listView1.SelectedIndices.CopyTo(test, 0);
+            Array.Sort(test);
+            for (int i = 0; i < test.Length; i++)
+            {
+                //This isn't the most elegant approach, but it should preserve relative ordering
+                index = test[i];
+                if (index < baseIndex) baseIndex = index;
+                image = datafile.Bitmaps[index];
+                if (index <= 1) continue; //Don't allow moving the bogus image, or allow swapping the bogus image. 
+                //Remove the old image at its position
+                datafile.Bitmaps.RemoveAt(index);
+                //Reinsert the image at its new position
+                datafile.Bitmaps.Insert(index - 1, image);
+                //Do the same for the list view item
+                temp = listView1.Items[index];
+                listView1.Items.RemoveAt(index);
+                listView1.Items.Insert(index - 1, temp);
+                RebuildItem(temp);
+                RebuildItem(listView1.Items[index]);
+            }
+        }
+
+        private void MoveDownMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedIndices.Count == 0) return;
+            int baseIndex = int.MaxValue;
+            int index;
+            PIGImage image;
+            ListViewItem temp;
+
+            int[] test = new int[listView1.SelectedIndices.Count];
+            listView1.SelectedIndices.CopyTo(test, 0);
+            Array.Sort(test);
+            for (int i = test.Length - 1; i >= 0; i--)
+            {
+                //This isn't the most elegant approach, but it should preserve relative ordering
+                index = test[i];
+                if (index < baseIndex) baseIndex = index;
+                image = datafile.Bitmaps[index];
+                if (index == 0) continue; //Don't allow moving the bogus image
+                if (index + 1 >= datafile.Bitmaps.Count) continue; //Don't allow moving past the end of the list
+                //Remove the old image at its position
+                datafile.Bitmaps.RemoveAt(index);
+                //Reinsert the image at its new position
+                datafile.Bitmaps.Insert(index + 1, image);
+                //Do the same for the list view item
+                temp = listView1.Items[index];
+                listView1.Items.RemoveAt(index);
+                listView1.Items.Insert(index + 1, temp);
+                RebuildItem(temp);
+                RebuildItem(listView1.Items[index]);
+            }
+        }
+
+        private void listView1_AfterLabelEdit(object sender, LabelEditEventArgs e)
+        {
+            datafile.Bitmaps[e.Item].Name = e.Label;
+            listView1.Items[e.Item].SubItems[0].Text = datafile.Bitmaps[e.Item].Name; //In case it got changed
         }
     }
 }

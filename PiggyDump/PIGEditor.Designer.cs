@@ -39,13 +39,12 @@
             this.InsertMenu = new System.Windows.Forms.MenuItem();
             this.ImportMenu = new System.Windows.Forms.MenuItem();
             this.DeleteMenu = new System.Windows.Forms.MenuItem();
-            this.menuItem10 = new System.Windows.Forms.MenuItem();
             this.ExportMenu = new System.Windows.Forms.MenuItem();
             this.listView1 = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.NameColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.SizeColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.FrameColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.IndexColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.TransparentCheck = new System.Windows.Forms.CheckBox();
@@ -55,6 +54,15 @@
             this.CalculateAverageButton = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.CompressCheckBox = new System.Windows.Forms.CheckBox();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.ResolutionColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.menuItem2 = new System.Windows.Forms.MenuItem();
+            this.CutMenuItem = new System.Windows.Forms.MenuItem();
+            this.CopyMenuItem = new System.Windows.Forms.MenuItem();
+            this.PasteMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem8 = new System.Windows.Forms.MenuItem();
+            this.MoveUpMenuItem = new System.Windows.Forms.MenuItem();
+            this.MoveDownMenuItem = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -66,7 +74,8 @@
             // 
             this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuItem1,
-            this.menuItem6});
+            this.menuItem6,
+            this.menuItem2});
             // 
             // menuItem1
             // 
@@ -81,6 +90,7 @@
             // SaveMenu
             // 
             this.SaveMenu.Index = 0;
+            this.SaveMenu.Shortcut = System.Windows.Forms.Shortcut.CtrlS;
             this.SaveMenu.Text = "Save";
             // 
             // SaveAsMenu
@@ -103,17 +113,20 @@
             // 
             this.menuItem6.Index = 1;
             this.menuItem6.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.InsertMenu,
-            this.ImportMenu,
+            this.CutMenuItem,
+            this.CopyMenuItem,
+            this.PasteMenuItem,
             this.DeleteMenu,
-            this.menuItem10,
-            this.ExportMenu});
+            this.menuItem8,
+            this.MoveUpMenuItem,
+            this.MoveDownMenuItem});
             this.menuItem6.Text = "Edit";
             // 
             // InsertMenu
             // 
             this.InsertMenu.Index = 0;
             this.InsertMenu.Text = "Insert...";
+            this.InsertMenu.Click += new System.EventHandler(this.InsertMenu_Click);
             // 
             // ImportMenu
             // 
@@ -122,70 +135,68 @@
             // 
             // DeleteMenu
             // 
-            this.DeleteMenu.Index = 2;
+            this.DeleteMenu.Index = 3;
+            this.DeleteMenu.Shortcut = System.Windows.Forms.Shortcut.Del;
             this.DeleteMenu.Text = "Delete";
             this.DeleteMenu.Click += new System.EventHandler(this.DeleteMenu_Click);
             // 
-            // menuItem10
-            // 
-            this.menuItem10.Index = 3;
-            this.menuItem10.Text = "-";
-            // 
             // ExportMenu
             // 
-            this.ExportMenu.Index = 4;
+            this.ExportMenu.Index = 2;
             this.ExportMenu.Text = "Export...";
             this.ExportMenu.Click += new System.EventHandler(this.ExportMenu_Click);
             // 
             // listView1
             // 
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3,
-            this.columnHeader4});
+            this.NameColumnHeader,
+            this.IndexColumnHeader,
+            this.SizeColumnHeader,
+            this.ResolutionColumnHeader,
+            this.FrameColumnHeader});
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.FullRowSelect = true;
             this.listView1.HideSelection = false;
+            this.listView1.LabelEdit = true;
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(314, 515);
+            this.listView1.Size = new System.Drawing.Size(314, 494);
             this.listView1.TabIndex = 3;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.listView1_AfterLabelEdit);
             this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             this.listView1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.listView1_KeyPress);
             // 
-            // columnHeader1
+            // NameColumnHeader
             // 
-            this.columnHeader1.DisplayIndex = 1;
-            this.columnHeader1.Text = "Name";
-            this.columnHeader1.Width = 80;
+            this.NameColumnHeader.Text = "Name";
+            this.NameColumnHeader.Width = 80;
             // 
-            // columnHeader2
+            // SizeColumnHeader
             // 
-            this.columnHeader2.DisplayIndex = 2;
-            this.columnHeader2.Text = "Size";
+            this.SizeColumnHeader.Text = "Size";
+            this.SizeColumnHeader.Width = 50;
             // 
-            // columnHeader3
+            // FrameColumnHeader
             // 
-            this.columnHeader3.DisplayIndex = 3;
-            this.columnHeader3.Text = "Animation";
-            this.columnHeader3.Width = 90;
+            this.FrameColumnHeader.Text = "Frame";
+            this.FrameColumnHeader.Width = 50;
             // 
-            // columnHeader4
+            // IndexColumnHeader
             // 
-            this.columnHeader4.DisplayIndex = 0;
-            this.columnHeader4.Text = "#";
-            this.columnHeader4.Width = 40;
+            this.IndexColumnHeader.Text = "#";
+            this.IndexColumnHeader.Width = 40;
             // 
             // pictureBox1
             // 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 37);
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(491, 478);
+            this.pictureBox1.Size = new System.Drawing.Size(491, 453);
             this.pictureBox1.TabIndex = 4;
             this.pictureBox1.TabStop = false;
             // 
@@ -195,8 +206,9 @@
             // 
             // TransparentCheck
             // 
+            this.TransparentCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.TransparentCheck.AutoSize = true;
-            this.TransparentCheck.Location = new System.Drawing.Point(3, 12);
+            this.TransparentCheck.Location = new System.Drawing.Point(7, 463);
             this.TransparentCheck.Name = "TransparentCheck";
             this.TransparentCheck.Size = new System.Drawing.Size(83, 17);
             this.TransparentCheck.TabIndex = 6;
@@ -205,8 +217,9 @@
             // 
             // SupertransparentCheck
             // 
+            this.SupertransparentCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.SupertransparentCheck.AutoSize = true;
-            this.SupertransparentCheck.Location = new System.Drawing.Point(92, 12);
+            this.SupertransparentCheck.Location = new System.Drawing.Point(96, 463);
             this.SupertransparentCheck.Name = "SupertransparentCheck";
             this.SupertransparentCheck.Size = new System.Drawing.Size(107, 17);
             this.SupertransparentCheck.TabIndex = 7;
@@ -215,8 +228,9 @@
             // 
             // NoLightingCheck
             // 
+            this.NoLightingCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.NoLightingCheck.AutoSize = true;
-            this.NoLightingCheck.Location = new System.Drawing.Point(205, 12);
+            this.NoLightingCheck.Location = new System.Drawing.Point(209, 463);
             this.NoLightingCheck.Name = "NoLightingCheck";
             this.NoLightingCheck.Size = new System.Drawing.Size(80, 17);
             this.NoLightingCheck.TabIndex = 8;
@@ -225,14 +239,16 @@
             // 
             // ColorPreview
             // 
-            this.ColorPreview.Location = new System.Drawing.Point(369, 13);
+            this.ColorPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.ColorPreview.Location = new System.Drawing.Point(373, 464);
             this.ColorPreview.Name = "ColorPreview";
             this.ColorPreview.Size = new System.Drawing.Size(25, 14);
             this.ColorPreview.TabIndex = 10;
             // 
             // CalculateAverageButton
             // 
-            this.CalculateAverageButton.Location = new System.Drawing.Point(400, 8);
+            this.CalculateAverageButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.CalculateAverageButton.Location = new System.Drawing.Point(404, 459);
             this.CalculateAverageButton.Name = "CalculateAverageButton";
             this.CalculateAverageButton.Size = new System.Drawing.Size(75, 23);
             this.CalculateAverageButton.TabIndex = 11;
@@ -260,14 +276,15 @@
             this.splitContainer1.Panel2.Controls.Add(this.ColorPreview);
             this.splitContainer1.Panel2.Controls.Add(this.SupertransparentCheck);
             this.splitContainer1.Panel2.Controls.Add(this.NoLightingCheck);
-            this.splitContainer1.Size = new System.Drawing.Size(809, 515);
+            this.splitContainer1.Size = new System.Drawing.Size(809, 494);
             this.splitContainer1.SplitterDistance = 314;
             this.splitContainer1.TabIndex = 12;
             // 
             // CompressCheckBox
             // 
+            this.CompressCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.CompressCheckBox.AutoSize = true;
-            this.CompressCheckBox.Location = new System.Drawing.Point(291, 12);
+            this.CompressCheckBox.Location = new System.Drawing.Point(295, 463);
             this.CompressCheckBox.Name = "CompressCheckBox";
             this.CompressCheckBox.Size = new System.Drawing.Size(72, 17);
             this.CompressCheckBox.TabIndex = 12;
@@ -275,11 +292,65 @@
             this.CompressCheckBox.UseVisualStyleBackColor = true;
             this.CompressCheckBox.CheckedChanged += new System.EventHandler(this.CompressCheckBox_CheckedChanged);
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // ResolutionColumnHeader
+            // 
+            this.ResolutionColumnHeader.Text = "Res";
+            // 
+            // menuItem2
+            // 
+            this.menuItem2.Index = 2;
+            this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.InsertMenu,
+            this.ImportMenu,
+            this.ExportMenu});
+            this.menuItem2.Text = "Import";
+            // 
+            // CutMenuItem
+            // 
+            this.CutMenuItem.Index = 0;
+            this.CutMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlX;
+            this.CutMenuItem.Text = "Cut";
+            // 
+            // CopyMenuItem
+            // 
+            this.CopyMenuItem.Index = 1;
+            this.CopyMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlC;
+            this.CopyMenuItem.Text = "Copy";
+            // 
+            // PasteMenuItem
+            // 
+            this.PasteMenuItem.Index = 2;
+            this.PasteMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlV;
+            this.PasteMenuItem.Text = "Paste";
+            // 
+            // menuItem8
+            // 
+            this.menuItem8.Index = 4;
+            this.menuItem8.Text = "-";
+            // 
+            // MoveUpMenuItem
+            // 
+            this.MoveUpMenuItem.Index = 5;
+            this.MoveUpMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlU;
+            this.MoveUpMenuItem.Text = "Move Up";
+            this.MoveUpMenuItem.Click += new System.EventHandler(this.MoveUpMenuItem_Click);
+            // 
+            // MoveDownMenuItem
+            // 
+            this.MoveDownMenuItem.Index = 6;
+            this.MoveDownMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlD;
+            this.MoveDownMenuItem.Text = "Move Down";
+            this.MoveDownMenuItem.Click += new System.EventHandler(this.MoveDownMenuItem_Click);
+            // 
             // PIGEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(809, 515);
+            this.ClientSize = new System.Drawing.Size(809, 494);
             this.Controls.Add(this.splitContainer1);
             this.Menu = this.mainMenu1;
             this.Name = "PIGEditor";
@@ -306,9 +377,9 @@
         private System.Windows.Forms.MenuItem CloseMenu;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.ColumnHeader NameColumnHeader;
+        private System.Windows.Forms.ColumnHeader SizeColumnHeader;
+        private System.Windows.Forms.ColumnHeader FrameColumnHeader;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.CheckBox TransparentCheck;
         private System.Windows.Forms.CheckBox SupertransparentCheck;
@@ -319,10 +390,18 @@
         private System.Windows.Forms.MenuItem InsertMenu;
         private System.Windows.Forms.MenuItem ImportMenu;
         private System.Windows.Forms.MenuItem DeleteMenu;
-        private System.Windows.Forms.MenuItem menuItem10;
         private System.Windows.Forms.MenuItem ExportMenu;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.ColumnHeader IndexColumnHeader;
         private System.Windows.Forms.CheckBox CompressCheckBox;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.ColumnHeader ResolutionColumnHeader;
+        private System.Windows.Forms.MenuItem CutMenuItem;
+        private System.Windows.Forms.MenuItem CopyMenuItem;
+        private System.Windows.Forms.MenuItem PasteMenuItem;
+        private System.Windows.Forms.MenuItem menuItem8;
+        private System.Windows.Forms.MenuItem MoveUpMenuItem;
+        private System.Windows.Forms.MenuItem MoveDownMenuItem;
+        private System.Windows.Forms.MenuItem menuItem2;
     }
 }

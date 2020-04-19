@@ -234,7 +234,7 @@ namespace Descent2Workshop
             for (int i = 0; i < numNewTextures; i++)
             {
                 ushort index = datafile.GetObjBitmap(i + model.BaseTexture);
-                if (datafile.BaseHAM.piggyFile.Bitmaps[index].isAnimated)
+                if (datafile.BaseHAM.piggyFile.Bitmaps[index].IsAnimated)
                 {
                     AnimatedWarningLabel.Visible = true;
                 }

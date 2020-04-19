@@ -55,11 +55,11 @@ namespace Descent2Workshop
             for (int i = 0; i < datafile.Bitmaps.Count; i++)
             {
                 PIGImage image = (PIGImage)datafile.Bitmaps[i];
-                ListViewItem lvi = new ListViewItem(image.name);
+                ListViewItem lvi = new ListViewItem(image.Name);
                 lvi.SubItems.Add(image.GetSize().ToString());
-                if (image.isAnimated)
+                if (image.IsAnimated)
                 {
-                    lvi.SubItems.Add(image.frame.ToString());
+                    lvi.SubItems.Add(image.DFlags.ToString());
                 }
                 else
                 {
@@ -96,7 +96,7 @@ namespace Descent2Workshop
             SupertransparentCheck.Checked = image.SuperTransparent;
             NoLightingCheck.Checked = image.NoLighting;
             CompressCheckBox.Checked = image.RLECompressed;
-            Color color = Color.FromArgb(currentPalette.GetRGBAValue(image.averageIndex));
+            Color color = Color.FromArgb(currentPalette.GetRGBAValue(image.AverageIndex));
             ColorPreview.BackColor = color;
             pictureBox1.Refresh();
         }

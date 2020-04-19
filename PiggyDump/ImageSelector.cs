@@ -59,11 +59,11 @@ namespace Descent2Workshop
             {
                 img = pigFile.Bitmaps[i];
                 ListEntry entry;
-                entry.Name = img.name;
+                entry.Name = img.Name;
                 entry.id = i;
                 if (animOnly)
                 {
-                    if (img.isAnimated && img.frame == 0)
+                    if (img.IsAnimated && img.DFlags == 0)
                         listBox1.Items.Add(entry);
                 }
                 else

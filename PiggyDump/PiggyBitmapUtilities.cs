@@ -14,8 +14,8 @@ namespace Descent2Workshop
         public static Bitmap GetBitmap(PIGFile piggyFile, Palette palette, int index)
         {
             PIGImage image = piggyFile.GetImage(index);
-            Bitmap bitmap = new Bitmap(image.width, image.height);
-            int[] rgbData = new int[image.width * image.height];
+            Bitmap bitmap = new Bitmap(image.Width, image.Height);
+            int[] rgbData = new int[image.Width * image.Height];
             byte[] rawData = image.GetData();
             byte b;
 
@@ -25,8 +25,8 @@ namespace Descent2Workshop
                 rgbData[i] = ((b == 255 ? 0 : 255) << 24) + (palette[b, 0] << 16) + (palette[b, 1] << 8) + (palette[b, 2]);
             }
 
-            BitmapData bits = bitmap.LockBits(new Rectangle(0, 0, image.width, image.height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-            System.Runtime.InteropServices.Marshal.Copy(rgbData, 0, bits.Scan0, image.width * image.height);
+            BitmapData bits = bitmap.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+            System.Runtime.InteropServices.Marshal.Copy(rgbData, 0, bits.Scan0, image.Width * image.Height);
             bitmap.UnlockBits(bits);
 
             return bitmap;
@@ -34,8 +34,8 @@ namespace Descent2Workshop
 
         public static Bitmap GetBitmap(PIGImage image, Palette palette)
         {
-            Bitmap bitmap = new Bitmap(image.width, image.height);
-            int[] rgbData = new int[image.width * image.height];
+            Bitmap bitmap = new Bitmap(image.Width, image.Height);
+            int[] rgbData = new int[image.Width * image.Height];
             byte[] rawData = image.GetData();
             byte b;
 
@@ -45,8 +45,8 @@ namespace Descent2Workshop
                 rgbData[i] = ((b == 255 ? 0 : 255) << 24) + (palette[b, 0] << 16) + (palette[b, 1] << 8) + (palette[b, 2]);
             }
 
-            BitmapData bits = bitmap.LockBits(new Rectangle(0, 0, image.width, image.height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-            System.Runtime.InteropServices.Marshal.Copy(rgbData, 0, bits.Scan0, image.width * image.height);
+            BitmapData bits = bitmap.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+            System.Runtime.InteropServices.Marshal.Copy(rgbData, 0, bits.Scan0, image.Width * image.Height);
             bitmap.UnlockBits(bits);
 
             return bitmap;
@@ -55,8 +55,8 @@ namespace Descent2Workshop
         public static Bitmap GetBitmap(PIGFile piggyFile, Palette palette, string name)
         {
             PIGImage image = piggyFile.GetImage(name);
-            Bitmap bitmap = new Bitmap(image.width, image.height);
-            int[] rgbData = new int[image.width * image.height];
+            Bitmap bitmap = new Bitmap(image.Width, image.Height);
+            int[] rgbData = new int[image.Width * image.Height];
             byte[] rawData = image.GetData();
             byte b;
 
@@ -66,8 +66,8 @@ namespace Descent2Workshop
                 rgbData[i] = ((b == 255 ? 0 : 255) << 24) + (palette[b, 0] << 16) + (palette[b, 1] << 8) + (palette[b, 2]);
             }
 
-            BitmapData bits = bitmap.LockBits(new Rectangle(0, 0, image.width, image.height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-            System.Runtime.InteropServices.Marshal.Copy(rgbData, 0, bits.Scan0, image.width * image.height);
+            BitmapData bits = bitmap.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+            System.Runtime.InteropServices.Marshal.Copy(rgbData, 0, bits.Scan0, image.Width * image.Height);
             bitmap.UnlockBits(bits);
 
             return bitmap;
@@ -90,7 +90,44 @@ namespace Descent2Workshop
             totalg /= data.Length;
             totalb /= data.Length;
 
-            image.averageIndex = (byte)palette.GetNearestColor(totalr, totalg, totalb);
+            image.AverageIndex = (byte)palette.GetNearestColor(totalr, totalg, totalb);
+        }
+
+        public static PIGImage CreatePIGImage(Bitmap bitmap, Palette palette, string newname)
+        {
+            if (bitmap.Width >= 4096 || bitmap.Height >= 4096) throw new Exception("Bitmap resolution is too high for a PIG bitmap");
+            PIGImage image = new PIGImage(bitmap.Width, bitmap.Height, 0, 0, 0, 0, newname);
+            byte[] data = new byte[image.Width * image.Height];
+            byte[] basedata = new byte[image.Width * image.Height * 4];
+
+            BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            System.Runtime.InteropServices.Marshal.Copy(bitmapData.Scan0, basedata, 0, basedata.Length);
+            bitmap.UnlockBits(bitmapData);
+            //todo: i dunno it probably can be optimzied
+            int color;
+            for (int i = 0; i < data.Length; i++)
+            {
+                if (basedata[i * 4 + 3] < 255)
+                {
+                    image.Transparent = true;
+                    color = 255;
+                }
+                else
+                {
+                    color = palette.GetNearestColor(basedata[i * 4 + 2], basedata[i * 4 + 1], basedata[i * 4]);
+                }
+                data[i] = (byte)color;
+            }
+
+            image.Data = data;
+            SetAverageColor(image, palette);
+            //immediately try to compress if at all possible
+            try
+            {
+                image.RLECompressed = true;
+            }
+            catch (Exception) { } //it didn't work
+            return image;
         }
     }
 }
