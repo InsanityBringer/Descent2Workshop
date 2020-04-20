@@ -29,6 +29,7 @@ using System.Text;
 using LibDescent.Data;
 using LibDescent.Edit;
 using Descent2Workshop.EditorPanels;
+using Descent2Workshop.Transactions;
 
 namespace Descent2Workshop
 {
@@ -45,8 +46,9 @@ namespace Descent2Workshop
         private bool noPMView = false;
         private string currentFilename;
         private Palette palette;
+        private TransactionManager transactionManager = new TransactionManager();
 
-        private int ElementNumber { get { return (int)nudElementNum.Value; } }
+        private int ElementNumber { get { return (int)ElementSpinner.Value; } }
         private int PageNumber { get { return EditorTabs.SelectedIndex; } }
 
         //I still don't get the VS toolbox. Ugh
@@ -70,7 +72,7 @@ namespace Descent2Workshop
             this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
             this.glControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl1_Paint);
 
-            texturePanel = new TMAPInfoPanel(); components.Add(texturePanel);
+            texturePanel = new TMAPInfoPanel(transactionManager); components.Add(texturePanel);
             texturePanel.Dock = DockStyle.Fill;
             vclipPanel = new VClipPanel(); components.Add(vclipPanel);
             vclipPanel.Dock = DockStyle.Fill;
@@ -96,6 +98,8 @@ namespace Descent2Workshop
             modelRenderer = new ModelRenderer(datafile, host.DefaultPigFile, palette);
             currentFilename = filename;
             this.Text = string.Format("{0} - HAM Editor", currentFilename);
+
+            transactionManager.undoEvent += DoUndoEvent;
         }
 
         private void HAMEditor2_Load(object sender, EventArgs e)
@@ -125,59 +129,59 @@ namespace Descent2Workshop
             switch (EditorTabs.SelectedIndex)
             {
                 case 0:
-                    nudElementNum.Maximum = datafile.TMapInfo.Count - 1;
+                    ElementSpinner.Maximum = datafile.TMapInfo.Count - 1;
                     InitTexturePanel();
                     break;
                 case 1:
-                    nudElementNum.Maximum = datafile.VClips.Count - 1;
+                    ElementSpinner.Maximum = datafile.VClips.Count - 1;
                     InitVClipPanel();
                     break;
                 case 2:
-                    nudElementNum.Maximum = datafile.EClips.Count - 1;
+                    ElementSpinner.Maximum = datafile.EClips.Count - 1;
                     InitEClipPanel();
                     break;
                 case 3:
-                    nudElementNum.Maximum = datafile.WClips.Count - 1;
+                    ElementSpinner.Maximum = datafile.WClips.Count - 1;
                     InitWallPanel();
                     break;
                 case 4:
-                    nudElementNum.Maximum = datafile.Robots.Count - 1;
+                    ElementSpinner.Maximum = datafile.Robots.Count - 1;
                     InitRobotPanel();
                     break;
                 case 5:
-                    nudElementNum.Maximum = datafile.Weapons.Count - 1;
+                    ElementSpinner.Maximum = datafile.Weapons.Count - 1;
                     InitWeaponPanel();
                     break;
                 case 6:
-                    nudElementNum.Maximum = datafile.Models.Count - 1;
+                    ElementSpinner.Maximum = datafile.Models.Count - 1;
                     InitModelPanel();
                     break;
                 case 7:
-                    nudElementNum.Maximum = datafile.Sounds.Count - 1;
+                    ElementSpinner.Maximum = datafile.Sounds.Count - 1;
                     InitSoundPanel();
                     break;
                 case 8:
-                    nudElementNum.Maximum = datafile.Reactors.Count - 1;
+                    ElementSpinner.Maximum = datafile.Reactors.Count - 1;
                     InitReactorPanel();
                     break;
                 case 9:
-                    nudElementNum.Maximum = datafile.Powerups.Count - 1;
+                    ElementSpinner.Maximum = datafile.Powerups.Count - 1;
                     InitPowerupPanel();
                     break;
                 case 10:
-                    nudElementNum.Maximum = 0;
+                    ElementSpinner.Maximum = 0;
                     SetElementControl(false, false);
                     break;
                 case 11:
-                    nudElementNum.Maximum = datafile.Gauges.Count - 1;
+                    ElementSpinner.Maximum = datafile.Gauges.Count - 1;
                     SetElementControl(false, false);
                     break;
                 case 12:
-                    nudElementNum.Maximum = datafile.Cockpits.Count - 1;
+                    ElementSpinner.Maximum = datafile.Cockpits.Count - 1;
                     SetElementControl(true, false);
                     break;
                 case 13:
-                    nudElementNum.Maximum = 2619;
+                    ElementSpinner.Maximum = 2619;
                     SetElementControl(false, false);
                     break;
             }
@@ -187,7 +191,7 @@ namespace Descent2Workshop
         {
             isLocked = true;
             ElementListInit();
-            nudElementNum.Value = 0;
+            ElementSpinner.Value = 0;
             FillOutCurrentPanel(EditorTabs.SelectedIndex, 0);
             isLocked = false;
         }
@@ -197,7 +201,7 @@ namespace Descent2Workshop
             if (!isLocked)
             {
                 isLocked = true;
-                FillOutCurrentPanel(EditorTabs.SelectedIndex, (int)nudElementNum.Value);
+                FillOutCurrentPanel(EditorTabs.SelectedIndex, (int)ElementSpinner.Value);
                 isLocked = false;
             }
         }
@@ -260,7 +264,7 @@ namespace Descent2Workshop
             {
                 //Update the maximum of the numeric up/down control and ensure that any comboboxes that need to be regenerated for the current element are
                 ElementListInit();
-                nudElementNum.Value = newID;
+                ElementSpinner.Value = newID;
             }
         }
 
@@ -273,8 +277,8 @@ namespace Descent2Workshop
                 //Update the maximum of the numeric up/down control and ensure that any comboboxes that need to be regenerated for the current element are
                 ElementListInit();
                 isLocked = true;
-                if (nudElementNum.Value >= returnv)
-                    nudElementNum.Value = returnv - 1;
+                if (ElementSpinner.Value >= returnv)
+                    ElementSpinner.Value = returnv - 1;
                 FillOutCurrentPanel(EditorTabs.SelectedIndex, ElementNumber);
                 isLocked = false;
             }
@@ -292,7 +296,7 @@ namespace Descent2Workshop
             {
                 if (elementList.ElementNumber != -1)
                 {
-                    nudElementNum.Value = elementList.ElementNumber;
+                    ElementSpinner.Value = elementList.ElementNumber;
                 }
             }
             elementList.Dispose();
@@ -516,7 +520,7 @@ namespace Descent2Workshop
             txtElemName.Text = datafile.ModelNames[num];
             if (!noPMView)
             {
-                Polymodel mainmodel = datafile.Models[(int)nudElementNum.Value];
+                Polymodel mainmodel = datafile.Models[(int)ElementSpinner.Value];
                 modelRenderer.SetModel(mainmodel);
                 glControl1.Invalidate();
             }
@@ -575,7 +579,7 @@ namespace Descent2Workshop
 
         private void UpdateWallFrame(int frame)
         {
-            WClip animation = datafile.WClips[(int)nudElementNum.Value];
+            WClip animation = datafile.WClips[(int)ElementSpinner.Value];
             txtWallCurrentFrame.Text = animation.Frames[frame].ToString();
 
             if (pbWallAnimPreview.Image != null)
@@ -979,7 +983,7 @@ namespace Descent2Workshop
             {
                 int result = 1;
                 int elementNumber = copyForm.elementValue;
-                result = datafile.CopyElement(typeTable[EditorTabs.SelectedIndex], (int)nudElementNum.Value, elementNumber);
+                result = datafile.CopyElement(typeTable[EditorTabs.SelectedIndex], (int)ElementSpinner.Value, elementNumber);
                 if (result == -1)
                     MessageBox.Show("Cannot copy to an element that doesn't exist!");
                 else if (result == 1)
@@ -1151,6 +1155,28 @@ namespace Descent2Workshop
                 SaveHAMFile(saveFileDialog1.FileName);
             }
             this.Text = string.Format("{0} - HAM Editor", currentFilename);
+        }
+
+        private void UndoMenuItem_Click(object sender, EventArgs e)
+        {
+            transactionManager.DoUndo();
+        }
+
+        private void RedoMenuItem_Click(object sender, EventArgs e)
+        {
+            transactionManager.DoRedo();
+        }
+
+        private void DoUndoEvent(object sender, UndoEventArgs e)
+        {
+            Transaction transaction = e.UndoneTransaction;
+            if (transaction.Tab != PageNumber)
+                EditorTabs.SelectedIndex = transaction.Tab;
+
+            if (transaction.Page != ElementNumber)
+                ElementSpinner.Value = transaction.Page;
+            else
+                FillOutCurrentPanel(transaction.Tab, transaction.Page); //force an update
         }
     }
 }

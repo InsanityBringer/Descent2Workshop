@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using LibDescent.Data;
+using Descent2Workshop.Transactions;
 
 namespace Descent2Workshop.EditorPanels
 {
@@ -20,9 +21,13 @@ namespace Descent2Workshop.EditorPanels
         private int textureID; //Needed to look up and set
         private TMAPInfo info;
         private bool isLocked = false;
-        public TMAPInfoPanel()
+
+        private TransactionManager transactionManager;
+
+        public TMAPInfoPanel(TransactionManager transactionManager)
         {
             InitializeComponent();
+            this.transactionManager = transactionManager;
         }
 
         public void Init(List<string> EClipNames, Palette palette)
@@ -62,7 +67,7 @@ namespace Descent2Workshop.EditorPanels
             cbTexEClip.SelectedIndex = info.EClipNum + 1;
             txtTexSlideU.Text = GetFloatFromFixed88(info.SlideU).ToString();
             txtTexSlideV.Text = GetFloatFromFixed88(info.SlideV).ToString();
-            txtTexDestroyed.Text = info.DestroyedID.ToString();
+            TextureDestroyedTextBox.Text = info.DestroyedID.ToString();
             cbTexLava.Checked = info.Volatile;
             cbTexWater.Checked = info.Water;
             cbTexForcefield.Checked = info.ForceField;
@@ -76,15 +81,12 @@ namespace Descent2Workshop.EditorPanels
 
         private void TextureFlagCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            if (isLocked)
+            if (isLocked || transactionManager.TransactionInProgress)
                 return;
             TMAPInfo tmapinfo = datafile.TMapInfo[textureID];
-            tmapinfo.Volatile = cbTexLava.Checked;
-            tmapinfo.Water = cbTexWater.Checked;
-            tmapinfo.ForceField = cbTexForcefield.Checked;
-            tmapinfo.RedGoal = cbTexRedGoal.Checked;
-            tmapinfo.BlueGoal = cbTexBlueGoal.Checked;
-            tmapinfo.HoardGoal = cbTexHoardGoal.Checked;
+            CheckBox control = (CheckBox)sender;
+            BoolTransaction transaction = new BoolTransaction("TMapInfo property", tmapinfo, (string)control.Tag, textureID, 0, control.Checked);
+            transactionManager.ApplyTransaction(transaction);
         }
 
         private void TextureProperty_TextChanged(object sender, EventArgs e)
@@ -174,6 +176,20 @@ namespace Descent2Workshop.EditorPanels
                 UpdatePictureBox(PiggyBitmapUtilities.GetBitmap(piggyFile, palette, value), pbTexPrev);
                 txtTexID.Text = value.ToString();
                 isLocked = false;
+            }
+        }
+
+        private void TextureIntegerProperty_TextChanged(object sender, EventArgs e)
+        {
+            if (isLocked || transactionManager.TransactionInProgress)
+                return;
+            int value;
+            TextBox control = (TextBox)sender;
+            if (int.TryParse(control.Text, out value))
+            {
+                TMAPInfo tmapinfo = datafile.TMapInfo[textureID];
+                IntegerTransaction transaction = new IntegerTransaction("TMapInfo property", tmapinfo, (string)control.Tag, textureID, 0, value);
+                transactionManager.ApplyTransaction(transaction);
             }
         }
     }

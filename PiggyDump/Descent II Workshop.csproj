@@ -203,6 +203,11 @@
     <Compile Include="POGEditor.Designer.cs">
       <DependentUpon>POGEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Transactions\BoolTransaction.cs" />
+    <Compile Include="Transactions\FixTransaction.cs" />
+    <Compile Include="Transactions\IntegerTransaction.cs" />
+    <Compile Include="Transactions\Transaction.cs" />
+    <Compile Include="Transactions\TransactionManager.cs" />
     <Compile Include="VHAMLoadDialog.cs">
       <SubType>Form</SubType>
     </Compile>

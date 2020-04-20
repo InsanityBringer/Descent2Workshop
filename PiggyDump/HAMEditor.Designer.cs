@@ -176,12 +176,19 @@
             this.btnInsertElem = new System.Windows.Forms.Button();
             this.label49 = new System.Windows.Forms.Label();
             this.label48 = new System.Windows.Forms.Label();
-            this.nudElementNum = new System.Windows.Forms.NumericUpDown();
+            this.ElementSpinner = new System.Windows.Forms.NumericUpDown();
             this.txtElemName = new System.Windows.Forms.TextBox();
             this.statusBar1 = new System.Windows.Forms.StatusBar();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.mainToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.menuItem6 = new System.Windows.Forms.MenuItem();
+            this.UndoMenuItem = new System.Windows.Forms.MenuItem();
+            this.RedoMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem9 = new System.Windows.Forms.MenuItem();
+            this.menuItem10 = new System.Windows.Forms.MenuItem();
+            this.menuItem11 = new System.Windows.Forms.MenuItem();
+            this.menuItem12 = new System.Windows.Forms.MenuItem();
             this.EditorTabs.SuspendLayout();
             this.DoorTabPage.SuspendLayout();
             this.groupBox8.SuspendLayout();
@@ -208,13 +215,14 @@
             this.XLATTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbBitmapDest)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBitmapSrc)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudElementNum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ElementSpinner)).BeginInit();
             this.SuspendLayout();
             // 
             // mainMenu1
             // 
             this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuItem1,
+            this.menuItem6,
             this.menuItem4});
             // 
             // menuItem1
@@ -239,7 +247,7 @@
             // 
             // menuItem4
             // 
-            this.menuItem4.Index = 1;
+            this.menuItem4.Index = 2;
             this.menuItem4.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuItem5,
             this.mnuFindRefs,
@@ -1719,13 +1727,13 @@
             this.label48.TabIndex = 208;
             this.label48.Text = "Element Number:";
             // 
-            // nudElementNum
+            // ElementSpinner
             // 
-            this.nudElementNum.Location = new System.Drawing.Point(106, 7);
-            this.nudElementNum.Name = "nudElementNum";
-            this.nudElementNum.Size = new System.Drawing.Size(63, 20);
-            this.nudElementNum.TabIndex = 207;
-            this.nudElementNum.ValueChanged += new System.EventHandler(this.nudElementNum_ValueChanged);
+            this.ElementSpinner.Location = new System.Drawing.Point(106, 7);
+            this.ElementSpinner.Name = "ElementSpinner";
+            this.ElementSpinner.Size = new System.Drawing.Size(63, 20);
+            this.ElementSpinner.TabIndex = 207;
+            this.ElementSpinner.ValueChanged += new System.EventHandler(this.nudElementNum_ValueChanged);
             // 
             // txtElemName
             // 
@@ -1753,6 +1761,52 @@
             this.openFileDialog1.FileName = "openFileDialog1";
             this.openFileDialog1.Filter = "Parallax Object files|*.POF";
             // 
+            // menuItem6
+            // 
+            this.menuItem6.Index = 1;
+            this.menuItem6.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.UndoMenuItem,
+            this.RedoMenuItem,
+            this.menuItem9,
+            this.menuItem10,
+            this.menuItem11,
+            this.menuItem12});
+            this.menuItem6.Text = "Edit";
+            // 
+            // UndoMenuItem
+            // 
+            this.UndoMenuItem.Index = 0;
+            this.UndoMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlZ;
+            this.UndoMenuItem.Text = "Undo";
+            this.UndoMenuItem.Click += new System.EventHandler(this.UndoMenuItem_Click);
+            // 
+            // RedoMenuItem
+            // 
+            this.RedoMenuItem.Index = 1;
+            this.RedoMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlY;
+            this.RedoMenuItem.Text = "Redo";
+            this.RedoMenuItem.Click += new System.EventHandler(this.RedoMenuItem_Click);
+            // 
+            // menuItem9
+            // 
+            this.menuItem9.Index = 2;
+            this.menuItem9.Text = "-";
+            // 
+            // menuItem10
+            // 
+            this.menuItem10.Index = 3;
+            this.menuItem10.Text = "Cut";
+            // 
+            // menuItem11
+            // 
+            this.menuItem11.Index = 4;
+            this.menuItem11.Text = "Copy";
+            // 
+            // menuItem12
+            // 
+            this.menuItem12.Index = 5;
+            this.menuItem12.Text = "Paste";
+            // 
             // HAMEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1762,7 +1816,7 @@
             this.Controls.Add(this.btnList);
             this.Controls.Add(this.EditorTabs);
             this.Controls.Add(this.label50);
-            this.Controls.Add(this.nudElementNum);
+            this.Controls.Add(this.ElementSpinner);
             this.Controls.Add(this.btnDeleteElem);
             this.Controls.Add(this.label48);
             this.Controls.Add(this.btnInsertElem);
@@ -1812,7 +1866,7 @@
             this.XLATTabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbBitmapDest)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBitmapSrc)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudElementNum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ElementSpinner)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1858,7 +1912,7 @@
         private System.Windows.Forms.Button btnInsertElem;
         private System.Windows.Forms.Label label49;
         private System.Windows.Forms.Label label48;
-        private System.Windows.Forms.NumericUpDown nudElementNum;
+        private System.Windows.Forms.NumericUpDown ElementSpinner;
         private System.Windows.Forms.TabPage PowerupTabPage;
         private System.Windows.Forms.TextBox txtElemName;
         private System.Windows.Forms.StatusBar statusBar1;
@@ -1974,5 +2028,12 @@
         private System.Windows.Forms.Panel glControlStandin;
         private System.Windows.Forms.Button btnExportModel;
         private System.Windows.Forms.CheckBox chkSoftwareOverdraw;
+        private System.Windows.Forms.MenuItem menuItem6;
+        private System.Windows.Forms.MenuItem UndoMenuItem;
+        private System.Windows.Forms.MenuItem RedoMenuItem;
+        private System.Windows.Forms.MenuItem menuItem9;
+        private System.Windows.Forms.MenuItem menuItem10;
+        private System.Windows.Forms.MenuItem menuItem11;
+        private System.Windows.Forms.MenuItem menuItem12;
     }
 }

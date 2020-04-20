@@ -30,7 +30,7 @@
         {
             this.btnRemapTexture = new System.Windows.Forms.Button();
             this.cbTexEClip = new System.Windows.Forms.ComboBox();
-            this.txtTexDestroyed = new System.Windows.Forms.TextBox();
+            this.TextureDestroyedTextBox = new System.Windows.Forms.TextBox();
             this.label107 = new System.Windows.Forms.Label();
             this.txtTexSlideV = new System.Windows.Forms.TextBox();
             this.txtTexSlideU = new System.Windows.Forms.TextBox();
@@ -75,16 +75,17 @@
             this.cbTexEClip.Name = "cbTexEClip";
             this.cbTexEClip.Size = new System.Drawing.Size(149, 21);
             this.cbTexEClip.TabIndex = 63;
+            this.cbTexEClip.Tag = "EClipNum";
             this.cbTexEClip.TextChanged += new System.EventHandler(this.TMAPInfoEClip_SelectedIndexChanged);
             // 
-            // txtTexDestroyed
+            // TextureDestroyedTextBox
             // 
-            this.txtTexDestroyed.Location = new System.Drawing.Point(79, 133);
-            this.txtTexDestroyed.Name = "txtTexDestroyed";
-            this.txtTexDestroyed.Size = new System.Drawing.Size(100, 20);
-            this.txtTexDestroyed.TabIndex = 62;
-            this.txtTexDestroyed.Tag = "6";
-            this.txtTexDestroyed.TextChanged += new System.EventHandler(this.TextureProperty_TextChanged);
+            this.TextureDestroyedTextBox.Location = new System.Drawing.Point(79, 133);
+            this.TextureDestroyedTextBox.Name = "TextureDestroyedTextBox";
+            this.TextureDestroyedTextBox.Size = new System.Drawing.Size(100, 20);
+            this.TextureDestroyedTextBox.TabIndex = 62;
+            this.TextureDestroyedTextBox.Tag = "DestroyedID";
+            this.TextureDestroyedTextBox.TextChanged += new System.EventHandler(this.TextureIntegerProperty_TextChanged);
             // 
             // label107
             // 
@@ -171,7 +172,7 @@
             this.cbTexHoardGoal.Name = "cbTexHoardGoal";
             this.cbTexHoardGoal.Size = new System.Drawing.Size(80, 17);
             this.cbTexHoardGoal.TabIndex = 23;
-            this.cbTexHoardGoal.Tag = "5";
+            this.cbTexHoardGoal.Tag = "HoardGoal";
             this.cbTexHoardGoal.Text = "Hoard Goal";
             this.cbTexHoardGoal.UseVisualStyleBackColor = true;
             this.cbTexHoardGoal.CheckedChanged += new System.EventHandler(this.TextureFlagCheckbox_CheckedChanged);
@@ -183,7 +184,7 @@
             this.cbTexRedGoal.Name = "cbTexRedGoal";
             this.cbTexRedGoal.Size = new System.Drawing.Size(71, 17);
             this.cbTexRedGoal.TabIndex = 22;
-            this.cbTexRedGoal.Tag = "4";
+            this.cbTexRedGoal.Tag = "RedGoal";
             this.cbTexRedGoal.Text = "Red Goal";
             this.cbTexRedGoal.UseVisualStyleBackColor = true;
             this.cbTexRedGoal.CheckedChanged += new System.EventHandler(this.TextureFlagCheckbox_CheckedChanged);
@@ -195,7 +196,7 @@
             this.cbTexBlueGoal.Name = "cbTexBlueGoal";
             this.cbTexBlueGoal.Size = new System.Drawing.Size(72, 17);
             this.cbTexBlueGoal.TabIndex = 21;
-            this.cbTexBlueGoal.Tag = "3";
+            this.cbTexBlueGoal.Tag = "BlueGoal";
             this.cbTexBlueGoal.Text = "Blue Goal";
             this.cbTexBlueGoal.UseVisualStyleBackColor = true;
             this.cbTexBlueGoal.CheckedChanged += new System.EventHandler(this.TextureFlagCheckbox_CheckedChanged);
@@ -207,7 +208,7 @@
             this.cbTexForcefield.Name = "cbTexForcefield";
             this.cbTexForcefield.Size = new System.Drawing.Size(78, 17);
             this.cbTexForcefield.TabIndex = 20;
-            this.cbTexForcefield.Tag = "2";
+            this.cbTexForcefield.Tag = "ForceField";
             this.cbTexForcefield.Text = "Force Field";
             this.cbTexForcefield.UseVisualStyleBackColor = true;
             this.cbTexForcefield.CheckedChanged += new System.EventHandler(this.TextureFlagCheckbox_CheckedChanged);
@@ -219,7 +220,7 @@
             this.cbTexWater.Name = "cbTexWater";
             this.cbTexWater.Size = new System.Drawing.Size(55, 17);
             this.cbTexWater.TabIndex = 19;
-            this.cbTexWater.Tag = "1";
+            this.cbTexWater.Tag = "Water";
             this.cbTexWater.Text = "Water";
             this.cbTexWater.UseVisualStyleBackColor = true;
             this.cbTexWater.CheckedChanged += new System.EventHandler(this.TextureFlagCheckbox_CheckedChanged);
@@ -231,7 +232,7 @@
             this.cbTexLava.Name = "cbTexLava";
             this.cbTexLava.Size = new System.Drawing.Size(108, 17);
             this.cbTexLava.TabIndex = 18;
-            this.cbTexLava.Tag = "0";
+            this.cbTexLava.Tag = "Volatile";
             this.cbTexLava.Text = "Volatile (like lava)";
             this.cbTexLava.UseVisualStyleBackColor = true;
             this.cbTexLava.CheckedChanged += new System.EventHandler(this.TextureFlagCheckbox_CheckedChanged);
@@ -307,7 +308,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.btnRemapTexture);
             this.Controls.Add(this.cbTexEClip);
-            this.Controls.Add(this.txtTexDestroyed);
+            this.Controls.Add(this.TextureDestroyedTextBox);
             this.Controls.Add(this.label107);
             this.Controls.Add(this.txtTexSlideV);
             this.Controls.Add(this.txtTexSlideU);
@@ -337,7 +338,7 @@
 
         private System.Windows.Forms.Button btnRemapTexture;
         private System.Windows.Forms.ComboBox cbTexEClip;
-        private System.Windows.Forms.TextBox txtTexDestroyed;
+        private System.Windows.Forms.TextBox TextureDestroyedTextBox;
         private System.Windows.Forms.Label label107;
         private System.Windows.Forms.TextBox txtTexSlideV;
         private System.Windows.Forms.TextBox txtTexSlideU;
