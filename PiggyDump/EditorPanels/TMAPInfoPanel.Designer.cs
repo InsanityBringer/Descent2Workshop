@@ -36,7 +36,7 @@
             this.txtTexSlideU = new System.Windows.Forms.TextBox();
             this.txtTexDamage = new System.Windows.Forms.TextBox();
             this.txtTexLight = new System.Windows.Forms.TextBox();
-            this.txtTexID = new System.Windows.Forms.TextBox();
+            this.TextureIDTextBox = new System.Windows.Forms.TextBox();
             this.label130 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cbTexHoardGoal = new System.Windows.Forms.CheckBox();
@@ -102,8 +102,8 @@
             this.txtTexSlideV.Name = "txtTexSlideV";
             this.txtTexSlideV.Size = new System.Drawing.Size(100, 20);
             this.txtTexSlideV.TabIndex = 60;
-            this.txtTexSlideV.Tag = "5";
-            this.txtTexSlideV.TextChanged += new System.EventHandler(this.TextureProperty_TextChanged);
+            this.txtTexSlideV.Tag = "SlideV";
+            this.txtTexSlideV.TextChanged += new System.EventHandler(this.txtTexSlideU_TextChanged);
             // 
             // txtTexSlideU
             // 
@@ -111,8 +111,8 @@
             this.txtTexSlideU.Name = "txtTexSlideU";
             this.txtTexSlideU.Size = new System.Drawing.Size(100, 20);
             this.txtTexSlideU.TabIndex = 57;
-            this.txtTexSlideU.Tag = "4";
-            this.txtTexSlideU.TextChanged += new System.EventHandler(this.TextureProperty_TextChanged);
+            this.txtTexSlideU.Tag = "SlideU";
+            this.txtTexSlideU.TextChanged += new System.EventHandler(this.txtTexSlideU_TextChanged);
             // 
             // txtTexDamage
             // 
@@ -132,14 +132,14 @@
             this.txtTexLight.Tag = "Lighting";
             this.txtTexLight.TextChanged += new System.EventHandler(this.TextureProperty_TextChanged);
             // 
-            // txtTexID
+            // TextureIDTextBox
             // 
-            this.txtTexID.Location = new System.Drawing.Point(79, 3);
-            this.txtTexID.Name = "txtTexID";
-            this.txtTexID.Size = new System.Drawing.Size(100, 20);
-            this.txtTexID.TabIndex = 50;
-            this.txtTexID.Tag = "0";
-            this.txtTexID.TextChanged += new System.EventHandler(this.TextureProperty_TextChanged);
+            this.TextureIDTextBox.Location = new System.Drawing.Point(79, 3);
+            this.TextureIDTextBox.Name = "TextureIDTextBox";
+            this.TextureIDTextBox.Size = new System.Drawing.Size(100, 20);
+            this.TextureIDTextBox.TabIndex = 50;
+            this.TextureIDTextBox.Tag = "0";
+            this.TextureIDTextBox.TextChanged += new System.EventHandler(this.TextureIDTextBox_TextChanged);
             // 
             // label130
             // 
@@ -314,7 +314,7 @@
             this.Controls.Add(this.txtTexSlideU);
             this.Controls.Add(this.txtTexDamage);
             this.Controls.Add(this.txtTexLight);
-            this.Controls.Add(this.txtTexID);
+            this.Controls.Add(this.TextureIDTextBox);
             this.Controls.Add(this.label130);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label12);
@@ -344,7 +344,7 @@
         private System.Windows.Forms.TextBox txtTexSlideU;
         private System.Windows.Forms.TextBox txtTexDamage;
         private System.Windows.Forms.TextBox txtTexLight;
-        private System.Windows.Forms.TextBox txtTexID;
+        private System.Windows.Forms.TextBox TextureIDTextBox;
         private System.Windows.Forms.Label label130;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox cbTexHoardGoal;

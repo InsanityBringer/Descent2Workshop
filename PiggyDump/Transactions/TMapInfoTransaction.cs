@@ -25,51 +25,48 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Reflection;
+using LibDescent.Data;
+using LibDescent.Edit;
 
 namespace Descent2Workshop.Transactions
 {
-    public class Transaction
+    public class TmapInfoEventArgs : EventArgs
     {
-        public string OperationName { get; }
-        public object SourceObject { get; }
-        public int Page { get; }
-        public int Tab { get; }
-
-        protected PropertyInfo property;
-        protected object target;
-
-        public Transaction(string label, object target, string propertyName, int page, int tab)
+        public int Value { get; }
+        public TmapInfoEventArgs(int value)
         {
-            OperationName = label;
-            if (target != null) //hack
-            {
-                this.target = target;
-                Type targetType = target.GetType();
-                property = targetType.GetProperty(propertyName);
-                if (!property.CanWrite)
-                    throw new Exception(string.Format("Transaction::Transaction: Cannot write specified property {0}", propertyName));
-            }
-            Page = page;
-            Tab = tab;
+            this.Value = value;
         }
-        public virtual bool Apply()
+    }
+    public class TMapInfoTransaction : Transaction
+    {
+        private int oldValue;
+        private int newValue;
+        private int index;
+        private EditorHAMFile datafile;
+        private PIGFile pigfile;
+
+        public EventHandler<TmapInfoEventArgs> eventHandler;
+        public TMapInfoTransaction(string label, int page, int tab, EditorHAMFile datafile, PIGFile pigfile, int index, int newtexture) : base(label, null, "", page, tab)
         {
-            return false;
+            newValue = Math.Max(0, Math.Min(pigfile.Bitmaps.Count-1, newtexture));
+            this.index = index;
+            this.datafile = datafile;
+            this.pigfile = pigfile;
         }
 
-        public virtual void Revert()
+        public override bool Apply()
         {
+            oldValue = datafile.Textures[index];
+            datafile.Textures[index] = (ushort)newValue;
+            eventHandler?.Invoke(this, new TmapInfoEventArgs(newValue));
+
+            return true;
         }
 
-        public object GetCurrentValue()
+        public override void Revert()
         {
-            return property.GetValue(target);
-        }
-
-        public virtual object GetOldValue()
-        {
-            return null;
+            datafile.Textures[index] = (ushort)oldValue;
         }
     }
 }

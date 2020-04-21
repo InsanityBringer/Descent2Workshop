@@ -1,4 +1,26 @@
-﻿using System;
+﻿/*
+    Copyright (c) 2019 SaladBadger
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+*/
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -9,13 +31,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using LibDescent.Data;
 using Descent2Workshop.Transactions;
+using LibDescent.Edit;
 
 namespace Descent2Workshop.EditorPanels
 {
     public partial class TMAPInfoPanel : UserControl
     {
         //TMAPInfos can only be in HAM files, so it's safe to have this
-        private HAMFile datafile;
+        private EditorHAMFile datafile;
         private PIGFile piggyFile;
         private Palette palette;
         private int textureID; //Needed to look up and set
@@ -53,7 +76,7 @@ namespace Descent2Workshop.EditorPanels
             pictureBox.Image = img;
         }
 
-        public void Update(HAMFile datafile, PIGFile piggyFile, int textureID, TMAPInfo info)
+        public void Update(EditorHAMFile datafile, PIGFile piggyFile, int textureID, TMAPInfo info)
         {
             isLocked = true;
             this.textureID = textureID;
@@ -61,7 +84,7 @@ namespace Descent2Workshop.EditorPanels
             this.piggyFile = piggyFile;
             this.info = info;
 
-            txtTexID.Text = datafile.Textures[textureID].ToString();
+            TextureIDTextBox.Text = datafile.Textures[textureID].ToString();
             txtTexLight.Text = info.Lighting.ToString();
             txtTexDamage.Text = info.Damage.ToString();
             cbTexEClip.SelectedIndex = info.EClipNum + 1;
@@ -110,9 +133,10 @@ namespace Descent2Workshop.EditorPanels
             int eclipNum = cbTexEClip.SelectedIndex - 1;
             EClip clip = datafile.GetEClip(eclipNum);
             TMAPInfo tmapInfo = datafile.TMapInfo[textureID];
+            TMapInfoEClipTransaction transaction = null;
             if (clip == null)
             {
-                tmapInfo.EClipNum = -1;
+                transaction = new TMapInfoEClipTransaction("TMapInfo EClip change", textureID, 0, datafile, piggyFile, textureID, -1); 
             }
             else
             {
@@ -121,9 +145,7 @@ namespace Descent2Workshop.EditorPanels
                 {
                     if (MessageBox.Show("This EClip is already assigned to another wall texture, do you want to change it?", "EClip in use", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
-                        TMAPInfo oldTMapInfo = datafile.TMapInfo[clipCurrentID];
-                        oldTMapInfo.EClipNum = -1;
-                        clip.ChangingWallTexture = (short)textureID;
+                        transaction = new TMapInfoEClipTransaction("TMapInfo EClip change", textureID, 0, datafile, piggyFile, textureID, eclipNum);
 
                     }
                     else
@@ -135,10 +157,11 @@ namespace Descent2Workshop.EditorPanels
                 //this was commented out and I have no idea if there was a good reason for it
                 else
                 {
-                    clip.ChangingWallTexture = (short)textureID;
+                    transaction = new TMapInfoEClipTransaction("TMapInfo EClip change", textureID, 0, datafile, piggyFile, textureID, eclipNum);
                 }
             }
-            tmapInfo.EClipNum = (short)eclipNum;
+            if (transaction != null)
+                transactionManager.ApplyTransaction(transaction);
         }
 
         private void RemapSingleImage_Click(object sender, EventArgs e)
@@ -149,9 +172,10 @@ namespace Descent2Workshop.EditorPanels
             {
                 isLocked = true;
                 int value = selector.Selection;
-                datafile.Textures[textureID] = (ushort)value;
-                UpdatePictureBox(PiggyBitmapUtilities.GetBitmap(piggyFile, palette, value), pbTexPrev);
-                txtTexID.Text = value.ToString();
+                TMAPInfo tmapinfo = datafile.TMapInfo[textureID];
+                TMapInfoTransaction transaction = new TMapInfoTransaction("TMapInfo texture change", textureID, 0, datafile, piggyFile, textureID, value);
+                transaction.eventHandler += TextureEventHandler;
+                transactionManager.ApplyTransaction(transaction);
                 isLocked = false;
             }
         }
@@ -166,6 +190,44 @@ namespace Descent2Workshop.EditorPanels
             {
                 TMAPInfo tmapinfo = datafile.TMapInfo[textureID];
                 IntegerTransaction transaction = new IntegerTransaction("TMapInfo property", tmapinfo, (string)control.Tag, textureID, 0, value);
+                transactionManager.ApplyTransaction(transaction);
+            }
+        }
+
+        private void TextureIDTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (isLocked || transactionManager.TransactionInProgress)
+                return;
+            int value;
+            TextBox control = (TextBox)sender;
+            if (int.TryParse(control.Text, out value))
+            {
+                TMAPInfo tmapinfo = datafile.TMapInfo[textureID];
+                TMapInfoTransaction transaction = new TMapInfoTransaction("TMapInfo texture change", textureID, 0, datafile, piggyFile, textureID, value);
+                transaction.eventHandler += TextureEventHandler;
+                transactionManager.ApplyTransaction(transaction);
+                
+            }
+        }
+
+        private void TextureEventHandler(object sender, TmapInfoEventArgs e)
+        {
+            UpdatePictureBox(PiggyBitmapUtilities.GetBitmap(piggyFile, palette, e.Value), pbTexPrev);
+            //mid transaction, so this is safe. Probably.
+            //Make sure the value is clamped in the textbox
+            TextureIDTextBox.Text = e.Value.ToString();
+        }
+
+        private void txtTexSlideU_TextChanged(object sender, EventArgs e)
+        {
+            if (isLocked || transactionManager.TransactionInProgress)
+                return;
+            double value;
+            TextBox control = (TextBox)sender;
+            if (double.TryParse(control.Text, out value))
+            {
+                TMAPInfo tmapinfo = datafile.TMapInfo[textureID];
+                IntegerTransaction transaction = new IntegerTransaction("TMapInfo property", tmapinfo, (string)control.Tag, textureID, 0, (int)(value * 256));
                 transactionManager.ApplyTransaction(transaction);
             }
         }

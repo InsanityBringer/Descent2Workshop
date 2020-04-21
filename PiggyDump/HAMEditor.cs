@@ -410,8 +410,7 @@ namespace Descent2Workshop
         public void UpdateTexturePanel(int num)
         {
             TMAPInfo texture = datafile.TMapInfo[num];
-            //TODO: This may need to take a reference to the EditorHAMFile isntead
-            texturePanel.Update(datafile.BaseFile, datafile.piggyFile, num, texture);
+            texturePanel.Update(datafile, datafile.piggyFile, num, texture);
         }
 
         public void UpdateGaguePanel(int num)

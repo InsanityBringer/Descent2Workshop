@@ -66,8 +66,8 @@ namespace Descent2Workshop.Transactions
                 queuePosition++;
                 if (queuePosition >= NumTransactions)
                     queuePosition -= NumTransactions;
-
                 queueHead = queuePosition;
+
                 if (queueHead == queueTail) //Bump the tail up if there is overlap
                 {
                     queueTail = queueHead + 1;
@@ -96,18 +96,18 @@ namespace Descent2Workshop.Transactions
 
         public void DoRedo()
         {
-            if (queuePosition == (queueHead-1)) return;
-            int undoPosition = queuePosition + 1;
-            if (undoPosition >= NumTransactions) undoPosition -= NumTransactions;
+            if (queuePosition == queueHead) return;
+
             TransactionInProgress = true;
-            transactionQueue[undoPosition].Apply();
+            transactionQueue[queuePosition].Apply();
             if (undoEvent != null)
             {
-                UndoEventArgs args = new UndoEventArgs(transactionQueue[undoPosition]);
+                UndoEventArgs args = new UndoEventArgs(transactionQueue[queuePosition]);
                 undoEvent(this, args);
             }
             TransactionInProgress = false;
             queuePosition++;
+            if (queuePosition >= NumTransactions) queuePosition -= NumTransactions;
         }
     }
 }
