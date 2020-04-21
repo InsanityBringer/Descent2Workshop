@@ -38,7 +38,7 @@ namespace Descent2Workshop.Transactions
             this.newValue = newValue;
         }
 
-        public override void Apply()
+        public override bool Apply()
         {
             //okay so this is a dumb hack so we can generalize this mess
             if (property.PropertyType == typeof(short))
@@ -62,6 +62,7 @@ namespace Descent2Workshop.Transactions
                 //Set the new value
                 property.SetValue(target, newValue);
             }
+            return oldValue != newValue; //this is a little bad, but the results should not matter. Not that this is very ACID anyways...
         }
 
         public override void Revert()

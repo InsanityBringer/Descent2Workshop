@@ -50,8 +50,9 @@ namespace Descent2Workshop.Transactions
             Page = page;
             Tab = tab;
         }
-        public virtual void Apply()
+        public virtual bool Apply()
         {
+            return false;
         }
 
         public virtual void Revert()

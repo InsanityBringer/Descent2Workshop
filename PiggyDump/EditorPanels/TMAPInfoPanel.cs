@@ -91,45 +91,22 @@ namespace Descent2Workshop.EditorPanels
 
         private void TextureProperty_TextChanged(object sender, EventArgs e)
         {
-            if (isLocked)
+            if (isLocked || transactionManager.TransactionInProgress)
                 return;
             TextBox textBox = (TextBox)sender;
             TMAPInfo info = datafile.TMapInfo[textureID];
-            try
+            double value;
+            if (double.TryParse(textBox.Text, out value))
             {
-                //double value = double.Parse(textBox.Text);
-                switch (textBox.Tag)
-                {
-                    case "0":
-                        datafile.Textures[textureID] = ushort.Parse(textBox.Text);
-                        UpdatePictureBox(PiggyBitmapUtilities.GetBitmap(piggyFile, palette, datafile.Textures[textureID]), pbTexPrev);
-                        break;
-                    case "1":
-                        info.Lighting = double.Parse(textBox.Text);
-                        break;
-                    case "2":
-                        info.Damage = double.Parse(textBox.Text);
-                        break;
-                    case "4":
-                        info.SlideU = (short)(double.Parse(textBox.Text) * 256.0d);
-                        break;
-                    case "5":
-                        info.SlideV = (short)(double.Parse(textBox.Text) * 256.0d);
-                        break;
-                    case "6":
-                        info.DestroyedID = short.Parse(textBox.Text);
-                        break;
-                }
-            }
-            catch (Exception)
-            {
-                //[ISB] heh
+                FixTransaction transaction = new FixTransaction("TMapInfo property", info, (string)textBox.Tag, textureID, 0, value);
+                transactionManager.ApplyTransaction(transaction);
             }
         }
 
         private void TMAPInfoEClip_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (isLocked) return;
+            if (isLocked || transactionManager.TransactionInProgress) return;
+
             int eclipNum = cbTexEClip.SelectedIndex - 1;
             EClip clip = datafile.GetEClip(eclipNum);
             TMAPInfo tmapInfo = datafile.TMapInfo[textureID];

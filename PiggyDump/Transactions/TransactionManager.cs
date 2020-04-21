@@ -60,18 +60,20 @@ namespace Descent2Workshop.Transactions
         public void ApplyTransaction(Transaction transaction)
         {
             TransactionInProgress = true;
-            transaction.Apply();
-            transactionQueue[queuePosition] = transaction;
-            queuePosition++;
-            if (queuePosition >= NumTransactions)
-                queuePosition -= NumTransactions;
-
-            queueHead = queuePosition;
-            if (queueHead == queueTail) //Bump the tail up if there is overlap
+            if (transaction.Apply()) //Only queue the transaction if it actually changes a value
             {
-                queueTail = queueHead + 1;
-                if (queueTail >= NumTransactions)
-                    queueTail -= NumTransactions;
+                transactionQueue[queuePosition] = transaction;
+                queuePosition++;
+                if (queuePosition >= NumTransactions)
+                    queuePosition -= NumTransactions;
+
+                queueHead = queuePosition;
+                if (queueHead == queueTail) //Bump the tail up if there is overlap
+                {
+                    queueTail = queueHead + 1;
+                    if (queueTail >= NumTransactions)
+                        queueTail -= NumTransactions;
+                }
             }
             TransactionInProgress = false;
         }

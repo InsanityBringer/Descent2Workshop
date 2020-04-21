@@ -120,7 +120,7 @@
             this.txtTexDamage.Name = "txtTexDamage";
             this.txtTexDamage.Size = new System.Drawing.Size(100, 20);
             this.txtTexDamage.TabIndex = 54;
-            this.txtTexDamage.Tag = "2";
+            this.txtTexDamage.Tag = "Damage";
             this.txtTexDamage.TextChanged += new System.EventHandler(this.TextureProperty_TextChanged);
             // 
             // txtTexLight
@@ -129,7 +129,7 @@
             this.txtTexLight.Name = "txtTexLight";
             this.txtTexLight.Size = new System.Drawing.Size(100, 20);
             this.txtTexLight.TabIndex = 52;
-            this.txtTexLight.Tag = "1";
+            this.txtTexLight.Tag = "Lighting";
             this.txtTexLight.TextChanged += new System.EventHandler(this.TextureProperty_TextChanged);
             // 
             // txtTexID

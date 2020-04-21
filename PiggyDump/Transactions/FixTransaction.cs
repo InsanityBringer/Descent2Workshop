@@ -38,12 +38,14 @@ namespace Descent2Workshop.Transactions
             this.newValue = newValue;
         }
 
-        public override void Apply()
+        public override bool Apply()
         {
             //Preserve the old value for undo purposes
             oldValue = (Fix)property.GetValue(target);
+            if (oldValue == newValue) return false;
             //Set the new value
             property.SetValue(target, newValue);
+            return true;
         }
 
         public override void Revert()
