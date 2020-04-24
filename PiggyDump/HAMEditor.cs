@@ -46,6 +46,7 @@ namespace Descent2Workshop
         private bool noPMView = false;
         private string currentFilename;
         private Palette palette;
+        private PIGFile piggyFile;
         private TransactionManager transactionManager = new TransactionManager();
 
         private int ElementNumber { get { return (int)ElementSpinner.Value; } }
@@ -58,7 +59,7 @@ namespace Descent2Workshop
         RobotPanel robotPanel;
         WeaponPanel weaponPanel;
         
-        public HAMEditor(EditorHAMFile data, StandardUI host, string filename)
+        public HAMEditor(EditorHAMFile data, StandardUI host, PIGFile piggyFile, Palette palette, string filename)
         {
             InitializeComponent();
             this.glControl1 = new OpenTK.GLControl();
@@ -74,7 +75,7 @@ namespace Descent2Workshop
 
             texturePanel = new TMAPInfoPanel(transactionManager); components.Add(texturePanel);
             texturePanel.Dock = DockStyle.Fill;
-            vclipPanel = new VClipPanel(); components.Add(vclipPanel);
+            vclipPanel = new VClipPanel(transactionManager); components.Add(vclipPanel);
             vclipPanel.Dock = DockStyle.Fill;
             eclipPanel = new EClipPanel(); components.Add(eclipPanel);
             eclipPanel.Dock = DockStyle.Fill;
@@ -88,14 +89,14 @@ namespace Descent2Workshop
             RobotTabPage.Controls.Add(robotPanel);
             WeaponTabPage.Controls.Add(weaponPanel);
 
-            //TODO: HAMEditor should take an instance of PIGFile and Palette, rather than leeching from host
-            palette = host.DefaultPalette;
+            this.palette = palette;
+            this.piggyFile = piggyFile;
 
             if (!noPMView)
                 this.ModelTabPage.Controls.Add(this.glControl1);
             datafile = data;
             this.host = host;
-            modelRenderer = new ModelRenderer(datafile, host.DefaultPigFile, palette);
+            modelRenderer = new ModelRenderer(datafile, piggyFile, palette);
             currentFilename = filename;
             this.Text = string.Format("{0} - HAM Editor", currentFilename);
 
@@ -344,7 +345,7 @@ namespace Descent2Workshop
         private void InitWeaponPanel()
         {
             SetElementControl(true, true);
-            weaponPanel.Init(datafile.SoundNames, datafile.VClipNames, datafile.WeaponNames, datafile.ModelNames, host.DefaultPigFile, palette);
+            weaponPanel.Init(datafile.SoundNames, datafile.VClipNames, datafile.WeaponNames, datafile.ModelNames, piggyFile, palette);
         }
 
         private void InitRobotPanel()
@@ -442,7 +443,7 @@ namespace Descent2Workshop
         {
             vclipPanel.Stop();
             VClip clip = datafile.VClips[num];
-            vclipPanel.Update(clip, datafile.piggyFile, palette);
+            vclipPanel.Update(num, clip, datafile.piggyFile, palette);
             txtElemName.Text = datafile.VClipNames[num];
         }
 
@@ -657,7 +658,7 @@ namespace Descent2Workshop
         private void RemapSingleImage_Click(object sender, EventArgs e)
         {
             Button button = (Button)sender;
-            ImageSelector selector = new ImageSelector(host.DefaultPigFile, palette, false);
+            ImageSelector selector = new ImageSelector(piggyFile, palette, false);
             if (selector.ShowDialog() == DialogResult.OK)
             {
                 isLocked = true;
@@ -996,7 +997,7 @@ namespace Descent2Workshop
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 StreamWriter sw = new StreamWriter(File.Open(saveFileDialog1.FileName, FileMode.Create));
-                sw.Write(BitmapTableFile.GenerateBitmapsTable(datafile, host.DefaultPigFile, host.DefaultSoundFile));
+                sw.Write(BitmapTableFile.GenerateBitmapsTable(datafile, piggyFile, host.DefaultSoundFile));
                 sw.Flush();
                 sw.Close();
                 sw.Dispose();

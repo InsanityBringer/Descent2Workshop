@@ -66,7 +66,7 @@ namespace Descent2Workshop
                 if (hamFile.EClipNameMapping.ContainsKey(textureName.ToLower()))
                 {
                     clip = hamFile.EClipNameMapping[textureName.ToLower()];
-                    image = PiggyBitmapUtilities.GetBitmap(pigFile, palette, clip.vc.Frames[0]);
+                    image = PiggyBitmapUtilities.GetBitmap(pigFile, palette, clip.Clip.Frames[0]);
                 }
                 else
                 {

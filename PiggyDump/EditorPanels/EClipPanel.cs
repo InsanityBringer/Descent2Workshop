@@ -49,10 +49,10 @@ namespace Descent2Workshop.EditorPanels
             this.clip = clip;
             this.piggyFile = piggyFile;
             //vclip specific data
-            txtEffectFrameSpeed.Text = clip.vc.FrameTime.ToString();
-            txtEffectTotalTime.Text = clip.vc.PlayTime.ToString();
-            txtEffectLight.Text = clip.vc.LightValue.ToString();
-            txtEffectFrameCount.Text = clip.vc.NumFrames.ToString();
+            txtEffectFrameSpeed.Text = clip.Clip.FrameTime.ToString();
+            txtEffectTotalTime.Text = clip.Clip.PlayTime.ToString();
+            txtEffectLight.Text = clip.Clip.LightValue.ToString();
+            txtEffectFrameCount.Text = clip.Clip.NumFrames.ToString();
 
             //eclip stuff
             cbEClipBreakEClip.SelectedIndex = clip.ExplosionEClip + 1;
@@ -82,7 +82,7 @@ namespace Descent2Workshop.EditorPanels
 
         private void UpdateEffectFrame(int frame)
         {
-            txtEffectFrameNum.Text = clip.vc.Frames[frame].ToString();
+            txtEffectFrameNum.Text = clip.Clip.Frames[frame].ToString();
 
             if (pbEffectFramePreview.Image != null)
             {
@@ -90,7 +90,7 @@ namespace Descent2Workshop.EditorPanels
                 pbEffectFramePreview.Image = null;
                 temp.Dispose();
             }
-            pbEffectFramePreview.Image = PiggyBitmapUtilities.GetBitmap(piggyFile, palette, clip.vc.Frames[frame]);
+            pbEffectFramePreview.Image = PiggyBitmapUtilities.GetBitmap(piggyFile, palette, clip.Clip.Frames[frame]);
         }
 
         private void EClipFixedProperty_TextChanged(object sender, EventArgs e)
@@ -105,12 +105,12 @@ namespace Descent2Workshop.EditorPanels
                 {
                     case "1":
                         int totalTimeFix = (int)(value * 65536);
-                        clip.vc.PlayTime = new Fix(totalTimeFix);
-                        clip.vc.FrameTime = new Fix(totalTimeFix / clip.vc.NumFrames);
-                        txtEffectFrameSpeed.Text = clip.vc.FrameTime.ToString();
+                        clip.Clip.PlayTime = new Fix(totalTimeFix);
+                        clip.Clip.FrameTime = new Fix(totalTimeFix / clip.Clip.NumFrames);
+                        txtEffectFrameSpeed.Text = clip.Clip.FrameTime.ToString();
                         break;
                     case "2":
-                        clip.vc.LightValue = new Fix((int)(value * 65536));
+                        clip.Clip.LightValue = new Fix((int)(value * 65536));
                         break;
                     case "3":
                         clip.ExplosionSize = new Fix((int)(value * 65536));
@@ -119,7 +119,7 @@ namespace Descent2Workshop.EditorPanels
                         clip.DestroyedBitmapNum = int.Parse(textBox.Text);
                         break;
                     case "5":
-                        clip.vc.NumFrames = int.Parse(textBox.Text);
+                        clip.Clip.NumFrames = int.Parse(textBox.Text);
                         break;
                 }
             }
@@ -139,10 +139,10 @@ namespace Descent2Workshop.EditorPanels
                         clip.DestroyedBitmapNum = value;
                         break;
                     case "5":
-                        clip.vc.NumFrames = value;
+                        clip.Clip.NumFrames = value;
                         break;
                     case "6":
-                        clip.vc.Frames[(int)nudEffectFrame.Value] = (ushort)value;
+                        clip.Clip.Frames[(int)nudEffectFrame.Value] = (ushort)value;
                         isLocked = true;
                         UpdateEffectFrame((int)nudEffectFrame.Value);
                         isLocked = false;
@@ -182,9 +182,9 @@ namespace Descent2Workshop.EditorPanels
             {
                 int value = selector.Selection;
                 isLocked = true;
-                clip.vc.RemapVClip(value, piggyFile);
-                txtEffectFrameCount.Text = clip.vc.NumFrames.ToString();
-                txtEffectFrameSpeed.Text = clip.vc.FrameTime.ToString();
+                clip.Clip.RemapVClip(value, piggyFile);
+                txtEffectFrameCount.Text = clip.Clip.NumFrames.ToString();
+                txtEffectFrameSpeed.Text = clip.Clip.FrameTime.ToString();
                 nudEffectFrame.Value = 0;
                 UpdateEffectFrame(0);
                 isLocked = false;
@@ -200,7 +200,7 @@ namespace Descent2Workshop.EditorPanels
             {
                 isLocked = true;
                 int value = selector.Selection;
-                clip.vc.Frames[(int)nudEffectFrame.Value] = (ushort)value;
+                clip.Clip.Frames[(int)nudEffectFrame.Value] = (ushort)value;
                 UpdateEffectFrame((int)nudEffectFrame.Value);
                 txtEffectFrameNum.Text = value.ToString();
                 isLocked = false;
@@ -214,9 +214,9 @@ namespace Descent2Workshop.EditorPanels
             {
                 txtEffectTotalTime.Enabled = txtEffectFrameCount.Enabled = txtEffectFrameNum.Enabled = false;
                 RemapAnimationButton.Enabled = nudEffectFrame.Enabled = false;
-                if (clip.vc.NumFrames < 0) return;
+                if (clip.Clip.NumFrames < 0) return;
                 //Ah, the horribly imprecise timer. Oh well
-                AnimTimer.Interval = (int)(1000.0 * clip.vc.FrameTime);
+                AnimTimer.Interval = (int)(1000.0 * clip.Clip.FrameTime);
                 if (AnimTimer.Interval < 10) AnimTimer.Interval = 10;
                 AnimTimer.Start();
             }
@@ -230,12 +230,12 @@ namespace Descent2Workshop.EditorPanels
 
         private void AnimTimer_Tick(object sender, EventArgs e)
         {
-            if (clip.vc.NumFrames < 0) return;
+            if (clip.Clip.NumFrames < 0) return;
             int currentFrame = (int)nudEffectFrame.Value;
             isLocked = true;
             UpdateEffectFrame(currentFrame);
             currentFrame++;
-            if (currentFrame >= clip.vc.NumFrames)
+            if (currentFrame >= clip.Clip.NumFrames)
                 currentFrame = 0;
             nudEffectFrame.Value = currentFrame;
             isLocked = false;

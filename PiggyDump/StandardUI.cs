@@ -226,7 +226,7 @@ namespace Descent2Workshop
                 EditorHAMFile archive = new EditorHAMFile(defaultPigFile);
                 if (LoadHAMFile(openFileDialog1.FileName, archive))
                 {
-                    HAMEditor archiveEditor = new HAMEditor(archive, this, openFileDialog1.FileName);
+                    HAMEditor archiveEditor = new HAMEditor(archive, this, defaultPigFile, DefaultPalette, openFileDialog1.FileName);
                     archiveEditor.Show();
                 }
             }
@@ -330,8 +330,8 @@ namespace Descent2Workshop
         private void MnuAbout_Click(object sender, EventArgs e)
         {
 #if DEBUG
-            Descent1PIGFile piggyFile = new Descent1PIGFile();
-            Stream stream = File.Open("C:/Games/Descent/DESCENT.PIG", FileMode.Open);
+            Descent1PIGFile piggyFile = new Descent1PIGFile(true);
+            Stream stream = File.Open("H:/Descent/data/mac-full/DESCENT.PIG", FileMode.Open);
             piggyFile.Read(stream);
             stream.Close();
             stream.Dispose();
@@ -347,6 +347,9 @@ namespace Descent2Workshop
             }
             PIGEditor editor = new PIGEditor(test, newPalette, "ara ara");
             editor.Show();
+            EditorHAMFile hack = DebugUtil.TranslatePIGToHam(piggyFile, test);
+            HAMEditor hameditor = new HAMEditor(hack, this, test, newPalette, "ara ara sayonara");
+            hameditor.Show();
 #else
             AppendConsole("Descent II Workshop by ISB... heh\n");
 #endif

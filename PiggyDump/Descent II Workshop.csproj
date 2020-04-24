@@ -93,6 +93,7 @@
     <Compile Include="ConfigDialog.Designer.cs">
       <DependentUpon>ConfigDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="DebugUtil.cs" />
     <Compile Include="EditorPanels\EClipPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -205,11 +206,13 @@
     </Compile>
     <Compile Include="Transactions\BoolTransaction.cs" />
     <Compile Include="Transactions\FixTransaction.cs" />
+    <Compile Include="Transactions\IndexedUnsignedTransaction.cs" />
     <Compile Include="Transactions\IntegerTransaction.cs" />
     <Compile Include="Transactions\TMapInfoEClipTransaction.cs" />
     <Compile Include="Transactions\TMapInfoTransaction.cs" />
     <Compile Include="Transactions\Transaction.cs" />
     <Compile Include="Transactions\TransactionManager.cs" />
+    <Compile Include="Transactions\UnsignedTransaction.cs" />
     <Compile Include="VHAMLoadDialog.cs">
       <SubType>Form</SubType>
     </Compile>

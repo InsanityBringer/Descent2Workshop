@@ -47,8 +47,8 @@ namespace Descent2Workshop.Transactions
                 this.target = target;
                 Type targetType = target.GetType();
                 property = targetType.GetProperty(propertyName);
-                if (!property.CanWrite)
-                    throw new Exception(string.Format("Transaction::Transaction: Cannot write specified property {0}", propertyName));
+                //if (!property.CanWrite) //TODO: this check doesn't work with indexed things like arrays that can't be redefined by the user
+                //    throw new Exception(string.Format("Transaction::Transaction: Cannot write specified property {0}", propertyName));
             }
             Page = page;
             Tab = tab;

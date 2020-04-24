@@ -362,8 +362,11 @@ namespace Descent2Workshop
 
         private void listView1_AfterLabelEdit(object sender, LabelEditEventArgs e)
         {
-            datafile.Bitmaps[e.Item].Name = e.Label;
-            listView1.Items[e.Item].SubItems[0].Text = datafile.Bitmaps[e.Item].Name; //In case it got changed
+            if (e.Label != null) //if you don't do this your program crashes at complete random btw
+            {
+                datafile.Bitmaps[e.Item].Name = e.Label;
+                listView1.Items[e.Item].SubItems[0].Text = datafile.Bitmaps[e.Item].Name; //In case it got changed
+            }
         }
     }
 }
