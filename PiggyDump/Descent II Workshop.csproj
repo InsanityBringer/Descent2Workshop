@@ -213,6 +213,7 @@
     <Compile Include="Transactions\Transaction.cs" />
     <Compile Include="Transactions\TransactionManager.cs" />
     <Compile Include="Transactions\UnsignedTransaction.cs" />
+    <Compile Include="Transactions\VClipRemapTransaction.cs" />
     <Compile Include="VHAMLoadDialog.cs">
       <SubType>Form</SubType>
     </Compile>

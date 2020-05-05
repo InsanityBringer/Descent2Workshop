@@ -77,7 +77,7 @@ namespace Descent2Workshop
             texturePanel.Dock = DockStyle.Fill;
             vclipPanel = new VClipPanel(transactionManager); components.Add(vclipPanel);
             vclipPanel.Dock = DockStyle.Fill;
-            eclipPanel = new EClipPanel(); components.Add(eclipPanel);
+            eclipPanel = new EClipPanel(transactionManager); components.Add(eclipPanel);
             eclipPanel.Dock = DockStyle.Fill;
             robotPanel = new RobotPanel(); components.Add(robotPanel);
             robotPanel.Dock = DockStyle.Fill;
@@ -451,7 +451,7 @@ namespace Descent2Workshop
         {
             eclipPanel.Stop();
             EClip clip = datafile.EClips[num];
-            eclipPanel.Update(clip, datafile.piggyFile);
+            eclipPanel.Update(num, clip, datafile.piggyFile);
             txtElemName.Text = datafile.EClipNames[num];
         }
 

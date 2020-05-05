@@ -33,6 +33,13 @@
             this.menuItem1 = new System.Windows.Forms.MenuItem();
             this.menuItem2 = new System.Windows.Forms.MenuItem();
             this.menuItem3 = new System.Windows.Forms.MenuItem();
+            this.menuItem6 = new System.Windows.Forms.MenuItem();
+            this.UndoMenuItem = new System.Windows.Forms.MenuItem();
+            this.RedoMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem9 = new System.Windows.Forms.MenuItem();
+            this.menuItem10 = new System.Windows.Forms.MenuItem();
+            this.menuItem11 = new System.Windows.Forms.MenuItem();
+            this.menuItem12 = new System.Windows.Forms.MenuItem();
             this.menuItem4 = new System.Windows.Forms.MenuItem();
             this.menuItem5 = new System.Windows.Forms.MenuItem();
             this.mnuFindRefs = new System.Windows.Forms.MenuItem();
@@ -182,13 +189,6 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.mainToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.menuItem6 = new System.Windows.Forms.MenuItem();
-            this.UndoMenuItem = new System.Windows.Forms.MenuItem();
-            this.RedoMenuItem = new System.Windows.Forms.MenuItem();
-            this.menuItem9 = new System.Windows.Forms.MenuItem();
-            this.menuItem10 = new System.Windows.Forms.MenuItem();
-            this.menuItem11 = new System.Windows.Forms.MenuItem();
-            this.menuItem12 = new System.Windows.Forms.MenuItem();
             this.EditorTabs.SuspendLayout();
             this.DoorTabPage.SuspendLayout();
             this.groupBox8.SuspendLayout();
@@ -244,6 +244,52 @@
             this.menuItem3.Index = 1;
             this.menuItem3.Text = "Save As...";
             this.menuItem3.Click += new System.EventHandler(this.mnuSaveAs_Click);
+            // 
+            // menuItem6
+            // 
+            this.menuItem6.Index = 1;
+            this.menuItem6.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.UndoMenuItem,
+            this.RedoMenuItem,
+            this.menuItem9,
+            this.menuItem10,
+            this.menuItem11,
+            this.menuItem12});
+            this.menuItem6.Text = "Edit";
+            // 
+            // UndoMenuItem
+            // 
+            this.UndoMenuItem.Index = 0;
+            this.UndoMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlZ;
+            this.UndoMenuItem.Text = "Undo";
+            this.UndoMenuItem.Click += new System.EventHandler(this.UndoMenuItem_Click);
+            // 
+            // RedoMenuItem
+            // 
+            this.RedoMenuItem.Index = 1;
+            this.RedoMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlY;
+            this.RedoMenuItem.Text = "Redo";
+            this.RedoMenuItem.Click += new System.EventHandler(this.RedoMenuItem_Click);
+            // 
+            // menuItem9
+            // 
+            this.menuItem9.Index = 2;
+            this.menuItem9.Text = "-";
+            // 
+            // menuItem10
+            // 
+            this.menuItem10.Index = 3;
+            this.menuItem10.Text = "Cut";
+            // 
+            // menuItem11
+            // 
+            this.menuItem11.Index = 4;
+            this.menuItem11.Text = "Copy";
+            // 
+            // menuItem12
+            // 
+            this.menuItem12.Index = 5;
+            this.menuItem12.Text = "Paste";
             // 
             // menuItem4
             // 
@@ -1760,52 +1806,6 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             this.openFileDialog1.Filter = "Parallax Object files|*.POF";
-            // 
-            // menuItem6
-            // 
-            this.menuItem6.Index = 1;
-            this.menuItem6.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.UndoMenuItem,
-            this.RedoMenuItem,
-            this.menuItem9,
-            this.menuItem10,
-            this.menuItem11,
-            this.menuItem12});
-            this.menuItem6.Text = "Edit";
-            // 
-            // UndoMenuItem
-            // 
-            this.UndoMenuItem.Index = 0;
-            this.UndoMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlZ;
-            this.UndoMenuItem.Text = "Undo";
-            this.UndoMenuItem.Click += new System.EventHandler(this.UndoMenuItem_Click);
-            // 
-            // RedoMenuItem
-            // 
-            this.RedoMenuItem.Index = 1;
-            this.RedoMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlY;
-            this.RedoMenuItem.Text = "Redo";
-            this.RedoMenuItem.Click += new System.EventHandler(this.RedoMenuItem_Click);
-            // 
-            // menuItem9
-            // 
-            this.menuItem9.Index = 2;
-            this.menuItem9.Text = "-";
-            // 
-            // menuItem10
-            // 
-            this.menuItem10.Index = 3;
-            this.menuItem10.Text = "Cut";
-            // 
-            // menuItem11
-            // 
-            this.menuItem11.Index = 4;
-            this.menuItem11.Text = "Copy";
-            // 
-            // menuItem12
-            // 
-            this.menuItem12.Index = 5;
-            this.menuItem12.Text = "Paste";
             // 
             // HAMEditor
             // 

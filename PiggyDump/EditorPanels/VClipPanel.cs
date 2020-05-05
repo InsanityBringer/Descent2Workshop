@@ -119,17 +119,6 @@ namespace Descent2Workshop.EditorPanels
             double value;
             if (double.TryParse(textBox.Text, out value))
             {
-                /*switch (textBox.Tag)
-                {
-                    case "1":
-                        clip.PlayTime = value;
-                        clip.FrameTime = clip.PlayTime / clip.NumFrames;
-                        FrameTimeTextBox.Text = clip.FrameTime.ToString();
-                        break;
-                    case "2":
-                        clip.LightValue = value;
-                        break;
-                }*/
                 FixTransaction transaction = new FixTransaction("VClip property", clip, (string)textBox.Tag, vclipID, 1, value);
                 transactionManager.ApplyTransaction(transaction);
                 //hack
@@ -165,7 +154,9 @@ namespace Descent2Workshop.EditorPanels
             {
                 int value = selector.Selection;
                 isLocked = true;
-                clip.RemapVClip(value, piggyFile);
+                VClipRemapTransaction transaction = new VClipRemapTransaction("VClip animation", vclipID, 1, clip, piggyFile, value);
+                transactionManager.ApplyTransaction(transaction);
+
                 FrameCountTextBox.Text = clip.NumFrames.ToString();
                 FrameTimeTextBox.Text = clip.FrameTime.ToString();
                 FrameSpinner.Value = 0;
@@ -184,16 +175,6 @@ namespace Descent2Workshop.EditorPanels
             {
                 IntegerTransaction transaction = new IntegerTransaction("VClip property", clip, (string)textBox.Tag, vclipID, 1, value);
                 transactionManager.ApplyTransaction(transaction);
-                /*switch (textBox.Tag)
-                {
-                    case "1":
-                        clip.NumFrames = value;
-                        break;
-                    case "2":
-                        clip.Frames[(int)FrameSpinner.Value] = (ushort)value;
-                        UpdateAnimationFrame((int)FrameSpinner.Value);
-                        break;
-                }*/
             }
         }
 
@@ -237,8 +218,12 @@ namespace Descent2Workshop.EditorPanels
             if (selector.ShowDialog() == DialogResult.OK)
             {
                 isLocked = true;
-                int value = selector.Selection;
-                clip.Frames[(int)FrameSpinner.Value] = (ushort)value;
+                uint value = (uint)selector.Selection;
+
+                IndexedUnsignedTransaction transaction = new IndexedUnsignedTransaction("VClip image", clip, "Frames", vclipID, 1, (uint)FrameSpinner.Value, value);
+                transaction.undoEvent += IndexedUndoEvent;
+                transactionManager.ApplyTransaction(transaction);
+
                 UpdateAnimationFrame((int)FrameSpinner.Value);
                 FrameNumTextBox.Text = value.ToString();
                 isLocked = false;

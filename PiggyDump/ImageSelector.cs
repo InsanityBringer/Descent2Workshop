@@ -63,7 +63,7 @@ namespace Descent2Workshop
                 entry.id = i;
                 if (animOnly)
                 {
-                    if (img.IsAnimated && img.DFlags == 0)
+                    if (img.IsAnimated && img.Frame == 0)
                         listBox1.Items.Add(entry);
                 }
                 else
