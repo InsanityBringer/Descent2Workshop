@@ -89,6 +89,15 @@ namespace Descent2Workshop
                 textureList = texMan.LoadPolymodelTextures(model, piggyFile, palette, dataFile);
         }
 
+        public void Close()
+        {
+            if (textureList != null)
+            {
+                texMan.FreeTextureList(textureList);
+                textureList = null;
+            }
+        }
+
         public void Init()
         {
             GL.Enable(EnableCap.Texture2D);

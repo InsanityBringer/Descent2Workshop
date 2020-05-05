@@ -141,5 +141,10 @@ namespace Descent2Workshop
         {
             glControl1.Invalidate();
         }
+
+        private void PolymodelPreviewer_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            renderer.Close();
+        }
     }
 }

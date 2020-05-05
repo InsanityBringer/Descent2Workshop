@@ -78,7 +78,7 @@ namespace Descent2Workshop
                     "\nThis must be done before you can use D2 Workshop" +
                     "\nYou can do this in the Options menu");
             }
-            GraphicsContext.ShareContexts = false;
+            //GraphicsContext.ShareContexts = false;
         }
 
         public void AppendConsole(string msg)

@@ -182,6 +182,7 @@
             this.Controls.Add(this.trackBar2);
             this.Name = "PolymodelPreviewer";
             this.Text = "PolymodelPreviewer";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PolymodelPreviewer_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).EndInit();

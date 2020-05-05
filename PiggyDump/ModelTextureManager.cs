@@ -39,6 +39,7 @@ namespace Descent2Workshop
         {
             int id = OpenTK.Graphics.OpenGL.GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, id);
+            Console.WriteLine("got texture id {0}", id);
 
             BitmapData bmp_data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
