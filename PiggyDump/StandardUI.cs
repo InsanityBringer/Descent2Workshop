@@ -330,9 +330,15 @@ namespace Descent2Workshop
         private void MnuAbout_Click(object sender, EventArgs e)
         {
 #if DEBUG
-            Descent1PIGFile piggyFile = new Descent1PIGFile(true);
-            Stream stream = File.Open("H:/Descent/data/mac-full/DESCENT.PIG", FileMode.Open);
+            Descent1PIGFile piggyFile = new Descent1PIGFile(false);
+            PSXDatFile datFile = new PSXDatFile();
+            Stream stream = File.Open("H:/Descent/DESCENT.PIG", FileMode.Open);
             piggyFile.Read(stream);
+            stream.Close();
+            stream.Dispose();
+
+            stream = File.Open("C:/dev/psxdescent/DESCENT.DAT", FileMode.Open);
+            datFile.Read(stream);
             stream.Close();
             stream.Dispose();
             Palette newPalette; int lumpIndex;
@@ -347,7 +353,7 @@ namespace Descent2Workshop
             }
             PIGEditor editor = new PIGEditor(test, newPalette, "ara ara");
             editor.Show();
-            EditorHAMFile hack = DebugUtil.TranslatePIGToHam(piggyFile, test);
+            EditorHAMFile hack = DebugUtil.TranslateDATToHam(datFile, test);
             HAMEditor hameditor = new HAMEditor(hack, this, test, newPalette, "ara ara sayonara");
             hameditor.Show();
 #else

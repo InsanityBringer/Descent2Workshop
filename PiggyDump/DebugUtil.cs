@@ -54,7 +54,11 @@ namespace Descent2Workshop
             foreach (JointPos joint in pigfile.Joints)
                 file.Joints.Add(joint);
             foreach (Weapon weapon in pigfile.Weapons)
+            {
+                if (weapon.ModelNum == 255) weapon.ModelNum = 0;
+                if (weapon.ModelNumInner == 255) weapon.ModelNumInner = 0;
                 file.Weapons.Add(weapon);
+            }
             foreach (Polymodel model in pigfile.Models)
                 if (model != null)
                     file.Models.Add(model);
@@ -63,11 +67,74 @@ namespace Descent2Workshop
                 file.Gauges.Add(gauge);
                 file.GaugesHires.Add(gauge);
             }
+            foreach (ushort cockpit in pigfile.Cockpits)
+                file.Cockpits.Add(cockpit);
             for (int i = 0; i < pigfile.ObjBitmaps.Length; i++)
             {
                 file.ObjBitmaps.Add(pigfile.ObjBitmaps[i]);
                 file.ObjBitmapPointers.Add(pigfile.ObjBitmapPointers[i]);
             }
+            foreach (Powerup powerup in pigfile.Powerups)
+                file.Powerups.Add(powerup);
+            file.PlayerShip = pigfile.PlayerShip;
+            file.Reactors.Add(pigfile.reactor);
+            file.FirstMultiBitmapNum = pigfile.FirstMultiBitmapNum;
+            for (int i = 0; i < pigfile.BitmapXLATData.Length; i++)
+            {
+                file.BitmapXLATData[i] = pigfile.BitmapXLATData[i];
+            }
+
+            EditorHAMFile res = new EditorHAMFile(file, convertedPigFile);
+            res.CreateLocalLists();
+            res.GenerateDefaultNamelists();
+            res.TranslateData();
+            return res;
+        }
+
+        public static EditorHAMFile TranslateDATToHam(PSXDatFile pigfile, PIGFile convertedPigFile)
+        {
+            HAMFile file = new HAMFile();
+            foreach (ushort texture in pigfile.Textures)
+                file.Textures.Add(texture);
+            foreach (TMAPInfo tmapInfo in pigfile.TMapInfo)
+                file.TMapInfo.Add(tmapInfo);
+            foreach (byte sound in pigfile.Sounds)
+                file.Sounds.Add(sound);
+            foreach (byte sound in pigfile.AltSounds)
+                file.AltSounds.Add(sound);
+            foreach (VClip clip in pigfile.VClips)
+                file.VClips.Add(clip);
+            foreach (EClip clip in pigfile.EClips)
+                file.EClips.Add(clip);
+            foreach (WClip clip in pigfile.WClips)
+                file.WClips.Add(clip);
+            foreach (Robot robot in pigfile.Robots)
+                file.Robots.Add(robot);
+            foreach (JointPos joint in pigfile.Joints)
+                file.Joints.Add(joint);
+            foreach (Weapon weapon in pigfile.Weapons)
+            {
+                if (weapon.ModelNum == 255) weapon.ModelNum = 0;
+                if (weapon.ModelNumInner == 255) weapon.ModelNumInner = 0;
+                file.Weapons.Add(weapon);
+            }
+            foreach (Polymodel model in pigfile.Models)
+                if (model != null)
+                    file.Models.Add(model);
+            foreach (ushort gauge in pigfile.Gauges)
+            {
+                file.Gauges.Add(gauge);
+                file.GaugesHires.Add(gauge);
+            }
+            foreach (ushort cockpit in pigfile.Cockpits)
+                file.Cockpits.Add(cockpit);
+            for (int i = 0; i < pigfile.ObjBitmaps.Length; i++)
+            {
+                file.ObjBitmaps.Add(pigfile.ObjBitmaps[i]);
+                file.ObjBitmapPointers.Add(pigfile.ObjBitmapPointers[i]);
+            }
+            foreach (Powerup powerup in pigfile.Powerups)
+                file.Powerups.Add(powerup);
             file.PlayerShip = pigfile.PlayerShip;
             file.Reactors.Add(pigfile.reactor);
             file.FirstMultiBitmapNum = pigfile.FirstMultiBitmapNum;
