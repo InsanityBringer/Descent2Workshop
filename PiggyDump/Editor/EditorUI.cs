@@ -29,9 +29,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Descent2Workshop.Editor.Render;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+
 using LibDescent.Data;
 
 namespace Descent2Workshop.Editor
@@ -42,7 +42,7 @@ namespace Descent2Workshop.Editor
         private EditorState state;
         private GLControl lastFocus;
         private OpenTK.GLControl gl3DView;
-        public EditorUI(Level level, HAMFile datafile)
+        public EditorUI()
         {
             InitializeComponent();
             this.gl3DView = new OpenTK.GLControl();
@@ -71,18 +71,18 @@ namespace Descent2Workshop.Editor
 
             this.Controls.Add(this.gl3DView);
 
-            SharedRendererState sharedState = new SharedRendererState(level);
+            /*SharedRendererState sharedState = new SharedRendererState(level);
             state = new EditorState(level, datafile, this);
             gl3DView.Tag = new MineRender(state, sharedState, gl3DView);
             state.AttachRenderer((MineRender)gl3DView.Tag);
-            sharedState.AddRenderer((MineRender)gl3DView.Tag);
+            sharedState.AddRenderer((MineRender)gl3DView.Tag);*/
             //sharedState.LevelData.BuildWorld();
 
         }
 
         private void GLControlPerspective_Load(object sender, EventArgs e)
         {
-            GLControl control = (GLControl)sender;
+            /*GLControl control = (GLControl)sender;
             contextCreated = true;
             control.MakeCurrent();
             MineRender controlRenderer = (MineRender)control.Tag;
@@ -91,82 +91,88 @@ namespace Descent2Workshop.Editor
             controlRenderer.LevelData.BuildWorld();
             controlRenderer.LevelData.BuildWorldOutline();
             GL.Viewport(0, 0, control.Width, control.Height);
-            GL.ClearColor(0.5f, 0.0f, 0.0f, 1.0f);
+            GL.ClearColor(0.5f, 0.0f, 0.0f, 1.0f);*/
         }
 
         private void glControl1_Paint(object sender, PaintEventArgs e)
         {
-            GLControl control = (GLControl)sender;
+            /*GLControl control = (GLControl)sender;
             control.MakeCurrent();
             MineRender controlRenderer = (MineRender)control.Tag;
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            /*controlRenderer.DrawWorld();
-            controlRenderer.DrawWorldOutline();
-            controlRenderer.DrawWorldPoints();
-            controlRenderer.DrawSelectedPoints();
-            controlRenderer.DrawShadow();*/
+
+            //controlRenderer.DrawWorld();
+            //controlRenderer.DrawWorldOutline();
+            //controlRenderer.DrawWorldPoints();
+            //controlRenderer.DrawSelectedPoints();
+            //controlRenderer.DrawShadow();
+
             controlRenderer.DrawWorld();
-            control.SwapBuffers();
+            control.SwapBuffers();*/
         }
 
         private void GLControlOrtho_Load(object sender, EventArgs e)
         {
-            GLControl control = (GLControl)sender;
+            /*GLControl control = (GLControl)sender;
             contextCreated = true;
             control.MakeCurrent();
             MineRender controlRenderer = (MineRender)control.Tag;
             controlRenderer.Init();
+
             //TODO: Make this less shit
-            /*if (sender == glFrontView)
-                controlRenderer.MakeOrthoCamera(100.0f, (float)control.Width / control.Height, 0);
-            else if (sender == glTopView)
-                controlRenderer.MakeOrthoCamera(100.0f, (float)control.Width / control.Height, 1);
-            else if (sender == glSideView)
-                controlRenderer.MakeOrthoCamera(100.0f, (float)control.Width / control.Height, 2);*/
+            //if (sender == glFrontView)
+            //    controlRenderer.MakeOrthoCamera(100.0f, (float)control.Width / control.Height, 0);
+            //else if (sender == glTopView)
+            //    controlRenderer.MakeOrthoCamera(100.0f, (float)control.Width / control.Height, 1);
+            //else if (sender == glSideView)
+            //    controlRenderer.MakeOrthoCamera(100.0f, (float)control.Width / control.Height, 2);
+
             //controlRenderer.BuildWorld();
             //controlRenderer.BuildWorldOutline();
             GL.Viewport(0, 0, control.Width, control.Height);
-            GL.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+            GL.ClearColor(0.0f, 0.0f, 0.0f, 1.0f);*/
         }
 
         private void GLControlOrtho_Paint(object sender, PaintEventArgs e)
         {
-            GLControl control = (GLControl)sender;
+            /*GLControl control = (GLControl)sender;
             control.MakeCurrent();
             MineRender controlRenderer = (MineRender)control.Tag;
             //renderer2.SetProjection(glControl2.Width, glControl2.Height, (float)(90 * Math.PI / 180.0));
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             //renderer2.DrawWorld();
-            /*controlRenderer.DrawWorldOutline();
-            controlRenderer.DrawWorldPoints();
-            controlRenderer.DrawSelectedPoints();
-            controlRenderer.DrawShadow();*/
+
+            //controlRenderer.DrawWorldOutline();
+            //controlRenderer.DrawWorldPoints();
+            //controlRenderer.DrawSelectedPoints();
+            //controlRenderer.DrawShadow();
+
             controlRenderer.DrawWorld();
-            control.SwapBuffers();
+            control.SwapBuffers();*/
         }
 
         private void gl3DView_MouseDown(object sender, MouseEventArgs e)
         {
-            Console.WriteLine("mousedown");
+            /*Console.WriteLine("mousedown");
             Control sendingControl = (Control)sender;
             InputEvent ev = new InputEvent(e.Button, true);
             ev.x = e.X; ev.y = e.Y;
             ev.w = sendingControl.Width; ev.h = sendingControl.Height;
 
             if (state.HandleEvent(ev)) return;
-            if (((IInputEventHandler)sendingControl.Tag).HandleEvent(ev)) return;
+            if (((IInputEventHandler)sendingControl.Tag).HandleEvent(ev)) return;*/
         }
 
         private void gl3DView_MouseUp(object sender, MouseEventArgs e)
         {
-            GLControl control = (GLControl)sender;
+            /*GLControl control = (GLControl)sender;
             Control sendingControl = (Control)sender;
             InputEvent ev = new InputEvent(e.Button, false);
             ev.x = e.X; ev.y = e.Y;
             ev.w = sendingControl.Width; ev.h = sendingControl.Height;
 
             if (state.HandleEvent(ev)) return;
-            if (((IInputEventHandler)sendingControl.Tag).HandleEvent(ev)) return;
+            if (((IInputEventHandler)sendingControl.Tag).HandleEvent(ev)) return;*/
         }
 
         private void gl3DView_MouseEnter(object sender, EventArgs e)
@@ -181,13 +187,13 @@ namespace Descent2Workshop.Editor
 
         private void gl3DView_MouseMove(object sender, MouseEventArgs e)
         {
-            GLControl control = (GLControl)sender;
+            /*GLControl control = (GLControl)sender;
             control.MakeCurrent();
             InputEvent ev = new InputEvent(e.X, e.Y);
             ev.w = control.Width; ev.h = control.Height;
 
             if (state.HandleEvent(ev)) return;
-            if (((IInputEventHandler)control.Tag).HandleEvent(ev)) return;
+            if (((IInputEventHandler)control.Tag).HandleEvent(ev)) return;*/
         }
 
         public void InvalidateAll()

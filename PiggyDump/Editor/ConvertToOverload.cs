@@ -32,6 +32,7 @@ namespace Descent2Workshop.Editor
 {
     public class ConvertToOverload
     {
+        /*
         public const string DefaultGlobals = "  \"global_data\": {\r\n    \"grid_size\": 6,\r\n    \"pre_smooth\": 4,\r\n    \"post_smooth\": 1,\r\n    \"simplify_strength\": 0.0,\r\n    \"deform_presets0\": \"PLAIN_NOISE\",\r\n    \"deform_presets1\": \"NONE\",\r\n    \"deform_presets2\": \"NONE\",\r\n    \"deform_presets3\": \"NONE\"\r\n  },";
         public const string DefaultCustom = "  \"custom_level_info\": {\r\n    \"exit_music_start_time\": 0.0,\r\n    \"exit_no_explosions\": false,\r\n    \"alien_lava\": false,\r\n    \"custom_count\": 0,\r\n    \"objective\": \"NORMAL\"\r\n  },";
         public const string DefaultDecals = "          \"decals\": [\r\n            {\r\n              \"mesh_name\": \"\",\r\n              \"align\": \"CENTER\",\r\n              \"mirror\": \"OFF\",\r\n              \"rotation\": 0,\r\n              \"repeat_u\": 1,\r\n              \"repeat_v\": 1,\r\n              \"offset_u\": 0,\r\n              \"offset_v\": 0,\r\n              \"hidden\": false,\r\n              \"clips\": [\r\n                \"NONE\",\r\n                \"NONE\",\r\n                \"NONE\",\r\n                \"NONE\"\r\n              ],\r\n              \"caps\": [\r\n                \"NONE\",\r\n                \"NONE\",\r\n                \"NONE\",\r\n                \"NONE\"\r\n              ]\r\n            },\r\n            {\r\n              \"mesh_name\": \"\",\r\n              \"align\": \"CENTER\",\r\n              \"mirror\": \"OFF\",\r\n              \"rotation\": 0,\r\n              \"repeat_u\": 1,\r\n              \"repeat_v\": 1,\r\n              \"offset_u\": 0,\r\n              \"offset_v\": 0,\r\n              \"hidden\": false,\r\n              \"clips\": [\r\n                \"NONE\",\r\n                \"NONE\",\r\n                \"NONE\",\r\n                \"NONE\"\r\n              ],\r\n              \"caps\": [\r\n                \"NONE\",\r\n                \"NONE\",\r\n                \"NONE\",\r\n                \"NONE\"\r\n              ]\r\n            }\r\n          ],";
@@ -203,6 +204,6 @@ namespace Descent2Workshop.Editor
                 return "rockwall_01a";
             }
         }
-
+        */
     }
 }

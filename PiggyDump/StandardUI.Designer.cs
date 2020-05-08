@@ -57,7 +57,7 @@
             this.ViewersMenu = new System.Windows.Forms.MenuItem();
             this.ViewPOFMenu = new System.Windows.Forms.MenuItem();
             this.ViewFNTMenu = new System.Windows.Forms.MenuItem();
-            this.DebugMenu = new System.Windows.Forms.MenuItem();
+            this.HelpMenu = new System.Windows.Forms.MenuItem();
             this.AboutMenu = new System.Windows.Forms.MenuItem();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -221,6 +221,9 @@
             this.label76 = new System.Windows.Forms.Label();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.tbLog = new System.Windows.Forms.TextBox();
+            this.DebugMenu = new System.Windows.Forms.MenuItem();
+            this.EditorMenuItem = new System.Windows.Forms.MenuItem();
+            this.LoadLevelMenuItem = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.tabPage10.SuspendLayout();
@@ -250,6 +253,7 @@
             this.FileMenu,
             this.OptionsMenu,
             this.ViewersMenu,
+            this.HelpMenu,
             this.DebugMenu});
             // 
             // FileMenu
@@ -430,12 +434,12 @@
             this.ViewFNTMenu.Text = "View .FNT";
             this.ViewFNTMenu.Click += new System.EventHandler(this.ViewFNTMenu_Click);
             // 
-            // DebugMenu
+            // HelpMenu
             // 
-            this.DebugMenu.Index = 3;
-            this.DebugMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.HelpMenu.Index = 3;
+            this.HelpMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.AboutMenu});
-            this.DebugMenu.Text = "Help";
+            this.HelpMenu.Text = "Help";
             // 
             // AboutMenu
             // 
@@ -2045,6 +2049,24 @@
             this.tbLog.TabIndex = 2;
             this.tbLog.Text = "Descent II Workshop log";
             // 
+            // DebugMenu
+            // 
+            this.DebugMenu.Index = 4;
+            this.DebugMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.EditorMenuItem,
+            this.LoadLevelMenuItem});
+            this.DebugMenu.Text = "Debug";
+            // 
+            // EditorMenuItem
+            // 
+            this.EditorMenuItem.Index = 0;
+            this.EditorMenuItem.Text = "Editor...";
+            // 
+            // LoadLevelMenuItem
+            // 
+            this.LoadLevelMenuItem.Index = 1;
+            this.LoadLevelMenuItem.Text = "Load Level...";
+            // 
             // StandardUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2273,7 +2295,7 @@
         private System.Windows.Forms.MenuItem OptionsMenu;
         private System.Windows.Forms.MenuItem SetHOGMenu;
         private System.Windows.Forms.MenuItem SetPIGMenu;
-        private System.Windows.Forms.MenuItem DebugMenu;
+        private System.Windows.Forms.MenuItem HelpMenu;
         private System.Windows.Forms.MenuItem AboutMenu;
         private System.Windows.Forms.MenuItem NewPOGMenu;
         private System.Windows.Forms.MenuItem OpenPOGMenu;
@@ -2291,5 +2313,8 @@
         private System.Windows.Forms.MenuItem OpenHXMMenu;
         private System.Windows.Forms.MenuItem menuItem2;
         private System.Windows.Forms.MenuItem NewHXMMenu;
+        private System.Windows.Forms.MenuItem DebugMenu;
+        private System.Windows.Forms.MenuItem EditorMenuItem;
+        private System.Windows.Forms.MenuItem LoadLevelMenuItem;
     }
 }

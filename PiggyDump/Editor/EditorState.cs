@@ -9,7 +9,7 @@ namespace Descent2Workshop.Editor
 {
     public class EditorState : IInputEventHandler
     {
-        private Level level;
+        /*private Level level;
         private HAMFile dataFile;
         //private SharedRendererState rendererState;
         private Render.MineRender rendererState;
@@ -37,12 +37,12 @@ namespace Descent2Workshop.Editor
         {
             rendererState = renderer;
         }
-
+        */
         public bool HandleEvent(InputEvent ev)
         {
             return false;
         }
-
+        /*
         public void ToggleSelectedVert(LevelVertex vert)
         {
             int index;
@@ -71,5 +71,6 @@ namespace Descent2Workshop.Editor
             
             host.InvalidateAll();
         }
+        */
     }
 }

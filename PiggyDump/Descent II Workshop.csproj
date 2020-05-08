@@ -124,9 +124,7 @@
     <Compile Include="EditorPanels\WeaponPanel.Designer.cs">
       <DependentUpon>WeaponPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Editor\ControlCenter.cs" />
     <Compile Include="Editor\ConvertToOverload.cs" />
-    <Compile Include="Editor\DynamicLight.cs" />
     <Compile Include="Editor\EditorState.cs" />
     <Compile Include="Editor\EditorUI.cs">
       <SubType>Form</SubType>
@@ -135,25 +133,6 @@
       <DependentUpon>EditorUI.cs</DependentUpon>
     </Compile>
     <Compile Include="Editor\InputEvent.cs" />
-    <Compile Include="Editor\FlickeringLight.cs" />
-    <Compile Include="Editor\Level.cs" />
-    <Compile Include="Editor\LevelTransform.cs" />
-    <Compile Include="Editor\MatCenter.cs" />
-    <Compile Include="Editor\Operation.cs" />
-    <Compile Include="Editor\Render\Camera.cs" />
-    <Compile Include="Editor\Render\LevelData.cs" />
-    <Compile Include="Editor\Render\MineRender.cs" />
-    <Compile Include="Editor\Render\PickBuffer.cs" />
-    <Compile Include="Editor\Render\Shader.cs" />
-    <Compile Include="Editor\Render\GLUtilities.cs" />
-    <Compile Include="Editor\Render\TransformBuffer.cs" />
-    <Compile Include="Editor\Segment.cs" />
-    <Compile Include="Editor\SharedRendererState.cs" />
-    <Compile Include="Editor\Tool.cs" />
-    <Compile Include="Editor\Tools\GrabTool.cs" />
-    <Compile Include="Editor\Trigger.cs" />
-    <Compile Include="Editor\VertMatcher.cs" />
-    <Compile Include="Editor\Wall.cs" />
     <Compile Include="ElementCopy.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -412,9 +391,7 @@
       <Name>LibDescent.Edit</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Editor\Operations\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

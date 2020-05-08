@@ -79,6 +79,10 @@ namespace Descent2Workshop
                     "\nYou can do this in the Options menu");
             }
             //GraphicsContext.ShareContexts = false;
+
+#if DEBUG == false
+            mainMenu1.MenuItems.Remove(DebugMenu);
+#endif
         }
 
         public void AppendConsole(string msg)
