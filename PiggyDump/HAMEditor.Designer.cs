@@ -49,26 +49,6 @@
             this.VClipTabPage = new System.Windows.Forms.TabPage();
             this.EffectsTabPage = new System.Windows.Forms.TabPage();
             this.DoorTabPage = new System.Windows.Forms.TabPage();
-            this.cbWallCloseSound = new System.Windows.Forms.ComboBox();
-            this.cbWallOpenSound = new System.Windows.Forms.ComboBox();
-            this.txtWallFilename = new System.Windows.Forms.TextBox();
-            this.txtWallTotalTime = new System.Windows.Forms.TextBox();
-            this.label40 = new System.Windows.Forms.Label();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.cbWallHidden = new System.Windows.Forms.CheckBox();
-            this.cbWallOnPrimaryTMAP = new System.Windows.Forms.CheckBox();
-            this.cbWallShootable = new System.Windows.Forms.CheckBox();
-            this.cbWallExplodeOpen = new System.Windows.Forms.CheckBox();
-            this.label38 = new System.Windows.Forms.Label();
-            this.label37 = new System.Windows.Forms.Label();
-            this.label36 = new System.Windows.Forms.Label();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.nudWFrame = new System.Windows.Forms.NumericUpDown();
-            this.label26 = new System.Windows.Forms.Label();
-            this.txtWallCurrentFrame = new System.Windows.Forms.TextBox();
-            this.pbWallAnimPreview = new System.Windows.Forms.PictureBox();
-            this.txtWallFrames = new System.Windows.Forms.TextBox();
-            this.label27 = new System.Windows.Forms.Label();
             this.RobotTabPage = new System.Windows.Forms.TabPage();
             this.WeaponTabPage = new System.Windows.Forms.TabPage();
             this.ModelTabPage = new System.Windows.Forms.TabPage();
@@ -190,11 +170,6 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.mainToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.EditorTabs.SuspendLayout();
-            this.DoorTabPage.SuspendLayout();
-            this.groupBox8.SuspendLayout();
-            this.groupBox7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudWFrame)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbWallAnimPreview)).BeginInit();
             this.ModelTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
@@ -373,230 +348,12 @@
             // 
             // DoorTabPage
             // 
-            this.DoorTabPage.Controls.Add(this.cbWallCloseSound);
-            this.DoorTabPage.Controls.Add(this.cbWallOpenSound);
-            this.DoorTabPage.Controls.Add(this.txtWallFilename);
-            this.DoorTabPage.Controls.Add(this.txtWallTotalTime);
-            this.DoorTabPage.Controls.Add(this.label40);
-            this.DoorTabPage.Controls.Add(this.groupBox8);
-            this.DoorTabPage.Controls.Add(this.label38);
-            this.DoorTabPage.Controls.Add(this.label37);
-            this.DoorTabPage.Controls.Add(this.label36);
-            this.DoorTabPage.Controls.Add(this.groupBox7);
             this.DoorTabPage.Location = new System.Drawing.Point(4, 22);
             this.DoorTabPage.Name = "DoorTabPage";
             this.DoorTabPage.Size = new System.Drawing.Size(846, 513);
             this.DoorTabPage.TabIndex = 3;
             this.DoorTabPage.Text = "Doors";
             this.DoorTabPage.UseVisualStyleBackColor = true;
-            // 
-            // cbWallCloseSound
-            // 
-            this.cbWallCloseSound.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbWallCloseSound.FormattingEnabled = true;
-            this.cbWallCloseSound.Location = new System.Drawing.Point(79, 61);
-            this.cbWallCloseSound.Name = "cbWallCloseSound";
-            this.cbWallCloseSound.Size = new System.Drawing.Size(150, 21);
-            this.cbWallCloseSound.TabIndex = 69;
-            this.cbWallCloseSound.Tag = "2";
-            this.cbWallCloseSound.SelectedIndexChanged += new System.EventHandler(this.WallComboBox_SelectedIndexChanged);
-            // 
-            // cbWallOpenSound
-            // 
-            this.cbWallOpenSound.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbWallOpenSound.FormattingEnabled = true;
-            this.cbWallOpenSound.Location = new System.Drawing.Point(79, 34);
-            this.cbWallOpenSound.Name = "cbWallOpenSound";
-            this.cbWallOpenSound.Size = new System.Drawing.Size(150, 21);
-            this.cbWallOpenSound.TabIndex = 68;
-            this.cbWallOpenSound.Tag = "1";
-            this.cbWallOpenSound.SelectedIndexChanged += new System.EventHandler(this.WallComboBox_SelectedIndexChanged);
-            // 
-            // txtWallFilename
-            // 
-            this.txtWallFilename.Location = new System.Drawing.Point(79, 88);
-            this.txtWallFilename.Name = "txtWallFilename";
-            this.txtWallFilename.Size = new System.Drawing.Size(150, 20);
-            this.txtWallFilename.TabIndex = 67;
-            this.txtWallFilename.Tag = "2";
-            this.txtWallFilename.TextChanged += new System.EventHandler(this.WallProperty_TextChanged);
-            // 
-            // txtWallTotalTime
-            // 
-            this.txtWallTotalTime.Location = new System.Drawing.Point(79, 8);
-            this.txtWallTotalTime.Name = "txtWallTotalTime";
-            this.txtWallTotalTime.Size = new System.Drawing.Size(82, 20);
-            this.txtWallTotalTime.TabIndex = 62;
-            this.txtWallTotalTime.Tag = "1";
-            this.txtWallTotalTime.TextChanged += new System.EventHandler(this.WallProperty_TextChanged);
-            // 
-            // label40
-            // 
-            this.label40.AutoSize = true;
-            this.label40.Location = new System.Drawing.Point(21, 91);
-            this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(52, 13);
-            this.label40.TabIndex = 66;
-            this.label40.Text = "Filename:";
-            // 
-            // groupBox8
-            // 
-            this.groupBox8.Controls.Add(this.cbWallHidden);
-            this.groupBox8.Controls.Add(this.cbWallOnPrimaryTMAP);
-            this.groupBox8.Controls.Add(this.cbWallShootable);
-            this.groupBox8.Controls.Add(this.cbWallExplodeOpen);
-            this.groupBox8.Location = new System.Drawing.Point(235, 8);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(162, 126);
-            this.groupBox8.TabIndex = 65;
-            this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "Flags";
-            // 
-            // cbWallHidden
-            // 
-            this.cbWallHidden.AutoSize = true;
-            this.cbWallHidden.Location = new System.Drawing.Point(6, 88);
-            this.cbWallHidden.Name = "cbWallHidden";
-            this.cbWallHidden.Size = new System.Drawing.Size(98, 17);
-            this.cbWallHidden.TabIndex = 3;
-            this.cbWallHidden.Tag = "8";
-            this.cbWallHidden.Text = "Hidden on map";
-            this.cbWallHidden.UseVisualStyleBackColor = true;
-            this.cbWallHidden.CheckedChanged += new System.EventHandler(this.WallFlag_CheckedChanged);
-            // 
-            // cbWallOnPrimaryTMAP
-            // 
-            this.cbWallOnPrimaryTMAP.AutoSize = true;
-            this.cbWallOnPrimaryTMAP.Location = new System.Drawing.Point(6, 65);
-            this.cbWallOnPrimaryTMAP.Name = "cbWallOnPrimaryTMAP";
-            this.cbWallOnPrimaryTMAP.Size = new System.Drawing.Size(88, 17);
-            this.cbWallOnPrimaryTMAP.TabIndex = 2;
-            this.cbWallOnPrimaryTMAP.Tag = "4";
-            this.cbWallOnPrimaryTMAP.Text = "On Texture 1";
-            this.cbWallOnPrimaryTMAP.UseVisualStyleBackColor = true;
-            this.cbWallOnPrimaryTMAP.CheckedChanged += new System.EventHandler(this.WallFlag_CheckedChanged);
-            // 
-            // cbWallShootable
-            // 
-            this.cbWallShootable.AutoSize = true;
-            this.cbWallShootable.Location = new System.Drawing.Point(6, 42);
-            this.cbWallShootable.Name = "cbWallShootable";
-            this.cbWallShootable.Size = new System.Drawing.Size(83, 17);
-            this.cbWallShootable.TabIndex = 1;
-            this.cbWallShootable.Tag = "2";
-            this.cbWallShootable.Text = "Is shootable";
-            this.cbWallShootable.UseVisualStyleBackColor = true;
-            this.cbWallShootable.CheckedChanged += new System.EventHandler(this.WallFlag_CheckedChanged);
-            // 
-            // cbWallExplodeOpen
-            // 
-            this.cbWallExplodeOpen.AutoSize = true;
-            this.cbWallExplodeOpen.Location = new System.Drawing.Point(6, 19);
-            this.cbWallExplodeOpen.Name = "cbWallExplodeOpen";
-            this.cbWallExplodeOpen.Size = new System.Drawing.Size(111, 17);
-            this.cbWallExplodeOpen.TabIndex = 0;
-            this.cbWallExplodeOpen.Tag = "1";
-            this.cbWallExplodeOpen.Text = "Explodes on open";
-            this.cbWallExplodeOpen.UseVisualStyleBackColor = true;
-            this.cbWallExplodeOpen.CheckedChanged += new System.EventHandler(this.WallFlag_CheckedChanged);
-            // 
-            // label38
-            // 
-            this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(5, 64);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(68, 13);
-            this.label38.TabIndex = 59;
-            this.label38.Text = "Close sound:";
-            // 
-            // label37
-            // 
-            this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(5, 37);
-            this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(68, 13);
-            this.label37.TabIndex = 60;
-            this.label37.Text = "Open sound:";
-            // 
-            // label36
-            // 
-            this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(17, 11);
-            this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(56, 13);
-            this.label36.TabIndex = 61;
-            this.label36.Text = "Total time:";
-            // 
-            // groupBox7
-            // 
-            this.groupBox7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.groupBox7.Controls.Add(this.nudWFrame);
-            this.groupBox7.Controls.Add(this.label26);
-            this.groupBox7.Controls.Add(this.txtWallCurrentFrame);
-            this.groupBox7.Controls.Add(this.pbWallAnimPreview);
-            this.groupBox7.Controls.Add(this.txtWallFrames);
-            this.groupBox7.Controls.Add(this.label27);
-            this.groupBox7.Location = new System.Drawing.Point(11, 143);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(336, 316);
-            this.groupBox7.TabIndex = 58;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Frames";
-            // 
-            // nudWFrame
-            // 
-            this.nudWFrame.Location = new System.Drawing.Point(269, 19);
-            this.nudWFrame.Maximum = new decimal(new int[] {
-            49,
-            0,
-            0,
-            0});
-            this.nudWFrame.Name = "nudWFrame";
-            this.nudWFrame.Size = new System.Drawing.Size(61, 20);
-            this.nudWFrame.TabIndex = 28;
-            this.nudWFrame.ValueChanged += new System.EventHandler(this.nudWFrame_ValueChanged);
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(6, 74);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(75, 13);
-            this.label26.TabIndex = 25;
-            this.label26.Text = "Texture Index:";
-            // 
-            // txtWallCurrentFrame
-            // 
-            this.txtWallCurrentFrame.Location = new System.Drawing.Point(83, 71);
-            this.txtWallCurrentFrame.Name = "txtWallCurrentFrame";
-            this.txtWallCurrentFrame.Size = new System.Drawing.Size(100, 20);
-            this.txtWallCurrentFrame.TabIndex = 24;
-            // 
-            // pbWallAnimPreview
-            // 
-            this.pbWallAnimPreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pbWallAnimPreview.Location = new System.Drawing.Point(6, 97);
-            this.pbWallAnimPreview.Name = "pbWallAnimPreview";
-            this.pbWallAnimPreview.Size = new System.Drawing.Size(320, 200);
-            this.pbWallAnimPreview.TabIndex = 19;
-            this.pbWallAnimPreview.TabStop = false;
-            // 
-            // txtWallFrames
-            // 
-            this.txtWallFrames.Location = new System.Drawing.Point(56, 25);
-            this.txtWallFrames.Name = "txtWallFrames";
-            this.txtWallFrames.Size = new System.Drawing.Size(77, 20);
-            this.txtWallFrames.TabIndex = 23;
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(6, 28);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(44, 13);
-            this.label27.TabIndex = 22;
-            this.label27.Text = "Frames:";
             // 
             // RobotTabPage
             // 
@@ -1829,14 +1586,6 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HAMEditor2_FormClosing);
             this.Load += new System.EventHandler(this.HAMEditor2_Load);
             this.EditorTabs.ResumeLayout(false);
-            this.DoorTabPage.ResumeLayout(false);
-            this.DoorTabPage.PerformLayout();
-            this.groupBox8.ResumeLayout(false);
-            this.groupBox8.PerformLayout();
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudWFrame)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbWallAnimPreview)).EndInit();
             this.ModelTabPage.ResumeLayout(false);
             this.ModelTabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).EndInit();
@@ -1881,24 +1630,6 @@
         private System.Windows.Forms.TabPage VClipTabPage;
         private System.Windows.Forms.TabPage EffectsTabPage;
         private System.Windows.Forms.TabPage DoorTabPage;
-        private System.Windows.Forms.TextBox txtWallFilename;
-        private System.Windows.Forms.TextBox txtWallTotalTime;
-        private System.Windows.Forms.Label label40;
-        private System.Windows.Forms.GroupBox groupBox8;
-        private System.Windows.Forms.CheckBox cbWallHidden;
-        private System.Windows.Forms.CheckBox cbWallOnPrimaryTMAP;
-        private System.Windows.Forms.CheckBox cbWallShootable;
-        private System.Windows.Forms.CheckBox cbWallExplodeOpen;
-        private System.Windows.Forms.Label label38;
-        private System.Windows.Forms.Label label37;
-        private System.Windows.Forms.Label label36;
-        private System.Windows.Forms.GroupBox groupBox7;
-        private System.Windows.Forms.NumericUpDown nudWFrame;
-        private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.TextBox txtWallCurrentFrame;
-        private System.Windows.Forms.PictureBox pbWallAnimPreview;
-        private System.Windows.Forms.TextBox txtWallFrames;
-        private System.Windows.Forms.Label label27;
         private System.Windows.Forms.TabPage RobotTabPage;
         private System.Windows.Forms.TabPage WeaponTabPage;
         private System.Windows.Forms.TabPage ModelTabPage;
@@ -2003,8 +1734,6 @@
         private System.Windows.Forms.CheckBox chkNorm;
         private System.Windows.Forms.CheckBox chkShowBBs;
         private System.Windows.Forms.MenuItem mnuExportTable;
-        private System.Windows.Forms.ComboBox cbWallCloseSound;
-        private System.Windows.Forms.ComboBox cbWallOpenSound;
         private System.Windows.Forms.ComboBox cbPlayerExplosion;
         private System.Windows.Forms.ComboBox cbPlayerModel;
         private System.Windows.Forms.MenuItem mnuFindRefs;

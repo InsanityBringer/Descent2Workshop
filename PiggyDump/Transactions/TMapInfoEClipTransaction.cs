@@ -60,7 +60,8 @@ namespace Descent2Workshop.Transactions
                     datafile.TMapInfo[oldTmapIndex].EClipNum = -1;
             }
             info.EClipNum = (short)newValue;
-            datafile.EClips[newValue].ChangingWallTexture = (short)tmapIndex;
+            if (newValue != -1)
+                datafile.EClips[newValue].ChangingWallTexture = (short)tmapIndex;
 
 
             return true;

@@ -118,6 +118,12 @@
     <Compile Include="EditorPanels\VClipPanel.Designer.cs">
       <DependentUpon>VClipPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="EditorPanels\WClipPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorPanels\WClipPanel.Designer.cs">
+      <DependentUpon>WClipPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="EditorPanels\WeaponPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -246,6 +252,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EditorPanels\VClipPanel.resx">
       <DependentUpon>VClipPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorPanels\WClipPanel.resx">
+      <DependentUpon>WClipPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EditorPanels\WeaponPanel.resx">
       <DependentUpon>WeaponPanel.cs</DependentUpon>

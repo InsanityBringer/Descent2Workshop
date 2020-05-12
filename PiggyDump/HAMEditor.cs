@@ -56,6 +56,7 @@ namespace Descent2Workshop
         TMAPInfoPanel texturePanel;
         VClipPanel vclipPanel;
         EClipPanel eclipPanel;
+        WClipPanel wclipPanel;
         RobotPanel robotPanel;
         WeaponPanel weaponPanel;
         
@@ -79,6 +80,8 @@ namespace Descent2Workshop
             vclipPanel.Dock = DockStyle.Fill;
             eclipPanel = new EClipPanel(transactionManager); components.Add(eclipPanel);
             eclipPanel.Dock = DockStyle.Fill;
+            wclipPanel = new WClipPanel(transactionManager); components.Add(wclipPanel);
+            wclipPanel.Dock = DockStyle.Fill;
             robotPanel = new RobotPanel(); components.Add(robotPanel);
             robotPanel.Dock = DockStyle.Fill;
             weaponPanel = new WeaponPanel(); components.Add(weaponPanel);
@@ -86,6 +89,7 @@ namespace Descent2Workshop
             TextureTabPage.Controls.Add(texturePanel);
             VClipTabPage.Controls.Add(vclipPanel);
             EffectsTabPage.Controls.Add(eclipPanel);
+            DoorTabPage.Controls.Add(wclipPanel);
             RobotTabPage.Controls.Add(robotPanel);
             WeaponTabPage.Controls.Add(weaponPanel);
 
@@ -336,10 +340,7 @@ namespace Descent2Workshop
         private void InitWallPanel()
         {
             SetElementControl(true, false);
-            cbWallCloseSound.Items.Clear(); cbWallCloseSound.Items.Add("None");
-            cbWallOpenSound.Items.Clear(); cbWallOpenSound.Items.Add("None");
-            cbWallOpenSound.Items.AddRange(datafile.SoundNames.ToArray());
-            cbWallCloseSound.Items.AddRange(datafile.SoundNames.ToArray());
+            wclipPanel.Init(datafile.SoundNames);
         }
 
         private void InitWeaponPanel()
@@ -457,32 +458,10 @@ namespace Descent2Workshop
 
         public void UpdateWClipPanel(int num)
         {
-            WClip animation = datafile.WClips[num];
-            txtWallTotalTime.Text = animation.PlayTime.ToString();
-            cbWallOpenSound.SelectedIndex = animation.OpenSound + 1;
-            cbWallCloseSound.SelectedIndex = animation.CloseSound + 1;
-            txtWallFilename.Text = new string(animation.Filename);
-            txtWallFrames.Text = animation.NumFrames.ToString();
-
-            cbWallExplodeOpen.Checked = animation.Explodes;
-            cbWallShootable.Checked = animation.Blastable;
-            cbWallOnPrimaryTMAP.Checked = animation.PrimaryTMap;
-            cbWallHidden.Checked = animation.SecretDoor;
-
-            nudWFrame.Value = 0;
-            UpdateWallFrame(0);
+            WClip clip = datafile.WClips[num];
+            wclipPanel.Update(num, clip, datafile, datafile.piggyFile, palette);
 
             txtElemName.Text = "<unnamed>";
-        }
-
-        private void nudWFrame_ValueChanged(object sender, EventArgs e)
-        {
-            if (!isLocked)
-            {
-                isLocked = true;
-                UpdateWallFrame((int)nudWFrame.Value);
-                isLocked = false;
-            }
         }
 
         public void UpdateRobotPanel(int num)
@@ -575,20 +554,6 @@ namespace Descent2Workshop
         {
             UpdatePictureBox(PiggyBitmapUtilities.GetBitmap(datafile.piggyFile, palette, datafile.multiplayerBitmaps[id * 2]), pbWeaponTexture);
             UpdatePictureBox(PiggyBitmapUtilities.GetBitmap(datafile.piggyFile, palette, datafile.multiplayerBitmaps[id * 2 + 1]), pbWingTex);
-        }
-
-        private void UpdateWallFrame(int frame)
-        {
-            WClip animation = datafile.WClips[(int)ElementSpinner.Value];
-            txtWallCurrentFrame.Text = animation.Frames[frame].ToString();
-
-            if (pbWallAnimPreview.Image != null)
-            {
-                Bitmap temp = (Bitmap)pbWallAnimPreview.Image;
-                pbWallAnimPreview.Image = null;
-                temp.Dispose();
-            }
-            pbWallAnimPreview.Image = PiggyBitmapUtilities.GetBitmap(datafile.piggyFile, palette, datafile.Textures[animation.Frames[frame]]);
         }
 
         private void UpdateXLATPanel(int num)

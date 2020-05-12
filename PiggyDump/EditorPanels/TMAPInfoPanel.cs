@@ -130,6 +130,7 @@ namespace Descent2Workshop.EditorPanels
         {
             if (isLocked || transactionManager.TransactionInProgress) return;
 
+            isLocked = true;
             int eclipNum = cbTexEClip.SelectedIndex - 1;
             EClip clip = datafile.GetEClip(eclipNum);
             TMAPInfo tmapInfo = datafile.TMapInfo[textureID];
@@ -162,6 +163,8 @@ namespace Descent2Workshop.EditorPanels
             }
             if (transaction != null)
                 transactionManager.ApplyTransaction(transaction);
+
+            isLocked = false;
         }
 
         private void RemapSingleImage_Click(object sender, EventArgs e)
