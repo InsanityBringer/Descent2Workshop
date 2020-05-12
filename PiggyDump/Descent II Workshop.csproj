@@ -133,6 +133,11 @@
       <DependentUpon>EditorUI.cs</DependentUpon>
     </Compile>
     <Compile Include="Editor\InputEvent.cs" />
+    <Compile Include="Editor\Renderer\Camera.cs" />
+    <Compile Include="Editor\Renderer\GLUtilities.cs" />
+    <Compile Include="Editor\Renderer\LevelData.cs" />
+    <Compile Include="Editor\Renderer\MineRenderer.cs" />
+    <Compile Include="Editor\Renderer\Shader.cs" />
     <Compile Include="ElementCopy.cs">
       <SubType>Form</SubType>
     </Compile>

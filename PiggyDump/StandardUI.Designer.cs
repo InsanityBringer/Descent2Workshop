@@ -2066,6 +2066,7 @@
             // 
             this.LoadLevelMenuItem.Index = 1;
             this.LoadLevelMenuItem.Text = "Load Level...";
+            this.LoadLevelMenuItem.Click += new System.EventHandler(this.LoadLevelMenuItem_Click);
             // 
             // StandardUI
             // 

@@ -1,4 +1,7 @@
-﻿using LibDescent.Data;
+﻿
+
+using LibDescent.Data;
+using LibDescent.Edit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +12,10 @@ namespace Descent2Workshop.Editor
 {
     public class EditorState : IInputEventHandler
     {
-        /*private Level level;
-        private HAMFile dataFile;
+        private ILevel level;
+        private EditorHAMFile dataFile;
         //private SharedRendererState rendererState;
-        private Render.MineRender rendererState;
+        private Renderer.MineRenderer rendererState;
         private EditorUI host;
         private List<LevelVertex> selectedVertices = new List<LevelVertex>();
         private Dictionary<LevelVertex, int> selectedVertMapping = new Dictionary<LevelVertex, int>();
@@ -21,10 +24,10 @@ namespace Descent2Workshop.Editor
         public List<LevelVertex> SelectedVertices { get { return selectedVertices; } }
         public float GridSize { get { return gridSize; } set { gridSize = value; } }
         public Dictionary<LevelVertex, int> SelectedVertMapping { get => selectedVertMapping; set => selectedVertMapping = value; }
-        public Level EditorLevel { get { return level; } }
-        public HAMFile EditorData { get { return dataFile; } }
+        public ILevel EditorLevel { get { return level; } }
+        public EditorHAMFile EditorData { get { return dataFile; } }
 
-        public EditorState(Level level, HAMFile dataFile, EditorUI host)
+        public EditorState(ILevel level, EditorHAMFile dataFile, EditorUI host)
         {
             this.level = level;
             this.dataFile = dataFile;
@@ -33,7 +36,7 @@ namespace Descent2Workshop.Editor
             //this.rendererState = rendererState;
         }
 
-        public void AttachRenderer(Render.MineRender renderer)
+        /*public void AttachRenderer(Render.MineRender renderer)
         {
             rendererState = renderer;
         }

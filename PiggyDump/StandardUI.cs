@@ -550,5 +550,10 @@ namespace Descent2Workshop
                 }
             }
         }
+
+        private void LoadLevelMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
