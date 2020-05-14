@@ -21,6 +21,7 @@
 */
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -148,6 +149,82 @@ namespace Descent2Workshop
             res.GenerateDefaultNamelists();
             res.TranslateData();
             return res;
+        }
+
+        public static void DumpDescent1PIGToBBM(Descent1PIGFile pigFile, Palette palette, string outputFilename)
+        {
+            LBMDecoder encoder = new LBMDecoder();
+            string directory = Path.GetDirectoryName(outputFilename);
+
+            int numFrames = 0;
+            PIGImage[] frames = new PIGImage[50];
+            PIGImage image;
+            for (int i = 0; i < pigFile.Bitmaps.Count; i++)
+            {
+                if (pigFile.Bitmaps[i].IsAnimated) //Special animation hacks
+                {
+                    image = pigFile.Bitmaps[i];
+                    if (image.Frame == 0) //Start at the first frame
+                    {
+                        numFrames = 0;
+                        frames[numFrames++] = image;
+                        if ((i+1) >= pigFile.Bitmaps.Count) return; //out of images
+                        while (image.Name == pigFile.Bitmaps[i+1].Name)
+                        {
+                            frames[numFrames] = pigFile.Bitmaps[i + 1];
+                            i++;
+                            numFrames++;
+                            if ((i+1) >= pigFile.Bitmaps.Count) break; //out of images
+                        }
+                        BinaryWriter bw = new BinaryWriter(File.OpenWrite(string.Format("{0}{1}{2}.abm", directory, Path.DirectorySeparatorChar, image.Name)));
+                        encoder.WriteABM(frames, numFrames, palette, bw);
+                        bw.Close();
+                        bw.Dispose();
+                    }
+                }
+            }
+        }
+
+        public static void DumpPIGToBBM(PIGFile pigFile, Palette palette, string outputFilename)
+        {
+            LBMDecoder encoder = new LBMDecoder();
+            string directory = Path.GetDirectoryName(outputFilename);
+
+            int numFrames = 0;
+            PIGImage[] frames = new PIGImage[50];
+            PIGImage image;
+            for (int i = 0; i < pigFile.Bitmaps.Count; i++)
+            {
+                if (pigFile.Bitmaps[i].IsAnimated) //Special animation hacks
+                {
+                    image = pigFile.Bitmaps[i];
+                    if (image.Frame == 0) //Start at the first frame
+                    {
+                        numFrames = 0;
+                        frames[numFrames++] = image;
+                        if ((i + 1) >= pigFile.Bitmaps.Count) return; //out of images
+                        while (image.Name == pigFile.Bitmaps[i + 1].Name)
+                        {
+                            frames[numFrames] = pigFile.Bitmaps[i + 1];
+                            i++;
+                            numFrames++;
+                            if ((i + 1) >= pigFile.Bitmaps.Count) break; //out of images
+                        }
+                        BinaryWriter bw = new BinaryWriter(File.OpenWrite(string.Format("{0}{1}{2}.abm", directory, Path.DirectorySeparatorChar, image.Name)));
+                        encoder.WriteABM(frames, numFrames, palette, bw);
+                        bw.Close();
+                        bw.Dispose();
+                    }
+                }
+                else
+                {
+                    image = pigFile.Bitmaps[i];
+                    BinaryWriter bw = new BinaryWriter(File.OpenWrite(string.Format("{0}{1}{2}.bbm", directory, Path.DirectorySeparatorChar, image.Name)));
+                    encoder.WriteBBM(image, palette, bw);
+                    bw.Close();
+                    bw.Dispose();
+                }
+            }
         }
     }
 }

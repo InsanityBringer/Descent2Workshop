@@ -336,15 +336,15 @@ namespace Descent2Workshop
 #if DEBUG
             Descent1PIGFile piggyFile = new Descent1PIGFile(false);
             PSXDatFile datFile = new PSXDatFile();
-            Stream stream = File.Open("H:/Descent/DESCENT.PIG", FileMode.Open);
+            Stream stream = File.Open("C:/dev/whyamidoingthis/ChocolateDescent/build/data_d1_ed/descent.pig", FileMode.Open);
             piggyFile.Read(stream);
             stream.Close();
             stream.Dispose();
 
-            stream = File.Open("C:/dev/psxdescent/DESCENT.DAT", FileMode.Open);
+            /*stream = File.Open("C:/dev/psxdescent/DESCENT.DAT", FileMode.Open);
             datFile.Read(stream);
             stream.Close();
-            stream.Dispose();
+            stream.Dispose();*/
             Palette newPalette; int lumpIndex;
 
             lumpIndex = defaultHogFile.GetLumpNum("DEFAULT.256");
@@ -357,7 +357,7 @@ namespace Descent2Workshop
             }
             PIGEditor editor = new PIGEditor(test, newPalette, "ara ara");
             editor.Show();
-            EditorHAMFile hack = DebugUtil.TranslateDATToHam(datFile, test);
+            EditorHAMFile hack = DebugUtil.TranslatePIGToHam(piggyFile, test);
             HAMEditor hameditor = new HAMEditor(hack, this, test, newPalette, "ara ara sayonara");
             hameditor.Show();
 #else
@@ -554,6 +554,51 @@ namespace Descent2Workshop
         private void LoadLevelMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void DumpDescent1PigMenuItem_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.Filter = ".PIG files|*.PIG";
+            Descent1PIGFile piggyFile = new Descent1PIGFile(false);
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                Stream stream = File.Open(openFileDialog1.FileName, FileMode.Open);
+                piggyFile.Read(stream);
+                stream.Close();
+                stream.Dispose();
+            }
+            saveFileDialog1.FileName = "ignored";
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                Palette newPalette;
+                int lumpIndex = defaultHogFile.GetLumpNum("DEFAULT.256");
+                if (lumpIndex != -1) newPalette = new Palette(defaultHogFile.GetLumpData(lumpIndex));
+                else newPalette = new Palette(); //If the palette couldn't be located, make a default grayscale palette
+                DebugUtil.DumpDescent1PIGToBBM(piggyFile, newPalette, saveFileDialog1.FileName);
+            }
+        }
+
+        private void DumpDescent2PigMenuItem_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.Filter = ".PIG files|*.PIG";
+            PIGFile piggyFile = new PIGFile();
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                Stream stream = File.Open(openFileDialog1.FileName, FileMode.Open);
+                piggyFile.Read(stream);
+                stream.Close();
+                stream.Dispose();
+            }
+            saveFileDialog1.FileName = "ignored";
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                Palette newPalette;
+                string paletteName = Path.GetFileNameWithoutExtension(openFileDialog1.FileName) + ".256";
+                int lumpIndex = defaultHogFile.GetLumpNum(paletteName);
+                if (lumpIndex != -1) newPalette = new Palette(defaultHogFile.GetLumpData(lumpIndex));
+                else newPalette = new Palette(); //If the palette couldn't be located, make a default grayscale palette
+                DebugUtil.DumpPIGToBBM(piggyFile, newPalette, saveFileDialog1.FileName);
+            }
         }
     }
 }
