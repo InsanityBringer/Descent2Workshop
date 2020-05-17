@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.cbRobotModel = new System.Windows.Forms.ComboBox();
+            this.RobotModelComboBox = new System.Windows.Forms.ComboBox();
             this.cbRobotDeathSound = new System.Windows.Forms.ComboBox();
             this.label47 = new System.Windows.Forms.Label();
             this.cbRobotHitSound = new System.Windows.Forms.ComboBox();
             this.label46 = new System.Windows.Forms.Label();
-            this.cbRobotDeathVClip = new System.Windows.Forms.ComboBox();
-            this.cbRobotHitVClip = new System.Windows.Forms.ComboBox();
+            this.RobotDeathVClipComboBox = new System.Windows.Forms.ComboBox();
+            this.RobotHitVClipComboBox = new System.Windows.Forms.ComboBox();
             this.cbRobotWeapon2 = new System.Windows.Forms.ComboBox();
             this.cbRobotWeapon1 = new System.Windows.Forms.ComboBox();
             this.cbRobotDropItem = new System.Windows.Forms.ComboBox();
@@ -65,7 +65,7 @@
             this.label20 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.cbRobotDropType = new System.Windows.Forms.ComboBox();
+            this.RobotDropTypeComboBox = new System.Windows.Forms.ComboBox();
             this.label134 = new System.Windows.Forms.Label();
             this.txtRobotLight = new System.Windows.Forms.TextBox();
             this.txtRobotDrag = new System.Windows.Forms.TextBox();
@@ -150,39 +150,39 @@
             this.label79 = new System.Windows.Forms.Label();
             this.label77 = new System.Windows.Forms.Label();
             this.HXMGroupBox = new System.Windows.Forms.GroupBox();
+            this.UnallocatedModelWarning = new System.Windows.Forms.Label();
             this.NumJointsTextBox = new System.Windows.Forms.TextBox();
             this.RobotAnimationCheckbox = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.BaseJointSpinner = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
-            this.UnallocatedModelWarning = new System.Windows.Forms.Label();
             this.groupBox20.SuspendLayout();
             this.groupBox18.SuspendLayout();
             this.HXMGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BaseJointSpinner)).BeginInit();
             this.SuspendLayout();
             // 
-            // cbRobotModel
+            // RobotModelComboBox
             // 
-            this.cbRobotModel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbRobotModel.FormattingEnabled = true;
-            this.cbRobotModel.Location = new System.Drawing.Point(93, 3);
-            this.cbRobotModel.Name = "cbRobotModel";
-            this.cbRobotModel.Size = new System.Drawing.Size(156, 21);
-            this.cbRobotModel.TabIndex = 254;
-            this.cbRobotModel.Tag = "1";
-            this.cbRobotModel.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
+            this.RobotModelComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.RobotModelComboBox.FormattingEnabled = true;
+            this.RobotModelComboBox.Location = new System.Drawing.Point(93, 3);
+            this.RobotModelComboBox.Name = "RobotModelComboBox";
+            this.RobotModelComboBox.Size = new System.Drawing.Size(156, 21);
+            this.RobotModelComboBox.TabIndex = 254;
+            this.RobotModelComboBox.Tag = "ModelNum";
+            this.RobotModelComboBox.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
             // 
             // cbRobotDeathSound
             // 
             this.cbRobotDeathSound.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbRobotDeathSound.FormattingEnabled = true;
-            this.cbRobotDeathSound.Location = new System.Drawing.Point(93, 421);
+            this.cbRobotDeathSound.Location = new System.Drawing.Point(336, 421);
             this.cbRobotDeathSound.Name = "cbRobotDeathSound";
-            this.cbRobotDeathSound.Size = new System.Drawing.Size(156, 21);
+            this.cbRobotDeathSound.Size = new System.Drawing.Size(152, 21);
             this.cbRobotDeathSound.TabIndex = 253;
-            this.cbRobotDeathSound.Tag = "41";
+            this.cbRobotDeathSound.Tag = "DeathSoundNum";
             this.cbRobotDeathSound.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
             // 
             // label47
@@ -198,11 +198,11 @@
             // 
             this.cbRobotHitSound.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbRobotHitSound.FormattingEnabled = true;
-            this.cbRobotHitSound.Location = new System.Drawing.Point(336, 421);
+            this.cbRobotHitSound.Location = new System.Drawing.Point(92, 421);
             this.cbRobotHitSound.Name = "cbRobotHitSound";
-            this.cbRobotHitSound.Size = new System.Drawing.Size(152, 21);
+            this.cbRobotHitSound.Size = new System.Drawing.Size(157, 21);
             this.cbRobotHitSound.TabIndex = 251;
-            this.cbRobotHitSound.Tag = "40";
+            this.cbRobotHitSound.Tag = "HitSoundNum";
             this.cbRobotHitSound.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
             // 
             // label46
@@ -214,27 +214,27 @@
             this.label46.TabIndex = 250;
             this.label46.Text = "Hit sound:";
             // 
-            // cbRobotDeathVClip
+            // RobotDeathVClipComboBox
             // 
-            this.cbRobotDeathVClip.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbRobotDeathVClip.FormattingEnabled = true;
-            this.cbRobotDeathVClip.Location = new System.Drawing.Point(93, 57);
-            this.cbRobotDeathVClip.Name = "cbRobotDeathVClip";
-            this.cbRobotDeathVClip.Size = new System.Drawing.Size(156, 21);
-            this.cbRobotDeathVClip.TabIndex = 249;
-            this.cbRobotDeathVClip.Tag = "4";
-            this.cbRobotDeathVClip.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
+            this.RobotDeathVClipComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.RobotDeathVClipComboBox.FormattingEnabled = true;
+            this.RobotDeathVClipComboBox.Location = new System.Drawing.Point(93, 57);
+            this.RobotDeathVClipComboBox.Name = "RobotDeathVClipComboBox";
+            this.RobotDeathVClipComboBox.Size = new System.Drawing.Size(156, 21);
+            this.RobotDeathVClipComboBox.TabIndex = 249;
+            this.RobotDeathVClipComboBox.Tag = "DeathVClipNum";
+            this.RobotDeathVClipComboBox.SelectedIndexChanged += new System.EventHandler(this.RobotHitVClipComboBox_SelectedIndexChanged);
             // 
-            // cbRobotHitVClip
+            // RobotHitVClipComboBox
             // 
-            this.cbRobotHitVClip.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbRobotHitVClip.FormattingEnabled = true;
-            this.cbRobotHitVClip.Location = new System.Drawing.Point(93, 30);
-            this.cbRobotHitVClip.Name = "cbRobotHitVClip";
-            this.cbRobotHitVClip.Size = new System.Drawing.Size(156, 21);
-            this.cbRobotHitVClip.TabIndex = 248;
-            this.cbRobotHitVClip.Tag = "2";
-            this.cbRobotHitVClip.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
+            this.RobotHitVClipComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.RobotHitVClipComboBox.FormattingEnabled = true;
+            this.RobotHitVClipComboBox.Location = new System.Drawing.Point(93, 30);
+            this.RobotHitVClipComboBox.Name = "RobotHitVClipComboBox";
+            this.RobotHitVClipComboBox.Size = new System.Drawing.Size(156, 21);
+            this.RobotHitVClipComboBox.TabIndex = 248;
+            this.RobotHitVClipComboBox.Tag = "HitVClipNum";
+            this.RobotHitVClipComboBox.SelectedIndexChanged += new System.EventHandler(this.RobotHitVClipComboBox_SelectedIndexChanged);
             // 
             // cbRobotWeapon2
             // 
@@ -244,8 +244,8 @@
             this.cbRobotWeapon2.Name = "cbRobotWeapon2";
             this.cbRobotWeapon2.Size = new System.Drawing.Size(153, 21);
             this.cbRobotWeapon2.TabIndex = 247;
-            this.cbRobotWeapon2.Tag = "6";
-            this.cbRobotWeapon2.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
+            this.cbRobotWeapon2.Tag = "WeaponTypeSecondary";
+            this.cbRobotWeapon2.SelectedIndexChanged += new System.EventHandler(this.RobotHitVClipComboBox_SelectedIndexChanged);
             // 
             // cbRobotWeapon1
             // 
@@ -255,7 +255,7 @@
             this.cbRobotWeapon1.Name = "cbRobotWeapon1";
             this.cbRobotWeapon1.Size = new System.Drawing.Size(153, 21);
             this.cbRobotWeapon1.TabIndex = 246;
-            this.cbRobotWeapon1.Tag = "5";
+            this.cbRobotWeapon1.Tag = "WeaponType";
             this.cbRobotWeapon1.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
             // 
             // cbRobotDropItem
@@ -266,7 +266,7 @@
             this.cbRobotDropItem.Name = "cbRobotDropItem";
             this.cbRobotDropItem.Size = new System.Drawing.Size(155, 21);
             this.cbRobotDropItem.TabIndex = 245;
-            this.cbRobotDropItem.Tag = "8";
+            this.cbRobotDropItem.Tag = "ContainsID";
             this.cbRobotDropItem.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
             // 
             // cbRobotDyingSound
@@ -299,7 +299,7 @@
             this.cbRobotClawSound.Name = "cbRobotClawSound";
             this.cbRobotClawSound.Size = new System.Drawing.Size(156, 21);
             this.cbRobotClawSound.TabIndex = 242;
-            this.cbRobotClawSound.Tag = "12";
+            this.cbRobotClawSound.Tag = "ClawSound";
             this.cbRobotClawSound.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
             // 
             // cbRobotAttackSound
@@ -310,7 +310,7 @@
             this.cbRobotAttackSound.Name = "cbRobotAttackSound";
             this.cbRobotAttackSound.Size = new System.Drawing.Size(152, 21);
             this.cbRobotAttackSound.TabIndex = 241;
-            this.cbRobotAttackSound.Tag = "31";
+            this.cbRobotAttackSound.Tag = "AttackSound";
             this.cbRobotAttackSound.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
             // 
             // cbRobotSeeSound
@@ -321,7 +321,7 @@
             this.cbRobotSeeSound.Name = "cbRobotSeeSound";
             this.cbRobotSeeSound.Size = new System.Drawing.Size(156, 21);
             this.cbRobotSeeSound.TabIndex = 240;
-            this.cbRobotSeeSound.Tag = "30";
+            this.cbRobotSeeSound.Tag = "SeeSound";
             this.cbRobotSeeSound.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
             // 
             // cbRobotAI
@@ -340,6 +340,7 @@
             this.cbRobotAI.Name = "cbRobotAI";
             this.cbRobotAI.Size = new System.Drawing.Size(115, 21);
             this.cbRobotAI.TabIndex = 186;
+            this.cbRobotAI.Tag = "Behavior";
             this.cbRobotAI.SelectedIndexChanged += new System.EventHandler(this.RobotAI_SelectedIndexChanged);
             // 
             // label112
@@ -357,7 +358,7 @@
             this.txtRobotGlow.Name = "txtRobotGlow";
             this.txtRobotGlow.Size = new System.Drawing.Size(108, 20);
             this.txtRobotGlow.TabIndex = 238;
-            this.txtRobotGlow.Tag = "43";
+            this.txtRobotGlow.Tag = "Glow";
             this.txtRobotGlow.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // label101
@@ -384,8 +385,8 @@
             this.txtRobotLightcast.Name = "txtRobotLightcast";
             this.txtRobotLightcast.Size = new System.Drawing.Size(108, 20);
             this.txtRobotLightcast.TabIndex = 235;
-            this.txtRobotLightcast.Tag = "39";
-            this.txtRobotLightcast.TextChanged += new System.EventHandler(this.RobotPropertyFixed_TextChanged);
+            this.txtRobotLightcast.Tag = "LightCast";
+            this.txtRobotLightcast.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // label99
             // 
@@ -402,7 +403,7 @@
             this.txtRobotPursuit.Name = "txtRobotPursuit";
             this.txtRobotPursuit.Size = new System.Drawing.Size(87, 20);
             this.txtRobotPursuit.TabIndex = 233;
-            this.txtRobotPursuit.Tag = "38";
+            this.txtRobotPursuit.Tag = "Pursuit";
             this.txtRobotPursuit.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // label98
@@ -420,7 +421,7 @@
             this.txtRobotAim.Name = "txtRobotAim";
             this.txtRobotAim.Size = new System.Drawing.Size(87, 20);
             this.txtRobotAim.TabIndex = 231;
-            this.txtRobotAim.Tag = "45";
+            this.txtRobotAim.Tag = "Aim";
             this.txtRobotAim.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // label97
@@ -438,7 +439,7 @@
             this.txtRobotDeathRolls.Name = "txtRobotDeathRolls";
             this.txtRobotDeathRolls.Size = new System.Drawing.Size(100, 20);
             this.txtRobotDeathRolls.TabIndex = 229;
-            this.txtRobotDeathRolls.Tag = "40";
+            this.txtRobotDeathRolls.Tag = "DeathRollTime";
             this.txtRobotDeathRolls.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // label96
@@ -456,7 +457,7 @@
             this.txtRobotDeathBlobs.Name = "txtRobotDeathBlobs";
             this.txtRobotDeathBlobs.Size = new System.Drawing.Size(100, 20);
             this.txtRobotDeathBlobs.TabIndex = 227;
-            this.txtRobotDeathBlobs.Tag = "36";
+            this.txtRobotDeathBlobs.Tag = "SmartBlobsOnDeath";
             this.txtRobotDeathBlobs.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // label35
@@ -474,7 +475,7 @@
             this.txtRobotHitBlobs.Name = "txtRobotHitBlobs";
             this.txtRobotHitBlobs.Size = new System.Drawing.Size(87, 20);
             this.txtRobotHitBlobs.TabIndex = 225;
-            this.txtRobotHitBlobs.Tag = "37";
+            this.txtRobotHitBlobs.Tag = "SmartBlobsOnHit";
             this.txtRobotHitBlobs.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // label34
@@ -492,7 +493,7 @@
             this.txtRobotEnergyDrain.Name = "txtRobotEnergyDrain";
             this.txtRobotEnergyDrain.Size = new System.Drawing.Size(87, 20);
             this.txtRobotEnergyDrain.TabIndex = 223;
-            this.txtRobotEnergyDrain.Tag = "15";
+            this.txtRobotEnergyDrain.Tag = "EnergyDrain";
             this.txtRobotEnergyDrain.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // txtRobotBadass
@@ -501,7 +502,7 @@
             this.txtRobotBadass.Name = "txtRobotBadass";
             this.txtRobotBadass.Size = new System.Drawing.Size(100, 20);
             this.txtRobotBadass.TabIndex = 222;
-            this.txtRobotBadass.Tag = "14";
+            this.txtRobotBadass.Tag = "DeathExplosionRadius";
             this.txtRobotBadass.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // label20
@@ -531,18 +532,18 @@
             this.label7.TabIndex = 219;
             this.label7.Text = "/ 16";
             // 
-            // cbRobotDropType
+            // RobotDropTypeComboBox
             // 
-            this.cbRobotDropType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbRobotDropType.FormattingEnabled = true;
-            this.cbRobotDropType.Items.AddRange(new object[] {
+            this.RobotDropTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.RobotDropTypeComboBox.FormattingEnabled = true;
+            this.RobotDropTypeComboBox.Items.AddRange(new object[] {
             "Powerup",
             "Robot"});
-            this.cbRobotDropType.Location = new System.Drawing.Point(92, 84);
-            this.cbRobotDropType.Name = "cbRobotDropType";
-            this.cbRobotDropType.Size = new System.Drawing.Size(100, 21);
-            this.cbRobotDropType.TabIndex = 218;
-            this.cbRobotDropType.SelectedIndexChanged += new System.EventHandler(this.RobotDropType_SelectedIndexChanged);
+            this.RobotDropTypeComboBox.Location = new System.Drawing.Point(92, 84);
+            this.RobotDropTypeComboBox.Name = "RobotDropTypeComboBox";
+            this.RobotDropTypeComboBox.Size = new System.Drawing.Size(100, 21);
+            this.RobotDropTypeComboBox.TabIndex = 218;
+            this.RobotDropTypeComboBox.SelectedIndexChanged += new System.EventHandler(this.RobotDropType_SelectedIndexChanged);
             // 
             // label134
             // 
@@ -559,7 +560,7 @@
             this.txtRobotLight.Name = "txtRobotLight";
             this.txtRobotLight.Size = new System.Drawing.Size(108, 20);
             this.txtRobotLight.TabIndex = 205;
-            this.txtRobotLight.Tag = "16";
+            this.txtRobotLight.Tag = "Lighting";
             this.txtRobotLight.TextChanged += new System.EventHandler(this.RobotPropertyFixed_TextChanged);
             // 
             // txtRobotDrag
@@ -568,7 +569,7 @@
             this.txtRobotDrag.Name = "txtRobotDrag";
             this.txtRobotDrag.Size = new System.Drawing.Size(100, 20);
             this.txtRobotDrag.TabIndex = 203;
-            this.txtRobotDrag.Tag = "19";
+            this.txtRobotDrag.Tag = "Drag";
             this.txtRobotDrag.TextChanged += new System.EventHandler(this.RobotPropertyFixed_TextChanged);
             // 
             // txtRobotMass
@@ -577,7 +578,7 @@
             this.txtRobotMass.Name = "txtRobotMass";
             this.txtRobotMass.Size = new System.Drawing.Size(100, 20);
             this.txtRobotMass.TabIndex = 201;
-            this.txtRobotMass.Tag = "18";
+            this.txtRobotMass.Tag = "Mass";
             this.txtRobotMass.TextChanged += new System.EventHandler(this.RobotPropertyFixed_TextChanged);
             // 
             // txtRobotShield
@@ -586,7 +587,7 @@
             this.txtRobotShield.Name = "txtRobotShield";
             this.txtRobotShield.Size = new System.Drawing.Size(100, 20);
             this.txtRobotShield.TabIndex = 199;
-            this.txtRobotShield.Tag = "17";
+            this.txtRobotShield.Tag = "Strength";
             this.txtRobotShield.TextChanged += new System.EventHandler(this.RobotPropertyFixed_TextChanged);
             // 
             // txtRobotScore
@@ -595,7 +596,7 @@
             this.txtRobotScore.Name = "txtRobotScore";
             this.txtRobotScore.Size = new System.Drawing.Size(100, 20);
             this.txtRobotScore.TabIndex = 190;
-            this.txtRobotScore.Tag = "13";
+            this.txtRobotScore.Tag = "ScoreValue";
             this.txtRobotScore.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // txtRobotDropProb
@@ -604,7 +605,7 @@
             this.txtRobotDropProb.Name = "txtRobotDropProb";
             this.txtRobotDropProb.Size = new System.Drawing.Size(29, 20);
             this.txtRobotDropProb.TabIndex = 189;
-            this.txtRobotDropProb.Tag = "10";
+            this.txtRobotDropProb.Tag = "ContainsProbability";
             this.txtRobotDropProb.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // txtRobotDrops
@@ -613,7 +614,7 @@
             this.txtRobotDrops.Name = "txtRobotDrops";
             this.txtRobotDrops.Size = new System.Drawing.Size(100, 20);
             this.txtRobotDrops.TabIndex = 188;
-            this.txtRobotDrops.Tag = "9";
+            this.txtRobotDrops.Tag = "ContainsCount";
             this.txtRobotDrops.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
             // 
             // label133
@@ -1231,7 +1232,7 @@
             this.cmRobotBoss.Name = "cmRobotBoss";
             this.cmRobotBoss.Size = new System.Drawing.Size(115, 21);
             this.cmRobotBoss.TabIndex = 209;
-            this.cmRobotBoss.Tag = "4";
+            this.cmRobotBoss.Tag = "BossFlag";
             this.cmRobotBoss.SelectedIndexChanged += new System.EventHandler(this.RobotBoss_SelectedIndexChanged);
             // 
             // label91
@@ -1255,7 +1256,7 @@
             this.cmRobotCloak.Name = "cmRobotCloak";
             this.cmRobotCloak.Size = new System.Drawing.Size(115, 21);
             this.cmRobotCloak.TabIndex = 207;
-            this.cmRobotCloak.Tag = "3";
+            this.cmRobotCloak.Tag = "CloakType";
             this.cmRobotCloak.SelectedIndexChanged += new System.EventHandler(this.RobotCloak_SelectedIndexChanged);
             // 
             // label90
@@ -1392,6 +1393,16 @@
             this.HXMGroupBox.Text = "Animation Control";
             this.HXMGroupBox.Visible = false;
             // 
+            // UnallocatedModelWarning
+            // 
+            this.UnallocatedModelWarning.AutoSize = true;
+            this.UnallocatedModelWarning.Location = new System.Drawing.Point(3, 91);
+            this.UnallocatedModelWarning.Name = "UnallocatedModelWarning";
+            this.UnallocatedModelWarning.Size = new System.Drawing.Size(140, 13);
+            this.UnallocatedModelWarning.TabIndex = 8;
+            this.UnallocatedModelWarning.Text = "Warning: Model unallocated";
+            this.UnallocatedModelWarning.Visible = false;
+            // 
             // NumJointsTextBox
             // 
             this.NumJointsTextBox.Location = new System.Drawing.Point(98, 65);
@@ -1451,28 +1462,18 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Write joints at:";
             // 
-            // UnallocatedModelWarning
-            // 
-            this.UnallocatedModelWarning.AutoSize = true;
-            this.UnallocatedModelWarning.Location = new System.Drawing.Point(3, 91);
-            this.UnallocatedModelWarning.Name = "UnallocatedModelWarning";
-            this.UnallocatedModelWarning.Size = new System.Drawing.Size(140, 13);
-            this.UnallocatedModelWarning.TabIndex = 8;
-            this.UnallocatedModelWarning.Text = "Warning: Model unallocated";
-            this.UnallocatedModelWarning.Visible = false;
-            // 
             // RobotPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.HXMGroupBox);
-            this.Controls.Add(this.cbRobotModel);
+            this.Controls.Add(this.RobotModelComboBox);
             this.Controls.Add(this.cbRobotDeathSound);
             this.Controls.Add(this.label47);
             this.Controls.Add(this.cbRobotHitSound);
             this.Controls.Add(this.label46);
-            this.Controls.Add(this.cbRobotDeathVClip);
-            this.Controls.Add(this.cbRobotHitVClip);
+            this.Controls.Add(this.RobotDeathVClipComboBox);
+            this.Controls.Add(this.RobotHitVClipComboBox);
             this.Controls.Add(this.cbRobotWeapon2);
             this.Controls.Add(this.cbRobotWeapon1);
             this.Controls.Add(this.cbRobotDropItem);
@@ -1503,7 +1504,7 @@
             this.Controls.Add(this.label20);
             this.Controls.Add(this.label19);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.cbRobotDropType);
+            this.Controls.Add(this.RobotDropTypeComboBox);
             this.Controls.Add(this.label134);
             this.Controls.Add(this.txtRobotLight);
             this.Controls.Add(this.txtRobotDrag);
@@ -1551,13 +1552,13 @@
 
         #endregion
 
-        private System.Windows.Forms.ComboBox cbRobotModel;
+        private System.Windows.Forms.ComboBox RobotModelComboBox;
         private System.Windows.Forms.ComboBox cbRobotDeathSound;
         private System.Windows.Forms.Label label47;
         private System.Windows.Forms.ComboBox cbRobotHitSound;
         private System.Windows.Forms.Label label46;
-        private System.Windows.Forms.ComboBox cbRobotDeathVClip;
-        private System.Windows.Forms.ComboBox cbRobotHitVClip;
+        private System.Windows.Forms.ComboBox RobotDeathVClipComboBox;
+        private System.Windows.Forms.ComboBox RobotHitVClipComboBox;
         private System.Windows.Forms.ComboBox cbRobotWeapon2;
         private System.Windows.Forms.ComboBox cbRobotWeapon1;
         private System.Windows.Forms.ComboBox cbRobotDropItem;
@@ -1588,7 +1589,7 @@
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.ComboBox cbRobotDropType;
+        private System.Windows.Forms.ComboBox RobotDropTypeComboBox;
         private System.Windows.Forms.Label label134;
         private System.Windows.Forms.TextBox txtRobotLight;
         private System.Windows.Forms.TextBox txtRobotDrag;

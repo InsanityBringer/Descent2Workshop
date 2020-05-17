@@ -25,6 +25,7 @@ using System.Collections.Generic;
 
 using System.IO;
 using System.Windows.Forms;
+using Descent2Workshop.Transactions;
 using LibDescent.Data;
 using LibDescent.Edit;
 using OpenTK;
@@ -52,6 +53,7 @@ namespace Descent2Workshop
         private int ElementNumber { get { return (int)nudElementNum.Value; } }
 
         private EditorPanels.RobotPanel robotPanel;
+        private TransactionManager transactionManager = new TransactionManager();
 
         public HXMEditor(EditorHXMFile datafile, StandardUI host, string filename)
         {
@@ -69,7 +71,7 @@ namespace Descent2Workshop
             pictureBox3.Enabled = false;
             pictureBox3.Visible = false;
 
-            robotPanel = new EditorPanels.RobotPanel();
+            robotPanel = new EditorPanels.RobotPanel(transactionManager, 0);
             robotPanel.Dock = DockStyle.Fill;
             RobotTabPage.Controls.Add(robotPanel);
             components.Add(robotPanel);
@@ -172,7 +174,7 @@ namespace Descent2Workshop
         public void UpdateRobotPanel(int num)
         {
             Robot robot = datafile.replacedRobots[num];
-            robotPanel.Update(robot);
+            robotPanel.Update(robot, num);
 
             ReplacedElementComboBox.SelectedIndex = robot.replacementID;
         }

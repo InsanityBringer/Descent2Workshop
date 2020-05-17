@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Descent2Workshop.Transactions;
 using LibDescent.Data;
 using LibDescent.Edit;
 
@@ -11,6 +12,7 @@ namespace Descent2Workshop.EditorPanels
     {
         private bool isLocked = false;
         private Robot robot;
+        private int robotid;
 
         //Name lists for drops
         private List<string> RobotNames;
@@ -29,7 +31,11 @@ namespace Descent2Workshop.EditorPanels
         //HXM file for showing HXM data
         private EditorHXMFile hxmFile;
 
-        public RobotPanel()
+        //Transaction related data
+        private TransactionManager transactionManager;
+        private int tabPage;
+
+        public RobotPanel(TransactionManager transactionManager, int tabPage)
         {
             InitializeComponent();
             //hey can any c# experts tell me what obvious feature I'm missing here, and if it exists, why I can't just do something like
@@ -45,6 +51,9 @@ namespace Descent2Workshop.EditorPanels
             //I really hope there's a better way of doing this that isn't so prone to issues
             //I can't believe that a programming language would have a hole in functionality this terrible tbh
             //Or maybe I'm doing something dumb here?
+
+            this.tabPage = tabPage;
+            this.transactionManager = transactionManager;
         }
 
         public void Init(List<string> VClipNames, List<string> SoundNames, List<string> RobotNames, List<string> WeaponNames, List<string> PowerupNames, List<string> ModelNames)
@@ -76,15 +85,15 @@ namespace Descent2Workshop.EditorPanels
             cbRobotWeapon1.Items.AddRange(stringarray);
             cbRobotWeapon2.Items.AddRange(stringarray);
 
-            cbRobotHitVClip.Items.Clear(); cbRobotHitVClip.Items.Add("None");
-            cbRobotDeathVClip.Items.Clear(); cbRobotDeathVClip.Items.Add("None");
+            RobotHitVClipComboBox.Items.Clear(); RobotHitVClipComboBox.Items.Add("None");
+            RobotDeathVClipComboBox.Items.Clear(); RobotDeathVClipComboBox.Items.Add("None");
 
             stringarray = VClipNames.ToArray();
-            cbRobotHitVClip.Items.AddRange(stringarray);
-            cbRobotDeathVClip.Items.AddRange(stringarray);
-            cbRobotModel.Items.Clear();
+            RobotHitVClipComboBox.Items.AddRange(stringarray);
+            RobotDeathVClipComboBox.Items.AddRange(stringarray);
+            RobotModelComboBox.Items.Clear();
 
-            cbRobotModel.Items.AddRange(ModelNames.ToArray<string>());
+            RobotModelComboBox.Items.AddRange(ModelNames.ToArray<string>());
         }
 
         public void InitHXM(EditorHXMFile hxmFile)
@@ -94,10 +103,11 @@ namespace Descent2Workshop.EditorPanels
         }
 
         //Fillers
-        public void Update(Robot robot)
+        public void Update(Robot robot, int id)
         {
             isLocked = true;
             this.robot = robot;
+            this.robotid = id;
             cbRobotAttackSound.SelectedIndex = robot.AttackSound;
             cbRobotClawSound.SelectedIndex = robot.ClawSound;
             txtRobotDrag.Text = robot.Drag.ToString();
@@ -134,11 +144,11 @@ namespace Descent2Workshop.EditorPanels
                 dropType = 0;
 
             UpdateRobotDropTypes(dropType, robot);
-            cbRobotDropType.SelectedIndex = dropType;
+            RobotDropTypeComboBox.SelectedIndex = dropType;
 
-            cbRobotHitVClip.SelectedIndex = robot.HitVClipNum + 1;
-            cbRobotDeathVClip.SelectedIndex = robot.DeathVClipNum + 1;
-            cbRobotModel.SelectedIndex = robot.ModelNum;
+            RobotHitVClipComboBox.SelectedIndex = robot.HitVClipNum + 1;
+            RobotDeathVClipComboBox.SelectedIndex = robot.DeathVClipNum + 1;
+            RobotModelComboBox.SelectedIndex = robot.ModelNum;
             cbRobotWeapon1.SelectedIndex = robot.WeaponType;
             cbRobotWeapon2.SelectedIndex = robot.WeaponTypeSecondary + 1;
             if (robot.Behavior >= RobotAIType.Still)
@@ -220,15 +230,16 @@ namespace Descent2Workshop.EditorPanels
         //Updators
         private void RobotComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (isLocked)
+            if (isLocked || transactionManager.TransactionInProgress)
             {
                 return;
             }
             ComboBox sendingControl = (ComboBox)sender;
             string tagstr = (string)sendingControl.Tag;
-            int tagvalue = Int32.Parse(tagstr);
             int value = sendingControl.SelectedIndex;
-            robot.UpdateRobot(tagvalue, ref value, 0, 0);
+
+            IntegerTransaction transaction = new IntegerTransaction("Robot property", robot, (string)sendingControl.Tag, robotid, tabPage, value);
+            transactionManager.ApplyTransaction(transaction);
 
             //[ISB] ugly hack, show new value of joints and animation checkbox
             if (hxmFile != null)
@@ -241,20 +252,14 @@ namespace Descent2Workshop.EditorPanels
 
         private void RobotProperty_TextChanged(object sender, EventArgs e)
         {
-            if (isLocked)
+            if (isLocked || transactionManager.TransactionInProgress)
                 return;
             TextBox textBox = (TextBox)sender;
-            int tagvalue = int.Parse((string)textBox.Tag);
             int value;
             if (int.TryParse(textBox.Text, out value))
             {
-                bool clamped = robot.UpdateRobot(tagvalue, ref value, 0, 0);
-                if (clamped) //parrot back the value if it clamped
-                {
-                    isLocked = true;
-                    textBox.Text = value.ToString();
-                    isLocked = false;
-                }
+                IntegerTransaction transaction = new IntegerTransaction("Robot property", robot, (string)textBox.Tag, robotid, tabPage, value);
+                transactionManager.ApplyTransaction(transaction);
             }
         }
 
@@ -265,24 +270,17 @@ namespace Descent2Workshop.EditorPanels
 
         private void RobotPropertyFixed_TextChanged(object sender, EventArgs e)
         {
-            if (isLocked)
+            if (isLocked || transactionManager.TransactionInProgress)
             {
                 return;
             }
             TextBox textBox = (TextBox)sender;
-            int tagvalue = int.Parse((string)textBox.Tag);
 
             float fvalue;
             if (float.TryParse(textBox.Text, out fvalue))
             {
-                int value = (int)(fvalue * 65536f);
-                bool clamped = robot.UpdateRobot(tagvalue, ref value, 0, 0);
-                if (clamped) //parrot back the value if it clamped
-                {
-                    isLocked = true;
-                    textBox.Text = (value / 65536d).ToString();
-                    isLocked = false;
-                }
+                FixTransaction transaction = new FixTransaction("Robot property", robot, (string)textBox.Tag, robotid, tabPage, fvalue);
+                transactionManager.ApplyTransaction(transaction);
             }
         }
 
@@ -315,10 +313,11 @@ namespace Descent2Workshop.EditorPanels
 
         private void RobotDropType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (isLocked) return;
-            robot.ClearAndUpdateDropReference(cbRobotDropType.SelectedIndex == 1 ? 2 : 7);
+            if (isLocked || transactionManager.TransactionInProgress) return;
+            RobotDropTypeTransaction transaction = new RobotDropTypeTransaction("Robot drop type", robotid, tabPage, robot, RobotDropTypeComboBox.SelectedIndex == 1 ? 2 : 7);
+            transactionManager.ApplyTransaction(transaction);
             isLocked = true;
-            UpdateRobotDropTypes(cbRobotDropType.SelectedIndex, robot);
+            UpdateRobotDropTypes(RobotDropTypeComboBox.SelectedIndex, robot);
             isLocked = false;
         }
 
@@ -481,6 +480,27 @@ namespace Descent2Workshop.EditorPanels
                 Polymodel model = hxmFile.GetModel(robot.ModelNum);
                 model.isAnimated = RobotAnimationCheckbox.Checked;
             }
+        }
+
+        //I hate everything right now
+        //Needed to have values that are -1 the specified value
+        private void RobotHitVClipComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (isLocked || transactionManager.TransactionInProgress)
+            {
+                return;
+            }
+            ComboBox sendingControl = (ComboBox)sender;
+            string tagstr = (string)sendingControl.Tag;
+            int value = sendingControl.SelectedIndex;
+
+            IntegerTransaction transaction = new IntegerTransaction("Robot property", robot, (string)sendingControl.Tag, robotid, tabPage, value-1);
+            transactionManager.ApplyTransaction(transaction);
+        }
+
+        private void txtRobotLightcast_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

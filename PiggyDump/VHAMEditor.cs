@@ -32,6 +32,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Descent2Workshop.EditorPanels;
+using Descent2Workshop.Transactions;
 
 namespace Descent2Workshop
 {
@@ -52,6 +53,8 @@ namespace Descent2Workshop
         private RobotPanel robotPanel;
         private WeaponPanel weaponPanel;
 
+        private TransactionManager transactionManager = new TransactionManager();
+
         public VHAMEditor(EditorVHAMFile data, StandardUI host)
         {
             InitializeComponent();
@@ -65,7 +68,7 @@ namespace Descent2Workshop
             this.glControl1.VSync = false;
             this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
             this.glControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl1_Paint);
-            robotPanel = new RobotPanel();
+            robotPanel = new RobotPanel(transactionManager, 0);
             robotPanel.Dock = DockStyle.Fill;
             weaponPanel = new WeaponPanel();
             weaponPanel.Dock = DockStyle.Fill;
@@ -198,7 +201,7 @@ namespace Descent2Workshop
         public void UpdateRobotPanel(int num)
         {
             Robot robot = datafile.Robots[num];
-            robotPanel.Update(robot);
+            robotPanel.Update(robot, num);
 
             txtElemName.Text = datafile.RobotNames[num];
         }

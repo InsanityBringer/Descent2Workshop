@@ -199,6 +199,7 @@
     <Compile Include="Transactions\FixTransaction.cs" />
     <Compile Include="Transactions\IndexedUnsignedTransaction.cs" />
     <Compile Include="Transactions\IntegerTransaction.cs" />
+    <Compile Include="Transactions\RobotDropTypeTransaction.cs" />
     <Compile Include="Transactions\TMapInfoEClipTransaction.cs" />
     <Compile Include="Transactions\TMapInfoTransaction.cs" />
     <Compile Include="Transactions\Transaction.cs" />

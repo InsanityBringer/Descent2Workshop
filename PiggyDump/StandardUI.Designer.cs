@@ -62,6 +62,9 @@
             this.DebugMenu = new System.Windows.Forms.MenuItem();
             this.EditorMenuItem = new System.Windows.Forms.MenuItem();
             this.LoadLevelMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem1 = new System.Windows.Forms.MenuItem();
+            this.DumpDescent1PigMenuItem = new System.Windows.Forms.MenuItem();
+            this.DumpDescent2PigMenuItem = new System.Windows.Forms.MenuItem();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -224,9 +227,6 @@
             this.label76 = new System.Windows.Forms.Label();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.tbLog = new System.Windows.Forms.TextBox();
-            this.menuItem1 = new System.Windows.Forms.MenuItem();
-            this.DumpDescent1PigMenuItem = new System.Windows.Forms.MenuItem();
-            this.DumpDescent2PigMenuItem = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.tabPage10.SuspendLayout();
@@ -471,6 +471,23 @@
             this.LoadLevelMenuItem.Index = 1;
             this.LoadLevelMenuItem.Text = "Load Level...";
             this.LoadLevelMenuItem.Click += new System.EventHandler(this.LoadLevelMenuItem_Click);
+            // 
+            // menuItem1
+            // 
+            this.menuItem1.Index = 2;
+            this.menuItem1.Text = "-";
+            // 
+            // DumpDescent1PigMenuItem
+            // 
+            this.DumpDescent1PigMenuItem.Index = 3;
+            this.DumpDescent1PigMenuItem.Text = "Dump Descent 1 PIG...";
+            this.DumpDescent1PigMenuItem.Click += new System.EventHandler(this.DumpDescent1PigMenuItem_Click);
+            // 
+            // DumpDescent2PigMenuItem
+            // 
+            this.DumpDescent2PigMenuItem.Index = 4;
+            this.DumpDescent2PigMenuItem.Text = "Dump Descent 2 PIG...";
+            this.DumpDescent2PigMenuItem.Click += new System.EventHandler(this.DumpDescent2PigMenuItem_Click);
             // 
             // textBox3
             // 
@@ -2073,23 +2090,6 @@
             this.tbLog.Size = new System.Drawing.Size(404, 165);
             this.tbLog.TabIndex = 2;
             this.tbLog.Text = "Descent II Workshop log";
-            // 
-            // menuItem1
-            // 
-            this.menuItem1.Index = 2;
-            this.menuItem1.Text = "-";
-            // 
-            // DumpDescent1PigMenuItem
-            // 
-            this.DumpDescent1PigMenuItem.Index = 3;
-            this.DumpDescent1PigMenuItem.Text = "Dump Descent 1 PIG...";
-            this.DumpDescent1PigMenuItem.Click += new System.EventHandler(this.DumpDescent1PigMenuItem_Click);
-            // 
-            // DumpDescent2PigMenuItem
-            // 
-            this.DumpDescent2PigMenuItem.Index = 4;
-            this.DumpDescent2PigMenuItem.Text = "Dump Descent 2 PIG...";
-            this.DumpDescent2PigMenuItem.Click += new System.EventHandler(this.DumpDescent2PigMenuItem_Click);
             // 
             // StandardUI
             // 

@@ -55,6 +55,27 @@ namespace Descent2Workshop.Transactions
                 //Set the new value
                 property.SetValue(target, (sbyte)newValue);
             }
+            else if (property.PropertyType == typeof(ushort))
+            {
+                //Preserve the old value for undo purposes
+                oldValue = (int)((ushort)property.GetValue(target));
+                //Set the new value
+                property.SetValue(target, (ushort)newValue);
+            }
+            else if (property.PropertyType == typeof(byte))
+            {
+                //Preserve the old value for undo purposes
+                oldValue = (int)((byte)property.GetValue(target));
+                //Set the new value
+                property.SetValue(target, (byte)newValue);
+            }
+            else if (property.PropertyType == typeof(uint))
+            {
+                //Preserve the old value for undo purposes
+                oldValue = (int)((uint)property.GetValue(target));
+                //Set the new value
+                property.SetValue(target, (uint)newValue);
+            }
             else
             {
                 //Preserve the old value for undo purposes
@@ -75,6 +96,18 @@ namespace Descent2Workshop.Transactions
             else if (property.PropertyType == typeof(sbyte))
             {
                 property.SetValue(target, (sbyte)oldValue);
+            }
+            else if (property.PropertyType == typeof(ushort))
+            {
+                property.SetValue(target, (ushort)oldValue);
+            }
+            else if (property.PropertyType == typeof(uint))
+            {
+                property.SetValue(target, (uint)oldValue);
+            }
+            else if (property.PropertyType == typeof(byte))
+            {
+                property.SetValue(target, (byte)oldValue);
             }
             else
             {
