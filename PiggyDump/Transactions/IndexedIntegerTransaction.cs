@@ -20,6 +20,7 @@
     SOFTWARE.
 */
 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,22 +29,14 @@ using System.Threading.Tasks;
 
 namespace Descent2Workshop.Transactions
 {
-    public class UndoIndexedEventArgs : EventArgs
-    {
-        public int Index { get; }
-        public UndoIndexedEventArgs(int index)
-        {
-            Index = index;
-        }
-    }
-    public class IndexedUnsignedTransaction : Transaction
+    public class IndexedIntegerTransaction : Transaction
     {
         public uint index;
-        public uint newValue;
-        public uint oldValue;
+        public int newValue;
+        public int oldValue;
 
         public EventHandler<UndoIndexedEventArgs> undoEvent;
-        public IndexedUnsignedTransaction(string label, object target, string propertyName, int page, int tab, uint index, uint newValue) : base(label, target, propertyName, page, tab)
+        public IndexedIntegerTransaction(string label, object target, string propertyName, int page, int tab, uint index, int newValue) : base(label, target, propertyName, page, tab)
         {
             this.index = index;
             this.newValue = newValue;
@@ -52,25 +45,25 @@ namespace Descent2Workshop.Transactions
         public override bool Apply()
         {
             //okay so this is a dumb hack so we can generalize this mess
-            if (property.PropertyType == typeof(ushort[]))
+            if (property.PropertyType == typeof(short[]))
             {
-                ushort[] array = (ushort[])property.GetValue(target);
+                short[] array = (short[])property.GetValue(target);
                 //Preserve the old value for undo purposes
                 oldValue = array[index];
                 //Set the new value
-                array[index] = (ushort)newValue;
+                array[index] = (short)newValue;
             }
-            else if (property.PropertyType == typeof(byte[]))
+            else if (property.PropertyType == typeof(sbyte[]))
             {
-                byte[] array = (byte[])property.GetValue(target);
+                sbyte[] array = (sbyte[])property.GetValue(target);
                 //Preserve the old value for undo purposes
                 oldValue = array[index];
                 //Set the new value
-                array[index] = (byte)newValue;
+                array[index] = (sbyte)newValue;
             }
             else
             {
-                uint[] array = (uint[])property.GetValue(target);
+                int[] array = (int[])property.GetValue(target);
                 //Preserve the old value for undo purposes
                 oldValue = array[index];
                 //Set the new value
@@ -83,19 +76,19 @@ namespace Descent2Workshop.Transactions
         public override void Revert()
         {
             //okay so this is a dumb hack so we can generalize this mess
-            if (property.PropertyType == typeof(ushort[]))
+            if (property.PropertyType == typeof(short[]))
             {
-                ushort[] array = (ushort[])property.GetValue(target);
-                array[index] = (ushort)oldValue;
+                short[] array = (short[])property.GetValue(target);
+                array[index] = (short)oldValue;
             }
-            else if (property.PropertyType == typeof(byte[]))
+            else if (property.PropertyType == typeof(sbyte[]))
             {
-                byte[] array = (byte[])property.GetValue(target);
-                array[index] = (byte)oldValue;
+                sbyte[] array = (sbyte[])property.GetValue(target);
+                array[index] = (sbyte)oldValue;
             }
             else
             {
-                uint[] array = (uint[])property.GetValue(target);
+                int[] array = (int[])property.GetValue(target);
                 array[index] = oldValue;
             }
             undoEvent?.Invoke(this, new UndoIndexedEventArgs((int)index));

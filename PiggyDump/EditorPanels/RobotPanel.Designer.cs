@@ -759,8 +759,8 @@
             this.RobotFireDelay24.Name = "RobotFireDelay24";
             this.RobotFireDelay24.Size = new System.Drawing.Size(39, 20);
             this.RobotFireDelay24.TabIndex = 89;
-            this.RobotFireDelay24.Tag = "22";
-            this.RobotFireDelay24.TextChanged += new System.EventHandler(this.RobotAIFixed4_TextChanged);
+            this.RobotFireDelay24.Tag = "FiringWaitSecondary,4";
+            this.RobotFireDelay24.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // RobotEvadeSpeed4
             // 
@@ -768,8 +768,8 @@
             this.RobotEvadeSpeed4.Name = "RobotEvadeSpeed4";
             this.RobotEvadeSpeed4.Size = new System.Drawing.Size(39, 20);
             this.RobotEvadeSpeed4.TabIndex = 82;
-            this.RobotEvadeSpeed4.Tag = "27";
-            this.RobotEvadeSpeed4.TextChanged += new System.EventHandler(this.RobotAI4_TextChanged);
+            this.RobotEvadeSpeed4.Tag = "EvadeSpeed,4";
+            this.RobotEvadeSpeed4.TextChanged += new System.EventHandler(this.AIProperty_TextChanged);
             // 
             // RobotShotCount4
             // 
@@ -777,8 +777,8 @@
             this.RobotShotCount4.Name = "RobotShotCount4";
             this.RobotShotCount4.Size = new System.Drawing.Size(39, 20);
             this.RobotShotCount4.TabIndex = 83;
-            this.RobotShotCount4.Tag = "26";
-            this.RobotShotCount4.TextChanged += new System.EventHandler(this.RobotAI4_TextChanged);
+            this.RobotShotCount4.Tag = "RapidfireCount,4";
+            this.RobotShotCount4.TextChanged += new System.EventHandler(this.AIProperty_TextChanged);
             // 
             // RobotCircleDist4
             // 
@@ -786,8 +786,8 @@
             this.RobotCircleDist4.Name = "RobotCircleDist4";
             this.RobotCircleDist4.Size = new System.Drawing.Size(39, 20);
             this.RobotCircleDist4.TabIndex = 84;
-            this.RobotCircleDist4.Tag = "25";
-            this.RobotCircleDist4.TextChanged += new System.EventHandler(this.RobotAIFixed4_TextChanged);
+            this.RobotCircleDist4.Tag = "CircleDistance,4";
+            this.RobotCircleDist4.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // RobotMaxSpeed4
             // 
@@ -795,8 +795,8 @@
             this.RobotMaxSpeed4.Name = "RobotMaxSpeed4";
             this.RobotMaxSpeed4.Size = new System.Drawing.Size(39, 20);
             this.RobotMaxSpeed4.TabIndex = 85;
-            this.RobotMaxSpeed4.Tag = "24";
-            this.RobotMaxSpeed4.TextChanged += new System.EventHandler(this.RobotAIFixed4_TextChanged);
+            this.RobotMaxSpeed4.Tag = "MaxSpeed,4";
+            this.RobotMaxSpeed4.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // RobotTurnTime4
             // 
@@ -804,8 +804,8 @@
             this.RobotTurnTime4.Name = "RobotTurnTime4";
             this.RobotTurnTime4.Size = new System.Drawing.Size(39, 20);
             this.RobotTurnTime4.TabIndex = 86;
-            this.RobotTurnTime4.Tag = "23";
-            this.RobotTurnTime4.TextChanged += new System.EventHandler(this.RobotAIFixed4_TextChanged);
+            this.RobotTurnTime4.Tag = "TurnTime,4";
+            this.RobotTurnTime4.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // RobotFireDelay4
             // 
@@ -813,8 +813,8 @@
             this.RobotFireDelay4.Name = "RobotFireDelay4";
             this.RobotFireDelay4.Size = new System.Drawing.Size(39, 20);
             this.RobotFireDelay4.TabIndex = 87;
-            this.RobotFireDelay4.Tag = "21";
-            this.RobotFireDelay4.TextChanged += new System.EventHandler(this.RobotAIFixed4_TextChanged);
+            this.RobotFireDelay4.Tag = "FiringWait,4";
+            this.RobotFireDelay4.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // RobotFOV4
             // 
@@ -822,8 +822,8 @@
             this.RobotFOV4.Name = "RobotFOV4";
             this.RobotFOV4.Size = new System.Drawing.Size(39, 20);
             this.RobotFOV4.TabIndex = 88;
-            this.RobotFOV4.Tag = "20";
-            this.RobotFOV4.TextChanged += new System.EventHandler(this.RobotAI4_TextChanged);
+            this.RobotFOV4.Tag = "FieldOfView,4";
+            this.RobotFOV4.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // RobotFireDelay23
             // 
@@ -831,8 +831,8 @@
             this.RobotFireDelay23.Name = "RobotFireDelay23";
             this.RobotFireDelay23.Size = new System.Drawing.Size(39, 20);
             this.RobotFireDelay23.TabIndex = 81;
-            this.RobotFireDelay23.Tag = "22";
-            this.RobotFireDelay23.TextChanged += new System.EventHandler(this.RobotAIFixed3_TextChanged);
+            this.RobotFireDelay23.Tag = "FiringWaitSecondary,3";
+            this.RobotFireDelay23.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // RobotEvadeSpeed3
             // 
@@ -840,8 +840,8 @@
             this.RobotEvadeSpeed3.Name = "RobotEvadeSpeed3";
             this.RobotEvadeSpeed3.Size = new System.Drawing.Size(39, 20);
             this.RobotEvadeSpeed3.TabIndex = 74;
-            this.RobotEvadeSpeed3.Tag = "27";
-            this.RobotEvadeSpeed3.TextChanged += new System.EventHandler(this.RobotAI3_TextChanged);
+            this.RobotEvadeSpeed3.Tag = "EvadeSpeed,3";
+            this.RobotEvadeSpeed3.TextChanged += new System.EventHandler(this.AIProperty_TextChanged);
             // 
             // RobotShotCount3
             // 
@@ -849,8 +849,8 @@
             this.RobotShotCount3.Name = "RobotShotCount3";
             this.RobotShotCount3.Size = new System.Drawing.Size(39, 20);
             this.RobotShotCount3.TabIndex = 75;
-            this.RobotShotCount3.Tag = "26";
-            this.RobotShotCount3.TextChanged += new System.EventHandler(this.RobotAI3_TextChanged);
+            this.RobotShotCount3.Tag = "RapidfireCount,3";
+            this.RobotShotCount3.TextChanged += new System.EventHandler(this.AIProperty_TextChanged);
             // 
             // RobotCircleDist3
             // 
@@ -858,8 +858,8 @@
             this.RobotCircleDist3.Name = "RobotCircleDist3";
             this.RobotCircleDist3.Size = new System.Drawing.Size(39, 20);
             this.RobotCircleDist3.TabIndex = 76;
-            this.RobotCircleDist3.Tag = "25";
-            this.RobotCircleDist3.TextChanged += new System.EventHandler(this.RobotAIFixed3_TextChanged);
+            this.RobotCircleDist3.Tag = "CircleDistance,3";
+            this.RobotCircleDist3.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // RobotMaxSpeed3
             // 
@@ -867,8 +867,8 @@
             this.RobotMaxSpeed3.Name = "RobotMaxSpeed3";
             this.RobotMaxSpeed3.Size = new System.Drawing.Size(39, 20);
             this.RobotMaxSpeed3.TabIndex = 77;
-            this.RobotMaxSpeed3.Tag = "24";
-            this.RobotMaxSpeed3.TextChanged += new System.EventHandler(this.RobotAIFixed3_TextChanged);
+            this.RobotMaxSpeed3.Tag = "MaxSpeed,3";
+            this.RobotMaxSpeed3.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // RobotTurnTime3
             // 
@@ -876,8 +876,8 @@
             this.RobotTurnTime3.Name = "RobotTurnTime3";
             this.RobotTurnTime3.Size = new System.Drawing.Size(39, 20);
             this.RobotTurnTime3.TabIndex = 78;
-            this.RobotTurnTime3.Tag = "23";
-            this.RobotTurnTime3.TextChanged += new System.EventHandler(this.RobotAIFixed3_TextChanged);
+            this.RobotTurnTime3.Tag = "TurnTime,3";
+            this.RobotTurnTime3.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // RobotFireDelay3
             // 
@@ -885,8 +885,8 @@
             this.RobotFireDelay3.Name = "RobotFireDelay3";
             this.RobotFireDelay3.Size = new System.Drawing.Size(39, 20);
             this.RobotFireDelay3.TabIndex = 79;
-            this.RobotFireDelay3.Tag = "21";
-            this.RobotFireDelay3.TextChanged += new System.EventHandler(this.RobotAIFixed3_TextChanged);
+            this.RobotFireDelay3.Tag = "FiringWait,3";
+            this.RobotFireDelay3.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // RobotFOV3
             // 
@@ -894,8 +894,8 @@
             this.RobotFOV3.Name = "RobotFOV3";
             this.RobotFOV3.Size = new System.Drawing.Size(39, 20);
             this.RobotFOV3.TabIndex = 80;
-            this.RobotFOV3.Tag = "20";
-            this.RobotFOV3.TextChanged += new System.EventHandler(this.RobotAI3_TextChanged);
+            this.RobotFOV3.Tag = "FieldOfView,3";
+            this.RobotFOV3.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // RobotFireDelay22
             // 
@@ -903,8 +903,8 @@
             this.RobotFireDelay22.Name = "RobotFireDelay22";
             this.RobotFireDelay22.Size = new System.Drawing.Size(39, 20);
             this.RobotFireDelay22.TabIndex = 73;
-            this.RobotFireDelay22.Tag = "22";
-            this.RobotFireDelay22.TextChanged += new System.EventHandler(this.RobotAIFixed2_TextChanged);
+            this.RobotFireDelay22.Tag = "FiringWaitSecondary,2";
+            this.RobotFireDelay22.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // RobotEvadeSpeed2
             // 
@@ -912,8 +912,8 @@
             this.RobotEvadeSpeed2.Name = "RobotEvadeSpeed2";
             this.RobotEvadeSpeed2.Size = new System.Drawing.Size(39, 20);
             this.RobotEvadeSpeed2.TabIndex = 66;
-            this.RobotEvadeSpeed2.Tag = "27";
-            this.RobotEvadeSpeed2.TextChanged += new System.EventHandler(this.RobotAI2_TextChanged);
+            this.RobotEvadeSpeed2.Tag = "EvadeSpeed,2";
+            this.RobotEvadeSpeed2.TextChanged += new System.EventHandler(this.AIProperty_TextChanged);
             // 
             // RobotShotCount2
             // 
@@ -921,8 +921,8 @@
             this.RobotShotCount2.Name = "RobotShotCount2";
             this.RobotShotCount2.Size = new System.Drawing.Size(39, 20);
             this.RobotShotCount2.TabIndex = 67;
-            this.RobotShotCount2.Tag = "26";
-            this.RobotShotCount2.TextChanged += new System.EventHandler(this.RobotAI2_TextChanged);
+            this.RobotShotCount2.Tag = "RapidfireCount,2";
+            this.RobotShotCount2.TextChanged += new System.EventHandler(this.AIProperty_TextChanged);
             // 
             // RobotCircleDist2
             // 
@@ -930,8 +930,8 @@
             this.RobotCircleDist2.Name = "RobotCircleDist2";
             this.RobotCircleDist2.Size = new System.Drawing.Size(39, 20);
             this.RobotCircleDist2.TabIndex = 68;
-            this.RobotCircleDist2.Tag = "25";
-            this.RobotCircleDist2.TextChanged += new System.EventHandler(this.RobotAIFixed2_TextChanged);
+            this.RobotCircleDist2.Tag = "CircleDistance,2";
+            this.RobotCircleDist2.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // RobotMaxSpeed2
             // 
@@ -939,8 +939,8 @@
             this.RobotMaxSpeed2.Name = "RobotMaxSpeed2";
             this.RobotMaxSpeed2.Size = new System.Drawing.Size(39, 20);
             this.RobotMaxSpeed2.TabIndex = 69;
-            this.RobotMaxSpeed2.Tag = "24";
-            this.RobotMaxSpeed2.TextChanged += new System.EventHandler(this.RobotAIFixed2_TextChanged);
+            this.RobotMaxSpeed2.Tag = "MaxSpeed,2";
+            this.RobotMaxSpeed2.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // RobotTurnTime2
             // 
@@ -948,8 +948,8 @@
             this.RobotTurnTime2.Name = "RobotTurnTime2";
             this.RobotTurnTime2.Size = new System.Drawing.Size(39, 20);
             this.RobotTurnTime2.TabIndex = 70;
-            this.RobotTurnTime2.Tag = "23";
-            this.RobotTurnTime2.TextChanged += new System.EventHandler(this.RobotAIFixed2_TextChanged);
+            this.RobotTurnTime2.Tag = "TurnTime,2";
+            this.RobotTurnTime2.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // RobotFireDelay2
             // 
@@ -957,8 +957,8 @@
             this.RobotFireDelay2.Name = "RobotFireDelay2";
             this.RobotFireDelay2.Size = new System.Drawing.Size(39, 20);
             this.RobotFireDelay2.TabIndex = 71;
-            this.RobotFireDelay2.Tag = "21";
-            this.RobotFireDelay2.TextChanged += new System.EventHandler(this.RobotAIFixed2_TextChanged);
+            this.RobotFireDelay2.Tag = "FiringWait,2";
+            this.RobotFireDelay2.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // RobotFOV2
             // 
@@ -966,8 +966,8 @@
             this.RobotFOV2.Name = "RobotFOV2";
             this.RobotFOV2.Size = new System.Drawing.Size(39, 20);
             this.RobotFOV2.TabIndex = 72;
-            this.RobotFOV2.Tag = "20";
-            this.RobotFOV2.TextChanged += new System.EventHandler(this.RobotAI2_TextChanged);
+            this.RobotFOV2.Tag = "FieldOfView,2";
+            this.RobotFOV2.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // RobotFireDelay21
             // 
@@ -975,8 +975,8 @@
             this.RobotFireDelay21.Name = "RobotFireDelay21";
             this.RobotFireDelay21.Size = new System.Drawing.Size(39, 20);
             this.RobotFireDelay21.TabIndex = 65;
-            this.RobotFireDelay21.Tag = "22";
-            this.RobotFireDelay21.TextChanged += new System.EventHandler(this.RobotAIFixed1_TextChanged);
+            this.RobotFireDelay21.Tag = "FiringWaitSecondary,1";
+            this.RobotFireDelay21.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // RobotEvadeSpeed1
             // 
@@ -984,8 +984,8 @@
             this.RobotEvadeSpeed1.Name = "RobotEvadeSpeed1";
             this.RobotEvadeSpeed1.Size = new System.Drawing.Size(39, 20);
             this.RobotEvadeSpeed1.TabIndex = 58;
-            this.RobotEvadeSpeed1.Tag = "27";
-            this.RobotEvadeSpeed1.TextChanged += new System.EventHandler(this.RobotAI1_TextChanged);
+            this.RobotEvadeSpeed1.Tag = "EvadeSpeed,1";
+            this.RobotEvadeSpeed1.TextChanged += new System.EventHandler(this.AIProperty_TextChanged);
             // 
             // RobotShotCount1
             // 
@@ -993,8 +993,8 @@
             this.RobotShotCount1.Name = "RobotShotCount1";
             this.RobotShotCount1.Size = new System.Drawing.Size(39, 20);
             this.RobotShotCount1.TabIndex = 59;
-            this.RobotShotCount1.Tag = "26";
-            this.RobotShotCount1.TextChanged += new System.EventHandler(this.RobotAI1_TextChanged);
+            this.RobotShotCount1.Tag = "RapidfireCount,1";
+            this.RobotShotCount1.TextChanged += new System.EventHandler(this.AIProperty_TextChanged);
             // 
             // RobotCircleDist1
             // 
@@ -1002,8 +1002,8 @@
             this.RobotCircleDist1.Name = "RobotCircleDist1";
             this.RobotCircleDist1.Size = new System.Drawing.Size(39, 20);
             this.RobotCircleDist1.TabIndex = 60;
-            this.RobotCircleDist1.Tag = "25";
-            this.RobotCircleDist1.TextChanged += new System.EventHandler(this.RobotAIFixed1_TextChanged);
+            this.RobotCircleDist1.Tag = "CircleDistance,1";
+            this.RobotCircleDist1.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // RobotMaxSpeed1
             // 
@@ -1011,8 +1011,8 @@
             this.RobotMaxSpeed1.Name = "RobotMaxSpeed1";
             this.RobotMaxSpeed1.Size = new System.Drawing.Size(39, 20);
             this.RobotMaxSpeed1.TabIndex = 61;
-            this.RobotMaxSpeed1.Tag = "24";
-            this.RobotMaxSpeed1.TextChanged += new System.EventHandler(this.RobotAIFixed1_TextChanged);
+            this.RobotMaxSpeed1.Tag = "MaxSpeed,1";
+            this.RobotMaxSpeed1.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // RobotTurnTime1
             // 
@@ -1020,8 +1020,8 @@
             this.RobotTurnTime1.Name = "RobotTurnTime1";
             this.RobotTurnTime1.Size = new System.Drawing.Size(39, 20);
             this.RobotTurnTime1.TabIndex = 62;
-            this.RobotTurnTime1.Tag = "23";
-            this.RobotTurnTime1.TextChanged += new System.EventHandler(this.RobotAIFixed1_TextChanged);
+            this.RobotTurnTime1.Tag = "TurnTime,1";
+            this.RobotTurnTime1.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // RobotFireDelay1
             // 
@@ -1029,8 +1029,8 @@
             this.RobotFireDelay1.Name = "RobotFireDelay1";
             this.RobotFireDelay1.Size = new System.Drawing.Size(39, 20);
             this.RobotFireDelay1.TabIndex = 63;
-            this.RobotFireDelay1.Tag = "21";
-            this.RobotFireDelay1.TextChanged += new System.EventHandler(this.RobotAIFixed1_TextChanged);
+            this.RobotFireDelay1.Tag = "FiringWait,1";
+            this.RobotFireDelay1.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // RobotFOV1
             // 
@@ -1038,8 +1038,8 @@
             this.RobotFOV1.Name = "RobotFOV1";
             this.RobotFOV1.Size = new System.Drawing.Size(39, 20);
             this.RobotFOV1.TabIndex = 64;
-            this.RobotFOV1.Tag = "20";
-            this.RobotFOV1.TextChanged += new System.EventHandler(this.RobotAI1_TextChanged);
+            this.RobotFOV1.Tag = "FieldOfView,1";
+            this.RobotFOV1.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // label145
             // 
@@ -1056,8 +1056,8 @@
             this.txtRobotFireDelay2.Name = "txtRobotFireDelay2";
             this.txtRobotFireDelay2.Size = new System.Drawing.Size(39, 20);
             this.txtRobotFireDelay2.TabIndex = 56;
-            this.txtRobotFireDelay2.Tag = "22";
-            this.txtRobotFireDelay2.TextChanged += new System.EventHandler(this.RobotPropertyFixed_TextChanged);
+            this.txtRobotFireDelay2.Tag = "FiringWaitSecondary,0";
+            this.txtRobotFireDelay2.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // label28
             // 
@@ -1119,8 +1119,8 @@
             this.txtRobotEvadeSpeed.Name = "txtRobotEvadeSpeed";
             this.txtRobotEvadeSpeed.Size = new System.Drawing.Size(39, 20);
             this.txtRobotEvadeSpeed.TabIndex = 53;
-            this.txtRobotEvadeSpeed.Tag = "27";
-            this.txtRobotEvadeSpeed.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
+            this.txtRobotEvadeSpeed.Tag = "EvadeSpeed,0";
+            this.txtRobotEvadeSpeed.TextChanged += new System.EventHandler(this.AIProperty_TextChanged);
             // 
             // txtRobotShotCount
             // 
@@ -1128,8 +1128,8 @@
             this.txtRobotShotCount.Name = "txtRobotShotCount";
             this.txtRobotShotCount.Size = new System.Drawing.Size(39, 20);
             this.txtRobotShotCount.TabIndex = 53;
-            this.txtRobotShotCount.Tag = "26";
-            this.txtRobotShotCount.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
+            this.txtRobotShotCount.Tag = "RapidfireCount,0";
+            this.txtRobotShotCount.TextChanged += new System.EventHandler(this.AIProperty_TextChanged);
             // 
             // txtRobotCircleDist
             // 
@@ -1137,8 +1137,8 @@
             this.txtRobotCircleDist.Name = "txtRobotCircleDist";
             this.txtRobotCircleDist.Size = new System.Drawing.Size(39, 20);
             this.txtRobotCircleDist.TabIndex = 53;
-            this.txtRobotCircleDist.Tag = "25";
-            this.txtRobotCircleDist.TextChanged += new System.EventHandler(this.RobotPropertyFixed_TextChanged);
+            this.txtRobotCircleDist.Tag = "CircleDistance,0";
+            this.txtRobotCircleDist.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // txtRobotMaxSpeed
             // 
@@ -1146,8 +1146,8 @@
             this.txtRobotMaxSpeed.Name = "txtRobotMaxSpeed";
             this.txtRobotMaxSpeed.Size = new System.Drawing.Size(39, 20);
             this.txtRobotMaxSpeed.TabIndex = 53;
-            this.txtRobotMaxSpeed.Tag = "24";
-            this.txtRobotMaxSpeed.TextChanged += new System.EventHandler(this.RobotPropertyFixed_TextChanged);
+            this.txtRobotMaxSpeed.Tag = "MaxSpeed,0";
+            this.txtRobotMaxSpeed.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // txtRobotTurnSpeed
             // 
@@ -1155,8 +1155,8 @@
             this.txtRobotTurnSpeed.Name = "txtRobotTurnSpeed";
             this.txtRobotTurnSpeed.Size = new System.Drawing.Size(39, 20);
             this.txtRobotTurnSpeed.TabIndex = 53;
-            this.txtRobotTurnSpeed.Tag = "23";
-            this.txtRobotTurnSpeed.TextChanged += new System.EventHandler(this.RobotPropertyFixed_TextChanged);
+            this.txtRobotTurnSpeed.Tag = "TurnTime,0";
+            this.txtRobotTurnSpeed.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // txtRobotFireDelay
             // 
@@ -1164,8 +1164,8 @@
             this.txtRobotFireDelay.Name = "txtRobotFireDelay";
             this.txtRobotFireDelay.Size = new System.Drawing.Size(39, 20);
             this.txtRobotFireDelay.TabIndex = 53;
-            this.txtRobotFireDelay.Tag = "21";
-            this.txtRobotFireDelay.TextChanged += new System.EventHandler(this.RobotPropertyFixed_TextChanged);
+            this.txtRobotFireDelay.Tag = "FiringWait,0";
+            this.txtRobotFireDelay.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // txtRobotFOV
             // 
@@ -1173,8 +1173,8 @@
             this.txtRobotFOV.Name = "txtRobotFOV";
             this.txtRobotFOV.Size = new System.Drawing.Size(39, 20);
             this.txtRobotFOV.TabIndex = 53;
-            this.txtRobotFOV.Tag = "20";
-            this.txtRobotFOV.TextChanged += new System.EventHandler(this.RobotProperty_TextChanged);
+            this.txtRobotFOV.Tag = "FieldOfView,0";
+            this.txtRobotFOV.TextChanged += new System.EventHandler(this.AIFixedProperty_TextChanged);
             // 
             // label45
             // 

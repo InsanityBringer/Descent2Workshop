@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Descent2Workshop.Transactions;
 using LibDescent.Data;
@@ -263,11 +264,6 @@ namespace Descent2Workshop.EditorPanels
             }
         }
 
-        private void SetAIHelper(int tag, int level, int value)
-        {
-            robot.UpdateRobot(tag, ref value, level, 0);
-        }
-
         private void RobotPropertyFixed_TextChanged(object sender, EventArgs e)
         {
             if (isLocked || transactionManager.TransactionInProgress)
@@ -343,126 +339,6 @@ namespace Descent2Workshop.EditorPanels
             }
         }
 
-        private void RobotAI1_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            TextBox textBox = (TextBox)sender;
-            int tagvalue = int.Parse((string)textBox.Tag);
-            int value;
-            if (int.TryParse(textBox.Text, out value))
-            {
-                SetAIHelper(tagvalue, 1, value);
-            }
-        }
-
-        private void RobotAI2_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            TextBox textBox = (TextBox)sender;
-            int tagvalue = int.Parse((string)textBox.Tag);
-            int value;
-            if (int.TryParse(textBox.Text, out value))
-            {
-                SetAIHelper(tagvalue, 2, value);
-            }
-        }
-
-        private void RobotAI3_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            TextBox textBox = (TextBox)sender;
-            int tagvalue = int.Parse((string)textBox.Tag);
-            int value;
-            if (int.TryParse(textBox.Text, out value))
-            {
-                SetAIHelper(tagvalue, 3, value);
-            }
-        }
-
-        private void RobotAI4_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            TextBox textBox = (TextBox)sender;
-            int tagvalue = int.Parse((string)textBox.Tag);
-            int value;
-            if (int.TryParse(textBox.Text, out value))
-            {
-                SetAIHelper(tagvalue, 4, value);
-            }
-        }
-
-        private void RobotAIFixed1_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-            {
-                return;
-            }
-            TextBox textBox = (TextBox)sender;
-            int tagvalue = int.Parse((string)textBox.Tag);
-
-            float fvalue;
-            if (float.TryParse(textBox.Text, out fvalue))
-            {
-                int value = (int)(fvalue * 65536f);
-                SetAIHelper(tagvalue, 1, value);
-            }
-        }
-
-        private void RobotAIFixed2_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-            {
-                return;
-            }
-            TextBox textBox = (TextBox)sender;
-            int tagvalue = int.Parse((string)textBox.Tag);
-
-            float fvalue;
-            if (float.TryParse(textBox.Text, out fvalue))
-            {
-                int value = (int)(fvalue * 65536f);
-                SetAIHelper(tagvalue, 2, value);
-            }
-        }
-
-        private void RobotAIFixed3_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-            {
-                return;
-            }
-            TextBox textBox = (TextBox)sender;
-            int tagvalue = int.Parse((string)textBox.Tag);
-
-            float fvalue;
-            if (float.TryParse(textBox.Text, out fvalue))
-            {
-                int value = (int)(fvalue * 65536f);
-                SetAIHelper(tagvalue, 3, value);
-            }
-        }
-
-        private void RobotAIFixed4_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-            {
-                return;
-            }
-            TextBox textBox = (TextBox)sender;
-            int tagvalue = int.Parse((string)textBox.Tag);
-
-            float fvalue;
-            if (float.TryParse(textBox.Text, out fvalue))
-            {
-                int value = (int)(fvalue * 65536f);
-                SetAIHelper(tagvalue, 4, value);
-            }
-        }
-
         //HXM editors
         private void BaseJointSpinner_ValueChanged(object sender, EventArgs e)
         {
@@ -498,9 +374,44 @@ namespace Descent2Workshop.EditorPanels
             transactionManager.ApplyTransaction(transaction);
         }
 
-        private void txtRobotLightcast_TextChanged(object sender, EventArgs e)
+        private void AIFixedProperty_TextChanged(object sender, EventArgs e)
         {
+            if (isLocked || transactionManager.TransactionInProgress)
+                return;
 
+            TextBox sendingControl = (TextBox)sender;
+            string[] tagstrs = ((string)sendingControl.Tag).Split(',');
+            string field = tagstrs[0];
+            uint index = uint.Parse(tagstrs[1]);
+
+            float fvalue;
+            if (float.TryParse(sendingControl.Text, out fvalue))
+            {
+                if (field == "FieldOfView")
+                {
+                    fvalue = (float)Math.Cos(fvalue * Math.PI / 180.0D);
+                }
+                IndexedFixTransaction transaction = new IndexedFixTransaction("Robot AI property", robot, field, robotid, tabPage, index, fvalue);
+                transactionManager.ApplyTransaction(transaction);
+            }
+        }
+
+        private void AIProperty_TextChanged(object sender, EventArgs e)
+        {
+            if (isLocked || transactionManager.TransactionInProgress)
+                return;
+
+            TextBox sendingControl = (TextBox)sender;
+            string[] tagstrs = ((string)sendingControl.Tag).Split(',');
+            string field = tagstrs[0];
+            uint index = uint.Parse(tagstrs[1]);
+
+            int value;
+            if (int.TryParse(sendingControl.Text, out value))
+            {
+                IndexedIntegerTransaction transaction = new IndexedIntegerTransaction("Robot AI property", robot, field, robotid, tabPage, index, value);
+                transactionManager.ApplyTransaction(transaction);
+            }
         }
     }
 }

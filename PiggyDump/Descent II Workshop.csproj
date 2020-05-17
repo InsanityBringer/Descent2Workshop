@@ -197,6 +197,8 @@
     </Compile>
     <Compile Include="Transactions\BoolTransaction.cs" />
     <Compile Include="Transactions\FixTransaction.cs" />
+    <Compile Include="Transactions\IndexedFixTransaction.cs" />
+    <Compile Include="Transactions\IndexedIntegerTransaction.cs" />
     <Compile Include="Transactions\IndexedUnsignedTransaction.cs" />
     <Compile Include="Transactions\IntegerTransaction.cs" />
     <Compile Include="Transactions\RobotDropTypeTransaction.cs" />
