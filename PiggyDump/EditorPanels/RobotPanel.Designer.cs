@@ -277,7 +277,7 @@
             this.cbRobotDyingSound.Name = "cbRobotDyingSound";
             this.cbRobotDyingSound.Size = new System.Drawing.Size(152, 21);
             this.cbRobotDyingSound.TabIndex = 244;
-            this.cbRobotDyingSound.Tag = "34";
+            this.cbRobotDyingSound.Tag = "DeathRollSound";
             this.cbRobotDyingSound.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
             // 
             // cbRobotTauntSound
@@ -288,7 +288,7 @@
             this.cbRobotTauntSound.Name = "cbRobotTauntSound";
             this.cbRobotTauntSound.Size = new System.Drawing.Size(156, 21);
             this.cbRobotTauntSound.TabIndex = 243;
-            this.cbRobotTauntSound.Tag = "33";
+            this.cbRobotTauntSound.Tag = "TauntSound";
             this.cbRobotTauntSound.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
             // 
             // cbRobotClawSound
@@ -646,10 +646,10 @@
             this.cbKamikaze.Name = "cbKamikaze";
             this.cbKamikaze.Size = new System.Drawing.Size(83, 17);
             this.cbKamikaze.TabIndex = 77;
-            this.cbKamikaze.Tag = "1";
+            this.cbKamikaze.Tag = "Kamikaze";
             this.cbKamikaze.Text = "Is Kamikaze";
             this.cbKamikaze.UseVisualStyleBackColor = true;
-            this.cbKamikaze.CheckedChanged += new System.EventHandler(this.RobotCheckBox_CheckedChange);
+            this.cbKamikaze.CheckedChanged += new System.EventHandler(this.RobotCheckBoxInteger_CheckedChanged);
             // 
             // cbRobotThief
             // 
@@ -658,7 +658,7 @@
             this.cbRobotThief.Name = "cbRobotThief";
             this.cbRobotThief.Size = new System.Drawing.Size(80, 17);
             this.cbRobotThief.TabIndex = 76;
-            this.cbRobotThief.Tag = "0";
+            this.cbRobotThief.Tag = "Thief";
             this.cbRobotThief.Text = "Is Thief-Bot";
             this.cbRobotThief.UseVisualStyleBackColor = true;
             this.cbRobotThief.CheckedChanged += new System.EventHandler(this.RobotCheckBox_CheckedChange);
@@ -670,7 +670,7 @@
             this.cbRobotCompanion.Name = "cbRobotCompanion";
             this.cbRobotCompanion.Size = new System.Drawing.Size(84, 17);
             this.cbRobotCompanion.TabIndex = 75;
-            this.cbRobotCompanion.Tag = "2";
+            this.cbRobotCompanion.Tag = "Companion";
             this.cbRobotCompanion.Text = "Is Guide-Bot";
             this.cbRobotCompanion.UseVisualStyleBackColor = true;
             this.cbRobotCompanion.CheckedChanged += new System.EventHandler(this.RobotCheckBox_CheckedChange);
@@ -682,10 +682,10 @@
             this.cbRobotClaw.Name = "cbRobotClaw";
             this.cbRobotClaw.Size = new System.Drawing.Size(109, 17);
             this.cbRobotClaw.TabIndex = 74;
-            this.cbRobotClaw.Tag = "3";
+            this.cbRobotClaw.Tag = "AttackType";
             this.cbRobotClaw.Text = "Is Melee Attacker";
             this.cbRobotClaw.UseVisualStyleBackColor = true;
-            this.cbRobotClaw.CheckedChanged += new System.EventHandler(this.RobotCheckBox_CheckedChange);
+            this.cbRobotClaw.CheckedChanged += new System.EventHandler(this.RobotCheckBoxInteger_CheckedChanged);
             // 
             // label95
             // 
@@ -1257,7 +1257,7 @@
             this.cmRobotCloak.Size = new System.Drawing.Size(115, 21);
             this.cmRobotCloak.TabIndex = 207;
             this.cmRobotCloak.Tag = "CloakType";
-            this.cmRobotCloak.SelectedIndexChanged += new System.EventHandler(this.RobotCloak_SelectedIndexChanged);
+            this.cmRobotCloak.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);
             // 
             // label90
             // 

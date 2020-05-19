@@ -296,7 +296,9 @@ namespace Descent2Workshop.EditorPanels
             {
                 bosstype += 18;
             }
-            robot.BossFlag = (RobotBossType)bosstype;
+            //robot.BossFlag = (RobotBossType)bosstype;
+            IntegerTransaction transaction = new IntegerTransaction("Robot property", robot, "BossFlag", robotid, tabPage, bosstype);
+            transactionManager.ApplyTransaction(transaction);
         }
 
         private void RobotAI_SelectedIndexChanged(object sender, EventArgs e)
@@ -304,7 +306,9 @@ namespace Descent2Workshop.EditorPanels
             if (isLocked)
                 return;
             int bosstype = cbRobotAI.SelectedIndex;
-            robot.Behavior = (RobotAIType)(bosstype + 0x80);
+            //robot.Behavior = (RobotAIType)(bosstype + 0x80);
+            IntegerTransaction transaction = new IntegerTransaction("Robot property", robot, "Behavior", robotid, tabPage, bosstype + 0x80);
+            transactionManager.ApplyTransaction(transaction);
         }
 
         private void RobotDropType_SelectedIndexChanged(object sender, EventArgs e)
@@ -322,21 +326,8 @@ namespace Descent2Workshop.EditorPanels
             if (isLocked)
                 return;
             CheckBox input = (CheckBox)sender;
-            switch (input.Tag)
-            {
-                case "0":
-                    robot.Thief = input.Checked;
-                    break;
-                case "1":
-                    robot.Kamikaze = (sbyte)(input.Checked ? 1 : 0);
-                    break;
-                case "2":
-                    robot.Companion = input.Checked;
-                    break;
-                case "3":
-                    robot.AttackType = input.Checked ? RobotAttackType.Melee : RobotAttackType.Ranged;
-                    break;
-            }
+            BoolTransaction transaction = new BoolTransaction("Robot flag", robot, (string)input.Tag, robotid, tabPage, input.Checked);
+            transactionManager.ApplyTransaction(transaction);
         }
 
         //HXM editors
@@ -412,6 +403,16 @@ namespace Descent2Workshop.EditorPanels
                 IndexedIntegerTransaction transaction = new IndexedIntegerTransaction("Robot AI property", robot, field, robotid, tabPage, index, value);
                 transactionManager.ApplyTransaction(transaction);
             }
+        }
+
+        private void RobotCheckBoxInteger_CheckedChanged(object sender, EventArgs e)
+        {
+            //hack to convert bool input into not bool output
+            if (isLocked)
+                return;
+            CheckBox input = (CheckBox)sender;
+            IntegerTransaction transaction = new IntegerTransaction("Robot flag", robot, (string)input.Tag, robotid, tabPage, input.Checked ? 1 : 0);
+            transactionManager.ApplyTransaction(transaction);
         }
     }
 }
