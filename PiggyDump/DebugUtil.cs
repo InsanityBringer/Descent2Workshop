@@ -182,6 +182,14 @@ namespace Descent2Workshop
                         bw.Dispose();
                     }
                 }
+                else
+                {
+                    image = pigFile.Bitmaps[i];
+                    BinaryWriter bw = new BinaryWriter(File.OpenWrite(string.Format("{0}{1}{2}.bbm", directory, Path.DirectorySeparatorChar, image.Name)));
+                    encoder.WriteBBM(image, palette, bw);
+                    bw.Close();
+                    bw.Dispose();
+                }
             }
         }
 

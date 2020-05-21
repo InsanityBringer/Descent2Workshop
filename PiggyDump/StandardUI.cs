@@ -334,9 +334,9 @@ namespace Descent2Workshop
         private void MnuAbout_Click(object sender, EventArgs e)
         {
 #if DEBUG
-            Descent1PIGFile piggyFile = new Descent1PIGFile(false);
+            Descent1PIGFile piggyFile = new Descent1PIGFile(false, false);
             PSXDatFile datFile = new PSXDatFile();
-            Stream stream = File.Open("C:/dev/whyamidoingthis/ChocolateDescent/build/data_d1_ed/descent.pig", FileMode.Open);
+            Stream stream = File.Open("H:/Descent/sw/old/descent.pig", FileMode.Open);
             piggyFile.Read(stream);
             stream.Close();
             stream.Dispose();
@@ -357,9 +357,9 @@ namespace Descent2Workshop
             }
             PIGEditor editor = new PIGEditor(test, newPalette, "ara ara");
             editor.Show();
-            EditorHAMFile hack = DebugUtil.TranslatePIGToHam(piggyFile, test);
+            /*EditorHAMFile hack = DebugUtil.TranslatePIGToHam(piggyFile, test);
             HAMEditor hameditor = new HAMEditor(hack, this, test, newPalette, "ara ara sayonara");
-            hameditor.Show();
+            hameditor.Show();*/
 #else
             AppendConsole("Descent II Workshop by ISB... heh\n");
 #endif

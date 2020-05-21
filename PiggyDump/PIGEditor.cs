@@ -36,6 +36,7 @@ namespace Descent2Workshop
         private string filename;
         public StandardUI host;
         private bool isLocked = false;
+        private LBMDecoder lbmDecoder = new LBMDecoder();
         public PIGEditor(PIGFile data, Palette palette, string filename)
         {
             datafile = data;
@@ -43,6 +44,11 @@ namespace Descent2Workshop
             InitializeComponent();
             this.Text = string.Format("{0} - PIG Editor", filename);
             this.palette = palette;
+
+#if DEBUG==false
+            mainMenu1.MenuItems.Remove(ExportILBMMenuItem);
+            mainMenu1.MenuItems.Remove(DebugMenuSeparator);
+#endif
         }
 
         private ListViewItem GeneratePiggyEntry(int i)
@@ -366,6 +372,48 @@ namespace Descent2Workshop
             {
                 datafile.Bitmaps[e.Item].Name = e.Label;
                 listView1.Items[e.Item].SubItems[0].Text = datafile.Bitmaps[e.Item].Name; //In case it got changed
+            }
+        }
+
+        private void ExportILBMMenu_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.Filter = "Deluxe Paint Brush|*.bbm";
+            if (listView1.SelectedIndices.Count > 1)
+            {
+                saveFileDialog1.FileName = "ignored";
+            }
+            else
+            {
+                saveFileDialog1.FileName = ImageFilename(listView1.SelectedIndices[0]);//listView1.Items[listView1.SelectedIndices[0]].Text;
+            }
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if (listView1.SelectedIndices.Count > 1)
+                {
+                    string directory = Path.GetDirectoryName(saveFileDialog1.FileName);
+                    foreach (int index in listView1.SelectedIndices)
+                    {
+                        PIGImage image = datafile.Bitmaps[index];
+                        string newpath = directory + Path.DirectorySeparatorChar + ImageFilename(index) + ".bbm";
+                        BinaryWriter bw = new BinaryWriter(File.Open(newpath, FileMode.Create));
+                        lbmDecoder.WriteBBM(image, palette, bw);
+                        bw.Flush();
+                        bw.Close();
+                        bw.Dispose();
+                    }
+                }
+                else
+                {
+                    if (saveFileDialog1.FileName != "")
+                    {
+                        PIGImage image = datafile.Bitmaps[listView1.SelectedIndices[0]];
+                        BinaryWriter bw = new BinaryWriter(File.Open(saveFileDialog1.FileName, FileMode.Create));
+                        lbmDecoder.WriteBBM(image, palette, bw);
+                        bw.Flush();
+                        bw.Close();
+                        bw.Dispose();
+                    }
+                }
             }
         }
     }

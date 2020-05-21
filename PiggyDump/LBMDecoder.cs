@@ -117,6 +117,82 @@ namespace Descent2Workshop
             }
         }*/
 
+        public int CompressData(int width, int height, byte[] input, out byte[] output)
+        {
+            output = new byte[input.Length];
+            int bytesWritten = 0;
+
+            int lastByte;
+            int repeatCount = 0;
+            int unrepeatCount = 0;
+            int unrepeatStart = 0;
+
+            int position = 0;
+
+            byte b = input[0];
+            lastByte = b;
+
+            int offset;
+            try
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    offset = y * width;
+                    for (int x = 0; x < width; x++)
+                    {
+                        b = input[offset + x];
+                        if ((x + 1) < width && input[offset + x + 1] == b)
+                        {
+                            repeatCount = 0;
+                            while ((x + 1) < width && input[offset + x + 1] == b)
+                            {
+                                x++;
+                                repeatCount++;
+                                if (repeatCount >= 127) break; //Too much data for a span
+                                if (x >= width) break; //no more data
+                            }
+                            unchecked
+                            {
+                                //Write the header
+                                output[position++] = (byte)-repeatCount;
+                                output[position++] = b;
+                                repeatCount = 0;
+                                //i--;
+                            }
+                        }
+                        else
+                        {
+                            unrepeatCount = 0;
+                            unrepeatStart = x;
+                            while ((x + 1) < width && input[offset + x] != input[offset + x + 1])
+                            {
+                                x++;
+                                unrepeatCount++;
+                                if (unrepeatCount >= 127) break; //Too much data for a span
+                                if (x >= input.Length) break; //no more data
+                            }
+
+                            //Write the header
+                            output[position++] = (byte)unrepeatCount;
+                            for (int j = 0; j < unrepeatCount + 1; j++)
+                            {
+                                output[position++] = input[offset + unrepeatStart + j];
+                            }
+                            unrepeatCount = 0;
+                            //i--;
+                        }
+                    }
+                }
+            }
+            catch (Exception) //probably wrote too much data
+            {
+                //Console.Error.WriteLine("LBMDecoder::CompressData: too much compressed data");
+                return 0;
+            }
+
+            return position;
+        }
+
         public void WriteABM(PIGImage[] frames, int numFrames, Palette palette, BinaryWriter bw)
         {
             int bytesWritten = 0;
@@ -196,9 +272,7 @@ namespace Descent2Workshop
             //42 4F 44 59
             int pixelcount = image.Width * image.Height;
             bool alignmentHack = false;
-            //To this day I still have no clue what this hack is supposed to be for,
-            //but the original game's IFF decoder seems to require it. It causes problems in DPaint, 
-            //which confuses me. 
+            //LBMs require scanlines to be padded to even byte counts. 
             if (image.Width % 2 != 0)
             {
                 pixelcount = (image.Width + 1) * image.Height;
@@ -239,6 +313,8 @@ namespace Descent2Workshop
         {
             int bytesWritten = 0;
             byte[] data = image.GetData();
+            byte[] compressedData;
+            int resultantBytes = CompressData(image.Width, image.Height, data, out compressedData);
 
             //write FORM header
             bw.Write(0x4D524F46);
@@ -267,8 +343,16 @@ namespace Descent2Workshop
                 bw.Write((byte)2);
             else
                 bw.Write((byte)0);
-            //no compression
-            bw.Write((byte)0);
+            /*if (resultantBytes == 0)
+            {*/
+                //no compression
+                bw.Write((byte)0);
+            /*}
+            else
+            {
+                //rle compression
+                bw.Write((byte)1);
+            }*/
             //pad
             bw.Write((byte)0);
             //transparent index
@@ -296,37 +380,51 @@ namespace Descent2Workshop
             //Write the body
             //42 4F 44 59
             int pixelcount = image.Width * image.Height;
-            bool alignmentHack = false;
-            //To this day I still have no clue what this hack is supposed to be for,
-            //but the original game's IFF decoder seems to require it. It causes problems in DPaint, 
-            //which confuses me. 
-            if (image.Width % 2 != 0)
+            //if (resultantBytes == 0)
             {
-                pixelcount = (image.Width + 1) * image.Height;
-                alignmentHack = true;
-            }
-            bw.Write(0x59444F42);
-            WriteInt32BE(bw, pixelcount);
-            bytesWritten += 8;
-            if (alignmentHack)
-            {
-                for (int y = 0; y < image.Height; y++)
+                bool alignmentHack = false;
+                //To this day I still have no clue what this hack is supposed to be for,
+                //but the original game's IFF decoder seems to require it. It causes problems in DPaint, 
+                //which confuses me. 
+                if (image.Width % 2 != 0)
                 {
-                    for (int x = 0; x < image.Width; x++)
+                    pixelcount = (image.Width + 1) * image.Height;
+                    alignmentHack = true;
+                }
+                bw.Write(0x59444F42);
+                WriteInt32BE(bw, pixelcount);
+                bytesWritten += 8;
+                if (alignmentHack)
+                {
+                    for (int y = 0; y < image.Height; y++)
                     {
-                        bw.Write(data[y * image.Width + x]);
+                        for (int x = 0; x < image.Width; x++)
+                        {
+                            bw.Write(data[y * image.Width + x]);
+                        }
+                        bw.Write((byte)0);
                     }
-                    bw.Write((byte)0);
                 }
-            }
-            else
-            {
-                for (int i = 0; i < pixelcount; i++)
+                else
                 {
-                    bw.Write(data[i]);
+                    for (int i = 0; i < pixelcount; i++)
+                    {
+                        bw.Write(data[i]);
+                    }
                 }
+                bytesWritten += pixelcount;
             }
-            bytesWritten += pixelcount;
+            /*else
+            {
+                bw.Write(0x59444F42);
+                WriteInt32BE(bw, resultantBytes);
+                bytesWritten += 8;
+                for (int j = 0; j < resultantBytes; j++)
+                {
+                    bw.Write(compressedData[j]);
+                }
+                bytesWritten += resultantBytes;
+            }*/
 
             long end = bw.BaseStream.Position;
             bw.BaseStream.Seek(loc, SeekOrigin.Begin);
@@ -398,9 +496,7 @@ namespace Descent2Workshop
             //42 4F 44 59
             int pixelcount = image.Width * image.Height;
             bool alignmentHack = false;
-            //To this day I still have no clue what this hack is supposed to be for,
-            //but the original game's IFF decoder seems to require it. It causes problems in DPaint, 
-            //which confuses me. 
+            //LBMs require scanlines to be padded to even byte counts. 
             if (image.Width % 2 != 0)
             {
                 pixelcount = (image.Width + 1) * image.Height;

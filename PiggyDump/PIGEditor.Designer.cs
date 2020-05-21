@@ -36,15 +36,25 @@
             this.menuItem4 = new System.Windows.Forms.MenuItem();
             this.CloseMenu = new System.Windows.Forms.MenuItem();
             this.menuItem6 = new System.Windows.Forms.MenuItem();
-            this.InsertMenu = new System.Windows.Forms.MenuItem();
-            this.ImportMenu = new System.Windows.Forms.MenuItem();
+            this.CutMenuItem = new System.Windows.Forms.MenuItem();
+            this.CopyMenuItem = new System.Windows.Forms.MenuItem();
+            this.PasteMenuItem = new System.Windows.Forms.MenuItem();
             this.DeleteMenu = new System.Windows.Forms.MenuItem();
-            this.ExportMenu = new System.Windows.Forms.MenuItem();
+            this.menuItem8 = new System.Windows.Forms.MenuItem();
+            this.MoveUpMenuItem = new System.Windows.Forms.MenuItem();
+            this.MoveDownMenuItem = new System.Windows.Forms.MenuItem();
+            this.ImportMenu = new System.Windows.Forms.MenuItem();
+            this.InsertMenuItem = new System.Windows.Forms.MenuItem();
+            this.ImportMenuItem = new System.Windows.Forms.MenuItem();
+            this.ExportMenuItem = new System.Windows.Forms.MenuItem();
+            this.DebugMenuSeparator = new System.Windows.Forms.MenuItem();
+            this.ExportILBMMenuItem = new System.Windows.Forms.MenuItem();
             this.listView1 = new System.Windows.Forms.ListView();
             this.NameColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.SizeColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.FrameColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.IndexColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.SizeColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ResolutionColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.FrameColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.TransparentCheck = new System.Windows.Forms.CheckBox();
@@ -55,14 +65,6 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.CompressCheckBox = new System.Windows.Forms.CheckBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.ResolutionColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.menuItem2 = new System.Windows.Forms.MenuItem();
-            this.CutMenuItem = new System.Windows.Forms.MenuItem();
-            this.CopyMenuItem = new System.Windows.Forms.MenuItem();
-            this.PasteMenuItem = new System.Windows.Forms.MenuItem();
-            this.menuItem8 = new System.Windows.Forms.MenuItem();
-            this.MoveUpMenuItem = new System.Windows.Forms.MenuItem();
-            this.MoveDownMenuItem = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -75,7 +77,7 @@
             this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuItem1,
             this.menuItem6,
-            this.menuItem2});
+            this.ImportMenu});
             // 
             // menuItem1
             // 
@@ -122,16 +124,23 @@
             this.MoveDownMenuItem});
             this.menuItem6.Text = "Edit";
             // 
-            // InsertMenu
+            // CutMenuItem
             // 
-            this.InsertMenu.Index = 0;
-            this.InsertMenu.Text = "Insert...";
-            this.InsertMenu.Click += new System.EventHandler(this.InsertMenu_Click);
+            this.CutMenuItem.Index = 0;
+            this.CutMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlX;
+            this.CutMenuItem.Text = "Cut";
             // 
-            // ImportMenu
+            // CopyMenuItem
             // 
-            this.ImportMenu.Index = 1;
-            this.ImportMenu.Text = "Import Over...";
+            this.CopyMenuItem.Index = 1;
+            this.CopyMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlC;
+            this.CopyMenuItem.Text = "Copy";
+            // 
+            // PasteMenuItem
+            // 
+            this.PasteMenuItem.Index = 2;
+            this.PasteMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlV;
+            this.PasteMenuItem.Text = "Paste";
             // 
             // DeleteMenu
             // 
@@ -140,11 +149,63 @@
             this.DeleteMenu.Text = "Delete";
             this.DeleteMenu.Click += new System.EventHandler(this.DeleteMenu_Click);
             // 
-            // ExportMenu
+            // menuItem8
             // 
-            this.ExportMenu.Index = 2;
-            this.ExportMenu.Text = "Export...";
-            this.ExportMenu.Click += new System.EventHandler(this.ExportMenu_Click);
+            this.menuItem8.Index = 4;
+            this.menuItem8.Text = "-";
+            // 
+            // MoveUpMenuItem
+            // 
+            this.MoveUpMenuItem.Index = 5;
+            this.MoveUpMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlU;
+            this.MoveUpMenuItem.Text = "Move Up";
+            this.MoveUpMenuItem.Click += new System.EventHandler(this.MoveUpMenuItem_Click);
+            // 
+            // MoveDownMenuItem
+            // 
+            this.MoveDownMenuItem.Index = 6;
+            this.MoveDownMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlD;
+            this.MoveDownMenuItem.Text = "Move Down";
+            this.MoveDownMenuItem.Click += new System.EventHandler(this.MoveDownMenuItem_Click);
+            // 
+            // ImportMenu
+            // 
+            this.ImportMenu.Index = 2;
+            this.ImportMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.InsertMenuItem,
+            this.ImportMenuItem,
+            this.ExportMenuItem,
+            this.DebugMenuSeparator,
+            this.ExportILBMMenuItem});
+            this.ImportMenu.Text = "Import";
+            // 
+            // InsertMenuItem
+            // 
+            this.InsertMenuItem.Index = 0;
+            this.InsertMenuItem.Text = "Insert...";
+            this.InsertMenuItem.Click += new System.EventHandler(this.InsertMenu_Click);
+            // 
+            // ImportMenuItem
+            // 
+            this.ImportMenuItem.Index = 1;
+            this.ImportMenuItem.Text = "Import Over...";
+            // 
+            // ExportMenuItem
+            // 
+            this.ExportMenuItem.Index = 2;
+            this.ExportMenuItem.Text = "Export...";
+            this.ExportMenuItem.Click += new System.EventHandler(this.ExportMenu_Click);
+            // 
+            // DebugMenuSeparator
+            // 
+            this.DebugMenuSeparator.Index = 3;
+            this.DebugMenuSeparator.Text = "-";
+            // 
+            // ExportILBMMenuItem
+            // 
+            this.ExportILBMMenuItem.Index = 4;
+            this.ExportILBMMenuItem.Text = "Export as ILBM...";
+            this.ExportILBMMenuItem.Click += new System.EventHandler(this.ExportILBMMenu_Click);
             // 
             // listView1
             // 
@@ -173,20 +234,24 @@
             this.NameColumnHeader.Text = "Name";
             this.NameColumnHeader.Width = 80;
             // 
+            // IndexColumnHeader
+            // 
+            this.IndexColumnHeader.Text = "#";
+            this.IndexColumnHeader.Width = 40;
+            // 
             // SizeColumnHeader
             // 
             this.SizeColumnHeader.Text = "Size";
             this.SizeColumnHeader.Width = 50;
             // 
+            // ResolutionColumnHeader
+            // 
+            this.ResolutionColumnHeader.Text = "Res";
+            // 
             // FrameColumnHeader
             // 
             this.FrameColumnHeader.Text = "Frame";
             this.FrameColumnHeader.Width = 50;
-            // 
-            // IndexColumnHeader
-            // 
-            this.IndexColumnHeader.Text = "#";
-            this.IndexColumnHeader.Width = 40;
             // 
             // pictureBox1
             // 
@@ -296,56 +361,6 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // ResolutionColumnHeader
-            // 
-            this.ResolutionColumnHeader.Text = "Res";
-            // 
-            // menuItem2
-            // 
-            this.menuItem2.Index = 2;
-            this.menuItem2.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.InsertMenu,
-            this.ImportMenu,
-            this.ExportMenu});
-            this.menuItem2.Text = "Import";
-            // 
-            // CutMenuItem
-            // 
-            this.CutMenuItem.Index = 0;
-            this.CutMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlX;
-            this.CutMenuItem.Text = "Cut";
-            // 
-            // CopyMenuItem
-            // 
-            this.CopyMenuItem.Index = 1;
-            this.CopyMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlC;
-            this.CopyMenuItem.Text = "Copy";
-            // 
-            // PasteMenuItem
-            // 
-            this.PasteMenuItem.Index = 2;
-            this.PasteMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlV;
-            this.PasteMenuItem.Text = "Paste";
-            // 
-            // menuItem8
-            // 
-            this.menuItem8.Index = 4;
-            this.menuItem8.Text = "-";
-            // 
-            // MoveUpMenuItem
-            // 
-            this.MoveUpMenuItem.Index = 5;
-            this.MoveUpMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlU;
-            this.MoveUpMenuItem.Text = "Move Up";
-            this.MoveUpMenuItem.Click += new System.EventHandler(this.MoveUpMenuItem_Click);
-            // 
-            // MoveDownMenuItem
-            // 
-            this.MoveDownMenuItem.Index = 6;
-            this.MoveDownMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlD;
-            this.MoveDownMenuItem.Text = "Move Down";
-            this.MoveDownMenuItem.Click += new System.EventHandler(this.MoveDownMenuItem_Click);
-            // 
             // PIGEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -387,10 +402,10 @@
         private System.Windows.Forms.Label ColorPreview;
         private System.Windows.Forms.Button CalculateAverageButton;
         private System.Windows.Forms.MenuItem menuItem6;
-        private System.Windows.Forms.MenuItem InsertMenu;
-        private System.Windows.Forms.MenuItem ImportMenu;
+        private System.Windows.Forms.MenuItem InsertMenuItem;
+        private System.Windows.Forms.MenuItem ImportMenuItem;
         private System.Windows.Forms.MenuItem DeleteMenu;
-        private System.Windows.Forms.MenuItem ExportMenu;
+        private System.Windows.Forms.MenuItem ExportMenuItem;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ColumnHeader IndexColumnHeader;
         private System.Windows.Forms.CheckBox CompressCheckBox;
@@ -402,6 +417,8 @@
         private System.Windows.Forms.MenuItem menuItem8;
         private System.Windows.Forms.MenuItem MoveUpMenuItem;
         private System.Windows.Forms.MenuItem MoveDownMenuItem;
-        private System.Windows.Forms.MenuItem menuItem2;
+        private System.Windows.Forms.MenuItem ImportMenu;
+        private System.Windows.Forms.MenuItem DebugMenuSeparator;
+        private System.Windows.Forms.MenuItem ExportILBMMenuItem;
     }
 }
