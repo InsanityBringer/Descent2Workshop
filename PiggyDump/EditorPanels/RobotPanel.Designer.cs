@@ -198,9 +198,9 @@
             // 
             this.cbRobotHitSound.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbRobotHitSound.FormattingEnabled = true;
-            this.cbRobotHitSound.Location = new System.Drawing.Point(92, 421);
+            this.cbRobotHitSound.Location = new System.Drawing.Point(93, 421);
             this.cbRobotHitSound.Name = "cbRobotHitSound";
-            this.cbRobotHitSound.Size = new System.Drawing.Size(157, 21);
+            this.cbRobotHitSound.Size = new System.Drawing.Size(156, 21);
             this.cbRobotHitSound.TabIndex = 251;
             this.cbRobotHitSound.Tag = "HitSoundNum";
             this.cbRobotHitSound.SelectedIndexChanged += new System.EventHandler(this.RobotComboBox_SelectedIndexChanged);

@@ -59,6 +59,14 @@
             this.label138 = new System.Windows.Forms.Label();
             this.label137 = new System.Windows.Forms.Label();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.Damage4 = new System.Windows.Forms.TextBox();
+            this.Speed4 = new System.Windows.Forms.TextBox();
+            this.Damage3 = new System.Windows.Forms.TextBox();
+            this.Speed3 = new System.Windows.Forms.TextBox();
+            this.Damage2 = new System.Windows.Forms.TextBox();
+            this.Speed2 = new System.Windows.Forms.TextBox();
+            this.Damage1 = new System.Windows.Forms.TextBox();
+            this.Speed1 = new System.Windows.Forms.TextBox();
             this.txtWeaponStr = new System.Windows.Forms.TextBox();
             this.txtWeaponSpeed = new System.Windows.Forms.TextBox();
             this.label51 = new System.Windows.Forms.Label();
@@ -107,14 +115,6 @@
             this.lbModelNum = new System.Windows.Forms.Label();
             this.cbWeaponRenderMode = new System.Windows.Forms.ComboBox();
             this.label136 = new System.Windows.Forms.Label();
-            this.Damage1 = new System.Windows.Forms.TextBox();
-            this.Speed1 = new System.Windows.Forms.TextBox();
-            this.Damage2 = new System.Windows.Forms.TextBox();
-            this.Speed2 = new System.Windows.Forms.TextBox();
-            this.Damage3 = new System.Windows.Forms.TextBox();
-            this.Speed3 = new System.Windows.Forms.TextBox();
-            this.Damage4 = new System.Windows.Forms.TextBox();
-            this.Speed4 = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox9.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -132,8 +132,8 @@
             this.cbWeaponBounce.Name = "cbWeaponBounce";
             this.cbWeaponBounce.Size = new System.Drawing.Size(100, 21);
             this.cbWeaponBounce.TabIndex = 300;
-            this.cbWeaponBounce.Tag = "15";
-            this.cbWeaponBounce.SelectedIndexChanged += new System.EventHandler(this.WeaponComboBox_SelectedIndexChanged);
+            this.cbWeaponBounce.Tag = "Bounce";
+            this.cbWeaponBounce.SelectedIndexChanged += new System.EventHandler(this.WeaponComboBoxNormal_SelectedIndexChanged);
             // 
             // button3
             // 
@@ -159,7 +159,7 @@
             // 
             // btnRemapWeaponSprite
             // 
-            this.btnRemapWeaponSprite.Location = new System.Drawing.Point(221, 31);
+            this.btnRemapWeaponSprite.Location = new System.Drawing.Point(222, 31);
             this.btnRemapWeaponSprite.Name = "btnRemapWeaponSprite";
             this.btnRemapWeaponSprite.Size = new System.Drawing.Size(25, 23);
             this.btnRemapWeaponSprite.TabIndex = 297;
@@ -191,7 +191,7 @@
             this.cbWeaponChildren.Name = "cbWeaponChildren";
             this.cbWeaponChildren.Size = new System.Drawing.Size(140, 21);
             this.cbWeaponChildren.TabIndex = 295;
-            this.cbWeaponChildren.Tag = "21";
+            this.cbWeaponChildren.Tag = "Children";
             this.cbWeaponChildren.SelectedIndexChanged += new System.EventHandler(this.WeaponComboBox_SelectedIndexChanged);
             // 
             // cbWeaponVClip
@@ -208,7 +208,7 @@
             this.cbWeaponVClip.Name = "cbWeaponVClip";
             this.cbWeaponVClip.Size = new System.Drawing.Size(162, 21);
             this.cbWeaponVClip.TabIndex = 294;
-            this.cbWeaponVClip.Tag = "11";
+            this.cbWeaponVClip.Tag = "WeaponVClip";
             this.cbWeaponVClip.SelectedIndexChanged += new System.EventHandler(this.WeaponComboBox_SelectedIndexChanged);
             // 
             // cbWeaponMuzzleFlash
@@ -225,7 +225,7 @@
             this.cbWeaponMuzzleFlash.Name = "cbWeaponMuzzleFlash";
             this.cbWeaponMuzzleFlash.Size = new System.Drawing.Size(140, 21);
             this.cbWeaponMuzzleFlash.TabIndex = 293;
-            this.cbWeaponMuzzleFlash.Tag = "4";
+            this.cbWeaponMuzzleFlash.Tag = "MuzzleFlashVClip";
             this.cbWeaponMuzzleFlash.SelectedIndexChanged += new System.EventHandler(this.WeaponComboBox_SelectedIndexChanged);
             // 
             // cbWeaponFireSound
@@ -242,7 +242,7 @@
             this.cbWeaponFireSound.Name = "cbWeaponFireSound";
             this.cbWeaponFireSound.Size = new System.Drawing.Size(140, 21);
             this.cbWeaponFireSound.TabIndex = 292;
-            this.cbWeaponFireSound.Tag = "6";
+            this.cbWeaponFireSound.Tag = "FiringSound";
             this.cbWeaponFireSound.SelectedIndexChanged += new System.EventHandler(this.WeaponComboBox_SelectedIndexChanged);
             // 
             // cbWeaponRobotHit
@@ -259,7 +259,7 @@
             this.cbWeaponRobotHit.Name = "cbWeaponRobotHit";
             this.cbWeaponRobotHit.Size = new System.Drawing.Size(140, 21);
             this.cbWeaponRobotHit.TabIndex = 291;
-            this.cbWeaponRobotHit.Tag = "5";
+            this.cbWeaponRobotHit.Tag = "RobotHitVClip";
             this.cbWeaponRobotHit.SelectedIndexChanged += new System.EventHandler(this.WeaponComboBox_SelectedIndexChanged);
             // 
             // cbWeaponRobotHitSound
@@ -276,7 +276,7 @@
             this.cbWeaponRobotHitSound.Name = "cbWeaponRobotHitSound";
             this.cbWeaponRobotHitSound.Size = new System.Drawing.Size(140, 21);
             this.cbWeaponRobotHitSound.TabIndex = 290;
-            this.cbWeaponRobotHitSound.Tag = "9";
+            this.cbWeaponRobotHitSound.Tag = "RobotHitSound";
             this.cbWeaponRobotHitSound.SelectedIndexChanged += new System.EventHandler(this.WeaponComboBox_SelectedIndexChanged);
             // 
             // cbWeaponWallHit
@@ -293,7 +293,7 @@
             this.cbWeaponWallHit.Name = "cbWeaponWallHit";
             this.cbWeaponWallHit.Size = new System.Drawing.Size(140, 21);
             this.cbWeaponWallHit.TabIndex = 289;
-            this.cbWeaponWallHit.Tag = "7";
+            this.cbWeaponWallHit.Tag = "WallHitVClip";
             this.cbWeaponWallHit.SelectedIndexChanged += new System.EventHandler(this.WeaponComboBox_SelectedIndexChanged);
             // 
             // cbWeaponWallHitSound
@@ -310,7 +310,7 @@
             this.cbWeaponWallHitSound.Name = "cbWeaponWallHitSound";
             this.cbWeaponWallHitSound.Size = new System.Drawing.Size(140, 21);
             this.cbWeaponWallHitSound.TabIndex = 288;
-            this.cbWeaponWallHitSound.Tag = "12";
+            this.cbWeaponWallHitSound.Tag = "WallHitSound";
             this.cbWeaponWallHitSound.SelectedIndexChanged += new System.EventHandler(this.WeaponComboBox_SelectedIndexChanged);
             // 
             // cbWeaponModel2
@@ -327,7 +327,7 @@
             this.cbWeaponModel2.Name = "cbWeaponModel2";
             this.cbWeaponModel2.Size = new System.Drawing.Size(162, 21);
             this.cbWeaponModel2.TabIndex = 287;
-            this.cbWeaponModel2.Tag = "3";
+            this.cbWeaponModel2.Tag = "ModelNumInner";
             this.cbWeaponModel2.SelectedIndexChanged += new System.EventHandler(this.WeaponComboBox_SelectedIndexChanged);
             // 
             // cbWeaponModel1
@@ -344,7 +344,8 @@
             this.cbWeaponModel1.Name = "cbWeaponModel1";
             this.cbWeaponModel1.Size = new System.Drawing.Size(162, 21);
             this.cbWeaponModel1.TabIndex = 286;
-            this.cbWeaponModel1.Tag = "2";
+            this.cbWeaponModel1.Tag = "ModelNum";
+            this.cbWeaponModel1.SelectedIndexChanged += new System.EventHandler(this.WeaponComboBox_SelectedIndexChanged);
             // 
             // label54
             // 
@@ -361,7 +362,7 @@
             this.txtWeaponExplosionSize.Name = "txtWeaponExplosionSize";
             this.txtWeaponExplosionSize.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponExplosionSize.TabIndex = 284;
-            this.txtWeaponExplosionSize.Tag = "39";
+            this.txtWeaponExplosionSize.Tag = "DamageRadius";
             this.txtWeaponExplosionSize.TextChanged += new System.EventHandler(this.WeaponFixedProperty_TextChanged);
             // 
             // label6
@@ -379,17 +380,17 @@
             this.txtWeaponSpeedvar.Name = "txtWeaponSpeedvar";
             this.txtWeaponSpeedvar.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponSpeedvar.TabIndex = 282;
-            this.txtWeaponSpeedvar.Tag = "17";
+            this.txtWeaponSpeedvar.Tag = "SpeedVariance";
             this.txtWeaponSpeedvar.TextChanged += new System.EventHandler(this.WeaponProperty_TextChanged);
             // 
             // cbWeaponPlacable
             // 
             this.cbWeaponPlacable.AutoSize = true;
-            this.cbWeaponPlacable.Location = new System.Drawing.Point(193, 19);
+            this.cbWeaponPlacable.Location = new System.Drawing.Point(6, 65);
             this.cbWeaponPlacable.Name = "cbWeaponPlacable";
             this.cbWeaponPlacable.Size = new System.Drawing.Size(110, 17);
             this.cbWeaponPlacable.TabIndex = 281;
-            this.cbWeaponPlacable.Tag = "5";
+            this.cbWeaponPlacable.Tag = "Placable";
             this.cbWeaponPlacable.Text = "Can place in level";
             this.cbWeaponPlacable.UseVisualStyleBackColor = true;
             this.cbWeaponPlacable.CheckedChanged += new System.EventHandler(this.WeaponCheckBox_CheckChanged);
@@ -409,7 +410,7 @@
             this.txtWeaponCockpitImageh.Name = "txtWeaponCockpitImageh";
             this.txtWeaponCockpitImageh.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponCockpitImageh.TabIndex = 279;
-            this.txtWeaponCockpitImageh.Tag = "37";
+            this.txtWeaponCockpitImageh.Tag = "HiresCockpitPicture";
             this.txtWeaponCockpitImageh.TextChanged += new System.EventHandler(this.WeaponProperty_TextChanged);
             // 
             // txtWeaponMPScale
@@ -418,7 +419,7 @@
             this.txtWeaponMPScale.Name = "txtWeaponMPScale";
             this.txtWeaponMPScale.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponMPScale.TabIndex = 278;
-            this.txtWeaponMPScale.Tag = "24";
+            this.txtWeaponMPScale.Tag = "MultiDamageScale";
             this.txtWeaponMPScale.TextChanged += new System.EventHandler(this.WeaponFixedProperty_TextChanged);
             // 
             // label141
@@ -445,8 +446,8 @@
             this.txtWeaponABSize.Name = "txtWeaponABSize";
             this.txtWeaponABSize.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponABSize.TabIndex = 275;
-            this.txtWeaponABSize.Tag = "20";
-            this.txtWeaponABSize.TextChanged += new System.EventHandler(this.WeaponFixedProperty_TextChanged);
+            this.txtWeaponABSize.Tag = "AfterburnerSize";
+            this.txtWeaponABSize.TextChanged += new System.EventHandler(this.WeaponProperty_TextChanged);
             // 
             // label139
             // 
@@ -463,7 +464,7 @@
             this.txtWeaponBlindSize.Name = "txtWeaponBlindSize";
             this.txtWeaponBlindSize.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponBlindSize.TabIndex = 273;
-            this.txtWeaponBlindSize.Tag = "27";
+            this.txtWeaponBlindSize.Tag = "Flash";
             this.txtWeaponBlindSize.TextChanged += new System.EventHandler(this.WeaponProperty_TextChanged);
             // 
             // label138
@@ -507,14 +508,86 @@
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Speed and Strength";
             // 
+            // Damage4
+            // 
+            this.Damage4.Location = new System.Drawing.Point(241, 50);
+            this.Damage4.Name = "Damage4";
+            this.Damage4.Size = new System.Drawing.Size(37, 20);
+            this.Damage4.TabIndex = 46;
+            this.Damage4.Tag = "Strength,4";
+            this.Damage4.TextChanged += new System.EventHandler(this.SkillProperty_TextChanged);
+            // 
+            // Speed4
+            // 
+            this.Speed4.Location = new System.Drawing.Point(241, 24);
+            this.Speed4.Name = "Speed4";
+            this.Speed4.Size = new System.Drawing.Size(37, 20);
+            this.Speed4.TabIndex = 47;
+            this.Speed4.Tag = "Speed,4";
+            this.Speed4.TextChanged += new System.EventHandler(this.SkillProperty_TextChanged);
+            // 
+            // Damage3
+            // 
+            this.Damage3.Location = new System.Drawing.Point(198, 50);
+            this.Damage3.Name = "Damage3";
+            this.Damage3.Size = new System.Drawing.Size(37, 20);
+            this.Damage3.TabIndex = 44;
+            this.Damage3.Tag = "Strength,3";
+            this.Damage3.TextChanged += new System.EventHandler(this.SkillProperty_TextChanged);
+            // 
+            // Speed3
+            // 
+            this.Speed3.Location = new System.Drawing.Point(198, 24);
+            this.Speed3.Name = "Speed3";
+            this.Speed3.Size = new System.Drawing.Size(37, 20);
+            this.Speed3.TabIndex = 45;
+            this.Speed3.Tag = "Speed,3";
+            this.Speed3.TextChanged += new System.EventHandler(this.SkillProperty_TextChanged);
+            // 
+            // Damage2
+            // 
+            this.Damage2.Location = new System.Drawing.Point(155, 50);
+            this.Damage2.Name = "Damage2";
+            this.Damage2.Size = new System.Drawing.Size(37, 20);
+            this.Damage2.TabIndex = 42;
+            this.Damage2.Tag = "Strength,2";
+            this.Damage2.TextChanged += new System.EventHandler(this.SkillProperty_TextChanged);
+            // 
+            // Speed2
+            // 
+            this.Speed2.Location = new System.Drawing.Point(155, 24);
+            this.Speed2.Name = "Speed2";
+            this.Speed2.Size = new System.Drawing.Size(37, 20);
+            this.Speed2.TabIndex = 43;
+            this.Speed2.Tag = "Speed,2";
+            this.Speed2.TextChanged += new System.EventHandler(this.SkillProperty_TextChanged);
+            // 
+            // Damage1
+            // 
+            this.Damage1.Location = new System.Drawing.Point(112, 50);
+            this.Damage1.Name = "Damage1";
+            this.Damage1.Size = new System.Drawing.Size(37, 20);
+            this.Damage1.TabIndex = 40;
+            this.Damage1.Tag = "Strength,1";
+            this.Damage1.TextChanged += new System.EventHandler(this.SkillProperty_TextChanged);
+            // 
+            // Speed1
+            // 
+            this.Speed1.Location = new System.Drawing.Point(112, 24);
+            this.Speed1.Name = "Speed1";
+            this.Speed1.Size = new System.Drawing.Size(37, 20);
+            this.Speed1.TabIndex = 41;
+            this.Speed1.Tag = "Speed,1";
+            this.Speed1.TextChanged += new System.EventHandler(this.SkillProperty_TextChanged);
+            // 
             // txtWeaponStr
             // 
             this.txtWeaponStr.Location = new System.Drawing.Point(69, 50);
             this.txtWeaponStr.Name = "txtWeaponStr";
             this.txtWeaponStr.Size = new System.Drawing.Size(37, 20);
             this.txtWeaponStr.TabIndex = 39;
-            this.txtWeaponStr.Tag = "29";
-            this.txtWeaponStr.TextChanged += new System.EventHandler(this.WeaponFixedProperty_TextChanged);
+            this.txtWeaponStr.Tag = "Strength,0";
+            this.txtWeaponStr.TextChanged += new System.EventHandler(this.SkillProperty_TextChanged);
             // 
             // txtWeaponSpeed
             // 
@@ -522,8 +595,8 @@
             this.txtWeaponSpeed.Name = "txtWeaponSpeed";
             this.txtWeaponSpeed.Size = new System.Drawing.Size(37, 20);
             this.txtWeaponSpeed.TabIndex = 39;
-            this.txtWeaponSpeed.Tag = "30";
-            this.txtWeaponSpeed.TextChanged += new System.EventHandler(this.WeaponFixedProperty_TextChanged);
+            this.txtWeaponSpeed.Tag = "Speed,0";
+            this.txtWeaponSpeed.TextChanged += new System.EventHandler(this.SkillProperty_TextChanged);
             // 
             // label51
             // 
@@ -558,7 +631,7 @@
             this.txtWeaponCockpitImage.Name = "txtWeaponCockpitImage";
             this.txtWeaponCockpitImage.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponCockpitImage.TabIndex = 268;
-            this.txtWeaponCockpitImage.Tag = "37";
+            this.txtWeaponCockpitImage.Tag = "CockpitPicture";
             this.txtWeaponCockpitImage.TextChanged += new System.EventHandler(this.WeaponProperty_TextChanged);
             // 
             // txtWeaponLifetime
@@ -567,7 +640,7 @@
             this.txtWeaponLifetime.Name = "txtWeaponLifetime";
             this.txtWeaponLifetime.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponLifetime.TabIndex = 266;
-            this.txtWeaponLifetime.Tag = "36";
+            this.txtWeaponLifetime.Tag = "Lifetime";
             this.txtWeaponLifetime.TextChanged += new System.EventHandler(this.WeaponFixedProperty_TextChanged);
             // 
             // txtWeaponLight
@@ -576,7 +649,7 @@
             this.txtWeaponLight.Name = "txtWeaponLight";
             this.txtWeaponLight.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponLight.TabIndex = 265;
-            this.txtWeaponLight.Tag = "35";
+            this.txtWeaponLight.Tag = "Light";
             this.txtWeaponLight.TextChanged += new System.EventHandler(this.WeaponFixedProperty_TextChanged);
             // 
             // txtWeaponPolyLWRatio
@@ -585,7 +658,7 @@
             this.txtWeaponPolyLWRatio.Name = "txtWeaponPolyLWRatio";
             this.txtWeaponPolyLWRatio.Size = new System.Drawing.Size(118, 20);
             this.txtWeaponPolyLWRatio.TabIndex = 263;
-            this.txtWeaponPolyLWRatio.Tag = "34";
+            this.txtWeaponPolyLWRatio.Tag = "POLenToWidthRatio";
             this.txtWeaponPolyLWRatio.TextChanged += new System.EventHandler(this.WeaponFixedProperty_TextChanged);
             // 
             // txtWeaponThrust
@@ -594,7 +667,7 @@
             this.txtWeaponThrust.Name = "txtWeaponThrust";
             this.txtWeaponThrust.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponThrust.TabIndex = 261;
-            this.txtWeaponThrust.Tag = "33";
+            this.txtWeaponThrust.Tag = "Thrust";
             this.txtWeaponThrust.TextChanged += new System.EventHandler(this.WeaponFixedProperty_TextChanged);
             // 
             // txtWeaponDrag
@@ -603,7 +676,7 @@
             this.txtWeaponDrag.Name = "txtWeaponDrag";
             this.txtWeaponDrag.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponDrag.TabIndex = 259;
-            this.txtWeaponDrag.Tag = "32";
+            this.txtWeaponDrag.Tag = "Drag";
             this.txtWeaponDrag.TextChanged += new System.EventHandler(this.WeaponFixedProperty_TextChanged);
             // 
             // txtWeaponImpactSize
@@ -612,7 +685,7 @@
             this.txtWeaponImpactSize.Name = "txtWeaponImpactSize";
             this.txtWeaponImpactSize.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponImpactSize.TabIndex = 256;
-            this.txtWeaponImpactSize.Tag = "28";
+            this.txtWeaponImpactSize.Tag = "ImpactSize";
             this.txtWeaponImpactSize.TextChanged += new System.EventHandler(this.WeaponFixedProperty_TextChanged);
             // 
             // txtWeaponFlashSize
@@ -621,7 +694,7 @@
             this.txtWeaponFlashSize.Name = "txtWeaponFlashSize";
             this.txtWeaponFlashSize.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponFlashSize.TabIndex = 255;
-            this.txtWeaponFlashSize.Tag = "27";
+            this.txtWeaponFlashSize.Tag = "FlashSize";
             this.txtWeaponFlashSize.TextChanged += new System.EventHandler(this.WeaponFixedProperty_TextChanged);
             // 
             // txtWeaponProjectileSize
@@ -630,7 +703,7 @@
             this.txtWeaponProjectileSize.Name = "txtWeaponProjectileSize";
             this.txtWeaponProjectileSize.Size = new System.Drawing.Size(162, 20);
             this.txtWeaponProjectileSize.TabIndex = 253;
-            this.txtWeaponProjectileSize.Tag = "26";
+            this.txtWeaponProjectileSize.Tag = "BlobSize";
             this.txtWeaponProjectileSize.Validated += new System.EventHandler(this.WeaponFixedProperty_TextChanged);
             // 
             // txtWeaponMass
@@ -639,7 +712,7 @@
             this.txtWeaponMass.Name = "txtWeaponMass";
             this.txtWeaponMass.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponMass.TabIndex = 251;
-            this.txtWeaponMass.Tag = "31";
+            this.txtWeaponMass.Tag = "Mass";
             this.txtWeaponMass.TextChanged += new System.EventHandler(this.WeaponFixedProperty_TextChanged);
             // 
             // txtWeaponStaticSprite
@@ -648,8 +721,8 @@
             this.txtWeaponStaticSprite.Name = "txtWeaponStaticSprite";
             this.txtWeaponStaticSprite.Size = new System.Drawing.Size(131, 20);
             this.txtWeaponStaticSprite.TabIndex = 249;
-            this.txtWeaponStaticSprite.Tag = "25";
-            this.txtWeaponStaticSprite.Validated += new System.EventHandler(this.WeaponProperty_TextChanged);
+            this.txtWeaponStaticSprite.Tag = "Bitmap";
+            this.txtWeaponStaticSprite.TextChanged += new System.EventHandler(this.WeaponProperty_TextChanged);
             // 
             // txtWeaponFireWait
             // 
@@ -657,7 +730,7 @@
             this.txtWeaponFireWait.Name = "txtWeaponFireWait";
             this.txtWeaponFireWait.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponFireWait.TabIndex = 248;
-            this.txtWeaponFireWait.Tag = "23";
+            this.txtWeaponFireWait.Tag = "FireWait";
             this.txtWeaponFireWait.TextChanged += new System.EventHandler(this.WeaponFixedProperty_TextChanged);
             // 
             // txtWeaponEnergyUsage
@@ -666,7 +739,7 @@
             this.txtWeaponEnergyUsage.Name = "txtWeaponEnergyUsage";
             this.txtWeaponEnergyUsage.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponEnergyUsage.TabIndex = 246;
-            this.txtWeaponEnergyUsage.Tag = "22";
+            this.txtWeaponEnergyUsage.Tag = "EnergyUsage";
             this.txtWeaponEnergyUsage.TextChanged += new System.EventHandler(this.WeaponFixedProperty_TextChanged);
             // 
             // txtWeaponAmmoUse
@@ -675,7 +748,7 @@
             this.txtWeaponAmmoUse.Name = "txtWeaponAmmoUse";
             this.txtWeaponAmmoUse.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponAmmoUse.TabIndex = 240;
-            this.txtWeaponAmmoUse.Tag = "10";
+            this.txtWeaponAmmoUse.Tag = "AmmoUsage";
             this.txtWeaponAmmoUse.TextChanged += new System.EventHandler(this.WeaponProperty_TextChanged);
             // 
             // txtWeaponProjectileCount
@@ -684,7 +757,7 @@
             this.txtWeaponProjectileCount.Name = "txtWeaponProjectileCount";
             this.txtWeaponProjectileCount.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponProjectileCount.TabIndex = 239;
-            this.txtWeaponProjectileCount.Tag = "8";
+            this.txtWeaponProjectileCount.Tag = "FireCount";
             this.txtWeaponProjectileCount.TextChanged += new System.EventHandler(this.WeaponProperty_TextChanged);
             // 
             // label55
@@ -793,7 +866,7 @@
             this.cbWeaponHoming.Name = "cbWeaponHoming";
             this.cbWeaponHoming.Size = new System.Drawing.Size(107, 17);
             this.cbWeaponHoming.TabIndex = 244;
-            this.cbWeaponHoming.Tag = "4";
+            this.cbWeaponHoming.Tag = "HomingFlag";
             this.cbWeaponHoming.Text = "Homing projectile";
             this.cbWeaponHoming.UseVisualStyleBackColor = true;
             this.cbWeaponHoming.CheckedChanged += new System.EventHandler(this.WeaponCheckBox_CheckChanged);
@@ -805,7 +878,7 @@
             this.cbWeaponIsMatter.Name = "cbWeaponIsMatter";
             this.cbWeaponIsMatter.Size = new System.Drawing.Size(66, 17);
             this.cbWeaponIsMatter.TabIndex = 243;
-            this.cbWeaponIsMatter.Tag = "3";
+            this.cbWeaponIsMatter.Tag = "Matter";
             this.cbWeaponIsMatter.Text = "Is matter";
             this.cbWeaponIsMatter.UseVisualStyleBackColor = true;
             this.cbWeaponIsMatter.CheckedChanged += new System.EventHandler(this.WeaponCheckBox_CheckChanged);
@@ -817,7 +890,7 @@
             this.cbWeaponDestroyable.Name = "cbWeaponDestroyable";
             this.cbWeaponDestroyable.Size = new System.Drawing.Size(109, 17);
             this.cbWeaponDestroyable.TabIndex = 242;
-            this.cbWeaponDestroyable.Tag = "1";
+            this.cbWeaponDestroyable.Tag = "Destroyable";
             this.cbWeaponDestroyable.Text = "Can be destroyed";
             this.cbWeaponDestroyable.UseVisualStyleBackColor = true;
             this.cbWeaponDestroyable.CheckedChanged += new System.EventHandler(this.WeaponCheckBox_CheckChanged);
@@ -906,11 +979,11 @@
             // cbWeaponRipper
             // 
             this.cbWeaponRipper.AutoSize = true;
-            this.cbWeaponRipper.Location = new System.Drawing.Point(119, 42);
+            this.cbWeaponRipper.Location = new System.Drawing.Point(121, 42);
             this.cbWeaponRipper.Name = "cbWeaponRipper";
             this.cbWeaponRipper.Size = new System.Drawing.Size(128, 17);
             this.cbWeaponRipper.TabIndex = 230;
-            this.cbWeaponRipper.Tag = "2";
+            this.cbWeaponRipper.Tag = "Persistent";
             this.cbWeaponRipper.Text = "Rips through enemies";
             this.cbWeaponRipper.UseVisualStyleBackColor = true;
             this.cbWeaponRipper.CheckedChanged += new System.EventHandler(this.WeaponCheckBox_CheckChanged);
@@ -947,7 +1020,7 @@
             this.cbWeaponRenderMode.Name = "cbWeaponRenderMode";
             this.cbWeaponRenderMode.Size = new System.Drawing.Size(162, 21);
             this.cbWeaponRenderMode.TabIndex = 227;
-            this.cbWeaponRenderMode.Tag = "1";
+            this.cbWeaponRenderMode.Tag = "RenderType";
             this.cbWeaponRenderMode.SelectedIndexChanged += new System.EventHandler(this.WeaponRenderMode_SelectedIndexChanged);
             // 
             // label136
@@ -959,78 +1032,6 @@
             this.label136.TabIndex = 226;
             this.label136.Text = "Render Mode:";
             // 
-            // Damage1
-            // 
-            this.Damage1.Location = new System.Drawing.Point(112, 50);
-            this.Damage1.Name = "Damage1";
-            this.Damage1.Size = new System.Drawing.Size(37, 20);
-            this.Damage1.TabIndex = 40;
-            this.Damage1.Tag = "29";
-            this.Damage1.TextChanged += new System.EventHandler(this.WeaponFixedProperty1_TextChanged);
-            // 
-            // Speed1
-            // 
-            this.Speed1.Location = new System.Drawing.Point(112, 24);
-            this.Speed1.Name = "Speed1";
-            this.Speed1.Size = new System.Drawing.Size(37, 20);
-            this.Speed1.TabIndex = 41;
-            this.Speed1.Tag = "30";
-            this.Speed1.TextChanged += new System.EventHandler(this.WeaponFixedProperty1_TextChanged);
-            // 
-            // Damage2
-            // 
-            this.Damage2.Location = new System.Drawing.Point(155, 50);
-            this.Damage2.Name = "Damage2";
-            this.Damage2.Size = new System.Drawing.Size(37, 20);
-            this.Damage2.TabIndex = 42;
-            this.Damage2.Tag = "29";
-            this.Damage2.TextChanged += new System.EventHandler(this.WeaponFixedProperty2_TextChanged);
-            // 
-            // Speed2
-            // 
-            this.Speed2.Location = new System.Drawing.Point(155, 24);
-            this.Speed2.Name = "Speed2";
-            this.Speed2.Size = new System.Drawing.Size(37, 20);
-            this.Speed2.TabIndex = 43;
-            this.Speed2.Tag = "30";
-            this.Speed2.TextChanged += new System.EventHandler(this.WeaponFixedProperty2_TextChanged);
-            // 
-            // Damage3
-            // 
-            this.Damage3.Location = new System.Drawing.Point(198, 50);
-            this.Damage3.Name = "Damage3";
-            this.Damage3.Size = new System.Drawing.Size(37, 20);
-            this.Damage3.TabIndex = 44;
-            this.Damage3.Tag = "29";
-            this.Damage3.TextChanged += new System.EventHandler(this.WeaponFixedProperty3_TextChanged);
-            // 
-            // Speed3
-            // 
-            this.Speed3.Location = new System.Drawing.Point(198, 24);
-            this.Speed3.Name = "Speed3";
-            this.Speed3.Size = new System.Drawing.Size(37, 20);
-            this.Speed3.TabIndex = 45;
-            this.Speed3.Tag = "30";
-            this.Speed3.TextChanged += new System.EventHandler(this.WeaponFixedProperty3_TextChanged);
-            // 
-            // Damage4
-            // 
-            this.Damage4.Location = new System.Drawing.Point(241, 50);
-            this.Damage4.Name = "Damage4";
-            this.Damage4.Size = new System.Drawing.Size(37, 20);
-            this.Damage4.TabIndex = 46;
-            this.Damage4.Tag = "29";
-            this.Damage4.TextChanged += new System.EventHandler(this.WeaponFixedProperty4_TextChanged);
-            // 
-            // Speed4
-            // 
-            this.Speed4.Location = new System.Drawing.Point(241, 24);
-            this.Speed4.Name = "Speed4";
-            this.Speed4.Size = new System.Drawing.Size(37, 20);
-            this.Speed4.TabIndex = 47;
-            this.Speed4.Tag = "30";
-            this.Speed4.TextChanged += new System.EventHandler(this.WeaponFixedProperty4_TextChanged);
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.cbWeaponDestroyable);
@@ -1038,9 +1039,9 @@
             this.groupBox1.Controls.Add(this.cbWeaponIsMatter);
             this.groupBox1.Controls.Add(this.cbWeaponHoming);
             this.groupBox1.Controls.Add(this.cbWeaponPlacable);
-            this.groupBox1.Location = new System.Drawing.Point(315, 326);
+            this.groupBox1.Location = new System.Drawing.Point(498, 196);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(319, 109);
+            this.groupBox1.Size = new System.Drawing.Size(266, 109);
             this.groupBox1.TabIndex = 301;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Flags";

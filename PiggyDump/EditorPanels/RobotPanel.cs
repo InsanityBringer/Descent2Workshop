@@ -191,7 +191,7 @@ namespace Descent2Workshop.EditorPanels
                 else
                     RobotAnimationCheckbox.Checked = false;
 
-                NumJointsTextBox.Text = (Robot.NUM_ANIMATION_STATES * (hxmFile.GetModel(robot.ModelNum).NumSubmodels - 1)).ToString();
+                NumJointsTextBox.Text = (Robot.NumAnimationStates * (hxmFile.GetModel(robot.ModelNum).NumSubmodels - 1)).ToString();
             }
         }
 

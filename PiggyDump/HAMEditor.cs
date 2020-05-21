@@ -84,7 +84,7 @@ namespace Descent2Workshop
             wclipPanel.Dock = DockStyle.Fill;
             robotPanel = new RobotPanel(transactionManager, 4); components.Add(robotPanel);
             robotPanel.Dock = DockStyle.Fill;
-            weaponPanel = new WeaponPanel(); components.Add(weaponPanel);
+            weaponPanel = new WeaponPanel(transactionManager, 5); components.Add(weaponPanel);
             weaponPanel.Dock = DockStyle.Fill;
             TextureTabPage.Controls.Add(texturePanel);
             VClipTabPage.Controls.Add(vclipPanel);
@@ -474,7 +474,7 @@ namespace Descent2Workshop
         public void UpdateWeaponPanel(int num)
         {
             Weapon weapon = datafile.Weapons[num];
-            weaponPanel.Update(weapon);
+            weaponPanel.Update(weapon, num);
             txtElemName.Text = datafile.WeaponNames[num];
         }
 

@@ -70,7 +70,7 @@ namespace Descent2Workshop
             this.glControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl1_Paint);
             robotPanel = new RobotPanel(transactionManager, 0);
             robotPanel.Dock = DockStyle.Fill;
-            weaponPanel = new WeaponPanel();
+            weaponPanel = new WeaponPanel(transactionManager, 1);
             weaponPanel.Dock = DockStyle.Fill;
             components.Add(robotPanel); components.Add(weaponPanel); components.Add(glControl1);
 
@@ -194,10 +194,6 @@ namespace Descent2Workshop
             }
         }
 
-        private void UpdateRobotDropTypes(int dropType, Robot robot)
-        {
-        }
-
         public void UpdateRobotPanel(int num)
         {
             Robot robot = datafile.Robots[num];
@@ -209,7 +205,7 @@ namespace Descent2Workshop
         public void UpdateWeaponPanel(int num)
         {
             Weapon weapon = datafile.Weapons[num];
-            weaponPanel.Update(weapon);
+            weaponPanel.Update(weapon, num);
 
             txtElemName.Text = datafile.WeaponNames[num];
         }

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using LibDescent.Data;
+using Descent2Workshop.Transactions;
 
 namespace Descent2Workshop.EditorPanels
 {
@@ -19,13 +20,19 @@ namespace Descent2Workshop.EditorPanels
         private Palette palette; //aaaaaaaaaaaaaaaaaaaa
         private bool isLocked = false;
 
+        private TransactionManager transactionManager;
+        private int tabPage;
+        private int weaponID;
+
         private TextBox[] SpeedBoxes = new TextBox[5];
         private TextBox[] DmgBoxes = new TextBox[5];
-        public WeaponPanel()
+        public WeaponPanel(TransactionManager transactionManager, int tabPage)
         {
             InitializeComponent();
             SpeedBoxes[0] = txtWeaponSpeed; SpeedBoxes[1] = Speed1; SpeedBoxes[2] = Speed2; SpeedBoxes[3] = Speed3; SpeedBoxes[4] = Speed4;
             DmgBoxes[0] = txtWeaponStr; DmgBoxes[1] = Damage1; DmgBoxes[2] = Damage2; DmgBoxes[3] = Damage3; DmgBoxes[4] = Damage4;
+            this.transactionManager = transactionManager;
+            this.tabPage = tabPage;
         }
 
         public void Init(List<string> SoundNames, List<string> VClipNames, List<string> WeaponNames, List<string> ModelNames, PIGFile piggyFile, Palette palette)
@@ -64,10 +71,11 @@ namespace Descent2Workshop.EditorPanels
             isLocked = false;
         }
 
-        public void Update(Weapon weapon)
+        public void Update(Weapon weapon, int num)
         {
             isLocked = true;
             this.weapon = weapon;
+            this.weaponID = num;
 
             int rendernum = (int)weapon.RenderType;
 
@@ -113,7 +121,7 @@ namespace Descent2Workshop.EditorPanels
             cbWeaponWallHitSound.SelectedIndex = weapon.WallHitSound + 1;
             cbWeaponModel1.SelectedIndex = weapon.ModelNum + 1;
             cbWeaponModel2.SelectedIndex = weapon.ModelNumInner + 1;
-            cbWeaponWallHit.SelectedIndex = weapon.WallHitVclip + 1;
+            cbWeaponWallHit.SelectedIndex = weapon.WallHitVClip + 1;
             cbWeaponRobotHit.SelectedIndex = weapon.RobotHitVClip + 1;
             cbWeaponMuzzleFlash.SelectedIndex = weapon.MuzzleFlashVClip + 1;
             cbWeaponVClip.SelectedIndex = weapon.WeaponVClip + 1;
@@ -156,17 +164,17 @@ namespace Descent2Workshop.EditorPanels
 
         private void WeaponProperty_TextChanged(object sender, EventArgs e)
         {
-            if (isLocked)
+            if (isLocked || transactionManager.TransactionInProgress)
             {
                 return;
             }
             TextBox textBox = (TextBox)sender;
-            int tagvalue = int.Parse((string)textBox.Tag);
 
             int value = int.MinValue;
             if (int.TryParse(textBox.Text, out value))
             {
-                weapon.UpdateWeapon(tagvalue, value, 0);
+                IntegerTransaction transaction = new IntegerTransaction("Weapon property", weapon, (string)textBox.Tag, weaponID, tabPage, value);
+                transactionManager.ApplyTransaction(transaction);
             }
         }
 
@@ -177,53 +185,37 @@ namespace Descent2Workshop.EditorPanels
                 return;
             }
             TextBox textBox = (TextBox)sender;
-            string tagstr = (string)textBox.Tag;
-            int tagvalue = Int32.Parse(tagstr);
 
             float fvalue = 0.0f;
             if (float.TryParse(textBox.Text, out fvalue))
             {
-                int value = (int)(fvalue * 65536f);
-                weapon.UpdateWeapon(tagvalue, value, 0);
+                FixTransaction transaction = new FixTransaction("Weapon property", weapon, (string)textBox.Tag, weaponID, tabPage, fvalue);
+                transactionManager.ApplyTransaction(transaction);
             }
         }
 
         private void WeaponCheckBox_CheckChanged(object sender, EventArgs e)
         {
-            if (isLocked)
+            if (isLocked || transactionManager.TransactionInProgress)
                 return;
             CheckBox checkBox = (CheckBox)sender;
 
-            switch (checkBox.Tag)
-            {
-                case "1":
-                    weapon.Destroyable = checkBox.Checked;
-                    break;
-                case "2":
-                    weapon.Persistent = checkBox.Checked;
-                    break;
-                case "3":
-                    weapon.Matter = checkBox.Checked;
-                    break;
-                case "4":
-                    weapon.HomingFlag = checkBox.Checked;
-                    break;
-                case "5":
-                    weapon.Flags = (byte)(checkBox.Checked ? 1 : 0);
-                    break;
-            }
+            BoolTransaction transaction = new BoolTransaction("Weapon property", weapon, (string)checkBox.Tag, weaponID, tabPage, checkBox.Checked);
+            transactionManager.ApplyTransaction(transaction);
         }
 
         private void WeaponRenderMode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (isLocked)
+            if (isLocked || transactionManager.TransactionInProgress)
                 return;
             int weapontype = cbWeaponRenderMode.SelectedIndex;
             if (weapontype > 3)
             {
                 weapontype = 255;
             }
-            weapon.RenderType = (WeaponRenderType)weapontype;
+
+            IntegerTransaction transaction = new IntegerTransaction("Weapon render type", weapon, (string)cbWeaponRenderMode.Tag, weaponID, tabPage, weapontype);
+            transactionManager.ApplyTransaction(transaction);
             UpdateWeaponGraphicControls();
         }
 
@@ -231,7 +223,9 @@ namespace Descent2Workshop.EditorPanels
         {
             if (isLocked) return;
             ComboBox comboBox = (ComboBox)sender;
-            weapon.UpdateWeapon(int.Parse((string)comboBox.Tag), comboBox.SelectedIndex, 0);
+
+            IntegerTransaction transaction = new IntegerTransaction("Weapon property", weapon, (string)comboBox.Tag, weaponID, tabPage, comboBox.SelectedIndex-1);
+            transactionManager.ApplyTransaction(transaction);
         }
 
         private void WeaponCalculateLW_Click(object sender, EventArgs e)
@@ -255,6 +249,7 @@ namespace Descent2Workshop.EditorPanels
         {
             Button button = (Button)sender;
             ImageSelector selector = new ImageSelector(piggyFile, palette, false);
+            IntegerTransaction transaction;
             if (selector.ShowDialog() == DialogResult.OK)
             {
                 isLocked = true;
@@ -263,90 +258,48 @@ namespace Descent2Workshop.EditorPanels
                 {
                     case "1":
                         txtWeaponCockpitImage.Text = (value).ToString();
-                        weapon.CockpitPicture = (ushort)value;
+                        transaction = new IntegerTransaction("Weapon property", weapon, "CockpitPicture", weaponID, tabPage, value);
+                        transactionManager.ApplyTransaction(transaction);
                         break;
                     case "2":
                         txtWeaponCockpitImageh.Text = (value).ToString();
-                        weapon.HiresCockpitPicture = (ushort)value;
+                        transaction = new IntegerTransaction("Weapon property", weapon, "HiresCockpitPicture", weaponID, tabPage, value);
+                        transactionManager.ApplyTransaction(transaction);
                         break;
                     case "3":
-                        weapon.Bitmap = (ushort)(value);
                         txtWeaponStaticSprite.Text = (value).ToString();
+                        transaction = new IntegerTransaction("Weapon property", weapon, "Bitmap", weaponID, tabPage, value);
+                        transactionManager.ApplyTransaction(transaction);
                         break;
                 }
                 isLocked = false;
             }
         }
 
-        private void WeaponFixedProperty1_TextChanged(object sender, EventArgs e)
+        private void WeaponComboBoxNormal_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (isLocked)
-            {
-                return;
-            }
-            TextBox textBox = (TextBox)sender;
-            string tagstr = (string)textBox.Tag;
-            int tagvalue = Int32.Parse(tagstr);
+            if (isLocked) return;
+            ComboBox comboBox = (ComboBox)sender;
 
-            float fvalue = 0.0f;
-            if (float.TryParse(textBox.Text, out fvalue))
-            {
-                int value = (int)(fvalue * 65536f);
-                weapon.UpdateWeapon(tagvalue, value, 1);
-            }
+            IntegerTransaction transaction = new IntegerTransaction("Weapon property", weapon, (string)comboBox.Tag, weaponID, tabPage, comboBox.SelectedIndex);
+            transactionManager.ApplyTransaction(transaction);
         }
 
-        private void WeaponFixedProperty2_TextChanged(object sender, EventArgs e)
+        private void SkillProperty_TextChanged(object sender, EventArgs e)
         {
-            if (isLocked)
-            {
+            if (isLocked || transactionManager.TransactionInProgress)
                 return;
-            }
-            TextBox textBox = (TextBox)sender;
-            string tagstr = (string)textBox.Tag;
-            int tagvalue = Int32.Parse(tagstr);
 
-            float fvalue = 0.0f;
-            if (float.TryParse(textBox.Text, out fvalue))
-            {
-                int value = (int)(fvalue * 65536f);
-                weapon.UpdateWeapon(tagvalue, value, 2);
-            }
-        }
+            TextBox sendingControl = (TextBox)sender;
+            string[] tagstrs = ((string)sendingControl.Tag).Split(',');
+            string field = tagstrs[0];
+            uint index = uint.Parse(tagstrs[1]);
 
-        private void WeaponFixedProperty3_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
+            float value;
+            if (float.TryParse(sendingControl.Text, out value))
             {
-                return;
-            }
-            TextBox textBox = (TextBox)sender;
-            string tagstr = (string)textBox.Tag;
-            int tagvalue = Int32.Parse(tagstr);
-
-            float fvalue = 0.0f;
-            if (float.TryParse(textBox.Text, out fvalue))
-            {
-                int value = (int)(fvalue * 65536f);
-                weapon.UpdateWeapon(tagvalue, value, 3);
-            }
-        }
-
-        private void WeaponFixedProperty4_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-            {
-                return;
-            }
-            TextBox textBox = (TextBox)sender;
-            string tagstr = (string)textBox.Tag;
-            int tagvalue = Int32.Parse(tagstr);
-
-            float fvalue = 0.0f;
-            if (float.TryParse(textBox.Text, out fvalue))
-            {
-                int value = (int)(fvalue * 65536f);
-                weapon.UpdateWeapon(tagvalue, value, 4);
+                IndexedFixTransaction transaction = new IndexedFixTransaction("Robot AI property", weapon, field, weaponID, tabPage, index, value);
+                transactionManager.ApplyTransaction(transaction);
             }
         }
     }
