@@ -128,7 +128,7 @@
             "Disabled",
             "Infinitely",
             "Twice"});
-            this.cbWeaponBounce.Location = new System.Drawing.Point(587, 108);
+            this.cbWeaponBounce.Location = new System.Drawing.Point(587, 109);
             this.cbWeaponBounce.Name = "cbWeaponBounce";
             this.cbWeaponBounce.Size = new System.Drawing.Size(100, 21);
             this.cbWeaponBounce.TabIndex = 300;
@@ -137,7 +137,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(473, 136);
+            this.button3.Location = new System.Drawing.Point(473, 134);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(25, 23);
             this.button3.TabIndex = 299;
@@ -148,7 +148,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(473, 110);
+            this.button1.Location = new System.Drawing.Point(473, 108);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(25, 23);
             this.button1.TabIndex = 298;
@@ -159,7 +159,7 @@
             // 
             // btnRemapWeaponSprite
             // 
-            this.btnRemapWeaponSprite.Location = new System.Drawing.Point(222, 31);
+            this.btnRemapWeaponSprite.Location = new System.Drawing.Point(222, 29);
             this.btnRemapWeaponSprite.Name = "btnRemapWeaponSprite";
             this.btnRemapWeaponSprite.Size = new System.Drawing.Size(25, 23);
             this.btnRemapWeaponSprite.TabIndex = 297;
@@ -170,7 +170,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(128, 111);
+            this.button5.Location = new System.Drawing.Point(128, 109);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(118, 23);
             this.button5.TabIndex = 296;
@@ -187,7 +187,7 @@
             "Polymodel",
             "VClip",
             "Invisible"});
-            this.cbWeaponChildren.Location = new System.Drawing.Point(106, 299);
+            this.cbWeaponChildren.Location = new System.Drawing.Point(106, 297);
             this.cbWeaponChildren.Name = "cbWeaponChildren";
             this.cbWeaponChildren.Size = new System.Drawing.Size(140, 21);
             this.cbWeaponChildren.TabIndex = 295;
@@ -204,7 +204,7 @@
             "Polymodel",
             "VClip",
             "Invisible"});
-            this.cbWeaponVClip.Location = new System.Drawing.Point(84, 32);
+            this.cbWeaponVClip.Location = new System.Drawing.Point(84, 30);
             this.cbWeaponVClip.Name = "cbWeaponVClip";
             this.cbWeaponVClip.Size = new System.Drawing.Size(162, 21);
             this.cbWeaponVClip.TabIndex = 294;
@@ -221,7 +221,7 @@
             "Polymodel",
             "VClip",
             "Invisible"});
-            this.cbWeaponMuzzleFlash.Location = new System.Drawing.Point(106, 139);
+            this.cbWeaponMuzzleFlash.Location = new System.Drawing.Point(106, 137);
             this.cbWeaponMuzzleFlash.Name = "cbWeaponMuzzleFlash";
             this.cbWeaponMuzzleFlash.Size = new System.Drawing.Size(140, 21);
             this.cbWeaponMuzzleFlash.TabIndex = 293;
@@ -238,7 +238,7 @@
             "Polymodel",
             "VClip",
             "Invisible"});
-            this.cbWeaponFireSound.Location = new System.Drawing.Point(106, 166);
+            this.cbWeaponFireSound.Location = new System.Drawing.Point(106, 164);
             this.cbWeaponFireSound.Name = "cbWeaponFireSound";
             this.cbWeaponFireSound.Size = new System.Drawing.Size(140, 21);
             this.cbWeaponFireSound.TabIndex = 292;
@@ -255,7 +255,7 @@
             "Polymodel",
             "VClip",
             "Invisible"});
-            this.cbWeaponRobotHit.Location = new System.Drawing.Point(106, 192);
+            this.cbWeaponRobotHit.Location = new System.Drawing.Point(106, 190);
             this.cbWeaponRobotHit.Name = "cbWeaponRobotHit";
             this.cbWeaponRobotHit.Size = new System.Drawing.Size(140, 21);
             this.cbWeaponRobotHit.TabIndex = 291;
@@ -272,7 +272,7 @@
             "Polymodel",
             "VClip",
             "Invisible"});
-            this.cbWeaponRobotHitSound.Location = new System.Drawing.Point(106, 219);
+            this.cbWeaponRobotHitSound.Location = new System.Drawing.Point(106, 217);
             this.cbWeaponRobotHitSound.Name = "cbWeaponRobotHitSound";
             this.cbWeaponRobotHitSound.Size = new System.Drawing.Size(140, 21);
             this.cbWeaponRobotHitSound.TabIndex = 290;
@@ -289,7 +289,7 @@
             "Polymodel",
             "VClip",
             "Invisible"});
-            this.cbWeaponWallHit.Location = new System.Drawing.Point(106, 245);
+            this.cbWeaponWallHit.Location = new System.Drawing.Point(106, 243);
             this.cbWeaponWallHit.Name = "cbWeaponWallHit";
             this.cbWeaponWallHit.Size = new System.Drawing.Size(140, 21);
             this.cbWeaponWallHit.TabIndex = 289;
@@ -306,7 +306,7 @@
             "Polymodel",
             "VClip",
             "Invisible"});
-            this.cbWeaponWallHitSound.Location = new System.Drawing.Point(106, 272);
+            this.cbWeaponWallHitSound.Location = new System.Drawing.Point(106, 270);
             this.cbWeaponWallHitSound.Name = "cbWeaponWallHitSound";
             this.cbWeaponWallHitSound.Size = new System.Drawing.Size(140, 21);
             this.cbWeaponWallHitSound.TabIndex = 288;
@@ -323,7 +323,7 @@
             "Polymodel",
             "VClip",
             "Invisible"});
-            this.cbWeaponModel2.Location = new System.Drawing.Point(84, 58);
+            this.cbWeaponModel2.Location = new System.Drawing.Point(84, 56);
             this.cbWeaponModel2.Name = "cbWeaponModel2";
             this.cbWeaponModel2.Size = new System.Drawing.Size(162, 21);
             this.cbWeaponModel2.TabIndex = 287;
@@ -340,7 +340,7 @@
             "Polymodel",
             "VClip",
             "Invisible"});
-            this.cbWeaponModel1.Location = new System.Drawing.Point(84, 32);
+            this.cbWeaponModel1.Location = new System.Drawing.Point(84, 30);
             this.cbWeaponModel1.Name = "cbWeaponModel1";
             this.cbWeaponModel1.Size = new System.Drawing.Size(162, 21);
             this.cbWeaponModel1.TabIndex = 286;
@@ -350,7 +350,7 @@
             // label54
             // 
             this.label54.AutoSize = true;
-            this.label54.Location = new System.Drawing.Point(508, 138);
+            this.label54.Location = new System.Drawing.Point(508, 139);
             this.label54.Name = "label54";
             this.label54.Size = new System.Drawing.Size(73, 13);
             this.label54.TabIndex = 285;
@@ -358,7 +358,7 @@
             // 
             // txtWeaponExplosionSize
             // 
-            this.txtWeaponExplosionSize.Location = new System.Drawing.Point(587, 135);
+            this.txtWeaponExplosionSize.Location = new System.Drawing.Point(587, 136);
             this.txtWeaponExplosionSize.Name = "txtWeaponExplosionSize";
             this.txtWeaponExplosionSize.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponExplosionSize.TabIndex = 284;
@@ -368,7 +368,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(534, 112);
+            this.label6.Location = new System.Drawing.Point(508, 112);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(47, 13);
             this.label6.TabIndex = 283;
@@ -376,7 +376,7 @@
             // 
             // txtWeaponSpeedvar
             // 
-            this.txtWeaponSpeedvar.Location = new System.Drawing.Point(587, 83);
+            this.txtWeaponSpeedvar.Location = new System.Drawing.Point(587, 84);
             this.txtWeaponSpeedvar.Name = "txtWeaponSpeedvar";
             this.txtWeaponSpeedvar.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponSpeedvar.TabIndex = 282;
@@ -398,7 +398,7 @@
             // label142
             // 
             this.label142.AutoSize = true;
-            this.label142.Location = new System.Drawing.Point(254, 141);
+            this.label142.Location = new System.Drawing.Point(254, 139);
             this.label142.Name = "label142";
             this.label142.Size = new System.Drawing.Size(105, 13);
             this.label142.TabIndex = 280;
@@ -406,7 +406,7 @@
             // 
             // txtWeaponCockpitImageh
             // 
-            this.txtWeaponCockpitImageh.Location = new System.Drawing.Point(367, 138);
+            this.txtWeaponCockpitImageh.Location = new System.Drawing.Point(367, 136);
             this.txtWeaponCockpitImageh.Name = "txtWeaponCockpitImageh";
             this.txtWeaponCockpitImageh.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponCockpitImageh.TabIndex = 279;
@@ -434,7 +434,7 @@
             // label140
             // 
             this.label140.AutoSize = true;
-            this.label140.Location = new System.Drawing.Point(2, 302);
+            this.label140.Location = new System.Drawing.Point(4, 300);
             this.label140.Name = "label140";
             this.label140.Size = new System.Drawing.Size(98, 13);
             this.label140.TabIndex = 276;
@@ -442,7 +442,7 @@
             // 
             // txtWeaponABSize
             // 
-            this.txtWeaponABSize.Location = new System.Drawing.Point(367, 60);
+            this.txtWeaponABSize.Location = new System.Drawing.Point(367, 58);
             this.txtWeaponABSize.Name = "txtWeaponABSize";
             this.txtWeaponABSize.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponABSize.TabIndex = 275;
@@ -452,7 +452,7 @@
             // label139
             // 
             this.label139.AutoSize = true;
-            this.label139.Location = new System.Drawing.Point(306, 63);
+            this.label139.Location = new System.Drawing.Point(254, 61);
             this.label139.Name = "label139";
             this.label139.Size = new System.Drawing.Size(53, 13);
             this.label139.TabIndex = 274;
@@ -460,7 +460,7 @@
             // 
             // txtWeaponBlindSize
             // 
-            this.txtWeaponBlindSize.Location = new System.Drawing.Point(587, 161);
+            this.txtWeaponBlindSize.Location = new System.Drawing.Point(587, 162);
             this.txtWeaponBlindSize.Name = "txtWeaponBlindSize";
             this.txtWeaponBlindSize.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponBlindSize.TabIndex = 273;
@@ -470,7 +470,7 @@
             // label138
             // 
             this.label138.AutoSize = true;
-            this.label138.Location = new System.Drawing.Point(511, 164);
+            this.label138.Location = new System.Drawing.Point(508, 165);
             this.label138.Name = "label138";
             this.label138.Size = new System.Drawing.Size(70, 13);
             this.label138.TabIndex = 272;
@@ -479,7 +479,7 @@
             // label137
             // 
             this.label137.AutoSize = true;
-            this.label137.Location = new System.Drawing.Point(495, 86);
+            this.label137.Location = new System.Drawing.Point(495, 87);
             this.label137.Name = "label137";
             this.label137.Size = new System.Drawing.Size(86, 13);
             this.label137.TabIndex = 271;
@@ -501,7 +501,7 @@
             this.groupBox9.Controls.Add(this.label52);
             this.groupBox9.Controls.Add(this.label141);
             this.groupBox9.Controls.Add(this.txtWeaponMPScale);
-            this.groupBox9.Location = new System.Drawing.Point(7, 326);
+            this.groupBox9.Location = new System.Drawing.Point(7, 324);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.Size = new System.Drawing.Size(294, 109);
             this.groupBox9.TabIndex = 270;
@@ -619,7 +619,7 @@
             // label53
             // 
             this.label53.AutoSize = true;
-            this.label53.Location = new System.Drawing.Point(283, 115);
+            this.label53.Location = new System.Drawing.Point(254, 113);
             this.label53.Name = "label53";
             this.label53.Size = new System.Drawing.Size(77, 13);
             this.label53.TabIndex = 269;
@@ -627,7 +627,7 @@
             // 
             // txtWeaponCockpitImage
             // 
-            this.txtWeaponCockpitImage.Location = new System.Drawing.Point(367, 112);
+            this.txtWeaponCockpitImage.Location = new System.Drawing.Point(367, 110);
             this.txtWeaponCockpitImage.Name = "txtWeaponCockpitImage";
             this.txtWeaponCockpitImage.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponCockpitImage.TabIndex = 268;
@@ -636,7 +636,7 @@
             // 
             // txtWeaponLifetime
             // 
-            this.txtWeaponLifetime.Location = new System.Drawing.Point(367, 300);
+            this.txtWeaponLifetime.Location = new System.Drawing.Point(367, 297);
             this.txtWeaponLifetime.Name = "txtWeaponLifetime";
             this.txtWeaponLifetime.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponLifetime.TabIndex = 266;
@@ -645,7 +645,7 @@
             // 
             // txtWeaponLight
             // 
-            this.txtWeaponLight.Location = new System.Drawing.Point(367, 86);
+            this.txtWeaponLight.Location = new System.Drawing.Point(367, 84);
             this.txtWeaponLight.Name = "txtWeaponLight";
             this.txtWeaponLight.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponLight.TabIndex = 265;
@@ -654,7 +654,7 @@
             // 
             // txtWeaponPolyLWRatio
             // 
-            this.txtWeaponPolyLWRatio.Location = new System.Drawing.Point(128, 85);
+            this.txtWeaponPolyLWRatio.Location = new System.Drawing.Point(128, 83);
             this.txtWeaponPolyLWRatio.Name = "txtWeaponPolyLWRatio";
             this.txtWeaponPolyLWRatio.Size = new System.Drawing.Size(118, 20);
             this.txtWeaponPolyLWRatio.TabIndex = 263;
@@ -663,7 +663,7 @@
             // 
             // txtWeaponThrust
             // 
-            this.txtWeaponThrust.Location = new System.Drawing.Point(587, 57);
+            this.txtWeaponThrust.Location = new System.Drawing.Point(587, 58);
             this.txtWeaponThrust.Name = "txtWeaponThrust";
             this.txtWeaponThrust.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponThrust.TabIndex = 261;
@@ -672,7 +672,7 @@
             // 
             // txtWeaponDrag
             // 
-            this.txtWeaponDrag.Location = new System.Drawing.Point(587, 31);
+            this.txtWeaponDrag.Location = new System.Drawing.Point(587, 32);
             this.txtWeaponDrag.Name = "txtWeaponDrag";
             this.txtWeaponDrag.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponDrag.TabIndex = 259;
@@ -681,7 +681,7 @@
             // 
             // txtWeaponImpactSize
             // 
-            this.txtWeaponImpactSize.Location = new System.Drawing.Point(367, 34);
+            this.txtWeaponImpactSize.Location = new System.Drawing.Point(367, 32);
             this.txtWeaponImpactSize.Name = "txtWeaponImpactSize";
             this.txtWeaponImpactSize.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponImpactSize.TabIndex = 256;
@@ -690,7 +690,7 @@
             // 
             // txtWeaponFlashSize
             // 
-            this.txtWeaponFlashSize.Location = new System.Drawing.Point(367, 8);
+            this.txtWeaponFlashSize.Location = new System.Drawing.Point(367, 6);
             this.txtWeaponFlashSize.Name = "txtWeaponFlashSize";
             this.txtWeaponFlashSize.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponFlashSize.TabIndex = 255;
@@ -699,7 +699,7 @@
             // 
             // txtWeaponProjectileSize
             // 
-            this.txtWeaponProjectileSize.Location = new System.Drawing.Point(84, 58);
+            this.txtWeaponProjectileSize.Location = new System.Drawing.Point(84, 56);
             this.txtWeaponProjectileSize.Name = "txtWeaponProjectileSize";
             this.txtWeaponProjectileSize.Size = new System.Drawing.Size(162, 20);
             this.txtWeaponProjectileSize.TabIndex = 253;
@@ -708,7 +708,7 @@
             // 
             // txtWeaponMass
             // 
-            this.txtWeaponMass.Location = new System.Drawing.Point(587, 5);
+            this.txtWeaponMass.Location = new System.Drawing.Point(587, 6);
             this.txtWeaponMass.Name = "txtWeaponMass";
             this.txtWeaponMass.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponMass.TabIndex = 251;
@@ -717,7 +717,7 @@
             // 
             // txtWeaponStaticSprite
             // 
-            this.txtWeaponStaticSprite.Location = new System.Drawing.Point(84, 32);
+            this.txtWeaponStaticSprite.Location = new System.Drawing.Point(84, 30);
             this.txtWeaponStaticSprite.Name = "txtWeaponStaticSprite";
             this.txtWeaponStaticSprite.Size = new System.Drawing.Size(131, 20);
             this.txtWeaponStaticSprite.TabIndex = 249;
@@ -726,7 +726,7 @@
             // 
             // txtWeaponFireWait
             // 
-            this.txtWeaponFireWait.Location = new System.Drawing.Point(367, 274);
+            this.txtWeaponFireWait.Location = new System.Drawing.Point(367, 271);
             this.txtWeaponFireWait.Name = "txtWeaponFireWait";
             this.txtWeaponFireWait.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponFireWait.TabIndex = 248;
@@ -735,7 +735,7 @@
             // 
             // txtWeaponEnergyUsage
             // 
-            this.txtWeaponEnergyUsage.Location = new System.Drawing.Point(367, 248);
+            this.txtWeaponEnergyUsage.Location = new System.Drawing.Point(367, 245);
             this.txtWeaponEnergyUsage.Name = "txtWeaponEnergyUsage";
             this.txtWeaponEnergyUsage.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponEnergyUsage.TabIndex = 246;
@@ -744,7 +744,7 @@
             // 
             // txtWeaponAmmoUse
             // 
-            this.txtWeaponAmmoUse.Location = new System.Drawing.Point(367, 222);
+            this.txtWeaponAmmoUse.Location = new System.Drawing.Point(367, 219);
             this.txtWeaponAmmoUse.Name = "txtWeaponAmmoUse";
             this.txtWeaponAmmoUse.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponAmmoUse.TabIndex = 240;
@@ -753,7 +753,7 @@
             // 
             // txtWeaponProjectileCount
             // 
-            this.txtWeaponProjectileCount.Location = new System.Drawing.Point(367, 196);
+            this.txtWeaponProjectileCount.Location = new System.Drawing.Point(367, 193);
             this.txtWeaponProjectileCount.Name = "txtWeaponProjectileCount";
             this.txtWeaponProjectileCount.Size = new System.Drawing.Size(100, 20);
             this.txtWeaponProjectileCount.TabIndex = 239;
@@ -763,7 +763,7 @@
             // label55
             // 
             this.label55.AutoSize = true;
-            this.label55.Location = new System.Drawing.Point(311, 303);
+            this.label55.Location = new System.Drawing.Point(282, 300);
             this.label55.Name = "label55";
             this.label55.Size = new System.Drawing.Size(46, 13);
             this.label55.TabIndex = 267;
@@ -772,7 +772,7 @@
             // label56
             // 
             this.label56.AutoSize = true;
-            this.label56.Location = new System.Drawing.Point(312, 89);
+            this.label56.Location = new System.Drawing.Point(254, 87);
             this.label56.Name = "label56";
             this.label56.Size = new System.Drawing.Size(47, 13);
             this.label56.TabIndex = 264;
@@ -781,7 +781,7 @@
             // label57
             // 
             this.label57.AutoSize = true;
-            this.label57.Location = new System.Drawing.Point(30, 88);
+            this.label57.Location = new System.Drawing.Point(30, 86);
             this.label57.Name = "label57";
             this.label57.Size = new System.Drawing.Size(92, 13);
             this.label57.TabIndex = 262;
@@ -790,7 +790,7 @@
             // label58
             // 
             this.label58.AutoSize = true;
-            this.label58.Location = new System.Drawing.Point(541, 60);
+            this.label58.Location = new System.Drawing.Point(495, 61);
             this.label58.Name = "label58";
             this.label58.Size = new System.Drawing.Size(40, 13);
             this.label58.TabIndex = 260;
@@ -799,7 +799,7 @@
             // label59
             // 
             this.label59.AutoSize = true;
-            this.label59.Location = new System.Drawing.Point(548, 34);
+            this.label59.Location = new System.Drawing.Point(495, 35);
             this.label59.Name = "label59";
             this.label59.Size = new System.Drawing.Size(33, 13);
             this.label59.TabIndex = 258;
@@ -808,7 +808,7 @@
             // label60
             // 
             this.label60.AutoSize = true;
-            this.label60.Location = new System.Drawing.Point(294, 37);
+            this.label60.Location = new System.Drawing.Point(254, 35);
             this.label60.Name = "label60";
             this.label60.Size = new System.Drawing.Size(65, 13);
             this.label60.TabIndex = 257;
@@ -817,7 +817,7 @@
             // label61
             // 
             this.label61.AutoSize = true;
-            this.label61.Location = new System.Drawing.Point(301, 12);
+            this.label61.Location = new System.Drawing.Point(254, 9);
             this.label61.Name = "label61";
             this.label61.Size = new System.Drawing.Size(58, 13);
             this.label61.TabIndex = 254;
@@ -826,7 +826,7 @@
             // SpriteSizeLabel
             // 
             this.SpriteSizeLabel.AutoSize = true;
-            this.SpriteSizeLabel.Location = new System.Drawing.Point(16, 61);
+            this.SpriteSizeLabel.Location = new System.Drawing.Point(16, 59);
             this.SpriteSizeLabel.Name = "SpriteSizeLabel";
             this.SpriteSizeLabel.Size = new System.Drawing.Size(60, 13);
             this.SpriteSizeLabel.TabIndex = 252;
@@ -835,7 +835,7 @@
             // label63
             // 
             this.label63.AutoSize = true;
-            this.label63.Location = new System.Drawing.Point(546, 8);
+            this.label63.Location = new System.Drawing.Point(495, 9);
             this.label63.Name = "label63";
             this.label63.Size = new System.Drawing.Size(35, 13);
             this.label63.TabIndex = 250;
@@ -844,7 +844,7 @@
             // label65
             // 
             this.label65.AutoSize = true;
-            this.label65.Location = new System.Drawing.Point(310, 277);
+            this.label65.Location = new System.Drawing.Point(282, 274);
             this.label65.Name = "label65";
             this.label65.Size = new System.Drawing.Size(49, 13);
             this.label65.TabIndex = 247;
@@ -853,7 +853,7 @@
             // label66
             // 
             this.label66.AutoSize = true;
-            this.label66.Location = new System.Drawing.Point(282, 251);
+            this.label66.Location = new System.Drawing.Point(282, 248);
             this.label66.Name = "label66";
             this.label66.Size = new System.Drawing.Size(77, 13);
             this.label66.TabIndex = 245;
@@ -898,7 +898,7 @@
             // lbSprite
             // 
             this.lbSprite.AutoSize = true;
-            this.lbSprite.Location = new System.Drawing.Point(44, 35);
+            this.lbSprite.Location = new System.Drawing.Point(44, 33);
             this.lbSprite.Name = "lbSprite";
             this.lbSprite.Size = new System.Drawing.Size(34, 13);
             this.lbSprite.TabIndex = 241;
@@ -907,7 +907,7 @@
             // label68
             // 
             this.label68.AutoSize = true;
-            this.label68.Location = new System.Drawing.Point(288, 225);
+            this.label68.Location = new System.Drawing.Point(282, 222);
             this.label68.Name = "label68";
             this.label68.Size = new System.Drawing.Size(71, 13);
             this.label68.TabIndex = 238;
@@ -916,7 +916,7 @@
             // label69
             // 
             this.label69.AutoSize = true;
-            this.label69.Location = new System.Drawing.Point(302, 199);
+            this.label69.Location = new System.Drawing.Point(282, 196);
             this.label69.Name = "label69";
             this.label69.Size = new System.Drawing.Size(57, 13);
             this.label69.TabIndex = 237;
@@ -925,7 +925,7 @@
             // label70
             // 
             this.label70.AutoSize = true;
-            this.label70.Location = new System.Drawing.Point(27, 248);
+            this.label70.Location = new System.Drawing.Point(3, 246);
             this.label70.Name = "label70";
             this.label70.Size = new System.Drawing.Size(73, 13);
             this.label70.TabIndex = 236;
@@ -934,7 +934,7 @@
             // label71
             // 
             this.label71.AutoSize = true;
-            this.label71.Location = new System.Drawing.Point(19, 195);
+            this.label71.Location = new System.Drawing.Point(4, 193);
             this.label71.Name = "label71";
             this.label71.Size = new System.Drawing.Size(83, 13);
             this.label71.TabIndex = 235;
@@ -943,7 +943,7 @@
             // label72
             // 
             this.label72.AutoSize = true;
-            this.label72.Location = new System.Drawing.Point(23, 275);
+            this.label72.Location = new System.Drawing.Point(3, 273);
             this.label72.Name = "label72";
             this.label72.Size = new System.Drawing.Size(77, 13);
             this.label72.TabIndex = 233;
@@ -952,7 +952,7 @@
             // label73
             // 
             this.label73.AutoSize = true;
-            this.label73.Location = new System.Drawing.Point(15, 222);
+            this.label73.Location = new System.Drawing.Point(4, 220);
             this.label73.Name = "label73";
             this.label73.Size = new System.Drawing.Size(87, 13);
             this.label73.TabIndex = 232;
@@ -961,7 +961,7 @@
             // label74
             // 
             this.label74.AutoSize = true;
-            this.label74.Location = new System.Drawing.Point(33, 169);
+            this.label74.Location = new System.Drawing.Point(4, 167);
             this.label74.Name = "label74";
             this.label74.Size = new System.Drawing.Size(67, 13);
             this.label74.TabIndex = 234;
@@ -970,7 +970,7 @@
             // label75
             // 
             this.label75.AutoSize = true;
-            this.label75.Location = new System.Drawing.Point(4, 142);
+            this.label75.Location = new System.Drawing.Point(4, 140);
             this.label75.Name = "label75";
             this.label75.Size = new System.Drawing.Size(96, 13);
             this.label75.TabIndex = 231;
@@ -991,7 +991,7 @@
             // lbModelNumInner
             // 
             this.lbModelNumInner.AutoSize = true;
-            this.lbModelNumInner.Location = new System.Drawing.Point(13, 61);
+            this.lbModelNumInner.Location = new System.Drawing.Point(13, 59);
             this.lbModelNumInner.Name = "lbModelNumInner";
             this.lbModelNumInner.Size = new System.Drawing.Size(65, 13);
             this.lbModelNumInner.TabIndex = 229;
@@ -1000,7 +1000,7 @@
             // lbModelNum
             // 
             this.lbModelNum.AutoSize = true;
-            this.lbModelNum.Location = new System.Drawing.Point(16, 35);
+            this.lbModelNum.Location = new System.Drawing.Point(16, 33);
             this.lbModelNum.Name = "lbModelNum";
             this.lbModelNum.Size = new System.Drawing.Size(62, 13);
             this.lbModelNum.TabIndex = 228;
@@ -1016,7 +1016,7 @@
             "Polymodel",
             "VClip",
             "Invisible"});
-            this.cbWeaponRenderMode.Location = new System.Drawing.Point(84, 5);
+            this.cbWeaponRenderMode.Location = new System.Drawing.Point(84, 3);
             this.cbWeaponRenderMode.Name = "cbWeaponRenderMode";
             this.cbWeaponRenderMode.Size = new System.Drawing.Size(162, 21);
             this.cbWeaponRenderMode.TabIndex = 227;
@@ -1026,7 +1026,7 @@
             // label136
             // 
             this.label136.AutoSize = true;
-            this.label136.Location = new System.Drawing.Point(3, 8);
+            this.label136.Location = new System.Drawing.Point(3, 6);
             this.label136.Name = "label136";
             this.label136.Size = new System.Drawing.Size(75, 13);
             this.label136.TabIndex = 226;
@@ -1039,7 +1039,7 @@
             this.groupBox1.Controls.Add(this.cbWeaponIsMatter);
             this.groupBox1.Controls.Add(this.cbWeaponHoming);
             this.groupBox1.Controls.Add(this.cbWeaponPlacable);
-            this.groupBox1.Location = new System.Drawing.Point(498, 196);
+            this.groupBox1.Location = new System.Drawing.Point(498, 194);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(266, 109);
             this.groupBox1.TabIndex = 301;

@@ -98,7 +98,7 @@ namespace Descent2Workshop
             SupertransparentCheck.Checked = image.SuperTransparent;
             NoLightingCheck.Checked = image.NoLighting;
             CompressCheckBox.Checked = image.RLECompressed;
-            Color color = Color.FromArgb(palette.GetRGBAValue(image.AverageIndex));
+            System.Drawing.Color color = System.Drawing.Color.FromArgb(palette.GetRGBAValue(image.AverageIndex));
             ColorPreview.BackColor = color;
             pictureBox1.Refresh();
             isLocked = false;
@@ -281,7 +281,7 @@ namespace Descent2Workshop
                 
             }
             image = datafile.Bitmaps[listView1.SelectedIndices[0]];
-            Color color = Color.FromArgb(palette.GetRGBAValue(image.AverageIndex));
+            System.Drawing.Color color = System.Drawing.Color.FromArgb(palette.GetRGBAValue(image.AverageIndex));
             ColorPreview.BackColor = color;
             pictureBox1.Refresh();
         }

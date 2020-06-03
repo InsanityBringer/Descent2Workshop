@@ -52,41 +52,6 @@
             this.RobotTabPage = new System.Windows.Forms.TabPage();
             this.WeaponTabPage = new System.Windows.Forms.TabPage();
             this.ModelTabPage = new System.Windows.Forms.TabPage();
-            this.chkSoftwareOverdraw = new System.Windows.Forms.CheckBox();
-            this.btnExportModel = new System.Windows.Forms.Button();
-            this.glControlStandin = new System.Windows.Forms.Panel();
-            this.chkWireframe = new System.Windows.Forms.CheckBox();
-            this.chkNorm = new System.Windows.Forms.CheckBox();
-            this.chkShowBBs = new System.Windows.Forms.CheckBox();
-            this.chkRadius = new System.Windows.Forms.CheckBox();
-            this.btnImportModel = new System.Windows.Forms.Button();
-            this.cbModelDeadModel = new System.Windows.Forms.ComboBox();
-            this.label150 = new System.Windows.Forms.Label();
-            this.cbModelDyingModel = new System.Windows.Forms.ComboBox();
-            this.label149 = new System.Windows.Forms.Label();
-            this.cbModelLowDetail = new System.Windows.Forms.ComboBox();
-            this.trackBar3 = new System.Windows.Forms.TrackBar();
-            this.trackBar2 = new System.Windows.Forms.TrackBar();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
-            this.label111 = new System.Windows.Forms.Label();
-            this.label110 = new System.Windows.Forms.Label();
-            this.txtModelMaxZ = new System.Windows.Forms.TextBox();
-            this.txtModelMaxY = new System.Windows.Forms.TextBox();
-            this.txtModelMaxX = new System.Windows.Forms.TextBox();
-            this.txtModelMinZ = new System.Windows.Forms.TextBox();
-            this.txtModelMinY = new System.Windows.Forms.TextBox();
-            this.txtModelMinX = new System.Windows.Forms.TextBox();
-            this.label109 = new System.Windows.Forms.Label();
-            this.label108 = new System.Windows.Forms.Label();
-            this.label106 = new System.Windows.Forms.Label();
-            this.txtModelTextureCount = new System.Windows.Forms.TextBox();
-            this.label105 = new System.Windows.Forms.Label();
-            this.txtModelRadius = new System.Windows.Forms.TextBox();
-            this.txtModelDataSize = new System.Windows.Forms.TextBox();
-            this.label104 = new System.Windows.Forms.Label();
-            this.txtModelNumModels = new System.Windows.Forms.TextBox();
-            this.label103 = new System.Windows.Forms.Label();
-            this.label102 = new System.Windows.Forms.Label();
             this.SoundTabPage = new System.Windows.Forms.TabPage();
             this.cbSoundSNDid = new System.Windows.Forms.ComboBox();
             this.cbLowMemSound = new System.Windows.Forms.ComboBox();
@@ -170,10 +135,6 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.mainToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.EditorTabs.SuspendLayout();
-            this.ModelTabPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SoundTabPage.SuspendLayout();
             this.ReactorTabPage.SuspendLayout();
             this.PowerupTabPage.SuspendLayout();
@@ -375,369 +336,12 @@
             // 
             // ModelTabPage
             // 
-            this.ModelTabPage.Controls.Add(this.chkSoftwareOverdraw);
-            this.ModelTabPage.Controls.Add(this.btnExportModel);
-            this.ModelTabPage.Controls.Add(this.glControlStandin);
-            this.ModelTabPage.Controls.Add(this.chkWireframe);
-            this.ModelTabPage.Controls.Add(this.chkNorm);
-            this.ModelTabPage.Controls.Add(this.chkShowBBs);
-            this.ModelTabPage.Controls.Add(this.chkRadius);
-            this.ModelTabPage.Controls.Add(this.btnImportModel);
-            this.ModelTabPage.Controls.Add(this.cbModelDeadModel);
-            this.ModelTabPage.Controls.Add(this.label150);
-            this.ModelTabPage.Controls.Add(this.cbModelDyingModel);
-            this.ModelTabPage.Controls.Add(this.label149);
-            this.ModelTabPage.Controls.Add(this.cbModelLowDetail);
-            this.ModelTabPage.Controls.Add(this.trackBar3);
-            this.ModelTabPage.Controls.Add(this.trackBar2);
-            this.ModelTabPage.Controls.Add(this.trackBar1);
-            this.ModelTabPage.Controls.Add(this.label111);
-            this.ModelTabPage.Controls.Add(this.label110);
-            this.ModelTabPage.Controls.Add(this.txtModelMaxZ);
-            this.ModelTabPage.Controls.Add(this.txtModelMaxY);
-            this.ModelTabPage.Controls.Add(this.txtModelMaxX);
-            this.ModelTabPage.Controls.Add(this.txtModelMinZ);
-            this.ModelTabPage.Controls.Add(this.txtModelMinY);
-            this.ModelTabPage.Controls.Add(this.txtModelMinX);
-            this.ModelTabPage.Controls.Add(this.label109);
-            this.ModelTabPage.Controls.Add(this.label108);
-            this.ModelTabPage.Controls.Add(this.label106);
-            this.ModelTabPage.Controls.Add(this.txtModelTextureCount);
-            this.ModelTabPage.Controls.Add(this.label105);
-            this.ModelTabPage.Controls.Add(this.txtModelRadius);
-            this.ModelTabPage.Controls.Add(this.txtModelDataSize);
-            this.ModelTabPage.Controls.Add(this.label104);
-            this.ModelTabPage.Controls.Add(this.txtModelNumModels);
-            this.ModelTabPage.Controls.Add(this.label103);
-            this.ModelTabPage.Controls.Add(this.label102);
             this.ModelTabPage.Location = new System.Drawing.Point(4, 22);
             this.ModelTabPage.Name = "ModelTabPage";
             this.ModelTabPage.Size = new System.Drawing.Size(846, 513);
             this.ModelTabPage.TabIndex = 6;
             this.ModelTabPage.Text = "Models";
             this.ModelTabPage.UseVisualStyleBackColor = true;
-            // 
-            // chkSoftwareOverdraw
-            // 
-            this.chkSoftwareOverdraw.AutoSize = true;
-            this.chkSoftwareOverdraw.Location = new System.Drawing.Point(452, 420);
-            this.chkSoftwareOverdraw.Name = "chkSoftwareOverdraw";
-            this.chkSoftwareOverdraw.Size = new System.Drawing.Size(158, 17);
-            this.chkSoftwareOverdraw.TabIndex = 39;
-            this.chkSoftwareOverdraw.Text = "Emulate Software Overdraw";
-            this.chkSoftwareOverdraw.UseVisualStyleBackColor = true;
-            this.chkSoftwareOverdraw.CheckedChanged += new System.EventHandler(this.PMCheckBox_CheckChanged);
-            // 
-            // btnExportModel
-            // 
-            this.btnExportModel.Location = new System.Drawing.Point(98, 221);
-            this.btnExportModel.Name = "btnExportModel";
-            this.btnExportModel.Size = new System.Drawing.Size(100, 23);
-            this.btnExportModel.TabIndex = 38;
-            this.btnExportModel.Text = "Export Model...";
-            this.btnExportModel.UseVisualStyleBackColor = true;
-            this.btnExportModel.Click += new System.EventHandler(this.btnExportModel_Click);
-            // 
-            // glControlStandin
-            // 
-            this.glControlStandin.Location = new System.Drawing.Point(452, 61);
-            this.glControlStandin.Name = "glControlStandin";
-            this.glControlStandin.Size = new System.Drawing.Size(256, 256);
-            this.glControlStandin.TabIndex = 37;
-            // 
-            // chkWireframe
-            // 
-            this.chkWireframe.AutoSize = true;
-            this.chkWireframe.Location = new System.Drawing.Point(544, 397);
-            this.chkWireframe.Name = "chkWireframe";
-            this.chkWireframe.Size = new System.Drawing.Size(74, 17);
-            this.chkWireframe.TabIndex = 36;
-            this.chkWireframe.Text = "Wireframe";
-            this.chkWireframe.UseVisualStyleBackColor = true;
-            this.chkWireframe.CheckedChanged += new System.EventHandler(this.PMCheckBox_CheckChanged);
-            // 
-            // chkNorm
-            // 
-            this.chkNorm.AutoSize = true;
-            this.chkNorm.Location = new System.Drawing.Point(452, 397);
-            this.chkNorm.Name = "chkNorm";
-            this.chkNorm.Size = new System.Drawing.Size(94, 17);
-            this.chkNorm.TabIndex = 35;
-            this.chkNorm.Text = "Show Normals";
-            this.chkNorm.UseVisualStyleBackColor = true;
-            this.chkNorm.CheckedChanged += new System.EventHandler(this.PMCheckBox_CheckChanged);
-            // 
-            // chkShowBBs
-            // 
-            this.chkShowBBs.AutoSize = true;
-            this.chkShowBBs.Location = new System.Drawing.Point(544, 374);
-            this.chkShowBBs.Name = "chkShowBBs";
-            this.chkShowBBs.Size = new System.Drawing.Size(133, 17);
-            this.chkShowBBs.TabIndex = 34;
-            this.chkShowBBs.Text = "Show Bounding Boxes";
-            this.chkShowBBs.UseVisualStyleBackColor = true;
-            this.chkShowBBs.CheckedChanged += new System.EventHandler(this.PMCheckBox_CheckChanged);
-            // 
-            // chkRadius
-            // 
-            this.chkRadius.AutoSize = true;
-            this.chkRadius.Location = new System.Drawing.Point(452, 374);
-            this.chkRadius.Name = "chkRadius";
-            this.chkRadius.Size = new System.Drawing.Size(89, 17);
-            this.chkRadius.TabIndex = 33;
-            this.chkRadius.Text = "Show Radius";
-            this.chkRadius.UseVisualStyleBackColor = true;
-            this.chkRadius.CheckedChanged += new System.EventHandler(this.PMCheckBox_CheckChanged);
-            // 
-            // btnImportModel
-            // 
-            this.btnImportModel.Location = new System.Drawing.Point(98, 192);
-            this.btnImportModel.Name = "btnImportModel";
-            this.btnImportModel.Size = new System.Drawing.Size(100, 23);
-            this.btnImportModel.TabIndex = 32;
-            this.btnImportModel.Text = "Import Model...";
-            this.btnImportModel.UseVisualStyleBackColor = true;
-            this.btnImportModel.Click += new System.EventHandler(this.btnImportModel_Click);
-            // 
-            // cbModelDeadModel
-            // 
-            this.cbModelDeadModel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbModelDeadModel.FormattingEnabled = true;
-            this.cbModelDeadModel.Location = new System.Drawing.Point(98, 165);
-            this.cbModelDeadModel.Name = "cbModelDeadModel";
-            this.cbModelDeadModel.Size = new System.Drawing.Size(221, 21);
-            this.cbModelDeadModel.TabIndex = 31;
-            this.cbModelDeadModel.Tag = "3";
-            this.cbModelDeadModel.SelectedIndexChanged += new System.EventHandler(this.ModelComboBox_SelectedIndexChanged);
-            // 
-            // label150
-            // 
-            this.label150.AutoSize = true;
-            this.label150.Location = new System.Drawing.Point(24, 168);
-            this.label150.Name = "label150";
-            this.label150.Size = new System.Drawing.Size(68, 13);
-            this.label150.TabIndex = 30;
-            this.label150.Text = "Dead Model:";
-            // 
-            // cbModelDyingModel
-            // 
-            this.cbModelDyingModel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbModelDyingModel.FormattingEnabled = true;
-            this.cbModelDyingModel.Location = new System.Drawing.Point(98, 138);
-            this.cbModelDyingModel.Name = "cbModelDyingModel";
-            this.cbModelDyingModel.Size = new System.Drawing.Size(221, 21);
-            this.cbModelDyingModel.TabIndex = 29;
-            this.cbModelDyingModel.Tag = "2";
-            this.cbModelDyingModel.SelectedIndexChanged += new System.EventHandler(this.ModelComboBox_SelectedIndexChanged);
-            // 
-            // label149
-            // 
-            this.label149.AutoSize = true;
-            this.label149.Location = new System.Drawing.Point(23, 141);
-            this.label149.Name = "label149";
-            this.label149.Size = new System.Drawing.Size(69, 13);
-            this.label149.TabIndex = 28;
-            this.label149.Text = "Dying Model:";
-            // 
-            // cbModelLowDetail
-            // 
-            this.cbModelLowDetail.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbModelLowDetail.FormattingEnabled = true;
-            this.cbModelLowDetail.Location = new System.Drawing.Point(98, 111);
-            this.cbModelLowDetail.Name = "cbModelLowDetail";
-            this.cbModelLowDetail.Size = new System.Drawing.Size(221, 21);
-            this.cbModelLowDetail.TabIndex = 27;
-            this.cbModelLowDetail.Tag = "1";
-            this.cbModelLowDetail.SelectedIndexChanged += new System.EventHandler(this.ModelComboBox_SelectedIndexChanged);
-            // 
-            // trackBar3
-            // 
-            this.trackBar3.Location = new System.Drawing.Point(710, 61);
-            this.trackBar3.Maximum = 16;
-            this.trackBar3.Name = "trackBar3";
-            this.trackBar3.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trackBar3.Size = new System.Drawing.Size(45, 256);
-            this.trackBar3.TabIndex = 26;
-            this.trackBar3.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
-            this.trackBar3.Value = 8;
-            this.trackBar3.Scroll += new System.EventHandler(this.trackBar1_Scroll);
-            // 
-            // trackBar2
-            // 
-            this.trackBar2.Location = new System.Drawing.Point(401, 61);
-            this.trackBar2.Maximum = 48;
-            this.trackBar2.Name = "trackBar2";
-            this.trackBar2.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trackBar2.Size = new System.Drawing.Size(45, 256);
-            this.trackBar2.TabIndex = 8;
-            this.trackBar2.Value = 16;
-            this.trackBar2.Scroll += new System.EventHandler(this.trackBar1_Scroll);
-            // 
-            // trackBar1
-            // 
-            this.trackBar1.LargeChange = 15;
-            this.trackBar1.Location = new System.Drawing.Point(452, 323);
-            this.trackBar1.Maximum = 16;
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(256, 45);
-            this.trackBar1.TabIndex = 24;
-            this.trackBar1.Value = 8;
-            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
-            // 
-            // label111
-            // 
-            this.label111.AutoSize = true;
-            this.label111.Location = new System.Drawing.Point(17, 310);
-            this.label111.Name = "label111";
-            this.label111.Size = new System.Drawing.Size(27, 13);
-            this.label111.TabIndex = 22;
-            this.label111.Text = "Max";
-            // 
-            // label110
-            // 
-            this.label110.AutoSize = true;
-            this.label110.Location = new System.Drawing.Point(17, 284);
-            this.label110.Name = "label110";
-            this.label110.Size = new System.Drawing.Size(24, 13);
-            this.label110.TabIndex = 21;
-            this.label110.Text = "Min";
-            // 
-            // txtModelMaxZ
-            // 
-            this.txtModelMaxZ.Location = new System.Drawing.Point(135, 307);
-            this.txtModelMaxZ.Name = "txtModelMaxZ";
-            this.txtModelMaxZ.Size = new System.Drawing.Size(38, 20);
-            this.txtModelMaxZ.TabIndex = 20;
-            // 
-            // txtModelMaxY
-            // 
-            this.txtModelMaxY.Location = new System.Drawing.Point(91, 307);
-            this.txtModelMaxY.Name = "txtModelMaxY";
-            this.txtModelMaxY.Size = new System.Drawing.Size(38, 20);
-            this.txtModelMaxY.TabIndex = 19;
-            // 
-            // txtModelMaxX
-            // 
-            this.txtModelMaxX.Location = new System.Drawing.Point(47, 307);
-            this.txtModelMaxX.Name = "txtModelMaxX";
-            this.txtModelMaxX.Size = new System.Drawing.Size(38, 20);
-            this.txtModelMaxX.TabIndex = 18;
-            // 
-            // txtModelMinZ
-            // 
-            this.txtModelMinZ.Location = new System.Drawing.Point(135, 281);
-            this.txtModelMinZ.Name = "txtModelMinZ";
-            this.txtModelMinZ.Size = new System.Drawing.Size(38, 20);
-            this.txtModelMinZ.TabIndex = 17;
-            // 
-            // txtModelMinY
-            // 
-            this.txtModelMinY.Location = new System.Drawing.Point(91, 281);
-            this.txtModelMinY.Name = "txtModelMinY";
-            this.txtModelMinY.Size = new System.Drawing.Size(38, 20);
-            this.txtModelMinY.TabIndex = 16;
-            // 
-            // txtModelMinX
-            // 
-            this.txtModelMinX.Location = new System.Drawing.Point(47, 281);
-            this.txtModelMinX.Name = "txtModelMinX";
-            this.txtModelMinX.Size = new System.Drawing.Size(38, 20);
-            this.txtModelMinX.TabIndex = 15;
-            // 
-            // label109
-            // 
-            this.label109.AutoSize = true;
-            this.label109.Location = new System.Drawing.Point(8, 255);
-            this.label109.Name = "label109";
-            this.label109.Size = new System.Drawing.Size(109, 13);
-            this.label109.TabIndex = 14;
-            this.label109.Text = "Global Bounding Box:";
-            // 
-            // label108
-            // 
-            this.label108.AutoSize = true;
-            this.label108.Location = new System.Drawing.Point(36, 114);
-            this.label108.Name = "label108";
-            this.label108.Size = new System.Drawing.Size(56, 13);
-            this.label108.TabIndex = 12;
-            this.label108.Text = "LD Model:";
-            // 
-            // label106
-            // 
-            this.label106.AutoSize = true;
-            this.label106.Location = new System.Drawing.Point(15, 88);
-            this.label106.Name = "label106";
-            this.label106.Size = new System.Drawing.Size(77, 13);
-            this.label106.TabIndex = 9;
-            this.label106.Text = "Texture Count:";
-            // 
-            // txtModelTextureCount
-            // 
-            this.txtModelTextureCount.Location = new System.Drawing.Point(98, 85);
-            this.txtModelTextureCount.Name = "txtModelTextureCount";
-            this.txtModelTextureCount.ReadOnly = true;
-            this.txtModelTextureCount.Size = new System.Drawing.Size(100, 20);
-            this.txtModelTextureCount.TabIndex = 8;
-            // 
-            // label105
-            // 
-            this.label105.AutoSize = true;
-            this.label105.Location = new System.Drawing.Point(49, 62);
-            this.label105.Name = "label105";
-            this.label105.Size = new System.Drawing.Size(43, 13);
-            this.label105.TabIndex = 7;
-            this.label105.Text = "Radius:";
-            // 
-            // txtModelRadius
-            // 
-            this.txtModelRadius.Location = new System.Drawing.Point(98, 59);
-            this.txtModelRadius.Name = "txtModelRadius";
-            this.txtModelRadius.ReadOnly = true;
-            this.txtModelRadius.Size = new System.Drawing.Size(100, 20);
-            this.txtModelRadius.TabIndex = 6;
-            // 
-            // txtModelDataSize
-            // 
-            this.txtModelDataSize.Location = new System.Drawing.Point(98, 33);
-            this.txtModelDataSize.Name = "txtModelDataSize";
-            this.txtModelDataSize.ReadOnly = true;
-            this.txtModelDataSize.Size = new System.Drawing.Size(100, 20);
-            this.txtModelDataSize.TabIndex = 5;
-            // 
-            // label104
-            // 
-            this.label104.AutoSize = true;
-            this.label104.Location = new System.Drawing.Point(24, 36);
-            this.label104.Name = "label104";
-            this.label104.Size = new System.Drawing.Size(68, 13);
-            this.label104.TabIndex = 4;
-            this.label104.Text = "Size of Data:";
-            // 
-            // txtModelNumModels
-            // 
-            this.txtModelNumModels.Location = new System.Drawing.Point(98, 7);
-            this.txtModelNumModels.Name = "txtModelNumModels";
-            this.txtModelNumModels.ReadOnly = true;
-            this.txtModelNumModels.Size = new System.Drawing.Size(100, 20);
-            this.txtModelNumModels.TabIndex = 3;
-            // 
-            // label103
-            // 
-            this.label103.AutoSize = true;
-            this.label103.Location = new System.Drawing.Point(30, 10);
-            this.label103.Name = "label103";
-            this.label103.Size = new System.Drawing.Size(62, 13);
-            this.label103.TabIndex = 2;
-            this.label103.Text = "Submodels:";
-            // 
-            // label102
-            // 
-            this.label102.AutoSize = true;
-            this.label102.Location = new System.Drawing.Point(466, 45);
-            this.label102.Name = "label102";
-            this.label102.Size = new System.Drawing.Size(48, 13);
-            this.label102.TabIndex = 1;
-            this.label102.Text = "Preview:";
             // 
             // SoundTabPage
             // 
@@ -1583,14 +1187,8 @@
             this.Menu = this.mainMenu1;
             this.Name = "HAMEditor";
             this.Text = "HAMEditor2";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HAMEditor2_FormClosing);
             this.Load += new System.EventHandler(this.HAMEditor2_Load);
             this.EditorTabs.ResumeLayout(false);
-            this.ModelTabPage.ResumeLayout(false);
-            this.ModelTabPage.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.SoundTabPage.ResumeLayout(false);
             this.SoundTabPage.PerformLayout();
             this.ReactorTabPage.ResumeLayout(false);
@@ -1652,29 +1250,6 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.MenuItem menuItem4;
         private System.Windows.Forms.MenuItem menuItem5;
-        private OpenTK.GLControl glControl1;
-        private System.Windows.Forms.Label label102;
-        private System.Windows.Forms.TextBox txtModelNumModels;
-        private System.Windows.Forms.Label label103;
-        private System.Windows.Forms.Label label104;
-        private System.Windows.Forms.TextBox txtModelRadius;
-        private System.Windows.Forms.TextBox txtModelDataSize;
-        private System.Windows.Forms.Label label106;
-        private System.Windows.Forms.TextBox txtModelTextureCount;
-        private System.Windows.Forms.Label label105;
-        private System.Windows.Forms.Label label111;
-        private System.Windows.Forms.Label label110;
-        private System.Windows.Forms.TextBox txtModelMaxZ;
-        private System.Windows.Forms.TextBox txtModelMaxY;
-        private System.Windows.Forms.TextBox txtModelMaxX;
-        private System.Windows.Forms.TextBox txtModelMinZ;
-        private System.Windows.Forms.TextBox txtModelMinY;
-        private System.Windows.Forms.TextBox txtModelMinX;
-        private System.Windows.Forms.Label label109;
-        private System.Windows.Forms.Label label108;
-        private System.Windows.Forms.TrackBar trackBar1;
-        private System.Windows.Forms.TrackBar trackBar2;
-        private System.Windows.Forms.TrackBar trackBar3;
         private System.Windows.Forms.TabPage ShipTabPage;
         private System.Windows.Forms.Label label113;
         private System.Windows.Forms.Label label114;
@@ -1723,23 +1298,13 @@
         private System.Windows.Forms.Label label147;
         private System.Windows.Forms.Label label146;
         private System.Windows.Forms.Label label132;
-        private System.Windows.Forms.ComboBox cbModelLowDetail;
-        private System.Windows.Forms.ComboBox cbModelDeadModel;
-        private System.Windows.Forms.Label label150;
-        private System.Windows.Forms.ComboBox cbModelDyingModel;
-        private System.Windows.Forms.Label label149;
-        private System.Windows.Forms.Button btnImportModel;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.CheckBox chkRadius;
-        private System.Windows.Forms.CheckBox chkNorm;
-        private System.Windows.Forms.CheckBox chkShowBBs;
         private System.Windows.Forms.MenuItem mnuExportTable;
         private System.Windows.Forms.ComboBox cbPlayerExplosion;
         private System.Windows.Forms.ComboBox cbPlayerModel;
         private System.Windows.Forms.MenuItem mnuFindRefs;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.ComboBox cbMarkerModel;
-        private System.Windows.Forms.CheckBox chkWireframe;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button btnRemapWeaponTex;
         private System.Windows.Forms.Button btnRemapWingTex;
@@ -1754,9 +1319,6 @@
         private System.Windows.Forms.Button btnRemapCockpit;
         private System.Windows.Forms.ToolTip mainToolTip;
         private System.Windows.Forms.Label label151;
-        private System.Windows.Forms.Panel glControlStandin;
-        private System.Windows.Forms.Button btnExportModel;
-        private System.Windows.Forms.CheckBox chkSoftwareOverdraw;
         private System.Windows.Forms.MenuItem menuItem6;
         private System.Windows.Forms.MenuItem UndoMenuItem;
         private System.Windows.Forms.MenuItem RedoMenuItem;

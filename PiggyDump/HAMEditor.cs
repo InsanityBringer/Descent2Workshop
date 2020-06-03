@@ -59,20 +59,11 @@ namespace Descent2Workshop
         WClipPanel wclipPanel;
         RobotPanel robotPanel;
         WeaponPanel weaponPanel;
+        PolymodelPanel polymodelPanel;
         
         public HAMEditor(EditorHAMFile data, StandardUI host, PIGFile piggyFile, Palette palette, string filename)
         {
             InitializeComponent();
-            this.glControl1 = new OpenTK.GLControl();
-            this.glControl1.BackColor = System.Drawing.Color.Black;
-            this.glControl1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.glControl1.Location = new System.Drawing.Point(452, 61);
-            this.glControl1.Name = "glControl1";
-            this.glControl1.Size = new System.Drawing.Size(256, 256);
-            this.glControl1.TabIndex = 0;
-            this.glControl1.VSync = false;
-            this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
-            this.glControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl1_Paint);
 
             texturePanel = new TMAPInfoPanel(transactionManager); components.Add(texturePanel);
             texturePanel.Dock = DockStyle.Fill;
@@ -86,18 +77,19 @@ namespace Descent2Workshop
             robotPanel.Dock = DockStyle.Fill;
             weaponPanel = new WeaponPanel(transactionManager, 5); components.Add(weaponPanel);
             weaponPanel.Dock = DockStyle.Fill;
+            polymodelPanel = new PolymodelPanel(transactionManager, 6, piggyFile, palette, data); components.Add(polymodelPanel);
+            polymodelPanel.Dock = DockStyle.Fill;
             TextureTabPage.Controls.Add(texturePanel);
             VClipTabPage.Controls.Add(vclipPanel);
             EffectsTabPage.Controls.Add(eclipPanel);
             DoorTabPage.Controls.Add(wclipPanel);
             RobotTabPage.Controls.Add(robotPanel);
             WeaponTabPage.Controls.Add(weaponPanel);
+            ModelTabPage.Controls.Add(polymodelPanel);
 
             this.palette = palette;
             this.piggyFile = piggyFile;
 
-            if (!noPMView)
-                this.ModelTabPage.Controls.Add(this.glControl1);
             datafile = data;
             this.host = host;
             modelRenderer = new ModelRenderer(datafile, piggyFile, palette);
@@ -379,12 +371,7 @@ namespace Descent2Workshop
         private void InitModelPanel()
         {
             SetElementControl(true, true);
-            cbModelLowDetail.Items.Clear(); cbModelLowDetail.Items.Add("None");
-            cbModelDyingModel.Items.Clear(); cbModelDyingModel.Items.Add("None");
-            cbModelDeadModel.Items.Clear(); cbModelDeadModel.Items.Add("None");
-            cbModelLowDetail.Items.AddRange(datafile.ModelNames.ToArray());
-            cbModelDyingModel.Items.AddRange(datafile.ModelNames.ToArray());
-            cbModelDeadModel.Items.AddRange(datafile.ModelNames.ToArray());
+            polymodelPanel.Init(datafile.ModelNames);
         }
 
         private void InitReactorPanel()
@@ -467,42 +454,25 @@ namespace Descent2Workshop
         public void UpdateRobotPanel(int num)
         {
             Robot robot = datafile.Robots[num];
-            robotPanel.Update(robot, num);
             txtElemName.Text = datafile.RobotNames[num];
+
+            robotPanel.Update(robot, num);
         }
 
         public void UpdateWeaponPanel(int num)
         {
             Weapon weapon = datafile.Weapons[num];
-            weaponPanel.Update(weapon, num);
             txtElemName.Text = datafile.WeaponNames[num];
+
+            weaponPanel.Update(weapon, num);
         }
 
         private void UpdateModelPanel(int num)
         {
             Polymodel model = datafile.Models[num];
-            txtModelNumModels.Text = model.NumSubmodels.ToString();
-            txtModelDataSize.Text = model.ModelIDTASize.ToString();
-            txtModelRadius.Text = model.Radius.ToString();
-            txtModelTextureCount.Text = model.NumTextures.ToString();
-            cbModelLowDetail.SelectedIndex = model.SimplerModels;
-            cbModelDyingModel.SelectedIndex = model.DyingModelnum + 1;
-            cbModelDeadModel.SelectedIndex = model.DeadModelnum + 1;
-
-            txtModelMinX.Text = model.Mins.x.ToString();
-            txtModelMinY.Text = model.Mins.y.ToString();
-            txtModelMinZ.Text = model.Mins.z.ToString();
-            txtModelMaxX.Text = model.Maxs.x.ToString();
-            txtModelMaxY.Text = model.Maxs.y.ToString();
-            txtModelMaxZ.Text = model.Maxs.z.ToString();
-
             txtElemName.Text = datafile.ModelNames[num];
-            if (!noPMView)
-            {
-                Polymodel mainmodel = datafile.Models[(int)ElementSpinner.Value];
-                modelRenderer.SetModel(mainmodel);
-                glControl1.Invalidate();
-            }
+
+            polymodelPanel.Update(model, num);
         }
 
         private void UpdatePowerupPanel(int num)
@@ -607,16 +577,6 @@ namespace Descent2Workshop
         }
 
         //---------------------------------------------------------------------
-        // UTILITIES
-        //---------------------------------------------------------------------
-        
-
-        public double GetFloatFromFixed88(short fixedvalue)
-        {
-            return (double)fixedvalue / 256D;
-        }
-
-        //---------------------------------------------------------------------
         // SHARED UPDATORS
         //---------------------------------------------------------------------
 
@@ -658,65 +618,6 @@ namespace Descent2Workshop
                         break;
                 }
                 isLocked = false;
-            }
-        }
-
-        //---------------------------------------------------------------------
-        // WALL UPDATORS
-        //---------------------------------------------------------------------
-
-        private void WallComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            ComboBox comboBox = (ComboBox)sender;
-            WClip clip = datafile.WClips[ElementNumber];
-            switch (comboBox.Tag)
-            {
-                case "1":
-                    clip.OpenSound = (short)(comboBox.SelectedIndex - 1);
-                    break;
-                case "2":
-                    clip.CloseSound = (short)(comboBox.SelectedIndex - 1);
-                    break;
-            }
-        }
-
-        private void WallFlag_CheckedChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            CheckBox checkBox = (CheckBox)sender;
-            WClip clip = datafile.WClips[ElementNumber];
-            int bit = int.Parse((string)checkBox.Tag);
-            if ((clip.Flags & bit) != 0)
-                clip.Flags &= (short)~bit;
-            else
-                clip.Flags |= (short)bit;
-        }
-
-        private void WallProperty_TextChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            TextBox textBox = (TextBox)sender;
-            WClip clip = datafile.WClips[ElementNumber];
-            double value;
-            char[] hack;
-            if (double.TryParse(textBox.Text, out value))
-            {
-                switch (textBox.Tag)
-                {
-                    case "1":
-                        int totalTimeFix = (int)(value * 65536);
-                        clip.PlayTime = new Fix(totalTimeFix);
-                        break;
-                    case "2":
-                        hack = textBox.Text.ToCharArray();
-                        Array.Clear(clip.Filename, 0, 13);
-                        Array.Copy(hack, clip.Filename, Math.Min(13, hack.Length));
-                        break;
-                }
             }
         }
 
@@ -986,68 +887,6 @@ namespace Descent2Workshop
         private void mnuFindRefs_Click(object sender, EventArgs e)
         {
             Console.WriteLine("mnuFindRefs_Click: STUB");
-        }
-
-        //---------------------------------------------------------------------
-        // 3D VIEWER UTILITIES
-        //---------------------------------------------------------------------
-
-        private void trackBar1_Scroll(object sender, EventArgs e)
-        {
-            if (noPMView) return;
-            SetupViewport();
-            glControl1.Invalidate();
-        }
-
-        private void glControl1_Load(object sender, EventArgs e)
-        {
-            if (noPMView) return;
-            if (!glContextCreated)
-            {
-                glControl1.Location = glControlStandin.Location;
-                glControl1.Size = glControlStandin.Size;
-                glControlStandin.Visible = false;
-            }
-            glContextCreated = true;
-            modelRenderer.Init();
-            SetupViewport();
-        }
-
-        private void glControl1_Paint(object sender, PaintEventArgs e)
-        {
-            if (noPMView) return;
-            if (!glContextCreated)
-                return; //can't do anything with this, heh
-            glControl1.MakeCurrent();
-
-            modelRenderer.Pitch = (trackBar3.Value - 8) * -22.5d;
-            modelRenderer.Angle = (trackBar1.Value - 8) * -22.5d;
-            modelRenderer.ShowBBs = chkShowBBs.Checked;
-            modelRenderer.ShowNormals = chkNorm.Checked;
-            modelRenderer.Wireframe = chkWireframe.Checked;
-            modelRenderer.ShowRadius = chkRadius.Checked;
-            modelRenderer.EmulateSoftware = chkSoftwareOverdraw.Checked;
-
-            modelRenderer.Draw();
-            glControl1.SwapBuffers();
-        }
-
-        private void SetupViewport()
-        {
-            if (noPMView) return;
-            modelRenderer.SetupViewport(glControl1.Width, glControl1.Height, trackBar2.Value * 0.5d + 4.0d);
-        }
-
-        private void HAMEditor2_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (glContextCreated)
-            {
-            }
-        }
-
-        private void PMCheckBox_CheckChanged(object sender, EventArgs e)
-        {
-            glControl1.Invalidate();
         }
 
         //---------------------------------------------------------------------

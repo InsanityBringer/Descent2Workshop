@@ -100,6 +100,12 @@
     <Compile Include="EditorPanels\EClipPanel.Designer.cs">
       <DependentUpon>EClipPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="EditorPanels\PolymodelPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorPanels\PolymodelPanel.Designer.cs">
+      <DependentUpon>PolymodelPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="EditorPanels\RobotPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -247,6 +253,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EditorPanels\EClipPanel.resx">
       <DependentUpon>EClipPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorPanels\PolymodelPanel.resx">
+      <DependentUpon>PolymodelPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EditorPanels\RobotPanel.resx">
       <DependentUpon>RobotPanel.cs</DependentUpon>

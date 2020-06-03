@@ -55,19 +55,28 @@ namespace Descent2Workshop
             for (int i = 0; i < datafile.Bitmaps.Count; i++)
             {
                 PIGImage image = (PIGImage)datafile.Bitmaps[i];
-                ListViewItem lvi = new ListViewItem(image.Name);
-                lvi.SubItems.Add(image.GetSize().ToString());
-                if (image.IsAnimated)
-                {
-                    lvi.SubItems.Add(image.DFlags.ToString());
-                }
-                else
-                {
-                    lvi.SubItems.Add("-1");
-                }
-                lvi.SubItems.Add(image.ReplacementNum.ToString());
+                ListViewItem lvi = GeneratePiggyEntry(i);
                 listView1.Items.Add(lvi);
             }
+        }
+
+        private ListViewItem GeneratePiggyEntry(int i)
+        {
+            PIGImage image = datafile.Bitmaps[i];
+            ListViewItem lvi = new ListViewItem(image.Name);
+            lvi.SubItems.Add(image.ReplacementNum.ToString());
+            lvi.SubItems.Add(image.GetSize().ToString());
+            lvi.SubItems.Add(string.Format("{0}x{1}", image.Width, image.Height));
+            if (image.IsAnimated)
+            {
+                lvi.SubItems.Add(image.Frame.ToString());
+            }
+            else
+            {
+                lvi.SubItems.Add("-1");
+            }
+
+            return lvi;
         }
 
         private void PaletteComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -96,7 +105,7 @@ namespace Descent2Workshop
             SupertransparentCheck.Checked = image.SuperTransparent;
             NoLightingCheck.Checked = image.NoLighting;
             CompressCheckBox.Checked = image.RLECompressed;
-            Color color = Color.FromArgb(currentPalette.GetRGBAValue(image.AverageIndex));
+            System.Drawing.Color color = System.Drawing.Color.FromArgb(currentPalette.GetRGBAValue(image.AverageIndex));
             ColorPreview.BackColor = color;
             pictureBox1.Refresh();
         }

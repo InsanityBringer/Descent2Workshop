@@ -235,7 +235,7 @@ namespace Descent2Workshop.Editor.Renderer
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, outlineIndexBuffer);
 
             int numVerts = baseRenderer.State.EditorLevel.Vertices.Count;
-            int numIndicies = baseRenderer.State.EditorLevel.Segments.Count * Segment.MaxSegmentSides * 5; //Line loops with injected reset 
+            int numIndicies = baseRenderer.State.EditorLevel.Segments.Count * Segment.MaxSides * 5; //Line loops with injected reset 
             outlineCount = numIndicies;
             outlinePoints = numVerts;
 
@@ -258,7 +258,7 @@ namespace Descent2Workshop.Editor.Renderer
             for (int segnum = 0; segnum < baseRenderer.State.EditorLevel.Segments.Count; segnum++)
             {
                 seg = baseRenderer.State.EditorLevel.Segments[segnum];
-                for (int sidenum = 0; sidenum < Segment.MaxSegmentSides; sidenum++)
+                for (int sidenum = 0; sidenum < Segment.MaxSides; sidenum++)
                 {
                     side = seg.Sides[sidenum];
                     for (int i = 0; i < 4; i++)
@@ -320,7 +320,7 @@ namespace Descent2Workshop.Editor.Renderer
                 //Count the amount of verts in each texture chain
                 foreach (Segment segment in baseRenderer.State.EditorLevel.Segments)
                 {
-                    for (int i = 0; i < Segment.MaxSegmentSides; i++)
+                    for (int i = 0; i < Segment.MaxSides; i++)
                     {
                         side = segment.Sides[i];
                         if (side.ConnectedSegment != null || side.Wall != null)
@@ -353,7 +353,7 @@ namespace Descent2Workshop.Editor.Renderer
                 Uvl uvl;
                 foreach (Segment segment in baseRenderer.State.EditorLevel.Segments)
                 {
-                    for (int i = 0; i < Segment.MaxSegmentSides; i++)
+                    for (int i = 0; i < Segment.MaxSides; i++)
                     {
                         side = segment.Sides[i];
                         if (side.ConnectedSegment != null || side.Wall != null)
@@ -404,7 +404,7 @@ namespace Descent2Workshop.Editor.Renderer
                 Uvl uvl;
                 foreach (Segment segment in baseRenderer.State.EditorLevel.Segments)
                 {
-                    for (int i = 0; i < Segment.MaxSegmentSides; i++)
+                    for (int i = 0; i < Segment.MaxSides; i++)
                     {
                         side = segment.Sides[i];
                         if (side.ConnectedSegment != null || side.Wall != null)

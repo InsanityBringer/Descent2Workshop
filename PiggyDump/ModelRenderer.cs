@@ -111,7 +111,15 @@ namespace Descent2Workshop
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
             GL.Viewport(0, 0, width, height);
-            GL.Ortho(-scale, scale, -scale, scale, -32, 32);
+
+            double xAspect = 1.0;
+
+            if (width > height)
+                xAspect = (double)width / height;
+            else
+                xAspect = (double)height / width;
+
+            GL.Ortho(-scale * xAspect, scale * xAspect, -scale, scale, -32, 32);
         }
 
         public void Draw()
