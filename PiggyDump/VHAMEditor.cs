@@ -38,7 +38,6 @@ namespace Descent2Workshop
 {
     public partial class VHAMEditor : Form
     {
-        private OpenTK.GLControl glControl1;
         private static HAMType[] typeTable = { HAMType.TMAPInfo, HAMType.VClip, HAMType.EClip, HAMType.WClip, HAMType.Robot, HAMType.Weapon,
             HAMType.Model, HAMType.Sound, HAMType.Reactor, HAMType.Powerup, HAMType.Ship, HAMType.Gauge, HAMType.Cockpit, HAMType.XLAT };
         public int[] texturelist;
@@ -52,32 +51,24 @@ namespace Descent2Workshop
 
         private RobotPanel robotPanel;
         private WeaponPanel weaponPanel;
+        private PolymodelPanel polymodelPanel;
 
         private TransactionManager transactionManager = new TransactionManager();
 
         public VHAMEditor(EditorVHAMFile data, StandardUI host)
         {
             InitializeComponent();
-            this.glControl1 = new OpenTK.GLControl();
-            this.glControl1.BackColor = System.Drawing.Color.Black;
-            this.glControl1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.glControl1.Location = new System.Drawing.Point(452, 61);
-            this.glControl1.Name = "glControl1";
-            this.glControl1.Size = new System.Drawing.Size(256, 256);
-            this.glControl1.TabIndex = 0;
-            this.glControl1.VSync = false;
-            this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
-            this.glControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl1_Paint);
             robotPanel = new RobotPanel(transactionManager, 0);
             robotPanel.Dock = DockStyle.Fill;
             weaponPanel = new WeaponPanel(transactionManager, 1);
             weaponPanel.Dock = DockStyle.Fill;
-            components.Add(robotPanel); components.Add(weaponPanel); components.Add(glControl1);
+            polymodelPanel = new PolymodelPanel(transactionManager, 2, host.DefaultPigFile, host.DefaultPalette, data.BaseHAM);
+            polymodelPanel.Dock = DockStyle.Fill;
+            components.Add(robotPanel); components.Add(weaponPanel); components.Add(polymodelPanel);
 
             RobotTabPage.Controls.Add(robotPanel);
             WeaponTabPage.Controls.Add(weaponPanel);
-            if (!noPMView)
-                this.tabPage3.Controls.Add(this.glControl1);
+            ModelTabPage.Controls.Add(polymodelPanel);
             datafile = data;
             this.host = host;
             palette = host.DefaultPalette;
@@ -183,15 +174,12 @@ namespace Descent2Workshop
 
         private void InitModelPanel()
         {
-            cbModelLowDetail.Items.Clear(); cbModelLowDetail.Items.Add("None");
-            cbModelDyingModel.Items.Clear(); cbModelDyingModel.Items.Add("None");
-            cbModelDeadModel.Items.Clear(); cbModelDeadModel.Items.Add("None");
+            List<string> names = new List<string>();
             for (int i = 0; i < datafile.GetNumModels(); i++)
             {
-                cbModelLowDetail.Items.Add(datafile.GetModelName(i));
-                cbModelDyingModel.Items.Add(datafile.GetModelName(i));
-                cbModelDeadModel.Items.Add(datafile.GetModelName(i));
+                names.Add(datafile.GetModelName(i));
             }
+            polymodelPanel.Init(names);
         }
 
         public void UpdateRobotPanel(int num)
@@ -213,78 +201,9 @@ namespace Descent2Workshop
         private void UpdateModelPanel(int num)
         {
             Polymodel model = datafile.Models[num];
-            txtModelNumModels.Text = model.NumSubmodels.ToString();
-            txtModelDataSize.Text = model.ModelIDTASize.ToString();
-            txtModelRadius.Text = ((float)(model.Radius)).ToString();
-            txtModelTextureCount.Text = model.NumTextures.ToString();
-            cbModelLowDetail.SelectedIndex = model.SimplerModels + 1;
-            cbModelDyingModel.SelectedIndex = model.DyingModelnum + 1;
-            cbModelDeadModel.SelectedIndex = model.DeadModelnum + 1;
-
-            txtModelMinX.Text = ((float)(model.Mins.x)).ToString();
-            txtModelMinY.Text = ((float)(model.Mins.y)).ToString();
-            txtModelMinZ.Text = ((float)(model.Mins.z)).ToString();
-            txtModelMaxX.Text = ((float)(model.Maxs.x)).ToString();
-            txtModelMaxY.Text = ((float)(model.Maxs.y)).ToString();
-            txtModelMaxZ.Text = ((float)(model.Maxs.z)).ToString();
+            polymodelPanel.Update(model, num);
 
             txtElemName.Text = datafile.ModelNames[num];
-            if (!noPMView)
-            {
-                Polymodel mainmodel = datafile.Models[(int)nudElementNum.Value];
-                modelRenderer.SetModel(mainmodel);
-                glControl1.Invalidate();
-            }
-        }
-
-        private void glControl1_Load(object sender, EventArgs e)
-        {
-            if (noPMView) return;
-            if (!glContextCreated)
-            {
-                glControl1.Location = glControlStandin.Location;
-                glControl1.Size = glControlStandin.Size;
-                glControlStandin.Visible = false;
-            }
-            glContextCreated = true;
-            modelRenderer.Init();
-            SetupViewport();
-        }
-
-        private void glControl1_Paint(object sender, PaintEventArgs e)
-        {
-            if (noPMView) return;
-            if (!glContextCreated)
-                return; //can't do anything with this, heh
-            glControl1.MakeCurrent();
-
-            modelRenderer.Pitch = (trackBar3.Value - 8) * -22.5d;
-            modelRenderer.Angle = (trackBar1.Value - 8) * -22.5d;
-            modelRenderer.ShowBBs = chkShowBBs.Checked;
-            modelRenderer.ShowNormals = chkNorm.Checked;
-            modelRenderer.Wireframe = chkWireframe.Checked;
-            modelRenderer.ShowRadius = chkRadius.Checked;
-
-            modelRenderer.Draw();
-            glControl1.SwapBuffers();
-        }
-
-        private void SetupViewport()
-        {
-            if (noPMView) return;
-            modelRenderer.SetupViewport(glControl1.Width, glControl1.Height, trackBar2.Value * 0.5d + 4.0d);
-        }
-
-        public double GetFloatFromFixed88(short fixedvalue)
-        {
-            return (double)fixedvalue / 256D;
-        }
-
-        private void ModelOrientationControl_Scroll(object sender, EventArgs e)
-        {
-            if (noPMView) return;
-            SetupViewport();
-            glControl1.Invalidate();
         }
     }
 }

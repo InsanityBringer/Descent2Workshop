@@ -24,6 +24,7 @@ using System;
 using System.Windows.Forms;
 using System.IO;
 using OpenTK.Graphics;
+using Descent2Workshop.SaveHandlers;
 using LibDescent.Data;
 using LibDescent.Edit;
 
@@ -230,7 +231,7 @@ namespace Descent2Workshop
                 EditorHAMFile archive = new EditorHAMFile(defaultPigFile);
                 if (LoadHAMFile(openFileDialog1.FileName, archive))
                 {
-                    HAMEditor archiveEditor = new HAMEditor(archive, this, defaultPigFile, DefaultPalette, openFileDialog1.FileName);
+                    HAMEditor archiveEditor = new HAMEditor(archive, this, defaultPigFile, DefaultPalette, new FileSaveHandler(openFileDialog1.FileName));
                     archiveEditor.Show();
                 }
             }

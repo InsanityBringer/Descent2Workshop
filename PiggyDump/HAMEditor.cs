@@ -30,6 +30,7 @@ using LibDescent.Data;
 using LibDescent.Edit;
 using Descent2Workshop.EditorPanels;
 using Descent2Workshop.Transactions;
+using Descent2Workshop.SaveHandlers;
 
 namespace Descent2Workshop
 {
@@ -44,7 +45,6 @@ namespace Descent2Workshop
         public bool glContextCreated = false;
         private ModelRenderer modelRenderer;
         private bool noPMView = false;
-        private string currentFilename;
         private Palette palette;
         private PIGFile piggyFile;
         private TransactionManager transactionManager = new TransactionManager();
@@ -60,8 +60,11 @@ namespace Descent2Workshop
         RobotPanel robotPanel;
         WeaponPanel weaponPanel;
         PolymodelPanel polymodelPanel;
+
+        //Save information
+        private SaveHandler saveHandler;
         
-        public HAMEditor(EditorHAMFile data, StandardUI host, PIGFile piggyFile, Palette palette, string filename)
+        public HAMEditor(EditorHAMFile data, StandardUI host, PIGFile piggyFile, Palette palette, SaveHandler saveHandler)
         {
             InitializeComponent();
 
@@ -93,7 +96,12 @@ namespace Descent2Workshop
             datafile = data;
             this.host = host;
             modelRenderer = new ModelRenderer(datafile, piggyFile, palette);
-            currentFilename = filename;
+            this.saveHandler = saveHandler;
+
+            string currentFilename = "Untitled";
+            if (saveHandler != null)
+                currentFilename = saveHandler.GetUIName();
+
             this.Text = string.Format("{0} - HAM Editor", currentFilename);
 
             transactionManager.undoEvent += DoUndoEvent;
@@ -896,58 +904,33 @@ namespace Descent2Workshop
         /// <summary>
         /// Helper function to save a HAM file, with lots of dumb error handling that doesn't work probably.
         /// </summary>
-        /// <param name="filename">The filename to save the file to.</param>
-        private void SaveHAMFile(string filename)
+        private void SaveHAMFile()
         {
-            //Get rid of any old backups
-            try
+            Stream stream = saveHandler.GetStream();
+            if (stream == null)
             {
-                File.Delete(Path.ChangeExtension(filename, "BAK"));
+                MessageBox.Show(this, string.Format("Error opening save file {0}:\r\n{1}",saveHandler.GetUIName(), saveHandler.GetErrorMsg()));
             }
-            catch (FileNotFoundException) { }
-            catch (DirectoryNotFoundException) { } //Discover this with our face to avoid a 1/1000000 race condition
-            catch (UnauthorizedAccessException exc)
+            else
             {
-                host.AppendConsole(String.Format("Cannot delete old backup file {0}: Permission denied.\r\nMsg: {1}\r\n", Path.ChangeExtension(filename, "BAK"), exc.Message));
-            }
-            catch (IOException exc)
-            {
-                host.AppendConsole(String.Format("Cannot delete old backup file {0}: IO error occurred.\r\nMsg: {1}\r\n", Path.ChangeExtension(filename, "BAK"), exc.Message));
-            }
-            //Move the current file into the backup slot
-            try
-            {
-                File.Move(filename, Path.ChangeExtension(filename, "BAK"));
-            }
-            catch (FileNotFoundException) { }
-            catch (DirectoryNotFoundException) { } //Discover this with our face to avoid a 1/1000000 race condition
-            catch (UnauthorizedAccessException exc)
-            {
-                host.AppendConsole(String.Format("Cannot move old HAM file {0}: Permission denied.\r\nMsg: {1}\r\n", filename, exc.Message));
-            }
-            catch (IOException exc)
-            {
-                host.AppendConsole(String.Format("Cannot move old HAM file {0}: IO error occurred.\r\nMsg: {1}\r\n", filename, exc.Message));
-            }
-            //Finally write the new file
-            FileStream stream;
-            try
-            {
-                stream = File.Open(filename, FileMode.Create);
                 datafile.Write(stream);
-                stream.Close();
-                stream.Dispose();
+                if (saveHandler.FinalizeStream())
+                {
+                    MessageBox.Show(this, string.Format("Error writing save file {0}:\r\n{1}", saveHandler.GetUIName(), saveHandler.GetErrorMsg()));
+                }
             }
-            catch (Exception exc)
-            {
-                FileUtilities.FileExceptionHandler(exc, "HAM file");
-            }
+
         }
 
         private void mnuSave_Click(object sender, EventArgs e)
         {
+            if (saveHandler == null) //No save handler, so can't actually save right now
+            {
+                //HACK: Just call the save as handler for now... This needs restructuring
+                mnuSaveAs_Click(sender, e);
+            }
             bool compatObjBitmaps = (StandardUI.options.GetOption("CompatObjBitmaps", bool.FalseString) == bool.TrueString);
-            SaveHAMFile(currentFilename);
+            SaveHAMFile();
         }
 
         private void mnuSaveAs_Click(object sender, EventArgs e)
@@ -956,9 +939,12 @@ namespace Descent2Workshop
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 bool compatObjBitmaps = (StandardUI.options.GetOption("CompatObjBitmaps", bool.FalseString) == bool.TrueString);
-                SaveHAMFile(saveFileDialog1.FileName);
+                //Ensure the old save handler is detached from any UI properly.
+                if (saveHandler != null) saveHandler.Destroy();
+                saveHandler = new FileSaveHandler(saveFileDialog1.FileName);
+                SaveHAMFile();
+                this.Text = string.Format("{0} - HAM Editor", saveHandler.GetUIName());
             }
-            this.Text = string.Format("{0} - HAM Editor", currentFilename);
         }
 
         private void UndoMenuItem_Click(object sender, EventArgs e)
@@ -981,6 +967,28 @@ namespace Descent2Workshop
                 ElementSpinner.Value = transaction.Page;
             else
                 FillOutCurrentPanel(transaction.Tab, transaction.Page); //force an update
+        }
+
+        private void HAMEditor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            string currentFilename = "Untitled";
+            if (saveHandler != null)
+                currentFilename = saveHandler.GetUIName();
+
+            if (transactionManager.UnsavedFlag)
+            {
+                switch (MessageBox.Show(this, string.Format("Would you like to save changes to {0}?", currentFilename), "Unsaved changes", MessageBoxButtons.YesNoCancel))
+                {
+                    case DialogResult.Yes:
+                        SaveHAMFile();
+                        break;
+                    case DialogResult.No:
+                        break;
+                    case DialogResult.Cancel:
+                        e.Cancel = true;
+                        break;
+                }
+            }
         }
     }
 }

@@ -38,12 +38,14 @@ namespace Descent2Workshop.EditorPanels
 {
     public partial class PolymodelPanel : UserControl
     {
+        private bool isLocked = false;
         private OpenTK.GLControl ModelViewControl;
         private bool glContextCreated = false;
         private ModelRenderer modelRenderer;
 
         private int modelID;
         private Polymodel model;
+        private EditorHXMFile hxmFile;
 
         private TransactionManager transactionManager;
         private int tabPage;
@@ -72,6 +74,31 @@ namespace Descent2Workshop.EditorPanels
                 modelRenderer = new ModelRenderer(datafile, piggyFile, palette);
             else
                 modelRenderer = new ModelRenderer(piggyFile, palette);
+        }
+
+        public PolymodelPanel(TransactionManager transactionManager, int tabPage, PIGFile piggyFile, Palette palette, EditorHXMFile datafile)
+        {
+            InitializeComponent();
+            this.transactionManager = transactionManager;
+            this.tabPage = tabPage;
+
+            //Create the model viewer baround the template control
+            ModelViewControl = new OpenTK.GLControl();
+            ModelViewControl.BackColor = System.Drawing.Color.Black;
+            ModelViewControl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            ModelViewControl.Location = new System.Drawing.Point(452, 61);
+            ModelViewControl.Anchor = GLControlStandin.Anchor;
+            ModelViewControl.Name = "glControl1";
+            ModelViewControl.Size = new System.Drawing.Size(256, 256);
+            ModelViewControl.TabIndex = 0;
+            ModelViewControl.VSync = false;
+            ModelViewControl.Load += new System.EventHandler(this.ModelViewControl_Load);
+            ModelViewControl.Paint += new System.Windows.Forms.PaintEventHandler(this.ModelViewControl_Paint);
+            Controls.Add(ModelViewControl);
+
+            modelRenderer = new ModelRenderer(datafile.BaseHAM, piggyFile, palette);
+            TextureGroupBox.Visible = true;
+            hxmFile = datafile;
         }
 
         private void ModelViewControl_Load(object sender, EventArgs e)
@@ -149,6 +176,26 @@ namespace Descent2Workshop.EditorPanels
             txtModelMaxY.Text = model.Maxs.y.ToString();
             txtModelMaxZ.Text = model.Maxs.z.ToString();
 
+            if (hxmFile != null)
+            {
+                int numNewTextures = hxmFile.CountUniqueObjBitmaps(model);
+                ModelNumTextures.Text = numNewTextures.ToString();
+                ModelNumPointers.Text = model.NumTextures.ToString();
+                ModelBasePointerSpinner.Value = model.FirstTexture;
+                ModelBaseTextureSpinner.Value = model.BaseTexture;
+
+                for (int i = 0; i < numNewTextures; i++)
+                {
+                    ushort index = hxmFile.GetObjBitmap(i + model.BaseTexture);
+                    if (hxmFile.BaseHAM.piggyFile.Bitmaps[index].IsAnimated)
+                    {
+                        AnimatedWarningLabel.Visible = true;
+                    }
+                    else
+                        AnimatedWarningLabel.Visible = false;
+                }
+            }
+
             modelRenderer.SetModel(model);
             ModelViewControl.Invalidate();
 
@@ -172,6 +219,36 @@ namespace Descent2Workshop.EditorPanels
                 bw.Close();
                 bw.Dispose();
             }
+        }
+
+        private void FindPackButton_Click(object sender, EventArgs e)
+        {
+            if (hxmFile == null) return;
+            if (hxmFile.replacedModels.Count == 0) return;
+            Polymodel model = hxmFile.replacedModels[modelID];
+            //Okay, the logic here is that we can pack new object bitmaps past 422.
+            //So long as you aren't using more than 178 entirely new textures, this
+            //should work fairly well.
+            //TODO: Needs to consider additional ObjBitmaps introduced by a V-HAM, perhaps
+            int bestFit = VHAMFile.N_D2_OBJBITMAPS;
+            int testTextures;
+            foreach (Polymodel testModel in hxmFile.replacedModels)
+            {
+                testTextures = testModel.BaseTexture + hxmFile.CountUniqueObjBitmaps(testModel);
+                if (bestFit < testTextures)
+                {
+                    bestFit = testTextures;
+                }
+            }
+            if (bestFit >= 600)
+            {
+                bestFit = 0;
+                MessageBox.Show("Cannot find a open slot beyond 422.");
+            }
+            model.BaseTexture = bestFit;
+            isLocked = true;
+            ModelBaseTextureSpinner.Value = bestFit;
+            isLocked = false;
         }
     }
 }

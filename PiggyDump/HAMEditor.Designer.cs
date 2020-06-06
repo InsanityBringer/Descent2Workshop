@@ -1187,6 +1187,7 @@
             this.Menu = this.mainMenu1;
             this.Name = "HAMEditor";
             this.Text = "HAMEditor2";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HAMEditor_FormClosing);
             this.Load += new System.EventHandler(this.HAMEditor2_Load);
             this.EditorTabs.ResumeLayout(false);
             this.SoundTabPage.ResumeLayout(false);

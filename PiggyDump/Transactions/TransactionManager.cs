@@ -47,6 +47,7 @@ namespace Descent2Workshop.Transactions
 
         public EventHandler<UndoEventArgs> undoEvent;
 
+        public bool UnsavedFlag = false;
         public bool CanUndo()
         {
             return queuePosition > queueTail;
@@ -75,6 +76,7 @@ namespace Descent2Workshop.Transactions
                         queueTail -= NumTransactions;
                 }
             }
+            UnsavedFlag = true;
             TransactionInProgress = false;
         }
 

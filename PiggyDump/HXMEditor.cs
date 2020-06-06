@@ -37,15 +37,12 @@ namespace Descent2Workshop
         public EditorHXMFile datafile;
         public StandardUI host;
         private bool isLocked = false;
-        private bool glContextCreated = false;
         private string currentFilename;
 
         private ModelTextureManager texMan = new ModelTextureManager();
 
         private List<ushort> ObjBitmaps = new List<ushort>();
         private List<ushort> ObjBitmapPtrs = new List<ushort>();
-
-        private OpenTK.GLControl glControl1;
         private ModelRenderer modelRenderer;
 
         private Palette palette;
@@ -53,28 +50,21 @@ namespace Descent2Workshop
         private int ElementNumber { get { return (int)nudElementNum.Value; } }
 
         private EditorPanels.RobotPanel robotPanel;
+        private EditorPanels.PolymodelPanel polymodelPanel;
         private TransactionManager transactionManager = new TransactionManager();
 
         public HXMEditor(EditorHXMFile datafile, StandardUI host, string filename)
         {
             InitializeComponent();
-            //can't use GLControls with designer? eh?
-            glControl1 = new GLControl();
-            glControl1.Location = new System.Drawing.Point(pictureBox3.Location.X, pictureBox3.Location.Y);
-            glControl1.Size = pictureBox3.Size;
-            glControl1.Load += glControl1_Load;
-            glControl1.Paint += glControl1_Paint;
-            glControl1.Visible = true;
-            glControl1.Enabled = true;
-            tabPage7.Controls.Add(glControl1);
-            tabPage7.PerformLayout();
-            pictureBox3.Enabled = false;
-            pictureBox3.Visible = false;
 
             robotPanel = new EditorPanels.RobotPanel(transactionManager, 0);
             robotPanel.Dock = DockStyle.Fill;
             RobotTabPage.Controls.Add(robotPanel);
             components.Add(robotPanel);
+            polymodelPanel = new EditorPanels.PolymodelPanel(transactionManager, 1, host.DefaultPigFile, host.DefaultPalette, datafile);
+            polymodelPanel.Dock = DockStyle.Fill;
+            ModelTabPage.Controls.Add(polymodelPanel);
+            components.Add(polymodelPanel);
 
             this.datafile = datafile;
             this.host = host;
@@ -123,23 +113,26 @@ namespace Descent2Workshop
                 case 0:
                     if (datafile.replacedRobots.Count != 0)
                     {
+                        robotPanel.Visible = true;
                         UpdateRobotPanel(val);
                     }
                     else
                     {
+                        robotPanel.Visible = false;
                         statusBar1.Text = "No robot elements in HXM";
                     }
                     break;
                 case 1:
                     if (datafile.replacedModels.Count != 0)
                     {
+                        polymodelPanel.Visible = true;
                         UpdateModelPanel(val);
-                        glControl1.Invalidate();
                         ReplacedElementComboBox.SelectedIndex = datafile.replacedModels[val].replacementID;
                     }
                     else
                     {
-                        statusBar1.Text = "no model elements in HXM!";
+                        polymodelPanel.Visible = false;
+                        statusBar1.Text = "no model elements in HXM";
                     }
                     break;
             }
@@ -181,68 +174,30 @@ namespace Descent2Workshop
         
         private void InitModelPanel()
         {
-            cbModelLowDetail.Items.Clear(); cbModelLowDetail.Items.Add("None");
-            cbModelDyingModel.Items.Clear(); cbModelDyingModel.Items.Add("None");
-            cbModelDeadModel.Items.Clear(); cbModelDeadModel.Items.Add("None");
+            List<string> names = new List<string>();
             for (int i = 0; i < datafile.GetNumModels(); i++)
             {
-                cbModelLowDetail.Items.Add(datafile.GetModelName(i));
-                cbModelDyingModel.Items.Add(datafile.GetModelName(i));
-                cbModelDeadModel.Items.Add(datafile.GetModelName(i));
+                names.Add(datafile.GetModelName(i));
             }
 
+            polymodelPanel.Init(names);
+
+            names.Clear();
+            //annoying hack, need a different list for the replacement box
+            for (int i = 0; i < datafile.GetNumModels(); i++)
+            {
+                names.Add(datafile.GetModelName(i, true));
+            }
+            string[] nameArray = names.ToArray();
+
             ReplacedElementComboBox.Items.Clear();
-            for (int i = 0; i < 200; i++)
-                ReplacedElementComboBox.Items.Add(datafile.GetModelName(i, true));
+            ReplacedElementComboBox.Items.AddRange(nameArray);
         }
 
         private void UpdateModelPanel(int num)
         {
             Polymodel model = datafile.replacedModels[(int)nudElementNum.Value];
-            //Polymodel model = datafile.PolygonModels[num];
-            txtModelNumModels.Text = model.NumSubmodels.ToString();
-            txtModelDataSize.Text = model.ModelIDTASize.ToString();
-            txtModelRadius.Text = model.Radius.ToString();
-            txtModelTextureCount.Text = model.NumTextures.ToString();
-            cbModelLowDetail.SelectedIndex = model.SimplerModels;
-            cbModelDyingModel.SelectedIndex = model.DyingModelnum + 1;
-            cbModelDeadModel.SelectedIndex = model.DeadModelnum + 1;
-
-            /*txtModelMinX.Text = model.mins.x.ToString();
-            txtModelMinY.Text = model.mins.y.ToString();
-            txtModelMinZ.Text = model.mins.z.ToString();
-            txtModelMaxX.Text = model.maxs.x.ToString();
-            txtModelMaxY.Text = model.maxs.y.ToString();
-            txtModelMaxZ.Text = model.maxs.z.ToString();
-
-            txtElemName.Text = datafile.ModelNames[num];*/
-            //if (!noPMView)
-            {
-                modelRenderer.SetModel(model);
-                glControl1.Invalidate();
-            }
-
-            UpdateModelTexturePanel(model);
-        }
-
-        private void UpdateModelTexturePanel(Polymodel model)
-        {
-            int numNewTextures = datafile.CountUniqueObjBitmaps(model);
-            ModelNumTextures.Text = numNewTextures.ToString();
-            ModelNumPointers.Text = model.NumTextures.ToString();
-            ModelBasePointerSpinner.Value = model.FirstTexture;
-            ModelBaseTextureSpinner.Value = model.BaseTexture;
-
-            for (int i = 0; i < numNewTextures; i++)
-            {
-                ushort index = datafile.GetObjBitmap(i + model.BaseTexture);
-                if (datafile.BaseHAM.piggyFile.Bitmaps[index].IsAnimated)
-                {
-                    AnimatedWarningLabel.Visible = true;
-                }
-                else
-                    AnimatedWarningLabel.Visible = false;
-            }
+            polymodelPanel.Update(model, num);
         }
 
         private void nudElementNum_ValueChanged(object sender, EventArgs e)
@@ -263,74 +218,9 @@ namespace Descent2Workshop
             isLocked = false;
         }
 
-        private void glControl1_Load(object sender, EventArgs e)
-        {
-            glContextCreated = true;
-            modelRenderer.Init();
-            SetupViewport();
-        }
-
-        private void glControl1_Paint(object sender, PaintEventArgs e)
-        {
-            if (!glContextCreated)
-                return; //can't do anything with this, heh
-
-            if (nudElementNum.Value < 0)
-            {
-                return;
-            }
-
-            if (datafile.replacedModels.Count == 0)
-            {
-                return; //can't do anything with no models. 
-            }
-            glControl1.MakeCurrent();
-
-            modelRenderer.Pitch = (trackBar3.Value - 8) * -22.5d;
-            modelRenderer.Angle = (trackBar1.Value - 8) * -22.5d;
-            //modelRenderer.ShowBBs = chkShowBBs.Checked;
-            //modelRenderer.ShowNormals = chkNorm.Checked;
-            //modelRenderer.Wireframe = chkWireframe.Checked;
-            //modelRenderer.ShowRadius = chkRadius.Checked;
-
-            modelRenderer.Draw();
-            glControl1.SwapBuffers();
-        }
-
-        private void SetupViewport()
-        {
-            modelRenderer.SetupViewport(glControl1.Width, glControl1.Height, trackBar2.Value * 0.5d + 4.0d);
-        }
-
-        private void trackBar2_Scroll(object sender, EventArgs e)
-        {
-            SetupViewport();
-            glControl1.Invalidate();
-        }
-
         //---------------------------------------------------------------------
         // MODEL UPDATORS
         //---------------------------------------------------------------------
-
-        private void btnImportModel_Click(object sender, EventArgs e)
-        {
-            if (datafile.replacedModels.Count == 0) return;
-            ImportModel(datafile.replacedModels[ElementNumber]);
-        }
-
-        private void btnExportModel_Click(object sender, EventArgs e)
-        {
-            if (datafile.replacedModels.Count == 0) return;
-            saveFileDialog1.Filter = "Parallax Object Files|*.pof";
-            saveFileDialog1.FileName = string.Format("model_{0}.pof", ElementNumber);
-            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                BinaryWriter bw = new BinaryWriter(File.Open(saveFileDialog1.FileName, FileMode.Create));
-                POFWriter.SerializePolymodel(bw, datafile.replacedModels[ElementNumber], short.Parse(StandardUI.options.GetOption("PMVersion", "8")));
-                bw.Close();
-                bw.Dispose();
-            }
-        }
 
         private void ImportModel(Polymodel original)
         {
@@ -355,75 +245,6 @@ namespace Descent2Workshop
                 model.replacementID = ReplacedElementComboBox.SelectedIndex;
                 UpdateModelPanel(ElementNumber);
             }
-        }
-
-        private void ModelComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            if (datafile.replacedModels.Count == 0) return;
-            Polymodel model = datafile.replacedModels[ElementNumber];
-            ComboBox comboBox = (ComboBox)sender;
-            switch (comboBox.Tag)
-            {
-                case "1":
-                    model.SimplerModels = (byte)comboBox.SelectedIndex;
-                    break;
-                case "2":
-                    model.DyingModelnum = comboBox.SelectedIndex - 1;
-                    break;
-                case "3":
-                    model.DeadModelnum = comboBox.SelectedIndex - 1;
-                    break;
-            }
-        }
-
-
-        private void FindPackButton_Click(object sender, EventArgs e)
-        {
-            if (datafile.replacedModels.Count == 0) return;
-            Polymodel model = datafile.replacedModels[ElementNumber];
-            //Okay, the logic here is that we can pack new object bitmaps past 422.
-            //So long as you aren't using more than 178 entirely new textures, this
-            //should work fairly well.
-            //TODO: Needs to consider additional ObjBitmaps introduced by a V-HAM, perhaps
-            int bestFit = VHAMFile.N_D2_OBJBITMAPS;
-            int testTextures;
-            foreach (Polymodel testModel in datafile.replacedModels)
-            {
-                testTextures = testModel.BaseTexture + datafile.CountUniqueObjBitmaps(testModel);
-                if (bestFit < testTextures)
-                {
-                    bestFit = testTextures;
-                }
-            }
-            if (bestFit >= 600)
-            {
-                bestFit = 0;
-                MessageBox.Show("Cannot find a open slot beyond 422.");
-            }
-            model.BaseTexture = bestFit;
-            isLocked = true;
-            ModelBaseTextureSpinner.Value = bestFit;
-            isLocked = false;
-        }
-
-        private void ModelBaseTextureSpinner_ValueChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            if (datafile.replacedModels.Count == 0) return;
-            Polymodel model = datafile.replacedModels[ElementNumber];
-            model.BaseTexture = (int)ModelBaseTextureSpinner.Value;
-        }
-
-        private void ModelBasePointerSpinner_ValueChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            if (datafile.replacedModels.Count == 0) return;
-            Polymodel model = datafile.replacedModels[ElementNumber];
-            model.FirstTexture = (ushort)ModelBasePointerSpinner.Value;
         }
 
         //---------------------------------------------------------------------

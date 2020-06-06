@@ -64,10 +64,24 @@
             this.label102 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.TextureGroupBox = new System.Windows.Forms.GroupBox();
+            this.FindPackButton = new System.Windows.Forms.Button();
+            this.AnimatedWarningLabel = new System.Windows.Forms.Label();
+            this.ModelBasePointerSpinner = new System.Windows.Forms.NumericUpDown();
+            this.label9 = new System.Windows.Forms.Label();
+            this.ModelNumPointers = new System.Windows.Forms.TextBox();
+            this.ModelNumTextures = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.ModelBaseTextureSpinner = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.PitchTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ZoomTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AngleTrackBar)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.TextureGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ModelBasePointerSpinner)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ModelBaseTextureSpinner)).BeginInit();
             this.SuspendLayout();
             // 
             // NoDepthCheckBox
@@ -84,7 +98,7 @@
             // 
             // btnExportModel
             // 
-            this.btnExportModel.Location = new System.Drawing.Point(95, 220);
+            this.btnExportModel.Location = new System.Drawing.Point(201, 191);
             this.btnExportModel.Name = "btnExportModel";
             this.btnExportModel.Size = new System.Drawing.Size(100, 23);
             this.btnExportModel.TabIndex = 73;
@@ -409,17 +423,135 @@
             this.groupBox1.Controls.Add(this.txtModelMaxY);
             this.groupBox1.Controls.Add(this.txtModelMaxZ);
             this.groupBox1.Controls.Add(this.label111);
-            this.groupBox1.Location = new System.Drawing.Point(15, 249);
+            this.groupBox1.Location = new System.Drawing.Point(15, 220);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(170, 69);
             this.groupBox1.TabIndex = 75;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Global Bounding Box";
             // 
+            // TextureGroupBox
+            // 
+            this.TextureGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.TextureGroupBox.Controls.Add(this.FindPackButton);
+            this.TextureGroupBox.Controls.Add(this.AnimatedWarningLabel);
+            this.TextureGroupBox.Controls.Add(this.ModelBasePointerSpinner);
+            this.TextureGroupBox.Controls.Add(this.label9);
+            this.TextureGroupBox.Controls.Add(this.ModelNumPointers);
+            this.TextureGroupBox.Controls.Add(this.ModelNumTextures);
+            this.TextureGroupBox.Controls.Add(this.label8);
+            this.TextureGroupBox.Controls.Add(this.label6);
+            this.TextureGroupBox.Controls.Add(this.ModelBaseTextureSpinner);
+            this.TextureGroupBox.Controls.Add(this.label1);
+            this.TextureGroupBox.Location = new System.Drawing.Point(15, 295);
+            this.TextureGroupBox.Name = "TextureGroupBox";
+            this.TextureGroupBox.Size = new System.Drawing.Size(352, 85);
+            this.TextureGroupBox.TabIndex = 76;
+            this.TextureGroupBox.TabStop = false;
+            this.TextureGroupBox.Text = "Textures";
+            this.TextureGroupBox.Visible = false;
+            // 
+            // FindPackButton
+            // 
+            this.FindPackButton.Location = new System.Drawing.Point(289, 11);
+            this.FindPackButton.Name = "FindPackButton";
+            this.FindPackButton.Size = new System.Drawing.Size(41, 23);
+            this.FindPackButton.TabIndex = 37;
+            this.FindPackButton.Text = "Find";
+            this.FindPackButton.UseVisualStyleBackColor = true;
+            this.FindPackButton.Click += new System.EventHandler(this.FindPackButton_Click);
+            // 
+            // AnimatedWarningLabel
+            // 
+            this.AnimatedWarningLabel.AutoSize = true;
+            this.AnimatedWarningLabel.Location = new System.Drawing.Point(6, 36);
+            this.AnimatedWarningLabel.Name = "AnimatedWarningLabel";
+            this.AnimatedWarningLabel.Size = new System.Drawing.Size(266, 13);
+            this.AnimatedWarningLabel.TabIndex = 36;
+            this.AnimatedWarningLabel.Text = "Warning: This range conflicts with an animated texture.";
+            this.AnimatedWarningLabel.Visible = false;
+            // 
+            // ModelBasePointerSpinner
+            // 
+            this.ModelBasePointerSpinner.Location = new System.Drawing.Point(208, 53);
+            this.ModelBasePointerSpinner.Maximum = new decimal(new int[] {
+            600,
+            0,
+            0,
+            0});
+            this.ModelBasePointerSpinner.Name = "ModelBasePointerSpinner";
+            this.ModelBasePointerSpinner.Size = new System.Drawing.Size(75, 20);
+            this.ModelBasePointerSpinner.TabIndex = 34;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(153, 56);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(49, 13);
+            this.label9.TabIndex = 35;
+            this.label9.Text = "Insert At:";
+            // 
+            // ModelNumPointers
+            // 
+            this.ModelNumPointers.Location = new System.Drawing.Point(93, 53);
+            this.ModelNumPointers.Name = "ModelNumPointers";
+            this.ModelNumPointers.ReadOnly = true;
+            this.ModelNumPointers.Size = new System.Drawing.Size(54, 20);
+            this.ModelNumPointers.TabIndex = 33;
+            // 
+            // ModelNumTextures
+            // 
+            this.ModelNumTextures.Location = new System.Drawing.Point(93, 13);
+            this.ModelNumTextures.Name = "ModelNumTextures";
+            this.ModelNumTextures.ReadOnly = true;
+            this.ModelNumTextures.Size = new System.Drawing.Size(54, 20);
+            this.ModelNumTextures.TabIndex = 32;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 60);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(48, 13);
+            this.label8.TabIndex = 31;
+            this.label8.Text = "Pointers:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 16);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(81, 13);
+            this.label6.TabIndex = 30;
+            this.label6.Text = "Object Bitmaps:";
+            // 
+            // ModelBaseTextureSpinner
+            // 
+            this.ModelBaseTextureSpinner.Location = new System.Drawing.Point(208, 13);
+            this.ModelBaseTextureSpinner.Maximum = new decimal(new int[] {
+            600,
+            0,
+            0,
+            0});
+            this.ModelBaseTextureSpinner.Name = "ModelBaseTextureSpinner";
+            this.ModelBaseTextureSpinner.Size = new System.Drawing.Size(75, 20);
+            this.ModelBaseTextureSpinner.TabIndex = 29;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(153, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(49, 13);
+            this.label1.TabIndex = 29;
+            this.label1.Text = "Insert At:";
+            // 
             // PolymodelPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.TextureGroupBox);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.NoDepthCheckBox);
             this.Controls.Add(this.btnExportModel);
@@ -454,6 +586,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.AngleTrackBar)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.TextureGroupBox.ResumeLayout(false);
+            this.TextureGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ModelBasePointerSpinner)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ModelBaseTextureSpinner)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -497,5 +633,16 @@
         private System.Windows.Forms.Label label102;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.GroupBox TextureGroupBox;
+        private System.Windows.Forms.Button FindPackButton;
+        private System.Windows.Forms.Label AnimatedWarningLabel;
+        private System.Windows.Forms.NumericUpDown ModelBasePointerSpinner;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox ModelNumPointers;
+        private System.Windows.Forms.TextBox ModelNumTextures;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown ModelBaseTextureSpinner;
+        private System.Windows.Forms.Label label1;
     }
 }
