@@ -265,7 +265,7 @@ namespace Descent2Workshop
                 {
                     EditorHXMFile hxm = new EditorHXMFile(archive);
 
-                    HXMEditor editor = new HXMEditor(hxm, this, "");
+                    HXMEditor editor = new HXMEditor(hxm, this, null);
                     editor.Show();
                 }
             }
@@ -509,7 +509,7 @@ namespace Descent2Workshop
 
                 if (LoadHXMFile(dialog.HXMFilename, hxmFile))
                 {
-                    HXMEditor editor = new HXMEditor(hxmFile, this, dialog.HXMFilename);
+                    HXMEditor editor = new HXMEditor(hxmFile, this, new FileSaveHandler(dialog.HXMFilename));
                     editor.Show();
                 }
             }

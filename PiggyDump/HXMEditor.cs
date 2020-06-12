@@ -21,10 +21,12 @@
 */
 
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 
 using System.IO;
 using System.Windows.Forms;
+using Descent2Workshop.SaveHandlers;
 using Descent2Workshop.Transactions;
 using LibDescent.Data;
 using LibDescent.Edit;
@@ -37,7 +39,6 @@ namespace Descent2Workshop
         public EditorHXMFile datafile;
         public StandardUI host;
         private bool isLocked = false;
-        private string currentFilename;
 
         private ModelTextureManager texMan = new ModelTextureManager();
 
@@ -47,13 +48,16 @@ namespace Descent2Workshop
 
         private Palette palette;
 
-        private int ElementNumber { get { return (int)nudElementNum.Value; } }
+        private int ElementNumber { get { return (int)ElementSpinner.Value; } }
+        private int PageNumber { get { return EditorTabs.SelectedIndex; } }
 
         private EditorPanels.RobotPanel robotPanel;
         private EditorPanels.PolymodelPanel polymodelPanel;
         private TransactionManager transactionManager = new TransactionManager();
 
-        public HXMEditor(EditorHXMFile datafile, StandardUI host, string filename)
+        private SaveHandler saveHandler;
+
+        public HXMEditor(EditorHXMFile datafile, StandardUI host, SaveHandler saveHandler)
         {
             InitializeComponent();
 
@@ -70,38 +74,46 @@ namespace Descent2Workshop
             this.host = host;
             palette = host.DefaultPalette;
             modelRenderer = new ModelRenderer(datafile.BaseHAM, host.DefaultPigFile, palette);
+
+            string currentFilename = "Untitled";
+            if (saveHandler != null)
+                currentFilename = saveHandler.GetUIName();
+
+            this.saveHandler = saveHandler;
             this.Text = string.Format("{0} - HXM Editor", currentFilename);
+
+            transactionManager.undoEvent += DoUndoEvent;
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             isLocked = true;
             ResetMaxes();
-            if (nudElementNum.Maximum != -1)
+            if (ElementSpinner.Maximum != -1)
             {
-                nudElementNum.Value = 0;
+                ElementSpinner.Value = 0;
             }
 
-            FillOutCurrentPanel(tabControl1.SelectedIndex, 0);
+            FillOutCurrentPanel(EditorTabs.SelectedIndex, 0);
 
             isLocked = false;
         }
 
         private void ResetMaxes()
         {
-            switch (tabControl1.SelectedIndex)
+            switch (EditorTabs.SelectedIndex)
             {
                 case 0:
                     InitRobotPanel();
-                    nudElementNum.Maximum = (decimal)datafile.replacedRobots.Count - 1;
-                    if (datafile.replacedRobots.Count == 0) nudElementNum.Minimum = -1;
-                    else nudElementNum.Minimum = 0;
+                    ElementSpinner.Maximum = (decimal)datafile.replacedRobots.Count - 1;
+                    if (datafile.replacedRobots.Count == 0) ElementSpinner.Minimum = -1;
+                    else ElementSpinner.Minimum = 0;
                     break;
                 case 1:
                     InitModelPanel();
-                    nudElementNum.Maximum = (decimal)datafile.replacedModels.Count - 1;
-                    if (datafile.replacedModels.Count == 0) nudElementNum.Minimum = -1;
-                    else nudElementNum.Minimum = 0;
+                    ElementSpinner.Maximum = (decimal)datafile.replacedModels.Count - 1;
+                    if (datafile.replacedModels.Count == 0) ElementSpinner.Minimum = -1;
+                    else ElementSpinner.Minimum = 0;
                     break;
             }
         }
@@ -196,7 +208,7 @@ namespace Descent2Workshop
 
         private void UpdateModelPanel(int num)
         {
-            Polymodel model = datafile.replacedModels[(int)nudElementNum.Value];
+            Polymodel model = datafile.replacedModels[(int)ElementSpinner.Value];
             polymodelPanel.Update(model, num);
         }
 
@@ -205,7 +217,7 @@ namespace Descent2Workshop
             if (!isLocked)
             {
                 isLocked = true;
-                FillOutCurrentPanel(tabControl1.SelectedIndex, (int)nudElementNum.Value);
+                FillOutCurrentPanel(EditorTabs.SelectedIndex, (int)ElementSpinner.Value);
                 isLocked = false;
             }
         }
@@ -219,41 +231,12 @@ namespace Descent2Workshop
         }
 
         //---------------------------------------------------------------------
-        // MODEL UPDATORS
-        //---------------------------------------------------------------------
-
-        private void ImportModel(Polymodel original)
-        {
-            int oldNumTextures = original.NumTextures;
-
-            List<string> newTextureNames = new List<string>();
-            openFileDialog1.Filter = "Parallax Object Files|*.pof";
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                string traceto = "";
-                if (bool.Parse(StandardUI.options.GetOption("TraceModels", bool.FalseString)))
-                {
-                    string bareFilename = Path.GetFileName(openFileDialog1.FileName);
-                    traceto = StandardUI.options.GetOption("TraceDir", ".") + Path.DirectorySeparatorChar + Path.ChangeExtension(bareFilename, "txt");
-                }
-
-                Polymodel model = POFReader.ReadPOFFile(openFileDialog1.FileName, traceto);
-                model.ExpandSubmodels();
-                //int numTextures = model.n_textures;
-                //datafile.ReplaceModel(ElementNumber, model);
-                datafile.replacedModels[ElementNumber] = model;
-                model.replacementID = ReplacedElementComboBox.SelectedIndex;
-                UpdateModelPanel(ElementNumber);
-            }
-        }
-
-        //---------------------------------------------------------------------
         // GENERIC FUNCTIONS
         //---------------------------------------------------------------------
         private void ReplacedElementComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (isLocked) return;
-            switch (tabControl1.SelectedIndex)
+            switch (EditorTabs.SelectedIndex)
             {
                 case 0:
                     {
@@ -274,19 +257,25 @@ namespace Descent2Workshop
 
         private void InsertButton_Click(object sender, EventArgs e)
         {
-            int newelem = 0;
-            switch (tabControl1.SelectedIndex)
+            int newelem = ElementNumber + 1;
+            switch (EditorTabs.SelectedIndex)
             {
                 case 0:
-                    newelem = datafile.AddRobot();
+                    {
+                        NamedListAddTransaction transaction = new NamedListAddTransaction("New robot", datafile, "replacedRobots", "RobotNames", newelem, new Robot(), "New Robot", ElementNumber, 0);
+                        transactionManager.ApplyTransaction(transaction);
+                    }
                     break;
                 case 1:
-                    newelem = datafile.AddModel();
+                    {
+                        NamedListAddTransaction transaction = new NamedListAddTransaction("New model", datafile, "replacedModels", "ModelNames", newelem, new Polymodel(10), "New Model", ElementNumber, 1);
+                        transactionManager.ApplyTransaction(transaction);
+                    }
                     break;
             }
 
             ResetMaxes();
-            nudElementNum.Value = newelem;
+            ElementSpinner.Value = newelem;
         }
 
         //---------------------------------------------------------------------
@@ -294,80 +283,115 @@ namespace Descent2Workshop
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// Helper function to save a HAM file, with lots of dumb error handling that doesn't work probably.
+        /// Helper function to save a HXM file, with lots of dumb error handling that doesn't work probably.
         /// </summary>
-        /// <param name="filename">The filename to save the file to.</param>
-        private void SaveHXMFile(string filename)
+        private void SaveHXMFile()
         {
-            //Get rid of any old backups
-            try
+            if (saveHandler == null) //No save handler, so can't actually save right now
             {
-                File.Delete(Path.ChangeExtension(filename, "BAK"));
+                //HACK: Just call the save as handler for now... This needs restructuring
+                SaveAsMenuItem_Click(this, new EventArgs());
+                return; //and don't repeat the save code when we recall ourselves.
             }
-            catch (FileNotFoundException) { }
-            catch (DirectoryNotFoundException) { } //Discover this with our face to avoid a 1/1000000 race condition
-            catch (UnauthorizedAccessException exc)
+            Stream stream = saveHandler.GetStream();
+            if (stream == null)
             {
-                host.AppendConsole(String.Format("Cannot delete old backup file {0}: Permission denied.\r\nMsg: {1}\r\n", Path.ChangeExtension(filename, "BAK"), exc.Message));
+                MessageBox.Show(this, string.Format("Error opening save file {0}:\r\n{1}", saveHandler.GetUIName(), saveHandler.GetErrorMsg()));
             }
-            catch (IOException exc)
+            else
             {
-                host.AppendConsole(String.Format("Cannot delete old backup file {0}: IO error occurred.\r\nMsg: {1}\r\n", Path.ChangeExtension(filename, "BAK"), exc.Message));
-            }
-            //Move the current file into the backup slot
-            try
-            {
-                File.Move(filename, Path.ChangeExtension(filename, "BAK"));
-            }
-            catch (FileNotFoundException) { }
-            catch (DirectoryNotFoundException) { } //Discover this with our face to avoid a 1/1000000 race condition
-            catch (UnauthorizedAccessException exc)
-            {
-                host.AppendConsole(String.Format("Cannot move old HXM file {0}: Permission denied.\r\nMsg: {1}\r\n", filename, exc.Message));
-            }
-            catch (IOException exc)
-            {
-                host.AppendConsole(String.Format("Cannot move old HXM file {0}: IO error occurred.\r\nMsg: {1}\r\n", filename, exc.Message));
-            }
-            //Finally write the new file
-            FileStream stream;
-            try
-            {
-                stream = File.Open(filename, FileMode.Create);
                 datafile.Write(stream);
-                stream.Close();
-                stream.Dispose();
-            }
-            catch (Exception exc)
-            {
-                FileUtilities.FileExceptionHandler(exc, "HXM file");
+                if (saveHandler.FinalizeStream())
+                {
+                    MessageBox.Show(this, string.Format("Error writing save file {0}:\r\n{1}", saveHandler.GetUIName(), saveHandler.GetErrorMsg()));
+                }
+                else
+                {
+                    transactionManager.UnsavedFlag = false;
+                }
             }
         }
 
-        private void menuItem3_Click_1(object sender, EventArgs e)
+        private void SaveAsMenuItem_Click(object sender, EventArgs e)
         {
             saveFileDialog1.Filter = "HXM Files|*.hxm";
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 if (saveFileDialog1.FileName != "")
                 {
-                    currentFilename = saveFileDialog1.FileName;
-                    SaveHXMFile(saveFileDialog1.FileName);
-                    this.Text = string.Format("{0} - HXM Editor", currentFilename);
+                    //Ensure the old save handler is detached from any UI properly.
+                    if (saveHandler != null) saveHandler.Destroy();
+                    saveHandler = new FileSaveHandler(saveFileDialog1.FileName);
+                    SaveHXMFile();
+                    this.Text = string.Format("{0} - HXM Editor", saveHandler.GetUIName());
                 }
             }
         }
 
-        private void MenuItem2_Click(object sender, EventArgs e)
+        private void SaveMenuItem_Click(object sender, EventArgs e)
         {
-            if (currentFilename == "")
+            if (saveHandler == null) //No save handler, so can't actually save right now
             {
-                menuItem3_Click_1(sender, e);
+                //HACK: Just call the save as handler for now... This needs restructuring
+                SaveAsMenuItem_Click(sender, e);
+            }
+            SaveHXMFile();
+        }
+
+        private void HXMEditor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            string currentFilename = "Untitled";
+            if (saveHandler != null)
+                currentFilename = saveHandler.GetUIName();
+
+            if (transactionManager.UnsavedFlag)
+            {
+                switch (MessageBox.Show(this, string.Format("Would you like to save changes to {0}?", currentFilename), "Unsaved changes", MessageBoxButtons.YesNoCancel))
+                {
+                    case DialogResult.Yes:
+                        SaveHXMFile();
+                        break;
+                    case DialogResult.No:
+                        break;
+                    case DialogResult.Cancel:
+                        e.Cancel = true;
+                        break;
+                }
+            }
+        }
+
+        private void UndoMenuItem_Click(object sender, EventArgs e)
+        {
+            transactionManager.DoUndo();
+        }
+
+        private void RedoMenuItem_Click(object sender, EventArgs e)
+        {
+            transactionManager.DoRedo();
+        }
+
+        private void DoUndoEvent(object sender, UndoEventArgs e)
+        {
+            Transaction transaction = e.UndoneTransaction;
+            if (transaction.Tab != PageNumber)
+                EditorTabs.SelectedIndex = transaction.Tab;
+
+            ResetMaxes();
+            if (e.Redo)
+            {
+                if (transaction.Page != ElementNumber)
+                    ElementSpinner.Value = transaction.RedoPage;
+                else
+                    FillOutCurrentPanel(transaction.Tab, transaction.RedoPage); //force an update
             }
             else
             {
-                SaveHXMFile(currentFilename);
+                if (transaction.Page != ElementNumber)
+                    ElementSpinner.Value = transaction.Page;
+                else
+                    FillOutCurrentPanel(transaction.Tab, transaction.Page); //force an update
             }
         }
+
     }
 }

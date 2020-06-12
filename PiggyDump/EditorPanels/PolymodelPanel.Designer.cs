@@ -75,6 +75,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.ModelBaseTextureSpinner = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.PitchTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ZoomTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AngleTrackBar)).BeginInit();
@@ -172,6 +173,7 @@
             this.btnImportModel.TabIndex = 67;
             this.btnImportModel.Text = "Import Model...";
             this.btnImportModel.UseVisualStyleBackColor = true;
+            this.btnImportModel.Click += new System.EventHandler(this.btnImportModel_Click);
             // 
             // cbModelDeadModel
             // 
@@ -547,6 +549,11 @@
             this.label1.TabIndex = 29;
             this.label1.Text = "Insert At:";
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.Filter = "Parallax Object Files|*.pof";
+            // 
             // PolymodelPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -644,5 +651,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.NumericUpDown ModelBaseTextureSpinner;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }

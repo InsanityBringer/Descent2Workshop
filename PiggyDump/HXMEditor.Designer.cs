@@ -35,12 +35,15 @@
             this.menuItem3 = new System.Windows.Forms.MenuItem();
             this.menuItem4 = new System.Windows.Forms.MenuItem();
             this.menuItem5 = new System.Windows.Forms.MenuItem();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.EditMenu = new System.Windows.Forms.MenuItem();
+            this.UndoMenuItem = new System.Windows.Forms.MenuItem();
+            this.RedoMenuItem = new System.Windows.Forms.MenuItem();
+            this.EditorTabs = new System.Windows.Forms.TabControl();
             this.RobotTabPage = new System.Windows.Forms.TabPage();
             this.ModelTabPage = new System.Windows.Forms.TabPage();
             this.statusBar1 = new System.Windows.Forms.StatusBar();
             this.label50 = new System.Windows.Forms.Label();
-            this.nudElementNum = new System.Windows.Forms.NumericUpDown();
+            this.ElementSpinner = new System.Windows.Forms.NumericUpDown();
             this.DeleteButton = new System.Windows.Forms.Button();
             this.label48 = new System.Windows.Forms.Label();
             this.InsertButton = new System.Windows.Forms.Button();
@@ -48,14 +51,15 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.ReplacedElementComboBox = new System.Windows.Forms.ComboBox();
-            this.tabControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudElementNum)).BeginInit();
+            this.EditorTabs.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ElementSpinner)).BeginInit();
             this.SuspendLayout();
             // 
             // mainMenu1
             // 
             this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.menuItem1});
+            this.menuItem1,
+            this.EditMenu});
             // 
             // menuItem1
             // 
@@ -70,14 +74,16 @@
             // menuItem2
             // 
             this.menuItem2.Index = 0;
+            this.menuItem2.Shortcut = System.Windows.Forms.Shortcut.CtrlS;
             this.menuItem2.Text = "Save";
-            this.menuItem2.Click += new System.EventHandler(this.MenuItem2_Click);
+            this.menuItem2.Click += new System.EventHandler(this.SaveMenuItem_Click);
             // 
             // menuItem3
             // 
             this.menuItem3.Index = 1;
+            this.menuItem3.Shortcut = System.Windows.Forms.Shortcut.CtrlShiftS;
             this.menuItem3.Text = "Save As...";
-            this.menuItem3.Click += new System.EventHandler(this.menuItem3_Click_1);
+            this.menuItem3.Click += new System.EventHandler(this.SaveAsMenuItem_Click);
             // 
             // menuItem4
             // 
@@ -89,17 +95,39 @@
             this.menuItem5.Index = 3;
             this.menuItem5.Text = "Close Window";
             // 
-            // tabControl1
+            // EditMenu
             // 
-            this.tabControl1.Controls.Add(this.RobotTabPage);
-            this.tabControl1.Controls.Add(this.ModelTabPage);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tabControl1.Location = new System.Drawing.Point(0, 40);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(856, 539);
-            this.tabControl1.TabIndex = 2;
-            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
+            this.EditMenu.Index = 1;
+            this.EditMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.UndoMenuItem,
+            this.RedoMenuItem});
+            this.EditMenu.Text = "Edit";
+            // 
+            // UndoMenuItem
+            // 
+            this.UndoMenuItem.Index = 0;
+            this.UndoMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlZ;
+            this.UndoMenuItem.Text = "Undo";
+            this.UndoMenuItem.Click += new System.EventHandler(this.UndoMenuItem_Click);
+            // 
+            // RedoMenuItem
+            // 
+            this.RedoMenuItem.Index = 1;
+            this.RedoMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlY;
+            this.RedoMenuItem.Text = "Redo";
+            this.RedoMenuItem.Click += new System.EventHandler(this.RedoMenuItem_Click);
+            // 
+            // EditorTabs
+            // 
+            this.EditorTabs.Controls.Add(this.RobotTabPage);
+            this.EditorTabs.Controls.Add(this.ModelTabPage);
+            this.EditorTabs.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.EditorTabs.Location = new System.Drawing.Point(0, 40);
+            this.EditorTabs.Name = "EditorTabs";
+            this.EditorTabs.SelectedIndex = 0;
+            this.EditorTabs.Size = new System.Drawing.Size(856, 539);
+            this.EditorTabs.TabIndex = 2;
+            this.EditorTabs.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // RobotTabPage
             // 
@@ -136,13 +164,13 @@
             this.label50.TabIndex = 220;
             this.label50.Text = "Replacing Element:";
             // 
-            // nudElementNum
+            // ElementSpinner
             // 
-            this.nudElementNum.Location = new System.Drawing.Point(102, 12);
-            this.nudElementNum.Name = "nudElementNum";
-            this.nudElementNum.Size = new System.Drawing.Size(63, 20);
-            this.nudElementNum.TabIndex = 215;
-            this.nudElementNum.ValueChanged += new System.EventHandler(this.nudElementNum_ValueChanged);
+            this.ElementSpinner.Location = new System.Drawing.Point(102, 12);
+            this.ElementSpinner.Name = "ElementSpinner";
+            this.ElementSpinner.Size = new System.Drawing.Size(63, 20);
+            this.ElementSpinner.TabIndex = 215;
+            this.ElementSpinner.ValueChanged += new System.EventHandler(this.nudElementNum_ValueChanged);
             // 
             // DeleteButton
             // 
@@ -206,20 +234,21 @@
             this.ClientSize = new System.Drawing.Size(856, 601);
             this.Controls.Add(this.ReplacedElementComboBox);
             this.Controls.Add(this.label50);
-            this.Controls.Add(this.nudElementNum);
+            this.Controls.Add(this.ElementSpinner);
             this.Controls.Add(this.DeleteButton);
             this.Controls.Add(this.label48);
             this.Controls.Add(this.InsertButton);
             this.Controls.Add(this.label49);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.EditorTabs);
             this.Controls.Add(this.statusBar1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Menu = this.mainMenu1;
             this.Name = "HXMEditor";
             this.Text = "HXMEditor";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HXMEditor_FormClosing);
             this.Load += new System.EventHandler(this.HXMEditor_Load);
-            this.tabControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.nudElementNum)).EndInit();
+            this.EditorTabs.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ElementSpinner)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -231,12 +260,12 @@
         private System.Windows.Forms.MenuItem menuItem1;
         private System.Windows.Forms.MenuItem menuItem2;
         private System.Windows.Forms.MenuItem menuItem3;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl EditorTabs;
         private System.Windows.Forms.TabPage RobotTabPage;
         private System.Windows.Forms.TabPage ModelTabPage;
         private System.Windows.Forms.StatusBar statusBar1;
         private System.Windows.Forms.Label label50;
-        private System.Windows.Forms.NumericUpDown nudElementNum;
+        private System.Windows.Forms.NumericUpDown ElementSpinner;
         private System.Windows.Forms.Button DeleteButton;
         private System.Windows.Forms.Label label48;
         private System.Windows.Forms.Button InsertButton;
@@ -246,5 +275,8 @@
         private System.Windows.Forms.ComboBox ReplacedElementComboBox;
         private System.Windows.Forms.MenuItem menuItem4;
         private System.Windows.Forms.MenuItem menuItem5;
+        private System.Windows.Forms.MenuItem EditMenu;
+        private System.Windows.Forms.MenuItem UndoMenuItem;
+        private System.Windows.Forms.MenuItem RedoMenuItem;
     }
 }

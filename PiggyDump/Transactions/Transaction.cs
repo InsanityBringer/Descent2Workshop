@@ -34,6 +34,7 @@ namespace Descent2Workshop.Transactions
         public string OperationName { get; }
         public object SourceObject { get; }
         public int Page { get; }
+        public int RedoPage { get; protected set; }
         public int Tab { get; }
 
         protected PropertyInfo property;
@@ -42,15 +43,16 @@ namespace Descent2Workshop.Transactions
         public Transaction(string label, object target, string propertyName, int page, int tab)
         {
             OperationName = label;
-            if (target != null) //hack
+            this.target = target;
+            if (target != null && propertyName != null) //hack
             {
-                this.target = target;
                 Type targetType = target.GetType();
                 property = targetType.GetProperty(propertyName);
                 //if (!property.CanWrite) //TODO: this check doesn't work with indexed things like arrays that can't be redefined by the user
                 //    throw new Exception(string.Format("Transaction::Transaction: Cannot write specified property {0}", propertyName));
             }
             Page = page;
+            RedoPage = page;
             Tab = tab;
         }
         public virtual bool Apply()

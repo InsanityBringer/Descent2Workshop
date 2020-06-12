@@ -250,5 +250,25 @@ namespace Descent2Workshop.EditorPanels
             ModelBaseTextureSpinner.Value = bestFit;
             isLocked = false;
         }
+
+        private void btnImportModel_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                string traceto = "";
+                if (bool.Parse(StandardUI.options.GetOption("TraceModels", bool.FalseString)))
+                {
+                    string bareFilename = Path.GetFileName(openFileDialog1.FileName);
+                    traceto = StandardUI.options.GetOption("TraceDir", ".") + Path.DirectorySeparatorChar + Path.ChangeExtension(bareFilename, "txt");
+                }
+
+                Polymodel newmodel = POFReader.ReadPOFFile(openFileDialog1.FileName, traceto);
+                newmodel.ExpandSubmodels();
+                //datafile.ReplaceModel(ElementNumber, model);
+                ModelReplaceTransaction transaction = new ModelReplaceTransaction("Load model", (object)model, newmodel, modelID, tabPage);
+                transactionManager.ApplyTransaction(transaction);
+                Update(model, modelID);
+            }
+        }
     }
 }

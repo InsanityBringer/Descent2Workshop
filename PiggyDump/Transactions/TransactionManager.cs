@@ -31,9 +31,11 @@ namespace Descent2Workshop.Transactions
     public class UndoEventArgs : EventArgs
     {
         public Transaction UndoneTransaction { get; }
-        public UndoEventArgs(Transaction transaction) : base()
+        public bool Redo { get; }
+        public UndoEventArgs(Transaction transaction, bool redo) : base()
         {
             UndoneTransaction = transaction;
+            this.Redo = redo;
         }
     }
 
@@ -89,7 +91,7 @@ namespace Descent2Workshop.Transactions
             transactionQueue[undoPosition].Revert();
             if (undoEvent != null)
             {
-                UndoEventArgs args = new UndoEventArgs(transactionQueue[undoPosition]);
+                UndoEventArgs args = new UndoEventArgs(transactionQueue[undoPosition], false);
                 undoEvent(this, args);
             }
             TransactionInProgress = false;
@@ -104,7 +106,7 @@ namespace Descent2Workshop.Transactions
             transactionQueue[queuePosition].Apply();
             if (undoEvent != null)
             {
-                UndoEventArgs args = new UndoEventArgs(transactionQueue[queuePosition]);
+                UndoEventArgs args = new UndoEventArgs(transactionQueue[queuePosition], true);
                 undoEvent(this, args);
             }
             TransactionInProgress = false;

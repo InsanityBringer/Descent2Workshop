@@ -906,6 +906,12 @@ namespace Descent2Workshop
         /// </summary>
         private void SaveHAMFile()
         {
+            if (saveHandler == null) //No save handler, so can't actually save right now
+            {
+                //HACK: Just call the save as handler for now... This needs restructuring
+                mnuSaveAs_Click(this, new EventArgs());
+                return; //and don't repeat the save code when we recall ourselves.
+            }
             Stream stream = saveHandler.GetStream();
             if (stream == null)
             {
@@ -918,17 +924,15 @@ namespace Descent2Workshop
                 {
                     MessageBox.Show(this, string.Format("Error writing save file {0}:\r\n{1}", saveHandler.GetUIName(), saveHandler.GetErrorMsg()));
                 }
+                else
+                {
+                    transactionManager.UnsavedFlag = false;
+                }
             }
-
         }
 
         private void mnuSave_Click(object sender, EventArgs e)
         {
-            if (saveHandler == null) //No save handler, so can't actually save right now
-            {
-                //HACK: Just call the save as handler for now... This needs restructuring
-                mnuSaveAs_Click(sender, e);
-            }
             bool compatObjBitmaps = (StandardUI.options.GetOption("CompatObjBitmaps", bool.FalseString) == bool.TrueString);
             SaveHAMFile();
         }
