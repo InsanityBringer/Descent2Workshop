@@ -183,7 +183,8 @@
             this.cbModelDeadModel.Name = "cbModelDeadModel";
             this.cbModelDeadModel.Size = new System.Drawing.Size(221, 21);
             this.cbModelDeadModel.TabIndex = 66;
-            this.cbModelDeadModel.Tag = "3";
+            this.cbModelDeadModel.Tag = "DeadModelnum";
+            this.cbModelDeadModel.SelectedIndexChanged += new System.EventHandler(this.ModelComboBox_SelectedIndexChanged);
             // 
             // label150
             // 
@@ -202,7 +203,8 @@
             this.cbModelDyingModel.Name = "cbModelDyingModel";
             this.cbModelDyingModel.Size = new System.Drawing.Size(221, 21);
             this.cbModelDyingModel.TabIndex = 64;
-            this.cbModelDyingModel.Tag = "2";
+            this.cbModelDyingModel.Tag = "DyingModelnum";
+            this.cbModelDyingModel.SelectedIndexChanged += new System.EventHandler(this.ModelComboBox_SelectedIndexChanged);
             // 
             // label149
             // 
@@ -221,7 +223,8 @@
             this.cbModelLowDetail.Name = "cbModelLowDetail";
             this.cbModelLowDetail.Size = new System.Drawing.Size(221, 21);
             this.cbModelLowDetail.TabIndex = 62;
-            this.cbModelLowDetail.Tag = "1";
+            this.cbModelLowDetail.Tag = "SimplerModels";
+            this.cbModelLowDetail.SelectedIndexChanged += new System.EventHandler(this.ModelComboBox_SelectedIndexChanged);
             // 
             // PitchTrackBar
             // 
@@ -484,6 +487,8 @@
             this.ModelBasePointerSpinner.Name = "ModelBasePointerSpinner";
             this.ModelBasePointerSpinner.Size = new System.Drawing.Size(75, 20);
             this.ModelBasePointerSpinner.TabIndex = 34;
+            this.ModelBasePointerSpinner.Tag = "FirstTexture";
+            this.ModelBasePointerSpinner.ValueChanged += new System.EventHandler(this.ModelSpinner_ValueChanged);
             // 
             // label9
             // 
@@ -539,6 +544,8 @@
             this.ModelBaseTextureSpinner.Name = "ModelBaseTextureSpinner";
             this.ModelBaseTextureSpinner.Size = new System.Drawing.Size(75, 20);
             this.ModelBaseTextureSpinner.TabIndex = 29;
+            this.ModelBaseTextureSpinner.Tag = "BaseTexture";
+            this.ModelBaseTextureSpinner.ValueChanged += new System.EventHandler(this.ModelSpinner_ValueChanged);
             // 
             // label1
             // 

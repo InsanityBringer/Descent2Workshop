@@ -42,9 +42,6 @@ namespace Descent2Workshop
         public EditorHAMFile datafile;
         public StandardUI host;
         public bool isLocked = false;
-        public bool glContextCreated = false;
-        private ModelRenderer modelRenderer;
-        private bool noPMView = false;
         private Palette palette;
         private PIGFile piggyFile;
         private TransactionManager transactionManager = new TransactionManager();
@@ -95,7 +92,6 @@ namespace Descent2Workshop
 
             datafile = data;
             this.host = host;
-            modelRenderer = new ModelRenderer(datafile, piggyFile, palette);
             this.saveHandler = saveHandler;
 
             string currentFilename = "Untitled";
@@ -687,7 +683,7 @@ namespace Descent2Workshop
                     traceto = StandardUI.options.GetOption("TraceDir", ".") + Path.DirectorySeparatorChar + Path.ChangeExtension(bareFilename, "txt");
                 }
 
-                Polymodel model = POFReader.ReadPOFFile(openFileDialog1.FileName, traceto);
+                Polymodel model = POFReader.ReadPOFFile(openFileDialog1.FileName);
                 model.ExpandSubmodels();
                 //int numTextures = model.n_textures;
                 //TODO: does this work?

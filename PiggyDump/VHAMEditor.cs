@@ -45,8 +45,6 @@ namespace Descent2Workshop
         public StandardUI host;
         public bool isLocked = false;
         public bool glContextCreated = false;
-        private ModelRenderer modelRenderer;
-        private bool noPMView = false;
         private Palette palette;
 
         private RobotPanel robotPanel;
@@ -72,7 +70,6 @@ namespace Descent2Workshop
             datafile = data;
             this.host = host;
             palette = host.DefaultPalette;
-            modelRenderer = new ModelRenderer(datafile.BaseHAM, datafile.BaseHAM.piggyFile, palette);
         }
 
         private void VHAMEditor_Load(object sender, EventArgs e)

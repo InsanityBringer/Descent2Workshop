@@ -249,7 +249,7 @@ namespace Descent2Workshop
                     traceto = StandardUI.options.GetOption("TraceDir", ".") + Path.DirectorySeparatorChar + Path.ChangeExtension(bareFilename, "txt");
                 }
 
-                Polymodel model = POFReader.ReadPOFFile(openFileDialog1.FileName, traceto);
+                Polymodel model = POFReader.ReadPOFFile(openFileDialog1.FileName);
                 PolymodelPreviewer archiveEditor = new PolymodelPreviewer(model, this);
                 archiveEditor.Show();
             }

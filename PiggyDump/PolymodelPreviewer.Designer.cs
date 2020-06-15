@@ -47,6 +47,8 @@
             // 
             // trackBar1
             // 
+            this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBar1.LargeChange = 4;
             this.trackBar1.Location = new System.Drawing.Point(63, 402);
             this.trackBar1.Maximum = 16;
@@ -59,6 +61,8 @@
             // 
             // trackBar2
             // 
+            this.trackBar2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBar2.LargeChange = 4;
             this.trackBar2.Location = new System.Drawing.Point(453, 12);
             this.trackBar2.Maximum = 16;
@@ -72,6 +76,8 @@
             // 
             // trackBar3
             // 
+            this.trackBar3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.trackBar3.Location = new System.Drawing.Point(12, 12);
             this.trackBar3.Maximum = 64;
             this.trackBar3.Name = "trackBar3";
@@ -83,6 +89,7 @@
             // 
             // chkRadius
             // 
+            this.chkRadius.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chkRadius.AutoSize = true;
             this.chkRadius.Location = new System.Drawing.Point(63, 430);
             this.chkRadius.Name = "chkRadius";
@@ -94,6 +101,7 @@
             // 
             // chkNorm
             // 
+            this.chkNorm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chkNorm.AutoSize = true;
             this.chkNorm.Location = new System.Drawing.Point(63, 453);
             this.chkNorm.Name = "chkNorm";
@@ -105,6 +113,7 @@
             // 
             // chkShowBBs
             // 
+            this.chkShowBBs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chkShowBBs.AutoSize = true;
             this.chkShowBBs.Location = new System.Drawing.Point(158, 430);
             this.chkShowBBs.Name = "chkShowBBs";
@@ -116,6 +125,7 @@
             // 
             // chkWireframe
             // 
+            this.chkWireframe.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chkWireframe.AutoSize = true;
             this.chkWireframe.Location = new System.Drawing.Point(158, 453);
             this.chkWireframe.Name = "chkWireframe";
@@ -127,6 +137,7 @@
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(297, 431);
             this.label1.Name = "label1";
@@ -136,6 +147,7 @@
             // 
             // numericUpDown1
             // 
+            this.numericUpDown1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.numericUpDown1.Location = new System.Drawing.Point(342, 429);
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(50, 20);
@@ -144,6 +156,7 @@
             // 
             // chkAnimation
             // 
+            this.chkAnimation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chkAnimation.AutoSize = true;
             this.chkAnimation.Location = new System.Drawing.Point(300, 453);
             this.chkAnimation.Name = "chkAnimation";
@@ -155,6 +168,7 @@
             // 
             // chkSoftwareOverdraw
             // 
+            this.chkSoftwareOverdraw.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chkSoftwareOverdraw.AutoSize = true;
             this.chkSoftwareOverdraw.Location = new System.Drawing.Point(63, 476);
             this.chkSoftwareOverdraw.Name = "chkSoftwareOverdraw";
@@ -168,7 +182,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(535, 497);
+            this.ClientSize = new System.Drawing.Size(512, 502);
             this.Controls.Add(this.chkSoftwareOverdraw);
             this.Controls.Add(this.chkAnimation);
             this.Controls.Add(this.numericUpDown1);

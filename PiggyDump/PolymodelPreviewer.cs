@@ -58,6 +58,7 @@ namespace Descent2Workshop
             this.glControl1.VSync = false;
             this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
             this.glControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl1_Paint);
+            glControl1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 
             this.Controls.Add(glControl1);
             this.PerformLayout();
@@ -75,11 +76,6 @@ namespace Descent2Workshop
             }
             this.host = host;
             this.renderer = new ModelRenderer(host.DefaultPigFile, host.DefaultPalette);
-        }
-
-        public double GetFloatFromFixed(int fixedvalue)
-        {
-            return (double)fixedvalue / 65536D;
         }
 
         private void trackBar1_Scroll(object sender, EventArgs e)
@@ -123,13 +119,6 @@ namespace Descent2Workshop
         {
             double scale = 1 + ((double)trackBar3.Value * .5);
             renderer.SetupViewport(glControl1.Width, glControl1.Height, scale);
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            glContextCreated = false;
-            texMan.FreeTextureList(TextureList);
-            Close();
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)

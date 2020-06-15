@@ -161,6 +161,7 @@ namespace Descent2Workshop.EditorPanels
 
         public void Update(Polymodel model, int id)
         {
+            isLocked = true;
             txtModelNumModels.Text = model.NumSubmodels.ToString();
             txtModelDataSize.Text = model.ModelIDTASize.ToString();
             txtModelRadius.Text = model.Radius.ToString();
@@ -201,6 +202,7 @@ namespace Descent2Workshop.EditorPanels
 
             modelID = id;
             this.model = model;
+            isLocked = false;
         }
 
         private void ModelViewProperty_Changed(object sender, EventArgs e)
@@ -262,13 +264,41 @@ namespace Descent2Workshop.EditorPanels
                     traceto = StandardUI.options.GetOption("TraceDir", ".") + Path.DirectorySeparatorChar + Path.ChangeExtension(bareFilename, "txt");
                 }
 
-                Polymodel newmodel = POFReader.ReadPOFFile(openFileDialog1.FileName, traceto);
+                Polymodel newmodel = POFReader.ReadPOFFile(openFileDialog1.FileName);
                 newmodel.ExpandSubmodels();
                 //datafile.ReplaceModel(ElementNumber, model);
                 ModelReplaceTransaction transaction = new ModelReplaceTransaction("Load model", (object)model, newmodel, modelID, tabPage);
                 transactionManager.ApplyTransaction(transaction);
                 Update(model, modelID);
             }
+        }
+
+        private void ModelComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (isLocked || transactionManager.TransactionInProgress) return;
+
+            ComboBox control = (ComboBox)sender;
+
+            int value = control.SelectedIndex;
+            //hack because low detail is 1 based but dying/dead model nums are 0 based
+            if (control != cbModelLowDetail)
+            {
+                value--;
+            }
+            IntegerTransaction transaction = new IntegerTransaction("Model property", model, (string)control.Tag, modelID, tabPage, value);
+            transactionManager.ApplyTransaction(transaction);
+        }
+
+        private void ModelSpinner_ValueChanged(object sender, EventArgs e)
+        {
+            if (isLocked || transactionManager.TransactionInProgress) return;
+
+            NumericUpDown spinner = (NumericUpDown)sender;
+
+            int value = (int)spinner.Value;
+
+            IntegerTransaction transaction = new IntegerTransaction("Model property", model, (string)spinner.Tag, modelID, tabPage, value);
+            transactionManager.ApplyTransaction(transaction);
         }
     }
 }
