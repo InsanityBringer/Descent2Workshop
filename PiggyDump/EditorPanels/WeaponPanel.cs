@@ -94,6 +94,11 @@ namespace Descent2Workshop.EditorPanels
             isLocked = false;
         }
 
+        public void ChangeOwnName(string newname)
+        {
+            cbWeaponChildren.Items[weaponID+1] = newname;
+        }
+
         public void Update(Weapon weapon, int num)
         {
             isLocked = true;

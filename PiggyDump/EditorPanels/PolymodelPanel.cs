@@ -159,6 +159,13 @@ namespace Descent2Workshop.EditorPanels
             cbModelLowDetail.Items.AddRange(names);
         }
 
+        public void ChangeOwnName(string newname)
+        {
+            cbModelDeadModel.Items[modelID+1] = newname;
+            cbModelDyingModel.Items[modelID + 1] = newname;
+            cbModelLowDetail.Items[modelID + 1] = newname;
+        }
+
         public void Update(Polymodel model, int id)
         {
             isLocked = true;

@@ -47,6 +47,11 @@ namespace Descent2Workshop.EditorPanels
             }
         }
 
+        public void ChangeOwnName(string newname)
+        {
+            cbEClipBreakEClip.Items[eclipID + 1] = newname;
+        }
+
         public void Update(int number, EClip clip, PIGFile piggyFile)
         {
             isLocked = true;

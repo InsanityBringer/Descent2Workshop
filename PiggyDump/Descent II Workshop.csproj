@@ -112,6 +112,12 @@
     <Compile Include="EditorPanels\RobotPanel.Designer.cs">
       <DependentUpon>RobotPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="EditorPanels\SoundPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorPanels\SoundPanel.Designer.cs">
+      <DependentUpon>SoundPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="EditorPanels\TMAPInfoPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -263,6 +269,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EditorPanels\RobotPanel.resx">
       <DependentUpon>RobotPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorPanels\SoundPanel.resx">
+      <DependentUpon>SoundPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EditorPanels\TMAPInfoPanel.resx">
       <DependentUpon>TMAPInfoPanel.cs</DependentUpon>

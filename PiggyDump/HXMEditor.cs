@@ -125,25 +125,25 @@ namespace Descent2Workshop
                 case 0:
                     if (datafile.replacedRobots.Count != 0)
                     {
-                        robotPanel.Visible = true;
+                        robotPanel.Enabled = true;
                         UpdateRobotPanel(val);
                     }
                     else
                     {
-                        robotPanel.Visible = false;
+                        robotPanel.Enabled = false;
                         statusBar1.Text = "No robot elements in HXM";
                     }
                     break;
                 case 1:
                     if (datafile.replacedModels.Count != 0)
                     {
-                        polymodelPanel.Visible = true;
+                        polymodelPanel.Enabled = true;
                         UpdateModelPanel(val);
                         ReplacedElementComboBox.SelectedIndex = datafile.replacedModels[val].replacementID;
                     }
                     else
                     {
-                        polymodelPanel.Visible = false;
+                        polymodelPanel.Enabled = false;
                         statusBar1.Text = "no model elements in HXM";
                     }
                     break;

@@ -53,10 +53,6 @@
             this.WeaponTabPage = new System.Windows.Forms.TabPage();
             this.ModelTabPage = new System.Windows.Forms.TabPage();
             this.SoundTabPage = new System.Windows.Forms.TabPage();
-            this.cbSoundSNDid = new System.Windows.Forms.ComboBox();
-            this.cbLowMemSound = new System.Windows.Forms.ComboBox();
-            this.label144 = new System.Windows.Forms.Label();
-            this.label143 = new System.Windows.Forms.Label();
             this.ReactorTabPage = new System.Windows.Forms.TabPage();
             this.label151 = new System.Windows.Forms.Label();
             this.cbReactorModel = new System.Windows.Forms.ComboBox();
@@ -135,7 +131,6 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.mainToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.EditorTabs.SuspendLayout();
-            this.SoundTabPage.SuspendLayout();
             this.ReactorTabPage.SuspendLayout();
             this.PowerupTabPage.SuspendLayout();
             this.ShipTabPage.SuspendLayout();
@@ -345,56 +340,12 @@
             // 
             // SoundTabPage
             // 
-            this.SoundTabPage.Controls.Add(this.cbSoundSNDid);
-            this.SoundTabPage.Controls.Add(this.cbLowMemSound);
-            this.SoundTabPage.Controls.Add(this.label144);
-            this.SoundTabPage.Controls.Add(this.label143);
             this.SoundTabPage.Location = new System.Drawing.Point(4, 22);
             this.SoundTabPage.Name = "SoundTabPage";
             this.SoundTabPage.Size = new System.Drawing.Size(846, 513);
             this.SoundTabPage.TabIndex = 7;
             this.SoundTabPage.Text = "Sounds";
             this.SoundTabPage.UseVisualStyleBackColor = true;
-            // 
-            // cbSoundSNDid
-            // 
-            this.cbSoundSNDid.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbSoundSNDid.FormattingEnabled = true;
-            this.cbSoundSNDid.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.cbSoundSNDid.Location = new System.Drawing.Point(132, 5);
-            this.cbSoundSNDid.Name = "cbSoundSNDid";
-            this.cbSoundSNDid.Size = new System.Drawing.Size(121, 21);
-            this.cbSoundSNDid.TabIndex = 4;
-            this.cbSoundSNDid.SelectedIndexChanged += new System.EventHandler(this.cbSoundSNDid_SelectedIndexChanged);
-            // 
-            // cbLowMemSound
-            // 
-            this.cbLowMemSound.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbLowMemSound.FormattingEnabled = true;
-            this.cbLowMemSound.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.cbLowMemSound.Location = new System.Drawing.Point(132, 32);
-            this.cbLowMemSound.Name = "cbLowMemSound";
-            this.cbLowMemSound.Size = new System.Drawing.Size(121, 21);
-            this.cbLowMemSound.TabIndex = 3;
-            this.cbLowMemSound.SelectedIndexChanged += new System.EventHandler(this.cbLowMemSound_SelectedIndexChanged);
-            // 
-            // label144
-            // 
-            this.label144.AutoSize = true;
-            this.label144.Location = new System.Drawing.Point(8, 35);
-            this.label144.Name = "label144";
-            this.label144.Size = new System.Drawing.Size(118, 13);
-            this.label144.TabIndex = 1;
-            this.label144.Text = "Low Memory Sound ID:";
-            // 
-            // label143
-            // 
-            this.label143.AutoSize = true;
-            this.label143.Location = new System.Drawing.Point(71, 8);
-            this.label143.Name = "label143";
-            this.label143.Size = new System.Drawing.Size(55, 13);
-            this.label143.TabIndex = 0;
-            this.label143.Text = "Sound ID:";
             // 
             // ReactorTabPage
             // 
@@ -1150,6 +1101,7 @@
             this.txtElemName.TabIndex = 214;
             this.txtElemName.Text = "<unnamed>";
             this.txtElemName.TextChanged += new System.EventHandler(this.ElemName_TextChanged);
+            this.txtElemName.Leave += new System.EventHandler(this.txtElemName_Leave);
             // 
             // statusBar1
             // 
@@ -1190,8 +1142,6 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HAMEditor_FormClosing);
             this.Load += new System.EventHandler(this.HAMEditor2_Load);
             this.EditorTabs.ResumeLayout(false);
-            this.SoundTabPage.ResumeLayout(false);
-            this.SoundTabPage.PerformLayout();
             this.ReactorTabPage.ResumeLayout(false);
             this.ReactorTabPage.PerformLayout();
             this.PowerupTabPage.ResumeLayout(false);
@@ -1233,8 +1183,6 @@
         private System.Windows.Forms.TabPage WeaponTabPage;
         private System.Windows.Forms.TabPage ModelTabPage;
         private System.Windows.Forms.TabPage SoundTabPage;
-        private System.Windows.Forms.Label label144;
-        private System.Windows.Forms.Label label143;
         private System.Windows.Forms.TabPage ReactorTabPage;
         private System.Windows.Forms.Button btnList;
         private System.Windows.Forms.Label label50;
@@ -1287,8 +1235,6 @@
         private System.Windows.Forms.Label label129;
         private System.Windows.Forms.PictureBox pbCockpit;
         private System.Windows.Forms.Label label131;
-        private System.Windows.Forms.ComboBox cbLowMemSound;
-        private System.Windows.Forms.ComboBox cbSoundSNDid;
         private System.Windows.Forms.ComboBox cbReactorModel;
         private System.Windows.Forms.Label label78;
         private System.Windows.Forms.TextBox txtPowerupLight;

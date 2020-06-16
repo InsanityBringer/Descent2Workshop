@@ -103,6 +103,15 @@ namespace Descent2Workshop.EditorPanels
             HXMGroupBox.Visible = true;
         }
 
+        public void ChangeOwnName(string newname)
+        {
+            RobotNames[robotid] = newname;
+            if (robot.ContainsType == 2) //need to update the UI too
+            {
+                cbRobotDropItem.Items[robotid] = newname;
+            }
+        }
+
         //Fillers
         public void Update(Robot robot, int id)
         {

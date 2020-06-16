@@ -38,10 +38,8 @@ namespace Descent2Workshop
     {
         private static HAMType[] typeTable = { HAMType.TMAPInfo, HAMType.VClip, HAMType.EClip, HAMType.WClip, HAMType.Robot, HAMType.Weapon,
             HAMType.Model, HAMType.Sound, HAMType.Reactor, HAMType.Powerup, HAMType.Ship, HAMType.Gauge, HAMType.Cockpit, HAMType.XLAT };
-        public int[] texturelist;
-        public EditorHAMFile datafile;
-        public StandardUI host;
-        public bool isLocked = false;
+        private EditorHAMFile datafile;
+        private StandardUI host;
         private Palette palette;
         private PIGFile piggyFile;
         private TransactionManager transactionManager = new TransactionManager();
@@ -57,13 +55,25 @@ namespace Descent2Workshop
         RobotPanel robotPanel;
         WeaponPanel weaponPanel;
         PolymodelPanel polymodelPanel;
+        SoundPanel soundPanel;
 
         //Save information
         private SaveHandler saveHandler;
-        
+
+        //Hacks
+        private bool isLocked = false;
+        private bool editedName = false;
+
         public HAMEditor(EditorHAMFile data, StandardUI host, PIGFile piggyFile, Palette palette, SaveHandler saveHandler)
         {
             InitializeComponent();
+
+            this.palette = palette;
+            this.piggyFile = piggyFile;
+
+            datafile = data;
+            this.host = host;
+            this.saveHandler = saveHandler;
 
             texturePanel = new TMAPInfoPanel(transactionManager); components.Add(texturePanel);
             texturePanel.Dock = DockStyle.Fill;
@@ -79,6 +89,8 @@ namespace Descent2Workshop
             weaponPanel.Dock = DockStyle.Fill;
             polymodelPanel = new PolymodelPanel(transactionManager, 6, piggyFile, palette, data); components.Add(polymodelPanel);
             polymodelPanel.Dock = DockStyle.Fill;
+            soundPanel = new SoundPanel(transactionManager, 7, datafile, host.DefaultSoundFile); components.Add(soundPanel);
+            soundPanel.Dock = DockStyle.Fill;
             TextureTabPage.Controls.Add(texturePanel);
             VClipTabPage.Controls.Add(vclipPanel);
             EffectsTabPage.Controls.Add(eclipPanel);
@@ -86,13 +98,7 @@ namespace Descent2Workshop
             RobotTabPage.Controls.Add(robotPanel);
             WeaponTabPage.Controls.Add(weaponPanel);
             ModelTabPage.Controls.Add(polymodelPanel);
-
-            this.palette = palette;
-            this.piggyFile = piggyFile;
-
-            datafile = data;
-            this.host = host;
-            this.saveHandler = saveHandler;
+            SoundTabPage.Controls.Add(soundPanel);
 
             string currentFilename = "Untitled";
             if (saveHandler != null)
@@ -306,6 +312,7 @@ namespace Descent2Workshop
         private void ElemName_TextChanged(object sender, EventArgs e)
         {
             if (isLocked) return;
+            editedName = true;
             datafile.UpdateName(typeTable[EditorTabs.SelectedIndex], ElementNumber, txtElemName.Text);
         }
 
@@ -354,13 +361,7 @@ namespace Descent2Workshop
         private void InitSoundPanel()
         {
             SetElementControl(false, true);
-            cbSoundSNDid.Items.Clear();
-            cbLowMemSound.Items.Clear();
-            cbSoundSNDid.Items.Add("None");
-            cbLowMemSound.Items.Add("None");
-            cbLowMemSound.Items.AddRange(datafile.SoundNames.ToArray());
-            foreach (SoundData sound in host.DefaultSoundFile.sounds)
-                cbSoundSNDid.Items.Add(sound.name);
+            soundPanel.Init(datafile.SoundNames);
         }
 
         private void InitPowerupPanel()
@@ -568,15 +569,7 @@ namespace Descent2Workshop
 
         private void UpdateSoundPanel(int num)
         {
-            //txtSoundID.Text = datafile.Sounds[num].ToString();
-            if (datafile.Sounds[num] == 255)
-                cbSoundSNDid.SelectedIndex = 0;
-            else
-                cbSoundSNDid.SelectedIndex = datafile.Sounds[num] + 1;
-            if (datafile.AltSounds[num] == 255)
-                cbLowMemSound.SelectedIndex = 0;
-            else
-                cbLowMemSound.SelectedIndex = datafile.AltSounds[num] + 1;
+            soundPanel.Update(num);
             txtElemName.Text = datafile.SoundNames[num];
         }
 
@@ -622,94 +615,6 @@ namespace Descent2Workshop
                         break;
                 }
                 isLocked = false;
-            }
-        }
-
-        //---------------------------------------------------------------------
-        // SOUND UPDATORS
-        //---------------------------------------------------------------------
-
-        private void cbSoundSNDid_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int value = cbSoundSNDid.SelectedIndex;
-            if (value == 0)
-                datafile.Sounds[ElementNumber] = 255;
-            else
-                datafile.Sounds[ElementNumber] = (byte)(value - 1);
-        }
-
-        private void cbLowMemSound_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int value = cbLowMemSound.SelectedIndex;
-            if (value == 0)
-                datafile.AltSounds[ElementNumber] = 255;
-            else
-                datafile.AltSounds[ElementNumber] = (byte)(value - 1);
-        }
-
-        //---------------------------------------------------------------------
-        // MODEL UPDATORS
-        //---------------------------------------------------------------------
-
-        private void btnImportModel_Click(object sender, EventArgs e)
-        {
-            ImportModel(datafile.Models[ElementNumber]);
-        }
-
-        private void btnExportModel_Click(object sender, EventArgs e)
-        {
-            saveFileDialog1.Filter = "Parallax Object Files|*.pof";
-            saveFileDialog1.FileName = string.Format("model_{0}.pof", ElementNumber);
-            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                BinaryWriter bw = new BinaryWriter(File.Open(saveFileDialog1.FileName, FileMode.Create));
-                POFWriter.SerializePolymodel(bw, datafile.Models[ElementNumber], short.Parse(StandardUI.options.GetOption("PMVersion", "8")));
-                bw.Close();
-                bw.Dispose();
-            }
-        }
-
-        private void ImportModel(Polymodel original)
-        {
-            int oldNumTextures = original.NumTextures;
-
-            List<string> newTextureNames = new List<string>();
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                string traceto = "";
-                if (bool.Parse(StandardUI.options.GetOption("TraceModels", bool.FalseString)))
-                {
-                    string bareFilename = Path.GetFileName(openFileDialog1.FileName);
-                    traceto = StandardUI.options.GetOption("TraceDir", ".") + Path.DirectorySeparatorChar + Path.ChangeExtension(bareFilename, "txt");
-                }
-
-                Polymodel model = POFReader.ReadPOFFile(openFileDialog1.FileName);
-                model.ExpandSubmodels();
-                //int numTextures = model.n_textures;
-                //TODO: does this work?
-                //datafile.ReplaceModel(ElementNumber, model);
-                datafile.Models[ElementNumber] = model;
-                UpdateModelPanel(ElementNumber);
-            }
-        }
-
-        private void ModelComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked)
-                return;
-            Polymodel model = datafile.Models[ElementNumber];
-            ComboBox comboBox = (ComboBox)sender;
-            switch (comboBox.Tag)
-            {
-                case "1":
-                    model.SimplerModels = (byte)comboBox.SelectedIndex;
-                    break;
-                case "2":
-                    model.DyingModelnum = comboBox.SelectedIndex - 1;
-                    break;
-                case "3":
-                    model.DeadModelnum = comboBox.SelectedIndex - 1;
-                    break;
             }
         }
 
@@ -988,6 +893,35 @@ namespace Descent2Workshop
                         e.Cancel = true;
                         break;
                 }
+            }
+        }
+
+        private void txtElemName_Leave(object sender, EventArgs e)
+        {
+            //This is a big hack. This is needed to ensure local lists are updated when you change a name.
+            //Names aren't automatically updated when changing which element is visible, so this makes sure
+            //the name will be changed when it should be, or if you want to make von neumann constructs.
+            if (editedName)
+            {
+                switch (PageNumber)
+                {
+                    case 2:
+                        eclipPanel.ChangeOwnName(txtElemName.Text);
+                        break;
+                    case 4:
+                        robotPanel.ChangeOwnName(txtElemName.Text);
+                        break;
+                    case 5:
+                        weaponPanel.ChangeOwnName(txtElemName.Text);
+                        break;
+                    case 6:
+                        polymodelPanel.ChangeOwnName(txtElemName.Text);
+                        break;
+                    case 7:
+                        soundPanel.ChangeOwnName(txtElemName.Text);
+                        break;
+                }
+                editedName = false;
             }
         }
     }
