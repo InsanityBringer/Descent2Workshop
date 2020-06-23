@@ -25,7 +25,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
-using System.Text;
 using LibDescent.Data;
 using LibDescent.Edit;
 using Descent2Workshop.EditorPanels;
@@ -56,6 +55,7 @@ namespace Descent2Workshop
         WeaponPanel weaponPanel;
         PolymodelPanel polymodelPanel;
         SoundPanel soundPanel;
+        ReactorPanel reactorPanel;
 
         //Save information
         private SaveHandler saveHandler;
@@ -91,6 +91,8 @@ namespace Descent2Workshop
             polymodelPanel.Dock = DockStyle.Fill;
             soundPanel = new SoundPanel(transactionManager, 7, datafile, host.DefaultSoundFile); components.Add(soundPanel);
             soundPanel.Dock = DockStyle.Fill;
+            reactorPanel = new ReactorPanel(transactionManager, 8); components.Add(reactorPanel);
+            reactorPanel.Dock = DockStyle.Fill;
             TextureTabPage.Controls.Add(texturePanel);
             VClipTabPage.Controls.Add(vclipPanel);
             EffectsTabPage.Controls.Add(eclipPanel);
@@ -99,6 +101,7 @@ namespace Descent2Workshop
             WeaponTabPage.Controls.Add(weaponPanel);
             ModelTabPage.Controls.Add(polymodelPanel);
             SoundTabPage.Controls.Add(soundPanel);
+            ReactorTabPage.Controls.Add(reactorPanel);
 
             string currentFilename = "Untitled";
             if (saveHandler != null)
@@ -242,8 +245,7 @@ namespace Descent2Workshop
                     UpdateSoundPanel(val);
                     break;
                 case 8:
-                    Reactor reactor = datafile.Reactors[val];
-                    cbReactorModel.SelectedIndex = reactor.ModelNum;
+                    UpdateReactorPanel(val);
                     break;
                 case 9:
                     UpdatePowerupPanel(val);
@@ -382,8 +384,7 @@ namespace Descent2Workshop
         private void InitReactorPanel()
         {
             SetElementControl(true, true);
-            cbReactorModel.Items.Clear();
-            cbReactorModel.Items.AddRange(datafile.ModelNames.ToArray());
+            reactorPanel.Init(datafile.ModelNames);
         }
 
         //---------------------------------------------------------------------
@@ -478,6 +479,14 @@ namespace Descent2Workshop
             txtElemName.Text = datafile.ModelNames[num];
 
             polymodelPanel.Update(model, num);
+        }
+
+        private void UpdateReactorPanel(int num)
+        {
+            Reactor reactor = datafile.Reactors[num];
+            txtElemName.Text = datafile.ReactorNames[num];
+
+            reactorPanel.Update(reactor, num);
         }
 
         private void UpdatePowerupPanel(int num)
@@ -658,17 +667,6 @@ namespace Descent2Workshop
                         break;
                 }
             }
-        }
-
-        //---------------------------------------------------------------------
-        // REACTOR UPDATOR
-        //---------------------------------------------------------------------
-
-        private void cbReactorModel_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (isLocked) return;
-            Reactor reactor = datafile.Reactors[ElementNumber];
-            reactor.ModelNum = cbReactorModel.SelectedIndex;
         }
 
         //---------------------------------------------------------------------

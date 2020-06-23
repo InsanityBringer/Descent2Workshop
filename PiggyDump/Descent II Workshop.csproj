@@ -106,6 +106,12 @@
     <Compile Include="EditorPanels\PolymodelPanel.Designer.cs">
       <DependentUpon>PolymodelPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="EditorPanels\ReactorPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorPanels\ReactorPanel.Designer.cs">
+      <DependentUpon>ReactorPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="EditorPanels\RobotPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -267,6 +273,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EditorPanels\PolymodelPanel.resx">
       <DependentUpon>PolymodelPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditorPanels\ReactorPanel.resx">
+      <DependentUpon>ReactorPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EditorPanels\RobotPanel.resx">
       <DependentUpon>RobotPanel.cs</DependentUpon>

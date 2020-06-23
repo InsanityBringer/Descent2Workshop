@@ -54,9 +54,6 @@
             this.ModelTabPage = new System.Windows.Forms.TabPage();
             this.SoundTabPage = new System.Windows.Forms.TabPage();
             this.ReactorTabPage = new System.Windows.Forms.TabPage();
-            this.label151 = new System.Windows.Forms.Label();
-            this.cbReactorModel = new System.Windows.Forms.ComboBox();
-            this.label78 = new System.Windows.Forms.Label();
             this.PowerupTabPage = new System.Windows.Forms.TabPage();
             this.txtPowerupLight = new System.Windows.Forms.TextBox();
             this.txtPowerupSize = new System.Windows.Forms.TextBox();
@@ -131,7 +128,6 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.mainToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.EditorTabs.SuspendLayout();
-            this.ReactorTabPage.SuspendLayout();
             this.PowerupTabPage.SuspendLayout();
             this.ShipTabPage.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -349,9 +345,6 @@
             // 
             // ReactorTabPage
             // 
-            this.ReactorTabPage.Controls.Add(this.label151);
-            this.ReactorTabPage.Controls.Add(this.cbReactorModel);
-            this.ReactorTabPage.Controls.Add(this.label78);
             this.ReactorTabPage.Location = new System.Drawing.Point(4, 22);
             this.ReactorTabPage.Name = "ReactorTabPage";
             this.ReactorTabPage.Padding = new System.Windows.Forms.Padding(3);
@@ -359,34 +352,6 @@
             this.ReactorTabPage.TabIndex = 8;
             this.ReactorTabPage.Text = "Reactors";
             this.ReactorTabPage.UseVisualStyleBackColor = true;
-            // 
-            // label151
-            // 
-            this.label151.AutoSize = true;
-            this.label151.Location = new System.Drawing.Point(719, 497);
-            this.label151.Name = "label151";
-            this.label151.Size = new System.Drawing.Size(119, 13);
-            this.label151.TabIndex = 2;
-            this.label151.Text = "Just a tad barren here...";
-            // 
-            // cbReactorModel
-            // 
-            this.cbReactorModel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbReactorModel.FormattingEnabled = true;
-            this.cbReactorModel.Location = new System.Drawing.Point(53, 6);
-            this.cbReactorModel.Name = "cbReactorModel";
-            this.cbReactorModel.Size = new System.Drawing.Size(121, 21);
-            this.cbReactorModel.TabIndex = 1;
-            this.cbReactorModel.SelectedIndexChanged += new System.EventHandler(this.cbReactorModel_SelectedIndexChanged);
-            // 
-            // label78
-            // 
-            this.label78.AutoSize = true;
-            this.label78.Location = new System.Drawing.Point(8, 9);
-            this.label78.Name = "label78";
-            this.label78.Size = new System.Drawing.Size(39, 13);
-            this.label78.TabIndex = 0;
-            this.label78.Text = "Model:";
             // 
             // PowerupTabPage
             // 
@@ -1142,8 +1107,6 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HAMEditor_FormClosing);
             this.Load += new System.EventHandler(this.HAMEditor2_Load);
             this.EditorTabs.ResumeLayout(false);
-            this.ReactorTabPage.ResumeLayout(false);
-            this.ReactorTabPage.PerformLayout();
             this.PowerupTabPage.ResumeLayout(false);
             this.PowerupTabPage.PerformLayout();
             this.ShipTabPage.ResumeLayout(false);
@@ -1235,8 +1198,6 @@
         private System.Windows.Forms.Label label129;
         private System.Windows.Forms.PictureBox pbCockpit;
         private System.Windows.Forms.Label label131;
-        private System.Windows.Forms.ComboBox cbReactorModel;
-        private System.Windows.Forms.Label label78;
         private System.Windows.Forms.TextBox txtPowerupLight;
         private System.Windows.Forms.TextBox txtPowerupSize;
         private System.Windows.Forms.ComboBox cbPowerupPickupSound;
@@ -1265,7 +1226,6 @@
         private System.Windows.Forms.Button btnRemapGauge;
         private System.Windows.Forms.Button btnRemapCockpit;
         private System.Windows.Forms.ToolTip mainToolTip;
-        private System.Windows.Forms.Label label151;
         private System.Windows.Forms.MenuItem menuItem6;
         private System.Windows.Forms.MenuItem UndoMenuItem;
         private System.Windows.Forms.MenuItem RedoMenuItem;
