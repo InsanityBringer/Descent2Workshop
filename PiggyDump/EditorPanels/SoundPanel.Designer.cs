@@ -41,8 +41,10 @@
             this.SoundIDComboBox.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.SoundIDComboBox.Location = new System.Drawing.Point(128, 3);
             this.SoundIDComboBox.Name = "SoundIDComboBox";
-            this.SoundIDComboBox.Size = new System.Drawing.Size(121, 21);
+            this.SoundIDComboBox.Size = new System.Drawing.Size(196, 21);
             this.SoundIDComboBox.TabIndex = 8;
+            this.SoundIDComboBox.Tag = "Sounds";
+            this.SoundIDComboBox.SelectedIndexChanged += new System.EventHandler(this.SoundIDComboBox_SelectedIndexChanged);
             // 
             // LowMemorySoundComboBox
             // 
@@ -51,8 +53,10 @@
             this.LowMemorySoundComboBox.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.LowMemorySoundComboBox.Location = new System.Drawing.Point(128, 30);
             this.LowMemorySoundComboBox.Name = "LowMemorySoundComboBox";
-            this.LowMemorySoundComboBox.Size = new System.Drawing.Size(121, 21);
+            this.LowMemorySoundComboBox.Size = new System.Drawing.Size(196, 21);
             this.LowMemorySoundComboBox.TabIndex = 7;
+            this.LowMemorySoundComboBox.Tag = "AltSounds";
+            this.LowMemorySoundComboBox.SelectedIndexChanged += new System.EventHandler(this.SoundIDComboBox_SelectedIndexChanged);
             // 
             // label144
             // 
@@ -81,7 +85,7 @@
             this.Controls.Add(this.label144);
             this.Controls.Add(this.label143);
             this.Name = "SoundPanel";
-            this.Size = new System.Drawing.Size(257, 57);
+            this.Size = new System.Drawing.Size(327, 57);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -43,6 +43,7 @@ namespace Descent2Workshop.EditorPanels
         private EditorHAMFile datafile;
 
         private int soundID;
+        private bool isLocked = false;
 
         public SoundPanel(TransactionManager transactionManager, int tabPage, EditorHAMFile datafile, SNDFile soundFile)
         {
@@ -77,6 +78,7 @@ namespace Descent2Workshop.EditorPanels
         {
             soundID = id;
 
+            isLocked = true;
             if (datafile.Sounds[soundID] == 255)
                 SoundIDComboBox.SelectedIndex = 0;
             else
@@ -85,6 +87,19 @@ namespace Descent2Workshop.EditorPanels
                 LowMemorySoundComboBox.SelectedIndex = 0;
             else
                 LowMemorySoundComboBox.SelectedIndex = datafile.AltSounds[soundID] + 1;
+            isLocked = false;
+        }
+
+        private void SoundIDComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (isLocked || transactionManager.TransactionInProgress) return;
+
+            ComboBox control = (ComboBox)sender;
+            int value = control.SelectedIndex - 1;
+            if (value < 0) value = 255;
+
+            ListReplaceTransaction transaction = new ListReplaceTransaction("Sound id", datafile, (string)control.Tag, soundID, (byte)value, soundID, tabPage);
+            transactionManager.ApplyTransaction(transaction);
         }
     }
 }
