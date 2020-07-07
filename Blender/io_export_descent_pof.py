@@ -317,9 +317,6 @@ class Subobject:
                 if mat.name not in polymodel.textures:
                     polymodel.textures[mat.name] = len(polymodel.textures);
                     polymodel.texList.append(mat.name)
-                #matmapping[mat.name] = self.numtextures
-                #self.numtextures += 1
-                #self.textures.append(mat.name)
         #print(str.format("added {0} textures", self.numtextures))
         #print(self.textures)
         self.points.numverts = len(meshobj.data.vertices)
@@ -335,14 +332,6 @@ class Subobject:
                 self.rad = lenFromOrigin
             if lenFromMainOrigin > polymodel.radius:
                 polymodel.radius = lenFromMainOrigin
-        #print(self.mins)
-        #print(self.maxs)
-        #rad1 = terribleLen(self.mins)
-        #rad2 = terribleLen(self.maxs)
-        #if rad1 > rad2:
-        #    self.rad = rad1
-        #else:
-        #    self.rad = rad2
         print(self.rad)
         for face in meshobj.data.polygons:
             #print(str.format("face has {0} verts", len(face.vertices)))
