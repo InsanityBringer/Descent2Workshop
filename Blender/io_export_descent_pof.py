@@ -306,6 +306,11 @@ class Subobject:
             
     def createFromObject(self, meshobj, polymodel):
         self.mesh = meshobj
+        isUnwrapped = True
+        uvLayer = meshobj.data.uv_layers.active
+        #If not unwrapped, all UVs on texture mapped faces need to get bashed to (0, 0)
+        if len(meshobj.data.uv_layers) == 0:
+            isUnwrapped = False
         #Counter the parent's offset, since Descent wants everything global
         self.origin = (meshobj.location + meshobj.matrix_parent_inverse.translation)
         #Map names to generated IDs, since some ids will be lost on color faces
@@ -343,10 +348,11 @@ class Subobject:
                 for v in face.loop_indices:
                     #nface.verts.append(v)
                     nface.verts.append(meshobj.data.loops[v].vertex_index)
-                    if len(meshobj.data.uv_layers) == 0:
-                        raise NotUnwrappedException(meshobj.name)
-                    uvloop = meshobj.data.uv_layers[0].data[v]
-                    nface.uvs.append(uvloop.uv)
+                    if isUnwrapped == False:
+                        nface.uvs.append([0, 0])
+                    else:
+                        uvloop = uvLayer.data[v]
+                        nface.uvs.append(uvloop.uv)
                     id += 1
                 nface.avg = meshobj.data.vertices[face.vertices[0]].co
                 nface.normal = face.normal
