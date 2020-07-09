@@ -591,6 +591,7 @@ class DescentExporter(bpy.types.Operator):
     '''Export to Parallax Object File'''
     bl_idname = "export.pof"
     bl_label = 'Export .POF'
+    filename_ext = ".pof"
              
     filepath: StringProperty(subtype = 'FILE_PATH')
 

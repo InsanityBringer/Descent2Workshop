@@ -105,14 +105,14 @@ namespace Descent2Workshop
             {
                 case 0:
                     InitRobotPanel();
-                    ElementSpinner.Maximum = (decimal)datafile.replacedRobots.Count - 1;
-                    if (datafile.replacedRobots.Count == 0) ElementSpinner.Minimum = -1;
+                    ElementSpinner.Maximum = (decimal)datafile.ReplacedRobots.Count - 1;
+                    if (datafile.ReplacedRobots.Count == 0) ElementSpinner.Minimum = -1;
                     else ElementSpinner.Minimum = 0;
                     break;
                 case 1:
                     InitModelPanel();
-                    ElementSpinner.Maximum = (decimal)datafile.replacedModels.Count - 1;
-                    if (datafile.replacedModels.Count == 0) ElementSpinner.Minimum = -1;
+                    ElementSpinner.Maximum = (decimal)datafile.ReplacedModels.Count - 1;
+                    if (datafile.ReplacedModels.Count == 0) ElementSpinner.Minimum = -1;
                     else ElementSpinner.Minimum = 0;
                     break;
             }
@@ -123,7 +123,7 @@ namespace Descent2Workshop
             switch (id)
             {
                 case 0:
-                    if (datafile.replacedRobots.Count != 0)
+                    if (datafile.ReplacedRobots.Count != 0)
                     {
                         robotPanel.Enabled = true;
                         UpdateRobotPanel(val);
@@ -135,11 +135,11 @@ namespace Descent2Workshop
                     }
                     break;
                 case 1:
-                    if (datafile.replacedModels.Count != 0)
+                    if (datafile.ReplacedModels.Count != 0)
                     {
                         polymodelPanel.Enabled = true;
                         UpdateModelPanel(val);
-                        ReplacedElementComboBox.SelectedIndex = datafile.replacedModels[val].replacementID;
+                        ReplacedElementComboBox.SelectedIndex = datafile.ReplacedModels[val].ReplacementID;
                     }
                     else
                     {
@@ -178,7 +178,7 @@ namespace Descent2Workshop
 
         public void UpdateRobotPanel(int num)
         {
-            Robot robot = datafile.replacedRobots[num];
+            Robot robot = datafile.ReplacedRobots[num];
             robotPanel.Update(robot, num);
 
             ReplacedElementComboBox.SelectedIndex = robot.replacementID;
@@ -208,7 +208,7 @@ namespace Descent2Workshop
 
         private void UpdateModelPanel(int num)
         {
-            Polymodel model = datafile.replacedModels[(int)ElementSpinner.Value];
+            Polymodel model = datafile.ReplacedModels[(int)ElementSpinner.Value];
             polymodelPanel.Update(model, num);
         }
 
@@ -240,16 +240,16 @@ namespace Descent2Workshop
             {
                 case 0:
                     {
-                        if (datafile.replacedRobots.Count == 0) return;
-                        Robot robot = datafile.replacedRobots[ElementNumber];
+                        if (datafile.ReplacedRobots.Count == 0) return;
+                        Robot robot = datafile.ReplacedRobots[ElementNumber];
                         robot.replacementID = ReplacedElementComboBox.SelectedIndex;
                     }
                     break;
                 case 1:
                     {
-                        if (datafile.replacedModels.Count == 0) return;
-                        Polymodel model = datafile.replacedModels[ElementNumber];
-                        model.replacementID = ReplacedElementComboBox.SelectedIndex;
+                        if (datafile.ReplacedModels.Count == 0) return;
+                        Polymodel model = datafile.ReplacedModels[ElementNumber];
+                        model.ReplacementID = ReplacedElementComboBox.SelectedIndex;
                     }
                     break;
             }

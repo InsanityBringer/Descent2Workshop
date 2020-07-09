@@ -64,7 +64,7 @@ namespace Descent2Workshop
             this.PerformLayout();
 
             this.model = model;
-            if (this.model.isAnimated)
+            if (this.model.IsAnimated)
             {
                 numericUpDown1.Minimum = 0;
                 numericUpDown1.Maximum = Robot.NumAnimationStates - 1;

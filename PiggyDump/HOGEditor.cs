@@ -50,9 +50,9 @@ namespace Descent2Workshop
             byte[] data;
             for (int x = 0; x < datafile.NumLumps; x++)
             {
-                ListViewItem lumpElement = new ListViewItem(datafile.GetLumpHeader(x).name);
-                lumpElement.SubItems.Add(datafile.GetLumpHeader(x).size.ToString());
-                lumpElement.SubItems.Add(datafile.GetLumpHeader(x).type.ToString());
+                ListViewItem lumpElement = new ListViewItem(datafile.GetLumpHeader(x).Name);
+                lumpElement.SubItems.Add(datafile.GetLumpHeader(x).Size.ToString());
+                lumpElement.SubItems.Add(datafile.GetLumpHeader(x).Type.ToString());
                 listView1.Items.Add(lumpElement);
             }
             string count = string.Format("Total Elements: {0}", datafile.NumLumps);
@@ -71,13 +71,13 @@ namespace Descent2Workshop
             int size = (int)br.BaseStream.Length;
             byte[] data = br.ReadBytes((int)br.BaseStream.Length);
             HOGLump newLump = new HOGLump(filename, size, -1);
-            newLump.data = data;
-            newLump.type = HOGLump.IdentifyLump(newLump.name, newLump.data);
+            newLump.Data = data;
+            newLump.Type = HOGLump.IdentifyLump(newLump.Name, newLump.Data);
             datafile.AddLump(newLump);
 
-            ListViewItem lumpElement = new ListViewItem(newLump.name);
-            lumpElement.SubItems.Add(newLump.size.ToString());
-            lumpElement.SubItems.Add(newLump.type.ToString());
+            ListViewItem lumpElement = new ListViewItem(newLump.Name);
+            lumpElement.SubItems.Add(newLump.Size.ToString());
+            lumpElement.SubItems.Add(newLump.Type.ToString());
             if (index != -1)
             {
                 listView1.Items.Insert(index, lumpElement);

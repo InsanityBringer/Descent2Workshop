@@ -46,18 +46,18 @@ namespace Descent2Workshop
             InitializeComponent();
             this.datafile = datafile;
             this.host = host;
-            Text = string.Format("{0} - Sound Editor", datafile.filename);
+            Text = string.Format("{0} - Sound Editor", datafile.FileName);
         }
 
         private void SXXEditor_Load(object sender, EventArgs e)
         {
             SoundData sound;
-            for (int i = 0; i < datafile.sounds.Count; i++)
+            for (int i = 0; i < datafile.Sounds.Count; i++)
             {
-                sound = datafile.sounds[i];
-                ListViewItem lvi = new ListViewItem(sound.name);
-                lvi.SubItems.Add(sound.len.ToString());
-                lvi.SubItems.Add(sound.offset.ToString());
+                sound = datafile.Sounds[i];
+                ListViewItem lvi = new ListViewItem(sound.Name);
+                lvi.SubItems.Add(sound.Length.ToString());
+                lvi.SubItems.Add(sound.Offset.ToString());
                 lvi.SubItems.Add(i.ToString());
                 //int compressionPercentage = (int)(image.compressionratio * 100f);
                 //lvi.SubItems.Add(compressionPercentage.ToString() + "%");

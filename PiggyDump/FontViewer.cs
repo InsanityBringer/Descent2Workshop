@@ -11,7 +11,7 @@ namespace Descent2Workshop
         {
             InitializeComponent();
             mainFont = font;
-            numericUpDown1.Minimum = 0; numericUpDown1.Maximum = font.lastChar - font.firstChar + 1;
+            numericUpDown1.Minimum = 0; numericUpDown1.Maximum = font.LastChar - font.FirstChar + 1;
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)

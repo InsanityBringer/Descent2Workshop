@@ -192,7 +192,7 @@ namespace Descent2Workshop.EditorPanels
             else
             {
                 UnallocatedModelWarning.Visible = false;
-                if (hxmFile.GetModel(robot.ModelNum).isAnimated)
+                if (hxmFile.GetModel(robot.ModelNum).IsAnimated)
                 {
                     RobotAnimationCheckbox.Checked = true;
                     BaseJointSpinner.Value = (Decimal)robot.baseJoint;
@@ -354,7 +354,7 @@ namespace Descent2Workshop.EditorPanels
             if (robot.ModelNum < hxmFile.GetNumModels())
             {
                 Polymodel model = hxmFile.GetModel(robot.ModelNum);
-                model.isAnimated = RobotAnimationCheckbox.Checked;
+                model.IsAnimated = RobotAnimationCheckbox.Checked;
             }
         }
 

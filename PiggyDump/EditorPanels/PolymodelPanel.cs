@@ -177,12 +177,12 @@ namespace Descent2Workshop.EditorPanels
             cbModelDyingModel.SelectedIndex = model.DyingModelnum + 1;
             cbModelDeadModel.SelectedIndex = model.DeadModelnum + 1;
 
-            txtModelMinX.Text = model.Mins.x.ToString();
-            txtModelMinY.Text = model.Mins.y.ToString();
-            txtModelMinZ.Text = model.Mins.z.ToString();
-            txtModelMaxX.Text = model.Maxs.x.ToString();
-            txtModelMaxY.Text = model.Maxs.y.ToString();
-            txtModelMaxZ.Text = model.Maxs.z.ToString();
+            txtModelMinX.Text = model.Mins.X.ToString();
+            txtModelMinY.Text = model.Mins.Y.ToString();
+            txtModelMinZ.Text = model.Mins.Z.ToString();
+            txtModelMaxX.Text = model.Maxs.X.ToString();
+            txtModelMaxY.Text = model.Maxs.Y.ToString();
+            txtModelMaxZ.Text = model.Maxs.Z.ToString();
 
             if (hxmFile != null)
             {
@@ -233,15 +233,15 @@ namespace Descent2Workshop.EditorPanels
         private void FindPackButton_Click(object sender, EventArgs e)
         {
             if (hxmFile == null) return;
-            if (hxmFile.replacedModels.Count == 0) return;
-            Polymodel model = hxmFile.replacedModels[modelID];
+            if (hxmFile.ReplacedModels.Count == 0) return;
+            Polymodel model = hxmFile.ReplacedModels[modelID];
             //Okay, the logic here is that we can pack new object bitmaps past 422.
             //So long as you aren't using more than 178 entirely new textures, this
             //should work fairly well.
             //TODO: Needs to consider additional ObjBitmaps introduced by a V-HAM, perhaps
             int bestFit = VHAMFile.N_D2_OBJBITMAPS;
             int testTextures;
-            foreach (Polymodel testModel in hxmFile.replacedModels)
+            foreach (Polymodel testModel in hxmFile.ReplacedModels)
             {
                 testTextures = testModel.BaseTexture + hxmFile.CountUniqueObjBitmaps(testModel);
                 if (bestFit < testTextures)

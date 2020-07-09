@@ -505,7 +505,7 @@ namespace Descent2Workshop
                 }
                 EditorHXMFile hxmFile = new EditorHXMFile(dataFile);
                 if (augmentFile != null)
-                    hxmFile.augmentFile = augmentFile;
+                    hxmFile.AugmentFile = augmentFile;
 
                 if (LoadHXMFile(dialog.HXMFilename, hxmFile))
                 {

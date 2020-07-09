@@ -150,9 +150,9 @@ namespace Descent2Workshop
 
             cameraPoint = new FixVector(-32.0 * Math.Sin(angler) * Math.Cos(pitchr), 32.0 * Math.Sin(pitchr) , 32.0 * Math.Cos(angler) * Math.Cos(pitchr));
 
-            /*lightVector.x = 1 * Math.Sin((Math.PI * 2)-angler + (Math.PI / 4));
-            lightVector.y = .5;
-            lightVector.z = 1 * Math.Cos((Math.PI * 2) - angler + (Math.PI / 4));
+            /*lightVector.X = 1 * Math.Sin((Math.PI * 2)-angler + (Math.PI / 4));
+            lightVector.Y = .5;
+            lightVector.Z = 1 * Math.Cos((Math.PI * 2) - angler + (Math.PI / 4));
             lightVector = lightVector.Normalize();*/
 
             Matrix4 hack = Matrix4.Identity;
@@ -164,7 +164,7 @@ namespace Descent2Workshop
 
             lightVector = new FixVector(hack.Column2.X, hack.Column2.Y, hack.Column2.Z);
 
-            //Console.WriteLine("x: {0} y: {1} z: {2} angle: {3} pitch: {4}", cameraPoint.x, cameraPoint.y, cameraPoint.z, angle, pitch);
+            //Console.WriteLine("x: {0} y: {1} z: {2} angle: {3} pitch: {4}", cameraPoint.X, cameraPoint.Y, cameraPoint.Z, angle, pitch);
 
             Execute(model.InterpreterData, 0, model, model.Submodels[0]);
             //DrawSubobject(model, model.submodels[0]);
@@ -178,12 +178,12 @@ namespace Descent2Workshop
 
                 //Draw the radius
                 double radius = (double)model.Radius;
-                double minx = (double)model.Mins.x;
-                double miny = (double)model.Mins.y;
-                double minz = (double)model.Mins.z;
-                double maxx = (double)model.Maxs.x;
-                double maxy = (double)model.Maxs.y;
-                double maxz = (double)model.Maxs.z;
+                double minx = (double)model.Mins.X;
+                double miny = (double)model.Mins.Y;
+                double minz = (double)model.Mins.Z;
+                double maxx = (double)model.Maxs.X;
+                double maxy = (double)model.Maxs.Y;
+                double maxz = (double)model.Maxs.Z;
                 GL.Begin(PrimitiveType.LineLoop);
                 GL.Color3(0.0, 0.0, 1.0);
                 double radx, rady, radang;
@@ -276,12 +276,12 @@ namespace Descent2Workshop
 
                             //Draw the radius
                             double radius = model.Radius;
-                            double minx = model.Mins.x;
-                            double miny = model.Mins.y;
-                            double minz = model.Mins.z;
-                            double maxx = model.Maxs.x;
-                            double maxy = model.Maxs.y;
-                            double maxz = model.Maxs.z;
+                            double minx = model.Mins.X;
+                            double miny = model.Mins.Y;
+                            double minz = model.Mins.Z;
+                            double maxx = model.Maxs.X;
+                            double maxy = model.Maxs.Y;
+                            double maxz = model.Maxs.Z;
                             //Follow the chain
                             GL.PushMatrix();
                             GL.Rotate(-angle, 0.0, 1.0, 0.0);
@@ -372,9 +372,9 @@ namespace Descent2Workshop
                             GL.Begin(PrimitiveType.TriangleFan);
                             for (int i = 0; i < pointc; i++)
                             {
-                                double vx = interpPoints[points[i]].x;
-                                double vy = interpPoints[points[i]].y;
-                                double vz = interpPoints[points[i]].z;
+                                double vx = interpPoints[points[i]].X;
+                                double vy = interpPoints[points[i]].Y;
+                                double vz = interpPoints[points[i]].Z;
 
                                 GL.Color3(cr / 255.0f, cg / 255.0f, cb / 255.0f);
                                 GL.Vertex3(vx, vy, vz);
@@ -387,13 +387,13 @@ namespace Descent2Workshop
                                 GL.Color3(1.0f, 1.0f, 1.0f);
                                 GL.Begin(PrimitiveType.Lines);
                                 {
-                                    double vx = point.x;
-                                    double vy = point.y;
-                                    double vz = point.z;
+                                    double vx = point.X;
+                                    double vy = point.Y;
+                                    double vz = point.Z;
 
-                                    double dx = point.x + normal.x;
-                                    double dy = point.y + normal.y;
-                                    double dz = point.z + normal.z;
+                                    double dx = point.X + normal.X;
+                                    double dy = point.Y + normal.Y;
+                                    double dz = point.Z + normal.Z;
 
                                     GL.Vertex3(vx, vy, vz);
                                     GL.Vertex3(dx, dy, dz);
@@ -430,12 +430,12 @@ namespace Descent2Workshop
                             GL.Begin(PrimitiveType.TriangleFan);
                             for (int i = 0; i < pointc; i++)
                             {
-                                double vx = interpPoints[points[i]].x;
-                                double vy = interpPoints[points[i]].y;
-                                double vz = interpPoints[points[i]].z;
+                                double vx = interpPoints[points[i]].X;
+                                double vy = interpPoints[points[i]].Y;
+                                double vz = interpPoints[points[i]].Z;
 
-                                double uvx = uvls[i].x;
-                                double uvy = uvls[i].y;
+                                double uvx = uvls[i].X;
+                                double uvy = uvls[i].Y;
 
                                 GL.Color3(shade, shade, shade);
                                 GL.TexCoord2(uvx, uvy);
@@ -450,13 +450,13 @@ namespace Descent2Workshop
                                 GL.Color3(1.0f, 1.0f, 1.0f);
                                 GL.Begin(PrimitiveType.Lines);
                                 {
-                                    double vx = point.x;
-                                    double vy = point.y;
-                                    double vz = point.z;
+                                    double vx = point.X;
+                                    double vy = point.Y;
+                                    double vz = point.Z;
 
-                                    double dx = point.x + normal.x;
-                                    double dy = point.y + normal.y;
-                                    double dz = point.z + normal.z;
+                                    double dx = point.X + normal.X;
+                                    double dy = point.Y + normal.Y;
+                                    double dz = point.Z + normal.Z;
 
                                     GL.Vertex3(vx, vy, vz);
                                     GL.Vertex3(dx, dy, dz);
@@ -501,12 +501,12 @@ namespace Descent2Workshop
 
                             Submodel newModel = mainModel.Submodels[submodelNum];
                             GL.PushMatrix();
-                            GL.Translate(submodelOffset.x, submodelOffset.y, submodelOffset.z);
+                            GL.Translate(submodelOffset.X, submodelOffset.Y, submodelOffset.Z);
                             if (frame >= 0)
                             {
-                                GL.Rotate((mainModel.animationMatrix[submodelNum, frame].b / 16384.0f) * 90.0, 0.0, 0.0, 1.0);
-                                GL.Rotate((mainModel.animationMatrix[submodelNum, frame].h / 16384.0f) * 90.0, 0.0, 1.0, 0.0);
-                                GL.Rotate((mainModel.animationMatrix[submodelNum, frame].p / 16384.0f) * 90.0, 1.0, 0.0, 0.0);
+                                GL.Rotate((mainModel.AnimationMatrix[submodelNum, frame].B / 16384.0f) * 90.0, 0.0, 0.0, 1.0);
+                                GL.Rotate((mainModel.AnimationMatrix[submodelNum, frame].H / 16384.0f) * 90.0, 0.0, 1.0, 0.0);
+                                GL.Rotate((mainModel.AnimationMatrix[submodelNum, frame].P / 16384.0f) * 90.0, 1.0, 0.0, 0.0);
                             }
                             Execute(data, baseOffset + modelOffset, mainModel, newModel);
                             GL.PopMatrix();

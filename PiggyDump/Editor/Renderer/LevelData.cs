@@ -48,12 +48,12 @@ namespace Descent2Workshop.Editor.Renderer
 
         public void AddVertex(FixVector point, Uvl uvl)
         {
-            vertBuffer[pointer++] = -point.x;
-            vertBuffer[pointer++] = point.y;
-            vertBuffer[pointer++] = point.z;
-            vertBuffer[pointer++] = uvl.u;
-            vertBuffer[pointer++] = uvl.v;
-            vertBuffer[pointer++] = uvl.l;
+            vertBuffer[pointer++] = -point.X;
+            vertBuffer[pointer++] = point.Y;
+            vertBuffer[pointer++] = point.Z;
+            vertBuffer[pointer++] = uvl.U;
+            vertBuffer[pointer++] = uvl.V;
+            vertBuffer[pointer++] = uvl.L;
         }
     }
 
@@ -245,9 +245,9 @@ namespace Descent2Workshop.Editor.Renderer
             for (int i = 0; i < numVerts; i++)
             {
                 vec = baseRenderer.State.EditorLevel.Vertices[i].Location;
-                vertBuffer[i * 4 + 0] = -vec.x;
-                vertBuffer[i * 4 + 1] = vec.y;
-                vertBuffer[i * 4 + 2] = vec.z;
+                vertBuffer[i * 4 + 0] = -vec.X;
+                vertBuffer[i * 4 + 1] = vec.Y;
+                vertBuffer[i * 4 + 2] = vec.Z;
                 //TODO: make this integer. 
                 vertBuffer[i * 4 + 3] = i;
             }
@@ -298,9 +298,9 @@ namespace Descent2Workshop.Editor.Renderer
             for (int i = 0; i < numVerts; i++)
             {
                 vec = baseRenderer.State.EditorLevel.Vertices[i].Location;
-                vertBuffer[i * 4 + 0] = -vec.x;
-                vertBuffer[i * 4 + 1] = vec.y;
-                vertBuffer[i * 4 + 2] = vec.z;
+                vertBuffer[i * 4 + 0] = -vec.X;
+                vertBuffer[i * 4 + 1] = vec.Y;
+                vertBuffer[i * 4 + 2] = vec.Z;
                 //TODO: make this integer. 
                 vertBuffer[i * 4 + 3] = i;
             }

@@ -50,9 +50,9 @@ namespace Descent2Workshop.EditorPanels
             SoundIDComboBox.Items.Add("None");
 
             //TODO: This is slow, but is only done once for now. Should be fixed, though.
-            foreach (SoundData sound in soundFile.sounds)
+            foreach (SoundData sound in soundFile.Sounds)
             {
-                SoundIDComboBox.Items.Add(sound.name);
+                SoundIDComboBox.Items.Add(sound.Name);
             }
         }
 
