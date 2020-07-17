@@ -11,6 +11,31 @@ namespace Descent2Workshop
 {
     public class PiggyBitmapUtilities
     {
+        //duplicated from Palette for performance reasons. 
+        public static int GetNearestColorIndex(int R, int G, int B, byte[] palette)
+        {
+            int bestcolor = 0;
+            int bestdist = int.MaxValue;
+            int dist;
+
+            for (int i = 0; i < 255; i++)
+            {
+                int lR = palette[i * 3];
+                int lG = palette[i * 3 + 1];
+                int lB = palette[i * 3 + 2];
+                if ((lR == R) && (lG == G) && (lB == B)) return i;
+                dist = (R - lR) * (R - lR) + (G - lG) * (G - lG) + (B - lB) * (B - lB);
+                if (dist == 0) 
+                    return i;
+                else if (dist < bestdist)
+                {
+                    bestcolor = i;
+                    bestdist = dist;
+                }
+            }
+            return bestcolor;
+        }
+
         public static Bitmap GetBitmap(PIGFile piggyFile, Palette palette, int index)
         {
             PIGImage image = piggyFile.GetImage(index);
@@ -73,27 +98,27 @@ namespace Descent2Workshop
             return bitmap;
         }
 
-        public static void SetAverageColor(PIGImage image, Palette palette)
+        public static void SetAverageColor(PIGImage image, byte[] palette)
         {
             byte[] data = image.GetData();
-            byte c;
+            int c;
             int totalr = 0, totalg = 0, totalb = 0;
             for (int i = 0; i < data.Length; i++)
             {
-                c = data[i];
-                totalr += palette[c].R;
-                totalg += palette[c].G;
-                totalb += palette[c].B;
+                c = data[i]*3;
+                totalr += palette[c];
+                totalg += palette[c+1];
+                totalb += palette[c+2];
             }
 
             totalr /= data.Length;
             totalg /= data.Length;
             totalb /= data.Length;
 
-            image.AverageIndex = (byte)palette.GetNearestColorIndex(totalr, totalg, totalb);
+            image.AverageIndex = (byte)GetNearestColorIndex(totalr, totalg, totalb, palette);
         }
 
-        public static PIGImage CreatePIGImage(Bitmap bitmap, Palette palette, string newname)
+        public static PIGImage CreatePIGImage(Bitmap bitmap, byte[] palette, string newname)
         {
             if (bitmap.Width >= 4096 || bitmap.Height >= 4096) throw new Exception("Bitmap resolution is too high for a PIG bitmap");
             PIGImage image = new PIGImage(bitmap.Width, bitmap.Height, 0, 0, 0, 0, newname);
@@ -114,7 +139,7 @@ namespace Descent2Workshop
                 }
                 else
                 {
-                    color = palette.GetNearestColorIndex(basedata[i * 4 + 2], basedata[i * 4 + 1], basedata[i * 4]);
+                    color = GetNearestColorIndex(basedata[i * 4 + 2], basedata[i * 4 + 1], basedata[i * 4], palette);
                 }
                 data[i] = (byte)color;
             }

@@ -37,6 +37,10 @@ namespace Descent2Workshop
         public StandardUI host;
         private bool isLocked = false;
         private LBMDecoder lbmDecoder = new LBMDecoder();
+
+        //Hold a linear basic palette. Want simplest possible representation for perf reasons
+        private byte[] localPalette;
+
         public PIGEditor(PIGFile data, Palette palette, string filename)
         {
             datafile = data;
@@ -44,6 +48,7 @@ namespace Descent2Workshop
             InitializeComponent();
             this.Text = string.Format("{0} - PIG Editor", filename);
             this.palette = palette;
+            localPalette = palette.GetLinear();
 
 #if DEBUG==false
             mainMenu1.MenuItems.Remove(ExportILBMMenuItem);
@@ -277,7 +282,7 @@ namespace Descent2Workshop
             for (int i = 0; i < listView1.SelectedItems.Count; i++)
             {
                 image = datafile.Bitmaps[listView1.SelectedIndices[i]];
-                PiggyBitmapUtilities.SetAverageColor(image, palette);
+                PiggyBitmapUtilities.SetAverageColor(image, localPalette);
                 
             }
             image = datafile.Bitmaps[listView1.SelectedIndices[0]];
@@ -294,7 +299,7 @@ namespace Descent2Workshop
                 foreach (string name in openFileDialog1.FileNames)
                 {
                     Bitmap img = new Bitmap(name);
-                    PIGImage bitmap = PiggyBitmapUtilities.CreatePIGImage(img, palette, Path.GetFileName(name).Substring(0, Math.Min(Path.GetFileName(name).Length, 8)));
+                    PIGImage bitmap = PiggyBitmapUtilities.CreatePIGImage(img, localPalette, Path.GetFileName(name).Substring(0, Math.Min(Path.GetFileName(name).Length, 8)));
                     datafile.Bitmaps.Add(bitmap);
                     ListViewItem lvi = GeneratePiggyEntry(datafile.Bitmaps.Count - 1);
                     listView1.Items.Add(lvi);
