@@ -309,7 +309,10 @@ class Subobject:
         isUnwrapped = True
         uvLayer = meshobj.data.uv_layers.active
         #If not unwrapped, all UVs on texture mapped faces need to get bashed to (0, 0)
+        #Sometimes the uv layer also has no data in it, so also bash it then
         if len(meshobj.data.uv_layers) == 0:
+            isUnwrapped = False
+        elif len(uvLayer.data) == 0:
             isUnwrapped = False
         #Counter the parent's offset, since Descent wants everything global
         self.origin = (meshobj.location + meshobj.matrix_parent_inverse.translation)
