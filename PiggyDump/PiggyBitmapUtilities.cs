@@ -22,7 +22,7 @@ namespace Descent2Workshop
             for (int i = 0; i < rawData.Length; i++)
             {
                 b = rawData[i];
-                rgbData[i] = ((b == 255 ? 0 : 255) << 24) + (palette[b, 0] << 16) + (palette[b, 1] << 8) + (palette[b, 2]);
+                rgbData[i] = ((b == 255 ? 0 : 255) << 24) + (palette[b].R << 16) + (palette[b].G << 8) + (palette[b].B);
             }
 
             BitmapData bits = bitmap.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
@@ -42,7 +42,7 @@ namespace Descent2Workshop
             for (int i = 0; i < rawData.Length; i++)
             {
                 b = rawData[i];
-                rgbData[i] = ((b == 255 ? 0 : 255) << 24) + (palette[b, 0] << 16) + (palette[b, 1] << 8) + (palette[b, 2]);
+                rgbData[i] = ((b == 255 ? 0 : 255) << 24) + (palette[b].R << 16) + (palette[b].G << 8) + (palette[b].B);
             }
 
             BitmapData bits = bitmap.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
@@ -63,7 +63,7 @@ namespace Descent2Workshop
             for (int i = 0; i < rawData.Length; i++)
             {
                 b = rawData[i];
-                rgbData[i] = ((b == 255 ? 0 : 255) << 24) + (palette[b, 0] << 16) + (palette[b, 1] << 8) + (palette[b, 2]);
+                rgbData[i] = ((b == 255 ? 0 : 255) << 24) + (palette[b].R << 16) + (palette[b].G << 8) + (palette[b].B);
             }
 
             BitmapData bits = bitmap.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
@@ -81,16 +81,16 @@ namespace Descent2Workshop
             for (int i = 0; i < data.Length; i++)
             {
                 c = data[i];
-                totalr += palette[c, 0];
-                totalg += palette[c, 1];
-                totalb += palette[c, 2];
+                totalr += palette[c].R;
+                totalg += palette[c].G;
+                totalb += palette[c].B;
             }
 
             totalr /= data.Length;
             totalg /= data.Length;
             totalb /= data.Length;
 
-            image.AverageIndex = (byte)palette.GetNearestColor(totalr, totalg, totalb);
+            image.AverageIndex = (byte)palette.GetNearestColorIndex(totalr, totalg, totalb);
         }
 
         public static PIGImage CreatePIGImage(Bitmap bitmap, Palette palette, string newname)
@@ -114,7 +114,7 @@ namespace Descent2Workshop
                 }
                 else
                 {
-                    color = palette.GetNearestColor(basedata[i * 4 + 2], basedata[i * 4 + 1], basedata[i * 4]);
+                    color = palette.GetNearestColorIndex(basedata[i * 4 + 2], basedata[i * 4 + 1], basedata[i * 4]);
                 }
                 data[i] = (byte)color;
             }

@@ -372,9 +372,9 @@ namespace Descent2Workshop
             bytesWritten += 8;
             for (int c = 0; c < 256; c++)
             {
-                bw.Write(palette[c, 0]);
-                bw.Write(palette[c, 1]);
-                bw.Write(palette[c, 2]);
+                bw.Write((byte)palette[c].R);
+                bw.Write((byte)palette[c].G);
+                bw.Write((byte)palette[c].B);
             }
             bytesWritten += 0x300;
             //Write the body
@@ -487,9 +487,9 @@ namespace Descent2Workshop
             bytesWritten += 8;
             for (int c = 0; c < 256; c++)
             {
-                bw.Write(palette[c, 0]);
-                bw.Write(palette[c, 1]);
-                bw.Write(palette[c, 2]);
+                bw.Write((byte)palette[c].R);
+                bw.Write((byte)palette[c].G);
+                bw.Write((byte)palette[c].B);
             }
             bytesWritten += 0x300;
             //Write the body
