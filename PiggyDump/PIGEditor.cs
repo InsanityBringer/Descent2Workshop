@@ -40,6 +40,7 @@ namespace Descent2Workshop
 
         //Hold a linear basic palette. Want simplest possible representation for perf reasons
         private byte[] localPalette;
+        private byte[] inverseColormap;
 
         public PIGEditor(PIGFile data, Palette palette, string filename)
         {
@@ -49,6 +50,7 @@ namespace Descent2Workshop
             this.Text = string.Format("{0} - PIG Editor", filename);
             this.palette = palette;
             localPalette = palette.GetLinear();
+            inverseColormap = PiggyBitmapUtilities.BuildInverseColormap(localPalette);
 
 #if DEBUG==false
             mainMenu1.MenuItems.Remove(ExportILBMMenuItem);
@@ -299,7 +301,7 @@ namespace Descent2Workshop
                 foreach (string name in openFileDialog1.FileNames)
                 {
                     Bitmap img = new Bitmap(name);
-                    PIGImage bitmap = PiggyBitmapUtilities.CreatePIGImage(img, localPalette, Path.GetFileName(name).Substring(0, Math.Min(Path.GetFileName(name).Length, 8)));
+                    PIGImage bitmap = PiggyBitmapUtilities.CreatePIGImage(img, localPalette, inverseColormap, Path.GetFileName(name).Substring(0, Math.Min(Path.GetFileName(name).Length, 8)));
                     datafile.Bitmaps.Add(bitmap);
                     ListViewItem lvi = GeneratePiggyEntry(datafile.Bitmaps.Count - 1);
                     listView1.Items.Add(lvi);
