@@ -564,6 +564,10 @@ def doPOFExport(filename):
     if len(bpy.context.selected_objects) < 1:
         return
     
+    #kick the object out of edit mode since this is a bad idea
+    if bpy.ops.object.mode_set.poll():
+        bpy.ops.object.mode_set(mode='OBJECT')
+                
     polymodel = Polymodel()
     try:
         polymodel.buildPolymodel(bpy.context.selected_objects[0])
