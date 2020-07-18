@@ -36,6 +36,29 @@ namespace Descent2Workshop
             return bestcolor;
         }
 
+        public static byte[] BuildInverseColormap(byte[] palette)
+        {
+            byte[] invCmap = new byte[64 * 64 * 64];
+
+            int lr, lg, lb;
+            for (int r = 0; r < 64; r++)
+            {
+                for (int g = 0; g < 64; g++)
+                {
+                    for (int b = 0; b < 64; b++)
+                    {
+                        lr = r * 255 / 63;
+                        lg = g * 255 / 63;
+                        lb = b * 255 / 63;
+
+                        invCmap[r * 4096 + g * 64 + b] = (byte)GetNearestColorIndex(lr, lg, lb, palette);
+                    }
+                }
+            }
+
+            return invCmap;
+        }
+
         public static Bitmap GetBitmap(PIGFile piggyFile, Palette palette, int index)
         {
             PIGImage image = piggyFile.GetImage(index);
@@ -118,7 +141,7 @@ namespace Descent2Workshop
             image.AverageIndex = (byte)GetNearestColorIndex(totalr, totalg, totalb, palette);
         }
 
-        public static PIGImage CreatePIGImage(Bitmap bitmap, byte[] palette, string newname)
+        public static PIGImage CreatePIGImage(Bitmap bitmap, byte[] palette, byte[] invCmap, string newname)
         {
             if (bitmap.Width >= 4096 || bitmap.Height >= 4096) throw new Exception("Bitmap resolution is too high for a PIG bitmap");
             PIGImage image = new PIGImage(bitmap.Width, bitmap.Height, 0, 0, 0, 0, newname);
@@ -139,7 +162,7 @@ namespace Descent2Workshop
                 }
                 else
                 {
-                    color = GetNearestColorIndex(basedata[i * 4 + 2], basedata[i * 4 + 1], basedata[i * 4], palette);
+                    color = invCmap[(basedata[i * 4 + 2] >> 2) * 4096 + (basedata[i * 4 + 1] >> 2) * 64 + (basedata[i * 4] >> 2)];
                 }
                 data[i] = (byte)color;
             }
