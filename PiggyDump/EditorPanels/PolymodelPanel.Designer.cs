@@ -76,6 +76,7 @@
             this.ModelBaseTextureSpinner = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.PartitionButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.PitchTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ZoomTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AngleTrackBar)).BeginInit();
@@ -561,10 +562,21 @@
             this.openFileDialog1.FileName = "openFileDialog1";
             this.openFileDialog1.Filter = "Parallax Object Files|*.pof";
             // 
+            // PartitionButton
+            // 
+            this.PartitionButton.Location = new System.Drawing.Point(201, 220);
+            this.PartitionButton.Name = "PartitionButton";
+            this.PartitionButton.Size = new System.Drawing.Size(100, 23);
+            this.PartitionButton.TabIndex = 77;
+            this.PartitionButton.Text = "Partition";
+            this.PartitionButton.UseVisualStyleBackColor = true;
+            this.PartitionButton.Click += new System.EventHandler(this.PartitionButton_Click);
+            // 
             // PolymodelPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.PartitionButton);
             this.Controls.Add(this.TextureGroupBox);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.NoDepthCheckBox);
@@ -659,5 +671,6 @@
         private System.Windows.Forms.NumericUpDown ModelBaseTextureSpinner;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button PartitionButton;
     }
 }

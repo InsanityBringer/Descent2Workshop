@@ -271,7 +271,10 @@ namespace Descent2Workshop.EditorPanels
                     traceto = StandardUI.options.GetOption("TraceDir", ".") + Path.DirectorySeparatorChar + Path.ChangeExtension(bareFilename, "txt");
                 }
 
-                Polymodel newmodel = POFReader.ReadPOFFile(openFileDialog1.FileName);
+                Stream stream = File.OpenRead(openFileDialog1.FileName);
+                Polymodel newmodel = POFReader.ReadPOFFile(stream);
+                stream.Close();
+                stream.Dispose();
                 newmodel.ExpandSubmodels();
                 //datafile.ReplaceModel(ElementNumber, model);
                 ModelReplaceTransaction transaction = new ModelReplaceTransaction("Load model", (object)model, newmodel, modelID, tabPage);
@@ -306,6 +309,26 @@ namespace Descent2Workshop.EditorPanels
 
             IntegerTransaction transaction = new IntegerTransaction("Model property", model, (string)spinner.Tag, modelID, tabPage, value);
             transactionManager.ApplyTransaction(transaction);
+        }
+
+        private void PartitionButton_Click(object sender, EventArgs e)
+        {
+            //Do in a copy to allow undo
+            Polymodel newModel = new Polymodel(model);
+            PolymodelBuilder builder = new PolymodelBuilder();
+            try
+            {
+                builder.RebuildModel(newModel);
+            }
+            catch (Exception exc) //TODO: improved error handling
+            {
+                MessageBox.Show(exc.Message);
+                return;
+            }
+
+            ModelReplaceTransaction transaction = new ModelReplaceTransaction("Load model", (object)model, newModel, modelID, tabPage);
+            transactionManager.ApplyTransaction(transaction);
+            Update(newModel, modelID);
         }
     }
 }
