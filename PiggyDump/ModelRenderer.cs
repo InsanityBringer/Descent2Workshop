@@ -127,10 +127,10 @@ namespace Descent2Workshop
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             if (model.InterpreterData.Length == 0) return;
             GL.CullFace(CullFaceMode.Front);
-            if (wireframe)
+            /*if (wireframe)
                 GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
             else
-                GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+                GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);*/
 
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadIdentity();
@@ -369,7 +369,10 @@ namespace Descent2Workshop
                             int cg = ((color >> 5) & 31) * 255 / 31;
                             int cb = (color & 31) * 255 / 31;
 
-                            GL.Begin(PrimitiveType.TriangleFan);
+                            if (wireframe)
+                                GL.Begin(PrimitiveType.LineLoop);
+                            else
+                                GL.Begin(PrimitiveType.TriangleFan);
                             for (int i = 0; i < pointc; i++)
                             {
                                 double vx = interpPoints[points[i]].X;
@@ -427,7 +430,10 @@ namespace Descent2Workshop
                             //Draw
                             GL.Enable(EnableCap.Texture2D); //TODO: too many state changes
                             GL.BindTexture(TextureTarget.Texture2D, textureList[texture]);
-                            GL.Begin(PrimitiveType.TriangleFan);
+                            if (wireframe)
+                                GL.Begin(PrimitiveType.LineLoop);
+                            else
+                                GL.Begin(PrimitiveType.TriangleFan);
                             for (int i = 0; i < pointc; i++)
                             {
                                 double vx = interpPoints[points[i]].X;
