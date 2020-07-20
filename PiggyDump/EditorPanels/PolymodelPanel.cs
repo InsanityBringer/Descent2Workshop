@@ -316,15 +316,15 @@ namespace Descent2Workshop.EditorPanels
             //Do in a copy to allow undo
             Polymodel newModel = new Polymodel(model);
             PolymodelBuilder builder = new PolymodelBuilder();
-            try
+            //try
             {
                 builder.RebuildModel(newModel);
             }
-            catch (Exception exc) //TODO: improved error handling
+            /*catch (ArgumentException exc)
             {
-                MessageBox.Show(exc.Message);
+                MessageBox.Show(exc.Message, "Error partitioning model");
                 return;
-            }
+            }*/
 
             ModelReplaceTransaction transaction = new ModelReplaceTransaction("Load model", (object)model, newModel, modelID, tabPage);
             transactionManager.ApplyTransaction(transaction);
