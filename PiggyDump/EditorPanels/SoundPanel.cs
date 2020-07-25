@@ -76,7 +76,12 @@ namespace Descent2Workshop.EditorPanels
             if (datafile.Sounds[soundID] == 255)
                 SoundIDComboBox.SelectedIndex = 0;
             else
-                SoundIDComboBox.SelectedIndex = datafile.Sounds[soundID] + 1;
+            {
+                if (datafile.Sounds[soundID] >= (SoundIDComboBox.Items.Count-1)) //bash to zero if it would cause an error. 
+                    SoundIDComboBox.SelectedIndex = 0;
+                else
+                    SoundIDComboBox.SelectedIndex = datafile.Sounds[soundID] + 1;
+            }
             if (datafile.AltSounds[soundID] == 255)
                 LowMemorySoundComboBox.SelectedIndex = 0;
             else
