@@ -43,6 +43,8 @@ namespace Descent2Workshop
         private byte[] localPalette;
         private byte[] inverseColormap;
 
+        Task paletteTask;
+
         public PIGEditor(PIGFile data, Palette palette, string filename)
         {
             datafile = data;
@@ -51,7 +53,8 @@ namespace Descent2Workshop
             this.Text = string.Format("{0} - PIG Editor", filename);
             this.palette = palette;
             localPalette = palette.GetLinear();
-            inverseColormap = PiggyBitmapUtilities.BuildInverseColormap(localPalette);
+            //Compute the inverse colormap on another thread to make the game run faster.
+            paletteTask = Task.Run(() => { inverseColormap = PiggyBitmapUtilities.BuildInverseColormap(localPalette); });
 
 #if DEBUG==false
             mainMenu1.MenuItems.Remove(ExportILBMMenuItem);
@@ -114,7 +117,11 @@ namespace Descent2Workshop
 
         private void PIGEditor_FormClosing(object sender, FormClosingEventArgs e)
         {
-
+            if (paletteTask != null)
+            {
+                paletteTask.Wait(); //Just be safe
+                paletteTask.Dispose();
+            }
         }
 
         private void DoSave(string filename)
@@ -301,6 +308,9 @@ namespace Descent2Workshop
             {
                 foreach (string name in openFileDialog1.FileNames)
                 {
+                    //If the inverse colormap isn't done, wait for it.
+                    paletteTask.Wait();
+
                     Bitmap img = new Bitmap(name);
                     PIGImage bitmap = PiggyBitmapUtilities.CreatePIGImage(img, localPalette, inverseColormap, Path.GetFileName(name).Substring(0, Math.Min(Path.GetFileName(name).Length, 8)));
                     datafile.Bitmaps.Add(bitmap);
