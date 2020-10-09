@@ -282,15 +282,22 @@ namespace Descent2Workshop
                 bool closeOnExit = true;
                 SNDFile archive;
 
-                if (defaultSoundFile != null && Path.GetFullPath(openFileDialog1.FileName) == Path.GetFullPath(options.GetOption("SNDFile", "")))
+                //Retaining this will be useful later, in case the default sound fiel changes.
+                /*if (defaultSoundFile != null && Path.GetFullPath(openFileDialog1.FileName) == Path.GetFullPath(options.GetOption("SNDFile", "")))
                 {
                     AppendConsole("Loading internal SND file for editing.");
                     archive = defaultSoundFile;
                     closeOnExit = false;
-                }
+                }*/
                 archive = new SNDFile();
-                archive.LoadDataFile(openFileDialog1.FileName);
-                SXXEditor archiveEditor = new SXXEditor(this, archive);
+
+                FileStream newSoundStream = File.OpenRead(openFileDialog1.FileName);
+                archive.Read(newSoundStream);
+                //TODO: Not strictly needed for now, but will be when it's possible to play out of the default SND file.
+                SoundCache cache = SoundCache.CreateCacheFromFile(archive);
+                newSoundStream.Close();
+
+                SXXEditor archiveEditor = new SXXEditor(this, archive, cache, openFileDialog1.FileName);
                 if (Path.GetExtension(openFileDialog1.FileName).Equals(".S11", StringComparison.OrdinalIgnoreCase) ||
                     Path.GetExtension(openFileDialog1.FileName).Equals(".HAM", StringComparison.OrdinalIgnoreCase))
                 {
@@ -306,10 +313,15 @@ namespace Descent2Workshop
             openFileDialog1.Filter = ".S** files|*.S22;*.S11";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                defaultSoundFile = new SNDFile();
-                defaultSoundFile.LoadDataFile(openFileDialog1.FileName);
+                /*defaultSoundFile = new SNDFile();
+                soundStream = File.OpenRead(openFileDialog1.FileName);
+                defaultSoundFile.Read(soundStream);
                 options.SetOption("SNDFile", openFileDialog1.FileName);
-                tbLog.Text += "Loaded .SXX!\r\n";
+                tbLog.Text += "Loaded .SXX!\r\n";*/
+
+                //Gonna assume there's no reason why I can't do this.
+                //I should know my own code better...
+                LoadDefaultSND(openFileDialog1.FileName);
             }
         }
 
@@ -447,12 +459,14 @@ namespace Descent2Workshop
         private SNDFile LoadDefaultSND(string filename)
         {
             SNDFile defaultSND = new SNDFile();
+            FileStream soundStream = null;
             try
             {
-                defaultSND.LoadDataFile(filename);
+                soundStream = File.OpenRead(filename);
+                defaultSND.Read(soundStream);
                 AppendConsole("Loaded default SND file!\r\n");
-                if (defaultSoundFile != null)
-                    defaultSoundFile.CloseDataFile();
+                //if (defaultSoundFile != null)
+                //    defaultSoundFile.CloseDataFile();
                 options.SetOption("SNDFile", filename);
             }
             catch (Exception exc)
@@ -460,6 +474,15 @@ namespace Descent2Workshop
                 AppendConsole("Failed to load default SND file!\r\n");
                 FileExceptionHandler(exc, "SND file");
                 defaultSND = null;
+            }
+            finally
+            {
+                if (soundStream != null)
+                {
+                    //TODO: ATM it's impossible to play sounds from the default sound file, so close the stream now.
+                    //If this is changed, this needs to be changed and a SoundCache needs to be created.
+                    soundStream.Dispose();
+                }
             }
             return defaultSND;
         }

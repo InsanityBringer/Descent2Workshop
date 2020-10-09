@@ -24,45 +24,43 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
-using System.IO;
+using System.Threading.Tasks;
+using LibDescent.Data;
 
 namespace Descent2Workshop
 {
-    public class Sound
+    /// <summary>
+    /// Super basic sound cache. Not actually a cache ATM, since it just hoards everything in memory.
+    /// Used to simplify tool-side sound handling, and avoid cluttering LibDescent with unneded data.
+    /// </summary>
+    public class SoundCache
     {
-        public char[] name = new char[8];
-        public int length, datalength;
-        public int offset;
-        public byte[] sound_data;
+        public List<byte[]> SoundDataCache { get; set; } = new List<byte[]>();
 
-        public ListViewItem getData()
+        public void CacheSound(byte[] data)
         {
-            ListViewItem lvi = new ListViewItem(new String(name));
-            lvi.SubItems.Add(length.ToString());
-            lvi.SubItems.Add(offset.ToString());
-
-            return lvi;
+            SoundDataCache.Add(data);
         }
 
-        public void LoadData(BinaryReader br)
+        public byte[] GetSound(int num)
         {
-            long curpos = br.BaseStream.Position;
-            br.BaseStream.Seek(offset, SeekOrigin.Current);
-            //sound_data = new byte[datalength];
-            sound_data = br.ReadBytes(datalength);
-            br.BaseStream.Seek(curpos, SeekOrigin.Begin);
+            return SoundDataCache[num];
         }
 
-        public void write_sound_header(int sndoffset, BinaryWriter bw)
+        /// <summary>
+        /// Helper function to create a sound cache from a given data file.
+        /// </summary>
+        /// <param name="datafile">The datafile to load from. Must have a valid stream.</param>
+        /// <returns>The sound cache with the sound data.</returns>
+        public static SoundCache CreateCacheFromFile(SNDFile datafile)
         {
-            for (int x = 0; x < 8; x++)
+            SoundCache cache = new SoundCache();
+            for (int i = 0; i < datafile.Sounds.Count; i++)
             {
-                bw.Write((byte)name[x]);
+                cache.CacheSound(datafile.LoadSound(i));
             }
-            bw.Write(length);
-            bw.Write(datalength);
-            bw.Write(sndoffset);
+
+            return cache;
         }
     }
 }

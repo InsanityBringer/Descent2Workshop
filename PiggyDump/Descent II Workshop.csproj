@@ -215,6 +215,7 @@
     </Compile>
     <Compile Include="SaveHandlers\FileSaveHandler.cs" />
     <Compile Include="SaveHandlers\SaveHandler.cs" />
+    <Compile Include="SoundCache.cs" />
     <Compile Include="Transactions\BoolTransaction.cs" />
     <Compile Include="Transactions\FixTransaction.cs" />
     <Compile Include="Transactions\IndexedFixTransaction.cs" />
@@ -380,7 +381,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Sound.cs" />
     <Compile Include="StandardUI.cs">
       <SubType>Form</SubType>
     </Compile>

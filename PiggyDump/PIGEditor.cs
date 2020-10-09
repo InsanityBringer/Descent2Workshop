@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using System.Threading.Tasks;
 using LibDescent.Data;
 
 namespace Descent2Workshop
