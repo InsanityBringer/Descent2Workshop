@@ -32,7 +32,7 @@ namespace Descent2Workshop
 {
     public partial class StandardUI : Form
     {
-        private HOGFile defaultHogFile;
+        private EditorHOGFile defaultHogFile;
         private PIGFile defaultPigFile;
         private SNDFile defaultSoundFile;
         public static UserOptions options = new UserOptions();
@@ -98,7 +98,7 @@ namespace Descent2Workshop
             openFileDialog1.Filter = ".HOG files|*.HOG";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                HOGFile archive = new HOGFile();
+                EditorHOGFile archive = new EditorHOGFile();
                 archive.Read(openFileDialog1.FileName);
                 HOGEditor archiveEditor = new HOGEditor(archive, this);
                 archiveEditor.Show();
@@ -107,7 +107,7 @@ namespace Descent2Workshop
 
         private void menuItem12_Click(object sender, EventArgs e)
         {
-            HOGFile archive = new HOGFile();
+            EditorHOGFile archive = new EditorHOGFile();
             HOGEditor archiveEditor = new HOGEditor(archive, this);
             archiveEditor.Show();
         }
@@ -401,9 +401,9 @@ namespace Descent2Workshop
             }
         }
 
-        private HOGFile LoadDefaultHOG(string filename)
+        private EditorHOGFile LoadDefaultHOG(string filename)
         {
-            HOGFile defaultHOG = new HOGFile();
+            EditorHOGFile defaultHOG = new EditorHOGFile();
             try
             {
                 defaultHOG.Read(filename);
@@ -419,7 +419,7 @@ namespace Descent2Workshop
             return defaultHOG;
         }
 
-        private PIGFile LoadDefaultPig(string filename, HOGFile hogFile)
+        private PIGFile LoadDefaultPig(string filename, EditorHOGFile hogFile)
         {
             string paletteName = Path.GetFileNameWithoutExtension(filename) + ".256";
             Palette newPalette; int lumpIndex;

@@ -30,17 +30,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using LibDescent.Data;
+using LibDescent.Edit;
 
 namespace Descent2Workshop
 {
     public partial class POGEditor : Form
     {
         public POGFile datafile;
-        private HOGFile hogFile; //used as a source for palettes
+        private EditorHOGFile hogFile; //used as a source for palettes
         private string filename;
         public StandardUI host;
         private Palette currentPalette = new Palette();
-        public POGEditor(POGFile data, HOGFile hogFile, string filename)
+        public POGEditor(POGFile data, EditorHOGFile hogFile, string filename)
         {
             datafile = data;
             this.filename = filename;

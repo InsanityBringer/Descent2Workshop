@@ -30,14 +30,15 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using LibDescent.Data;
+using LibDescent.Edit;
 
 namespace Descent2Workshop
 {
     public partial class HOGEditor : Form
     {
-        private HOGFile datafile;
+        private EditorHOGFile datafile;
         private StandardUI host;
-        public HOGEditor(HOGFile data, StandardUI host)
+        public HOGEditor(EditorHOGFile data, StandardUI host)
         {
             InitializeComponent();
             datafile = data;
