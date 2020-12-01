@@ -61,6 +61,8 @@ namespace Descent2Workshop
 
         private void LoadLumpAt(string path, int index)
         {
+
+            Console.WriteLine("loading {0}", path);
             string filename = Path.GetFileName(path);
             BinaryReader br;
             if (filename.Length > 12)
@@ -74,7 +76,7 @@ namespace Descent2Workshop
             HOGLump newLump = new HOGLump(filename, size, -1);
             newLump.Data = data;
             newLump.Type = HOGLump.IdentifyLump(newLump.Name, newLump.Data);
-            datafile.AddLump(newLump);
+            //datafile.AddLump(newLump);
 
             ListViewItem lumpElement = new ListViewItem(newLump.Name);
             lumpElement.SubItems.Add(newLump.Size.ToString());
@@ -205,13 +207,10 @@ namespace Descent2Workshop
 
         private void listView1_DragEnter(object sender, DragEventArgs e)
         {
-            Console.WriteLine("something entered the airlock");
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                Console.WriteLine("okay, it's human");
                 if ((e.AllowedEffect & DragDropEffects.Copy) != 0)
                 {
-                    Console.WriteLine("It can be copied");
                     e.Effect = DragDropEffects.Copy;
                 }
             }
@@ -240,7 +239,7 @@ namespace Descent2Workshop
                     // the right of the midpoint of the closest item and set
                     // the InsertionMark.AppearsAfterItem property accordingly.
                     Rectangle itemBounds = listView1.GetItemRect(targetIndex);
-                    if (targetPoint.X > itemBounds.Left + (itemBounds.Width / 2))
+                    if (targetPoint.Y > itemBounds.Top + (itemBounds.Height / 2))
                     {
                         listView1.InsertionMark.AppearsAfterItem = true;
                     }
@@ -270,9 +269,10 @@ namespace Descent2Workshop
                 int targetIndex = listView1.InsertionMark.Index;
 
                 // If the insertion mark is not visible, exit the method.
+                //actually let's hock it at the end because otherwise you can't insert into an empty hog
                 if (targetIndex == -1)
                 {
-                    return;
+                    targetIndex = datafile.NumLumps;
                 }
 
                 // If the insertion mark is to the right of the item with
