@@ -90,6 +90,21 @@ namespace Descent2Workshop
             }
         }
 
+        private void ChangeImage(int id)
+        {
+            isLocked = true;
+            PIGImage image = datafile.Bitmaps[id];
+            pictureBox1.Image = PiggyBitmapUtilities.GetBitmap(datafile, palette, id);
+            TransparentCheck.Checked = image.Transparent;
+            SupertransparentCheck.Checked = image.SuperTransparent;
+            NoLightingCheck.Checked = image.NoLighting;
+            CompressCheckBox.Checked = image.RLECompressed;
+            System.Drawing.Color color = System.Drawing.Color.FromArgb(palette.GetRGBAValue(image.AverageIndex));
+            ColorPreview.BackColor = color;
+            pictureBox1.Refresh();
+            isLocked = false;
+        }
+
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listView1.SelectedIndices.Count <= 0)
@@ -102,17 +117,7 @@ namespace Descent2Workshop
                 pictureBox1.Image = null;
                 temp.Dispose();
             }
-            isLocked = true;
-            PIGImage image = datafile.Bitmaps[listView1.SelectedIndices[0]];
-            pictureBox1.Image = PiggyBitmapUtilities.GetBitmap(datafile, palette, listView1.SelectedIndices[0]);
-            TransparentCheck.Checked = image.Transparent;
-            SupertransparentCheck.Checked = image.SuperTransparent;
-            NoLightingCheck.Checked = image.NoLighting;
-            CompressCheckBox.Checked = image.RLECompressed;
-            System.Drawing.Color color = System.Drawing.Color.FromArgb(palette.GetRGBAValue(image.AverageIndex));
-            ColorPreview.BackColor = color;
-            pictureBox1.Refresh();
-            isLocked = false;
+            ChangeImage(listView1.SelectedIndices[0]);
         }
 
         private void PIGEditor_FormClosing(object sender, FormClosingEventArgs e)
@@ -177,6 +182,9 @@ namespace Descent2Workshop
 
             image = datafile.Bitmaps[i];
             item.SubItems[1].Text = i.ToString();
+            item.SubItems[2].Text = image.GetSize().ToString();
+            item.SubItems[3].Text = string.Format("{0}x{1}", image.Width, image.Height);
+            item.Text = image.Name; //I hope there wasn't a reason why I didn't have this. 
             /*item.SubItems[1].Text = image.Name;
             item.SubItems[2].Text = image.GetSize().ToString();
             item.SubItems[3].Text = string.Format("{0}x{1}", image.Width, image.Height);
@@ -431,6 +439,28 @@ namespace Descent2Workshop
                         bw.Close();
                         bw.Dispose();
                     }
+                }
+            }
+        }
+
+        private void ImportMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 0) return;
+            openFileDialog1.Multiselect = false;
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                foreach (string name in openFileDialog1.FileNames)
+                {
+                    //If the inverse colormap isn't done, wait for it.
+                    paletteTask.Wait();
+
+                    Bitmap img = new Bitmap(name);
+                    PIGImage bitmap = PiggyBitmapUtilities.CreatePIGImage(img, localPalette, inverseColormap, Path.GetFileName(name).Substring(0, Math.Min(Path.GetFileName(name).Length, 8)));
+                    //datafile.Bitmaps.Add(bitmap);
+                    datafile.Bitmaps[listView1.SelectedIndices[0]] = bitmap;
+                    RebuildItem(listView1.Items[listView1.SelectedIndices[0]]);
+                    ChangeImage(listView1.SelectedIndices[0]);
+                    img.Dispose();
                 }
             }
         }
