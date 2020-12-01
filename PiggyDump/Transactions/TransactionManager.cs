@@ -60,22 +60,40 @@ namespace Descent2Workshop.Transactions
             return queuePosition < queueHead;
         }
 
+        private Transaction GetPreviousTransaction()
+        {
+            if (queuePosition == queueTail) return null;
+            int undoPosition = queuePosition - 1;
+            if (undoPosition < 0) undoPosition += NumTransactions;
+
+            return transactionQueue[undoPosition];
+        }
+
         public void ApplyTransaction(Transaction transaction)
         {
             TransactionInProgress = true;
             if (transaction.Apply()) //Only queue the transaction if it actually changes a value
             {
-                transactionQueue[queuePosition] = transaction;
-                queuePosition++;
-                if (queuePosition >= NumTransactions)
-                    queuePosition -= NumTransactions;
-                queueHead = queuePosition;
-
-                if (queueHead == queueTail) //Bump the tail up if there is overlap
+                //Don't queue a transaction that is considered compatible with the previous one
+                Transaction previousTransaction = GetPreviousTransaction();
+                if (previousTransaction != null && previousTransaction.CanMergeWith(transaction))
                 {
-                    queueTail = queueHead + 1;
-                    if (queueTail >= NumTransactions)
-                        queueTail -= NumTransactions;
+                    previousTransaction.MergeIn(transaction);
+                }
+                else
+                {
+                    transactionQueue[queuePosition] = transaction;
+                    queuePosition++;
+                    if (queuePosition >= NumTransactions)
+                        queuePosition -= NumTransactions;
+                    queueHead = queuePosition;
+
+                    if (queueHead == queueTail) //Bump the tail up if there is overlap
+                    {
+                        queueTail = queueHead + 1;
+                        if (queueTail >= NumTransactions)
+                            queueTail -= NumTransactions;
+                    }
                 }
             }
             UnsavedFlag = true;

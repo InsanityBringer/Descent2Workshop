@@ -119,5 +119,27 @@ namespace Descent2Workshop.Transactions
         {
             return oldValue;
         }
+
+        public override bool CanMergeWith(Transaction transaction)
+        {
+            if (!(transaction is IntegerTransaction))
+                return false;
+
+            IntegerTransaction other = (IntegerTransaction)transaction;
+
+            //In order to merge two transactions, the transactions must be operating on the same exact object and field. 
+            if (other.target == target &&
+                other.property == property)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public override void MergeIn(Transaction transaction)
+        {
+            IntegerTransaction other = (IntegerTransaction)transaction;
+            newValue = other.newValue;
+        }
     }
 }

@@ -73,5 +73,14 @@ namespace Descent2Workshop.Transactions
         {
             return null;
         }
+
+        public virtual bool CanMergeWith(Transaction transaction)
+        {
+            return false;
+        }
+
+        public virtual void MergeIn(Transaction transaction)
+        {
+        }
     }
 }

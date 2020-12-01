@@ -61,5 +61,29 @@ namespace Descent2Workshop.Transactions
 
             undoEvent?.Invoke(this, new UndoIndexedEventArgs((int)index));
         }
+
+        public override bool CanMergeWith(Transaction transaction)
+        {
+            if (!(transaction is IndexedFixTransaction))
+                return false;
+
+            IndexedFixTransaction other = (IndexedFixTransaction)transaction;
+
+            //In order to merge two transactions, the transactions must be operating on the same exact object and field. 
+            //Indexed transactions need to share indices too
+            if (other.target == target &&
+                other.property == property &&
+                other.index == index)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public override void MergeIn(Transaction transaction)
+        {
+            IndexedFixTransaction other = (IndexedFixTransaction)transaction;
+            newValue = other.newValue;
+        }
     }
 }
