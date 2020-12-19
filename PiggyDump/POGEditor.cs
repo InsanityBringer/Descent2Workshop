@@ -29,6 +29,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 using LibDescent.Data;
 using LibDescent.Edit;
 
@@ -41,6 +42,13 @@ namespace Descent2Workshop
         private string filename;
         public StandardUI host;
         private Palette currentPalette = new Palette();
+
+        //Hold a linear basic palette. Want simplest possible representation for perf reasons
+        private byte[] localPalette;
+        private byte[] inverseColormap;
+
+        Task paletteTask = null;
+
         public POGEditor(POGFile data, EditorHOGFile hogFile, string filename)
         {
             datafile = data;
@@ -86,8 +94,18 @@ namespace Descent2Workshop
             if (data != null)
             {
                 currentPalette = new Palette(data);
+                localPalette = currentPalette.GetLinear();
+
+                if (paletteTask != null) //I don't know if it's a good idea to dispose a running task, so just wait for now
+                {
+                    paletteTask.Wait();
+                    paletteTask.Dispose();
+                }
+                paletteTask = Task.Run(() => { inverseColormap = PiggyBitmapUtilities.BuildInverseColormap(localPalette); });
+
                 if (listView1.Items.Count == 0) return;
                 if (listView1.SelectedIndices.Count == 0) return;
+
                 UpdateImage(listView1.SelectedIndices[0]);
             }
         }
@@ -116,6 +134,41 @@ namespace Descent2Workshop
             if (listView1.Items.Count == 0) return;
             if (listView1.SelectedIndices.Count == 0) return;
             UpdateImage(listView1.SelectedIndices[0]);
+        }
+
+        private void menuItem7_Click(object sender, EventArgs e)
+        {
+            int baseImageID = 0;
+            openFileDialog1.Multiselect = true;
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                ImageSelector imageSelector = new ImageSelector(host.DefaultPigFile, currentPalette, false);
+
+                if (imageSelector.ShowDialog() == DialogResult.OK)
+                {
+                    foreach (string name in openFileDialog1.FileNames)
+                    {
+                        //If the inverse colormap isn't done, wait for it.
+                        paletteTask.Wait();
+
+                        Bitmap img = new Bitmap(name);
+                        PIGImage bitmap = PiggyBitmapUtilities.CreatePIGImage(img, localPalette, inverseColormap, Path.GetFileName(name).Substring(0, Math.Min(Path.GetFileName(name).Length, 8)));
+                        bitmap.ReplacementNum = (ushort)(imageSelector.Selection + baseImageID);
+
+                        if (openFileDialog1.FileNames.Length > 1) //Auto animation on multi import
+                        {
+                            bitmap.IsAnimated = true;
+                            bitmap.Frame = baseImageID;
+                        }
+                        baseImageID++;
+
+                        datafile.Bitmaps.Add(bitmap);
+                        ListViewItem lvi = GeneratePiggyEntry(datafile.Bitmaps.Count - 1);
+                        listView1.Items.Add(lvi);
+                        img.Dispose();
+                    }
+                }
+            }
         }
     }
 }

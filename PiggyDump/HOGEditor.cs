@@ -61,8 +61,6 @@ namespace Descent2Workshop
 
         private void LoadLumpAt(string path, int index)
         {
-
-            Console.WriteLine("loading {0}", path);
             string filename = Path.GetFileName(path);
             BinaryReader br;
             if (filename.Length > 12)
