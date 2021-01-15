@@ -81,6 +81,26 @@ namespace Descent2Workshop
             return lvi;
         }
 
+        private void RebuildItem(ListViewItem item)
+        {
+            PIGImage image;
+            int i = item.Index;
+
+            image = datafile.Bitmaps[i];
+            item.SubItems[1].Text = i.ToString();
+            item.SubItems[2].Text = image.GetSize().ToString();
+            item.SubItems[3].Text = string.Format("{0}x{1}", image.Width, image.Height);
+            item.Text = image.Name; //I hope there wasn't a reason why I didn't have this. 
+            if (image.IsAnimated)
+            {
+                item.SubItems[4].Text = image.Frame.ToString();
+            }
+            else
+            {
+                item.SubItems[4].Text = "-1";
+            }
+        }
+
         private void PIGEditor_Load(object sender, EventArgs e)
         {
             for (int x = 0; x < datafile.Bitmaps.Count; x++)
@@ -175,48 +195,13 @@ namespace Descent2Workshop
             datafile.Bitmaps.RemoveAt(index);
         }
 
-        private void RebuildItem(ListViewItem item)
-        {
-            PIGImage image;
-            int i = item.Index;
-
-            image = datafile.Bitmaps[i];
-            item.SubItems[1].Text = i.ToString();
-            item.SubItems[2].Text = image.GetSize().ToString();
-            item.SubItems[3].Text = string.Format("{0}x{1}", image.Width, image.Height);
-            item.Text = image.Name; //I hope there wasn't a reason why I didn't have this. 
-            /*item.SubItems[1].Text = image.Name;
-            item.SubItems[2].Text = image.GetSize().ToString();
-            item.SubItems[3].Text = string.Format("{0}x{1}", image.Width, image.Height);
-            if (image.IsAnimated)
-            {
-                item.SubItems[4].Text = image.Frame.ToString();
-            }
-            else
-            {
-                item.SubItems[4].Text = "-1";
-            }*/
-        }
-
         private void RebuildListFrom(int index)
         {
             //PIGImage image;
             for (int i = index; i < listView1.Items.Count; i++)
             {
-                //image = datafile.Bitmaps[i];
                 ListViewItem item = listView1.Items[i];
                 item.SubItems[1].Text = i.ToString();
-                /*item.SubItems[0].Text = image.Name;
-                item.SubItems[2].Text = image.GetSize().ToString();
-                item.SubItems[3].Text = string.Format("{0}x{1}", image.Width, image.Height);
-                if (image.IsAnimated)
-                {
-                    item.SubItems[4].Text = image.Frame.ToString();
-                }
-                else
-                {
-                    item.SubItems[4].Text = "-1";
-                }*/
             }
         }
 
@@ -458,10 +443,43 @@ namespace Descent2Workshop
                     PIGImage bitmap = PiggyBitmapUtilities.CreatePIGImage(img, localPalette, inverseColormap, Path.GetFileName(name).Substring(0, Math.Min(Path.GetFileName(name).Length, 8)));
                     //datafile.Bitmaps.Add(bitmap);
                     datafile.Bitmaps[listView1.SelectedIndices[0]] = bitmap;
-                    RebuildItem(listView1.Items[listView1.SelectedIndices[0]]);
+                    RebuildItem(listView1.SelectedItems[0]);
                     ChangeImage(listView1.SelectedIndices[0]);
                     img.Dispose();
                 }
+            }
+        }
+
+        private void MakeAnimatedMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedIndices.Count == 0) return;
+
+            //All frames need the same name, though in practice this is just for the bitmaps.tbl compiler.
+            //The shared name is used to determine how many frames are in an animation
+            string animName = datafile.Bitmaps[listView1.SelectedIndices[0]].Name;
+            PIGImage img;
+            for (int i = 0; i < listView1.SelectedIndices.Count; i++)
+            {
+                img = datafile.Bitmaps[listView1.SelectedIndices[i]];
+                img.Name = animName;
+                img.IsAnimated = true;
+                img.Frame = i;
+                RebuildItem(listView1.SelectedItems[i]);
+            }
+        }
+
+        private void ClearAnimationMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedIndices.Count == 0) return;
+
+            PIGImage img;
+            for (int i = 0; i < listView1.SelectedIndices.Count; i++)
+            {
+                img = datafile.Bitmaps[listView1.SelectedIndices[i]];
+                //TODO: I should have the IsAnimated property automatically clear the frame. 
+                img.IsAnimated = false;
+                img.Frame = 0;
+                RebuildItem(listView1.SelectedItems[i]);
             }
         }
     }

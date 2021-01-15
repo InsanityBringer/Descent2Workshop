@@ -43,6 +43,9 @@ namespace Descent2Workshop
         public StandardUI host;
         private Palette currentPalette = new Palette();
 
+        //will I ever understand GUI programming? I wonder...
+        private bool isLocked = false;
+
         //Hold a linear basic palette. Want simplest possible representation for perf reasons
         private byte[] localPalette;
         private byte[] inverseColormap;
@@ -88,6 +91,26 @@ namespace Descent2Workshop
             return lvi;
         }
 
+        private void RebuildItem(ListViewItem item)
+        {
+            PIGImage image;
+            int i = item.Index;
+
+            image = datafile.Bitmaps[i];
+            item.SubItems[1].Text = image.ReplacementNum.ToString();
+            item.SubItems[2].Text = image.GetSize().ToString();
+            item.SubItems[3].Text = string.Format("{0}x{1}", image.Width, image.Height);
+            item.Text = image.Name;
+            if (image.IsAnimated)
+            {
+                item.SubItems[4].Text = image.Frame.ToString();
+            }
+            else
+            {
+                item.SubItems[4].Text = "-1";
+            }
+        }
+
         private void PaletteComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             byte[] data = hogFile.GetLumpData(hogFile.GetLumpNum(PaletteComboBox.Text));
@@ -112,6 +135,7 @@ namespace Descent2Workshop
 
         private void UpdateImage(int id)
         {
+            isLocked = true;
             if (pictureBox1.Image != null)
             {
                 Bitmap temp = (Bitmap)pictureBox1.Image;
@@ -126,7 +150,9 @@ namespace Descent2Workshop
             CompressCheckBox.Checked = image.RLECompressed;
             System.Drawing.Color color = System.Drawing.Color.FromArgb(currentPalette.GetRGBAValue(image.AverageIndex));
             ColorPreview.BackColor = color;
+            ReplacementSpinner.Value = (decimal)image.ReplacementNum;
             pictureBox1.Refresh();
+            isLocked = false;
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -142,7 +168,7 @@ namespace Descent2Workshop
             openFileDialog1.Multiselect = true;
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                ImageSelector imageSelector = new ImageSelector(host.DefaultPigFile, currentPalette, false);
+                ImageSelector imageSelector = new ImageSelector(host.DefaultPigFile, host.DefaultPalette, false);
 
                 if (imageSelector.ShowDialog() == DialogResult.OK)
                 {
@@ -168,6 +194,66 @@ namespace Descent2Workshop
                         img.Dispose();
                     }
                 }
+            }
+        }
+
+        private void DoSave(string filename)
+        {
+            string statusMsg;
+            if (!FileUtilities.SaveDataFile(filename, datafile, out statusMsg))
+            {
+                MessageBox.Show(statusMsg, "Error saving POG file.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                filename = saveFileDialog1.FileName;
+                Text = string.Format("{0} - POG Editor", filename);
+            }
+        }
+
+        private void SaveAsMenuItem_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if (saveFileDialog1.FileName != "")
+                {
+                    DoSave(saveFileDialog1.FileName);
+                }
+            }
+        }
+
+        private void SaveMenuItem_Click(object sender, EventArgs e)
+        {
+            if (filename != "")
+            {
+                DoSave(filename);
+            }
+            else
+            {
+                SaveAsMenuItem_Click(sender, e);
+            }
+        }
+
+        private void ReplacementSpinner_ValueChanged(object sender, EventArgs e)
+        {
+            if (isLocked) return;
+            int baseOffset = 0;
+            foreach (int num in listView1.SelectedIndices)
+            {
+                datafile.Bitmaps[num].ReplacementNum = (ushort)Util.Clamp((int)ReplacementSpinner.Value + baseOffset, 0, 2619);
+                baseOffset++;
+                RebuildItem(listView1.Items[num]);
+            }
+        }
+
+        private void ChooseReplacementButton_Click(object sender, EventArgs e)
+        {
+            ImageSelector imageSelector = new ImageSelector(host.DefaultPigFile, host.DefaultPalette, false);
+
+            if (imageSelector.ShowDialog() == DialogResult.OK)
+            {
+                //Lazy solution: propagate through the spinner
+                ReplacementSpinner.Value = (decimal)imageSelector.Selection;
             }
         }
     }

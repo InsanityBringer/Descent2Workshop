@@ -43,6 +43,9 @@
             this.menuItem8 = new System.Windows.Forms.MenuItem();
             this.MoveUpMenuItem = new System.Windows.Forms.MenuItem();
             this.MoveDownMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem2 = new System.Windows.Forms.MenuItem();
+            this.MakeAnimatedMenuItem = new System.Windows.Forms.MenuItem();
+            this.ClearAnimationMenuItem = new System.Windows.Forms.MenuItem();
             this.ImportMenu = new System.Windows.Forms.MenuItem();
             this.InsertMenuItem = new System.Windows.Forms.MenuItem();
             this.ImportMenuItem = new System.Windows.Forms.MenuItem();
@@ -121,7 +124,10 @@
             this.DeleteMenu,
             this.menuItem8,
             this.MoveUpMenuItem,
-            this.MoveDownMenuItem});
+            this.MoveDownMenuItem,
+            this.menuItem2,
+            this.MakeAnimatedMenuItem,
+            this.ClearAnimationMenuItem});
             this.menuItem6.Text = "Edit";
             // 
             // CutMenuItem
@@ -167,6 +173,23 @@
             this.MoveDownMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlD;
             this.MoveDownMenuItem.Text = "Move Down";
             this.MoveDownMenuItem.Click += new System.EventHandler(this.MoveDownMenuItem_Click);
+            // 
+            // menuItem2
+            // 
+            this.menuItem2.Index = 7;
+            this.menuItem2.Text = "-";
+            // 
+            // MakeAnimatedMenuItem
+            // 
+            this.MakeAnimatedMenuItem.Index = 8;
+            this.MakeAnimatedMenuItem.Text = "Make Range Animated";
+            this.MakeAnimatedMenuItem.Click += new System.EventHandler(this.MakeAnimatedMenuItem_Click);
+            // 
+            // ClearAnimationMenuItem
+            // 
+            this.ClearAnimationMenuItem.Index = 9;
+            this.ClearAnimationMenuItem.Text = "Clear Animation";
+            this.ClearAnimationMenuItem.Click += new System.EventHandler(this.ClearAnimationMenuItem_Click);
             // 
             // ImportMenu
             // 
@@ -421,5 +444,8 @@
         private System.Windows.Forms.MenuItem ImportMenu;
         private System.Windows.Forms.MenuItem DebugMenuSeparator;
         private System.Windows.Forms.MenuItem ExportILBMMenuItem;
+        private System.Windows.Forms.MenuItem menuItem2;
+        private System.Windows.Forms.MenuItem MakeAnimatedMenuItem;
+        private System.Windows.Forms.MenuItem ClearAnimationMenuItem;
     }
 }

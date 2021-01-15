@@ -31,8 +31,8 @@
             this.components = new System.ComponentModel.Container();
             this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
             this.menuItem1 = new System.Windows.Forms.MenuItem();
-            this.menuItem2 = new System.Windows.Forms.MenuItem();
-            this.menuItem3 = new System.Windows.Forms.MenuItem();
+            this.SaveMenuItem = new System.Windows.Forms.MenuItem();
+            this.SaveAsMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem4 = new System.Windows.Forms.MenuItem();
             this.menuItem5 = new System.Windows.Forms.MenuItem();
             this.menuItem6 = new System.Windows.Forms.MenuItem();
@@ -43,8 +43,8 @@
             this.ExportMenuItem = new System.Windows.Forms.MenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.PaletteComboBox = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.ChooseReplacementButton = new System.Windows.Forms.Button();
+            this.ReplacementSpinner = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.listView1 = new System.Windows.Forms.ListView();
             this.NameColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -60,11 +60,12 @@
             this.SupertransparentCheck = new System.Windows.Forms.CheckBox();
             this.NoLightingCheck = new System.Windows.Forms.CheckBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ReplacementSpinner)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -78,21 +79,23 @@
             // 
             this.menuItem1.Index = 0;
             this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.menuItem2,
-            this.menuItem3,
+            this.SaveMenuItem,
+            this.SaveAsMenuItem,
             this.menuItem4,
             this.menuItem5});
             this.menuItem1.Text = "File";
             // 
-            // menuItem2
+            // SaveMenuItem
             // 
-            this.menuItem2.Index = 0;
-            this.menuItem2.Text = "Save";
+            this.SaveMenuItem.Index = 0;
+            this.SaveMenuItem.Text = "Save";
+            this.SaveMenuItem.Click += new System.EventHandler(this.SaveMenuItem_Click);
             // 
-            // menuItem3
+            // SaveAsMenuItem
             // 
-            this.menuItem3.Index = 1;
-            this.menuItem3.Text = "Save As...";
+            this.SaveAsMenuItem.Index = 1;
+            this.SaveAsMenuItem.Text = "Save As...";
+            this.SaveAsMenuItem.Click += new System.EventHandler(this.SaveAsMenuItem_Click);
             // 
             // menuItem4
             // 
@@ -151,8 +154,8 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.PaletteComboBox);
-            this.splitContainer1.Panel1.Controls.Add(this.button1);
-            this.splitContainer1.Panel1.Controls.Add(this.numericUpDown1);
+            this.splitContainer1.Panel1.Controls.Add(this.ChooseReplacementButton);
+            this.splitContainer1.Panel1.Controls.Add(this.ReplacementSpinner);
             this.splitContainer1.Panel1.Controls.Add(this.label2);
             this.splitContainer1.Panel1.Controls.Add(this.listView1);
             // 
@@ -186,26 +189,28 @@
             this.PaletteComboBox.TabIndex = 7;
             this.PaletteComboBox.SelectedIndexChanged += new System.EventHandler(this.PaletteComboBox_SelectedIndexChanged);
             // 
-            // button1
+            // ChooseReplacementButton
             // 
-            this.button1.Location = new System.Drawing.Point(126, 8);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "Choose...";
-            this.button1.UseVisualStyleBackColor = true;
+            this.ChooseReplacementButton.Location = new System.Drawing.Point(126, 8);
+            this.ChooseReplacementButton.Name = "ChooseReplacementButton";
+            this.ChooseReplacementButton.Size = new System.Drawing.Size(75, 23);
+            this.ChooseReplacementButton.TabIndex = 6;
+            this.ChooseReplacementButton.Text = "Choose...";
+            this.ChooseReplacementButton.UseVisualStyleBackColor = true;
+            this.ChooseReplacementButton.Click += new System.EventHandler(this.ChooseReplacementButton_Click);
             // 
-            // numericUpDown1
+            // ReplacementSpinner
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(76, 11);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
+            this.ReplacementSpinner.Location = new System.Drawing.Point(76, 11);
+            this.ReplacementSpinner.Maximum = new decimal(new int[] {
             2620,
             0,
             0,
             0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(44, 20);
-            this.numericUpDown1.TabIndex = 5;
+            this.ReplacementSpinner.Name = "ReplacementSpinner";
+            this.ReplacementSpinner.Size = new System.Drawing.Size(44, 20);
+            this.ReplacementSpinner.TabIndex = 5;
+            this.ReplacementSpinner.ValueChanged += new System.EventHandler(this.ReplacementSpinner_ValueChanged);
             // 
             // label2
             // 
@@ -332,6 +337,10 @@
             // 
             this.openFileDialog1.Filter = ".PNG files|*.png";
             // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.Filter = "POG Files|*.pog";
+            // 
             // POGEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -348,7 +357,7 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ReplacementSpinner)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
@@ -358,8 +367,8 @@
 
         private System.Windows.Forms.MainMenu mainMenu1;
         private System.Windows.Forms.MenuItem menuItem1;
-        private System.Windows.Forms.MenuItem menuItem2;
-        private System.Windows.Forms.MenuItem menuItem3;
+        private System.Windows.Forms.MenuItem SaveMenuItem;
+        private System.Windows.Forms.MenuItem SaveAsMenuItem;
         private System.Windows.Forms.MenuItem menuItem4;
         private System.Windows.Forms.MenuItem menuItem5;
         private System.Windows.Forms.MenuItem menuItem6;
@@ -380,12 +389,13 @@
         private System.Windows.Forms.Label ColorPreview;
         private System.Windows.Forms.CheckBox SupertransparentCheck;
         private System.Windows.Forms.CheckBox NoLightingCheck;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Button ChooseReplacementButton;
+        private System.Windows.Forms.NumericUpDown ReplacementSpinner;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox PaletteComboBox;
         private System.Windows.Forms.CheckBox CompressCheckBox;
         private System.Windows.Forms.ColumnHeader ResColumnHeader;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
