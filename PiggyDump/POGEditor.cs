@@ -249,6 +249,7 @@ namespace Descent2Workshop
         private void ChooseReplacementButton_Click(object sender, EventArgs e)
         {
             ImageSelector imageSelector = new ImageSelector(host.DefaultPigFile, host.DefaultPalette, false);
+            imageSelector.Selection = (int)ReplacementSpinner.Value;
 
             if (imageSelector.ShowDialog() == DialogResult.OK)
             {

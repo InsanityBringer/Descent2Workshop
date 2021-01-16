@@ -43,7 +43,7 @@ namespace Descent2Workshop
         private Palette palette;
         private bool animOnly;
 
-        public int Selection { get; private set; }
+        public int Selection { get; set; }
         public ImageSelector(PIGFile pigFile, Palette palette, bool animOnly)
         {
             InitializeComponent();
@@ -70,6 +70,11 @@ namespace Descent2Workshop
                 {
                     listBox1.Items.Add(entry);
                 }
+            }
+
+            if (Selection >= 0 && Selection < listBox1.Items.Count)
+            {
+                listBox1.SelectedIndex = Selection;
             }
         }
 
