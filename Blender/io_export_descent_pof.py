@@ -317,7 +317,6 @@ class Subobject:
         #Counter the parent's offset, since Descent wants everything global
         self.origin = (meshobj.location + meshobj.matrix_parent_inverse.translation)
         #Map names to generated IDs, since some ids will be lost on color faces
-        #matmapping = dict()
         if len(meshobj.data.materials) <= 0:
             raise NoMaterialException(meshobj.name)
         for mat in meshobj.data.materials:
@@ -349,7 +348,6 @@ class Subobject:
                 nface = TMAPPoly()
                 #for v in face.vertices:
                 for v in face.loop_indices:
-                    #nface.verts.append(v)
                     nface.verts.append(meshobj.data.loops[v].vertex_index)
                     if isUnwrapped == False:
                         nface.uvs.append([0, 0])
@@ -426,12 +424,6 @@ class Polymodel:
                 #This doesn't account for the entire offset chain, but this appears to be accurate to parallax's own tools
                 self.mins = getMin(self.mins, [subobj.origin[0]+subobj.mins[0], subobj.origin[1]+subobj.mins[1], subobj.origin[2]+subobj.mins[2]])
                 self.maxs = getMax(self.maxs, [subobj.origin[0]+subobj.maxs[0], subobj.origin[1]+subobj.maxs[1], subobj.origin[2]+subobj.maxs[2]])
-                #rad1 = terribleLen(self.mins)
-                #rad2 = terribleLen(self.maxs)
-                #if rad1 > rad2:
-                #    self.radius = rad1
-                #else:
-                #    self.radius = rad2
                 print(subobj.id)
         else:
             raise WrongTypeException(basemesh.name, basemesh.type)
@@ -440,17 +432,12 @@ class Polymodel:
         print(self.textures)
         #We need a "texture list" to enable indexing names
         textureNames = self.textures.keys()
-        #for tex in textureNames:
-        #    self.texList.append(tex)
         print(self.texList)
         
         #Generate interpreter data
-        #file = open("c:/dev/aaaaaa.pof", "wb")
         idtaStream = io.BytesIO()
         self.subobjects[0].generateIDTA(idtaStream, 0)
         self.idta = idtaStream.getvalue()
-        #file.write(idtaStream.getvalue())
-        #file.close()
     
         #Generate animations
         if bpy.context.scene.frame_start != bpy.context.scene.frame_end:
@@ -558,41 +545,6 @@ class Polymodel:
             self.writeANIM(file, version)
         self.writeIDTA(file)
 
-def doPOFExport(filename):
-    print("---STARTING---")
-    #Is something selected?
-    if len(bpy.context.selected_objects) < 1:
-        return
-    
-    #kick the object out of edit mode since this is a bad idea
-    if bpy.ops.object.mode_set.poll():
-        bpy.ops.object.mode_set(mode='OBJECT')
-                
-    polymodel = Polymodel()
-    try:
-        polymodel.buildPolymodel(bpy.context.selected_objects[0])
-    except NoMaterialException as err:
-        print(str.format("Mesh {0} does not have any defined materials.", err.name));
-        return
-    except WrongTypeException as err:
-        print(str.format("Currently selected object {0} is a {1} and not a mesh.", err.name, err.type))
-        return
-    except NotUnwrappedException as err:
-        print(str.format("Mesh {0} has textured faces, but is not unwrapped.", err.name))
-        return
-    except TooLargeException as err:
-        print(str.format("Mesh {0}'s data size is greater than 32 kilobytes: {0}", err.name, err.displacement))
-        return
-    
-    try:
-        file = open(filename, "wb")
-    except OSError as err:
-        print(str.format("Error opening file {0}: {1}", err.filename, err.strerror))
-        return
-    if file != None:
-        polymodel.writePOF(file, 8)
-        file.close()
-
 from bpy.props import *
 class DescentExporter(bpy.types.Operator):
     '''Export to Parallax Object File'''
@@ -603,7 +555,7 @@ class DescentExporter(bpy.types.Operator):
     filepath: StringProperty(subtype = 'FILE_PATH')
 
     def execute(self, context):
-        doPOFExport(self.properties.filepath)
+        self.doPOFExport(self.properties.filepath)
         return {'FINISHED'}
 
     def invoke(self, context, event):
@@ -614,6 +566,41 @@ class DescentExporter(bpy.types.Operator):
     @classmethod
     def poll(cls, context):
         return context.active_object != None
+        
+    def doPOFExport(self, filename):
+        print("---STARTING---")
+        #Is something selected?
+        if len(bpy.context.selected_objects) < 1:
+            return
+        
+        #kick the object out of edit mode since this is a bad idea
+        if bpy.ops.object.mode_set.poll():
+            bpy.ops.object.mode_set(mode='OBJECT')
+                    
+        polymodel = Polymodel()
+        try:
+            polymodel.buildPolymodel(bpy.context.selected_objects[0])
+        except NoMaterialException as err:
+            self.report({'ERROR'}, str.format("Mesh {0} does not have any defined materials.", err.name));
+            return
+        except WrongTypeException as err:
+            self.report({'ERROR'}, str.format("Currently selected object {0} is a {1} and not a mesh.", err.name, err.type))
+            return
+        except NotUnwrappedException as err:
+            self.report({'ERROR'}, str.format("Mesh {0} has textured faces, but no active UV map.", err.name))
+            return
+        except TooLargeException as err:
+            self.report({'ERROR'}, str.format("Mesh {0}'s data size is greater than 32 kilobytes: {0}", err.name, err.displacement))
+            return
+        
+        try:
+            file = open(filename, "wb")
+        except OSError as err:
+            self.report({'ERROR'}, str.format("Error opening file {0}: {1}", err.filename, err.strerror))
+            return
+        if file != None:
+            polymodel.writePOF(file, 8)
+            file.close()
     
 def exportIPOFOption(self, context):
     self.layout.operator_context = 'INVOKE_DEFAULT'
