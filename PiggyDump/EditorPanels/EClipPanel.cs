@@ -65,12 +65,12 @@ namespace Descent2Workshop.EditorPanels
             txtEffectFrameCount.Text = clip.Clip.NumFrames.ToString();
 
             //eclip stuff
-            cbEClipBreakEClip.SelectedIndex = clip.ExplosionEClip + 1;
-            cbEClipBreakVClip.SelectedIndex = clip.ExplosionVClip + 1;
+            UIUtil.SafeFillComboBox(cbEClipBreakEClip, clip.ExplosionEClip + 1);
+            UIUtil.SafeFillComboBox(cbEClipBreakVClip, clip.ExplosionVClip + 1);
             txtEffectExplodeSize.Text = clip.ExplosionSize.ToString();
             txtEffectBrokenID.Text = clip.DestroyedBitmapNum.ToString();
-            cbEClipBreakSound.SelectedIndex = clip.SoundNum + 1;
-            cbEClipMineCritical.SelectedIndex = clip.CriticalClip + 1;
+            UIUtil.SafeFillComboBox(cbEClipBreakSound, clip.SoundNum + 1);
+            UIUtil.SafeFillComboBox(cbEClipMineCritical, clip.CriticalClip + 1);
 
             FrameSpinner.Value = 0;
             UpdateEffectFrame(0);

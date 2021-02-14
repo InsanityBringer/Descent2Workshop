@@ -118,19 +118,19 @@ namespace Descent2Workshop.EditorPanels
             isLocked = true;
             this.robot = robot;
             this.robotid = id;
-            cbRobotAttackSound.SelectedIndex = robot.AttackSound;
-            cbRobotClawSound.SelectedIndex = robot.ClawSound;
+            UIUtil.SafeFillComboBox(cbRobotAttackSound, robot.AttackSound);
+            UIUtil.SafeFillComboBox(cbRobotClawSound, robot.ClawSound);
             txtRobotDrag.Text = robot.Drag.ToString();
             txtRobotDropProb.Text = robot.ContainsProbability.ToString();
             txtRobotDrops.Text = robot.ContainsCount.ToString();
             txtRobotLight.Text = robot.Lighting.ToString();
             txtRobotMass.Text = robot.Mass.ToString();
             txtRobotScore.Text = robot.ScoreValue.ToString();
-            cbRobotHitSound.SelectedIndex = robot.HitSoundNum;
-            cbRobotDeathSound.SelectedIndex = robot.DeathSoundNum;
-            cbRobotSeeSound.SelectedIndex = robot.SeeSound;
+            UIUtil.SafeFillComboBox(cbRobotHitSound, robot.HitSoundNum);
+            UIUtil.SafeFillComboBox(cbRobotDeathSound, robot.DeathSoundNum);
+            UIUtil.SafeFillComboBox(cbRobotSeeSound, robot.SeeSound);
             txtRobotShield.Text = robot.Strength.ToString();
-            cbRobotTauntSound.SelectedIndex = robot.TauntSound;
+            UIUtil.SafeFillComboBox(cbRobotTauntSound, robot.TauntSound);
             txtRobotAim.Text = robot.Aim.ToString();
             txtRobotBadass.Text = robot.DeathExplosionRadius.ToString();
             txtRobotDeathBlobs.Text = robot.SmartBlobsOnDeath.ToString();
@@ -156,11 +156,11 @@ namespace Descent2Workshop.EditorPanels
             UpdateRobotDropTypes(dropType, robot);
             RobotDropTypeComboBox.SelectedIndex = dropType;
 
-            RobotHitVClipComboBox.SelectedIndex = robot.HitVClipNum + 1;
-            RobotDeathVClipComboBox.SelectedIndex = robot.DeathVClipNum + 1;
-            RobotModelComboBox.SelectedIndex = robot.ModelNum;
-            cbRobotWeapon1.SelectedIndex = robot.WeaponType;
-            cbRobotWeapon2.SelectedIndex = robot.WeaponTypeSecondary + 1;
+            UIUtil.SafeFillComboBox(RobotHitVClipComboBox, robot.HitVClipNum + 1);
+            UIUtil.SafeFillComboBox(RobotDeathVClipComboBox, robot.DeathVClipNum + 1);
+            UIUtil.SafeFillComboBox(RobotModelComboBox, robot.ModelNum);
+            UIUtil.SafeFillComboBox(cbRobotWeapon1, robot.WeaponType);
+            UIUtil.SafeFillComboBox(cbRobotWeapon2, robot.WeaponTypeSecondary + 1);
             if (robot.Behavior >= RobotAIType.Still)
             {
                 cbRobotAI.SelectedIndex = (int)robot.Behavior - 128;
@@ -170,8 +170,8 @@ namespace Descent2Workshop.EditorPanels
             RobotBossType bossMode = robot.BossFlag;
             if (bossMode > RobotBossType.RedFatty)
                 bossMode -= 18;
-            cmRobotBoss.SelectedIndex = (int)bossMode;
-            cmRobotCloak.SelectedIndex = (int)robot.CloakType;
+            UIUtil.SafeFillComboBox(cmRobotBoss, (int)bossMode);
+            UIUtil.SafeFillComboBox(cmRobotCloak, (int)robot.CloakType);
 
             UpdateRobotAI();
             if (hxmFile != null)

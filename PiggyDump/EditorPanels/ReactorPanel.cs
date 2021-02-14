@@ -64,7 +64,7 @@ namespace Descent2Workshop.EditorPanels
             this.reactorID = id;
             this.reactor = reactor;
 
-            cbReactorModel.SelectedIndex = reactor.ModelNum;
+            UIUtil.SafeFillComboBox(cbReactorModel, reactor.ModelNum);
         }
     }
 }

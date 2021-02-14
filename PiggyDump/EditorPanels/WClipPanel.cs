@@ -70,8 +70,8 @@ namespace Descent2Workshop.EditorPanels
             this.hamFile = hamFile;
             this.palette = palette;
             TotalTimeTextBox.Text = clip.PlayTime.ToString();
-            OpenSoundComboBox.SelectedIndex = clip.OpenSound + 1;
-            CloseSoundComboBox.SelectedIndex = clip.CloseSound + 1;
+            UIUtil.SafeFillComboBox(OpenSoundComboBox, clip.OpenSound + 1);
+            UIUtil.SafeFillComboBox(CloseSoundComboBox, clip.CloseSound + 1);
             FilenameTextBox.Text = new string(clip.Filename);
             NumFramesTextBox.Text = clip.NumFrames.ToString();
 

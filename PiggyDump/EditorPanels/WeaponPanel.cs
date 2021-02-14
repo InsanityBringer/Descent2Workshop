@@ -112,7 +112,7 @@ namespace Descent2Workshop.EditorPanels
                 rendernum = 4;
             }
 
-            cbWeaponRenderMode.SelectedIndex = rendernum;
+            UIUtil.SafeFillComboBox(cbWeaponRenderMode, rendernum);
 
             txtWeaponABSize.Text = weapon.AfterburnerSize.ToString();
             txtWeaponAmmoUse.Text = weapon.AmmoUsage.ToString();
@@ -143,16 +143,16 @@ namespace Descent2Workshop.EditorPanels
             cbWeaponPlacable.Checked = (weapon.Flags & 1) != 0;
             cbWeaponRipper.Checked = weapon.Persistent;
 
-            cbWeaponChildren.SelectedIndex = weapon.Children + 1;
-            cbWeaponFireSound.SelectedIndex = weapon.FiringSound + 1;
-            cbWeaponRobotHitSound.SelectedIndex = weapon.RobotHitSound + 1;
-            cbWeaponWallHitSound.SelectedIndex = weapon.WallHitSound + 1;
-            cbWeaponModel1.SelectedIndex = weapon.ModelNum + 1;
-            cbWeaponModel2.SelectedIndex = weapon.ModelNumInner + 1;
-            cbWeaponWallHit.SelectedIndex = weapon.WallHitVClip + 1;
-            cbWeaponRobotHit.SelectedIndex = weapon.RobotHitVClip + 1;
-            cbWeaponMuzzleFlash.SelectedIndex = weapon.MuzzleFlashVClip + 1;
-            cbWeaponVClip.SelectedIndex = weapon.WeaponVClip + 1;
+            UIUtil.SafeFillComboBox(cbWeaponChildren, weapon.Children + 1);
+            UIUtil.SafeFillComboBox(cbWeaponFireSound, weapon.FiringSound + 1);
+            UIUtil.SafeFillComboBox(cbWeaponRobotHitSound, weapon.RobotHitSound + 1);
+            UIUtil.SafeFillComboBox(cbWeaponWallHitSound, weapon.WallHitSound + 1);
+            UIUtil.SafeFillComboBox(cbWeaponModel1, weapon.ModelNum + 1);
+            UIUtil.SafeFillComboBox(cbWeaponModel2, weapon.ModelNumInner + 1);
+            UIUtil.SafeFillComboBox(cbWeaponWallHit, weapon.WallHitVClip + 1);
+            UIUtil.SafeFillComboBox(cbWeaponRobotHit, weapon.RobotHitVClip + 1);
+            UIUtil.SafeFillComboBox(cbWeaponMuzzleFlash, weapon.MuzzleFlashVClip + 1);
+            UIUtil.SafeFillComboBox(cbWeaponVClip, weapon.WeaponVClip + 1);
 
             UpdateWeaponGraphicControls();
             UpdateWeaponPower();

@@ -77,7 +77,7 @@ namespace Descent2Workshop.EditorPanels
             FrameTimeTextBox.Text = clip.FrameTime.ToString();
             TotalTimeTextBox.Text = clip.PlayTime.ToString();
             LightValueTextBox.Text = clip.LightValue.ToString();
-            SoundComboBox.SelectedIndex = clip.SoundNum + 1;
+            UIUtil.SafeFillComboBox(SoundComboBox, clip.SoundNum + 1);
             FrameCountTextBox.Text = clip.NumFrames.ToString();
             VClipRodFlag.Checked = clip.DrawAsRod;
 

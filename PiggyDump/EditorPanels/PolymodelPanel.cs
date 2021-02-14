@@ -173,9 +173,9 @@ namespace Descent2Workshop.EditorPanels
             txtModelDataSize.Text = model.ModelIDTASize.ToString();
             txtModelRadius.Text = model.Radius.ToString();
             txtModelTextureCount.Text = model.NumTextures.ToString();
-            cbModelLowDetail.SelectedIndex = model.SimplerModels;
-            cbModelDyingModel.SelectedIndex = model.DyingModelnum + 1;
-            cbModelDeadModel.SelectedIndex = model.DeadModelnum + 1;
+            UIUtil.SafeFillComboBox(cbModelLowDetail, model.SimplerModels);
+            UIUtil.SafeFillComboBox(cbModelDyingModel, model.DyingModelnum + 1);
+            UIUtil.SafeFillComboBox(cbModelDeadModel, model.DeadModelnum + 1);
 
             txtModelMinX.Text = model.Mins.X.ToString();
             txtModelMinY.Text = model.Mins.Y.ToString();
@@ -239,7 +239,7 @@ namespace Descent2Workshop.EditorPanels
             //So long as you aren't using more than 178 entirely new textures, this
             //should work fairly well.
             //TODO: Needs to consider additional ObjBitmaps introduced by a V-HAM, perhaps
-            int bestFit = VHAMFile.N_D2_OBJBITMAPS;
+            int bestFit = VHAMFile.NumDescent2ObjBitmaps;
             int testTextures;
             foreach (Polymodel testModel in hxmFile.ReplacedModels)
             {
@@ -316,15 +316,15 @@ namespace Descent2Workshop.EditorPanels
             //Do in a copy to allow undo
             Polymodel newModel = new Polymodel(model);
             PolymodelBuilder builder = new PolymodelBuilder();
-            //try
+            try
             {
                 builder.RebuildModel(newModel);
             }
-            /*catch (ArgumentException exc)
+            catch (ArgumentException exc)
             {
                 MessageBox.Show(exc.Message, "Error partitioning model");
                 return;
-            }*/
+            }
 
             ModelReplaceTransaction transaction = new ModelReplaceTransaction("Load model", (object)model, newModel, modelID, tabPage);
             transactionManager.ApplyTransaction(transaction);

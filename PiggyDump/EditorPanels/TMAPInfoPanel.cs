@@ -87,7 +87,7 @@ namespace Descent2Workshop.EditorPanels
             TextureIDTextBox.Text = datafile.Textures[textureID].ToString();
             txtTexLight.Text = info.Lighting.ToString();
             txtTexDamage.Text = info.Damage.ToString();
-            cbTexEClip.SelectedIndex = info.EClipNum + 1;
+            UIUtil.SafeFillComboBox(cbTexEClip, info.EClipNum + 1);
             txtTexSlideU.Text = GetFloatFromFixed88(info.SlideU).ToString();
             txtTexSlideV.Text = GetFloatFromFixed88(info.SlideV).ToString();
             TextureDestroyedTextBox.Text = info.DestroyedID.ToString();
