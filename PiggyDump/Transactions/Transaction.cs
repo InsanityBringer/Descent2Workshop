@@ -40,6 +40,22 @@ namespace Descent2Workshop.Transactions
         protected PropertyInfo property;
         protected object target;
 
+        /// <summary>
+        /// Constructor for operations performed in interfaces with only one tab. 
+        /// </summary>
+        /// <param name="label">The name of the operation to display in the Undo menu.</param>
+        public Transaction(string label)
+        {
+        }
+        /// <summary>
+        /// Constructor for operations performed in interfaces with multiple tabs with multiple pages.
+        /// Uses reflection to perform the change generically. 
+        /// </summary>
+        /// <param name="label">The name of the operation to display in the Undo menu.</param>
+        /// <param name="target">The instance of the object to target.</param>
+        /// <param name="propertyName">The name of the object's property to target.</param>
+        /// <param name="page">The page of the current object.</param>
+        /// <param name="tab">The tab the current object's page resides on.</param>
         public Transaction(string label, object target, string propertyName, int page, int tab)
         {
             OperationName = label;

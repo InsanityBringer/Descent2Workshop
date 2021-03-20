@@ -33,6 +33,7 @@ using System.IO;
 using System.Media;
 using LibDescent.Data;
 using Descent2Workshop.SaveHandlers;
+using Descent2Workshop.Transactions;
 
 namespace Descent2Workshop
 {
@@ -43,6 +44,7 @@ namespace Descent2Workshop
         public bool isLowFi = false;
         public bool closeOnExit = true;
         private SoundCache cache;
+        private TransactionManager transactionManager = new TransactionManager();
 
         private SaveHandler saveHandler;
         public SXXEditor(StandardUI host, SNDFile datafile, SoundCache cache, string FileName)
@@ -64,8 +66,6 @@ namespace Descent2Workshop
                 lvi.SubItems.Add(sound.Length.ToString());
                 lvi.SubItems.Add(sound.Offset.ToString());
                 lvi.SubItems.Add(i.ToString());
-                //int compressionPercentage = (int)(image.compressionratio * 100f);
-                //lvi.SubItems.Add(compressionPercentage.ToString() + "%");
                 listView1.Items.Add(lvi);
             }
         }
@@ -224,6 +224,27 @@ namespace Descent2Workshop
                     SaveSNDFile();
                     this.Text = string.Format("{0} - SND Editor", saveHandler.GetUIName());
                 }
+            }
+        }
+
+        private void InsertMenuItem_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                string name = openFileDialog1.SafeFileName;
+                int id = datafile.Sounds.Count;
+                BinaryReader br = new BinaryReader(File.OpenRead(openFileDialog1.FileName));
+                byte[] data = br.ReadBytes((int)br.BaseStream.Length);
+
+                AddSoundTransaction transaction = new AddSoundTransaction(datafile, cache, id, name, data);
+                transactionManager.ApplyTransaction(transaction);
+
+                SoundData sound = datafile.Sounds[id];
+                ListViewItem lvi = new ListViewItem(sound.Name);
+                lvi.SubItems.Add(sound.Length.ToString());
+                lvi.SubItems.Add(sound.Offset.ToString());
+                lvi.SubItems.Add(id.ToString());
+                listView1.Items.Add(lvi);
             }
         }
     }

@@ -38,16 +38,17 @@
             this.btnPlay = new System.Windows.Forms.Button();
             this.mainMenu1 = new System.Windows.Forms.MainMenu(this.components);
             this.menuItem1 = new System.Windows.Forms.MenuItem();
-            this.SaveMenu = new System.Windows.Forms.MenuItem();
-            this.SaveAsMenu = new System.Windows.Forms.MenuItem();
+            this.SaveMenuItem = new System.Windows.Forms.MenuItem();
+            this.SaveAsMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem4 = new System.Windows.Forms.MenuItem();
-            this.CloseMenu = new System.Windows.Forms.MenuItem();
-            this.menuItem6 = new System.Windows.Forms.MenuItem();
-            this.InsertMenu = new System.Windows.Forms.MenuItem();
-            this.ImportMenu = new System.Windows.Forms.MenuItem();
-            this.DeleteMenu = new System.Windows.Forms.MenuItem();
+            this.CloseMenuItem = new System.Windows.Forms.MenuItem();
+            this.EditMenu = new System.Windows.Forms.MenuItem();
+            this.InsertMenuItem = new System.Windows.Forms.MenuItem();
+            this.ImportMenuItem = new System.Windows.Forms.MenuItem();
+            this.DeleteMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem9 = new System.Windows.Forms.MenuItem();
-            this.ExtractMenu = new System.Windows.Forms.MenuItem();
+            this.ExtractMenuItem = new System.Windows.Forms.MenuItem();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
             // listView1
@@ -104,75 +105,80 @@
             // 
             this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuItem1,
-            this.menuItem6});
+            this.EditMenu});
             // 
             // menuItem1
             // 
             this.menuItem1.Index = 0;
             this.menuItem1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.SaveMenu,
-            this.SaveAsMenu,
+            this.SaveMenuItem,
+            this.SaveAsMenuItem,
             this.menuItem4,
-            this.CloseMenu});
+            this.CloseMenuItem});
             this.menuItem1.Text = "File";
             // 
-            // SaveMenu
+            // SaveMenuItem
             // 
-            this.SaveMenu.Index = 0;
-            this.SaveMenu.Text = "Save";
+            this.SaveMenuItem.Index = 0;
+            this.SaveMenuItem.Text = "Save";
             // 
-            // SaveAsMenu
+            // SaveAsMenuItem
             // 
-            this.SaveAsMenu.Index = 1;
-            this.SaveAsMenu.Text = "Save As...";
-            this.SaveAsMenu.Click += new System.EventHandler(this.SaveAsMenu_Click);
+            this.SaveAsMenuItem.Index = 1;
+            this.SaveAsMenuItem.Text = "Save As...";
+            this.SaveAsMenuItem.Click += new System.EventHandler(this.SaveAsMenu_Click);
             // 
             // menuItem4
             // 
             this.menuItem4.Index = 2;
             this.menuItem4.Text = "-";
             // 
-            // CloseMenu
+            // CloseMenuItem
             // 
-            this.CloseMenu.Index = 3;
-            this.CloseMenu.Text = "Close Window";
+            this.CloseMenuItem.Index = 3;
+            this.CloseMenuItem.Text = "Close Window";
             // 
-            // menuItem6
+            // EditMenu
             // 
-            this.menuItem6.Index = 1;
-            this.menuItem6.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.InsertMenu,
-            this.ImportMenu,
-            this.DeleteMenu,
+            this.EditMenu.Index = 1;
+            this.EditMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.InsertMenuItem,
+            this.ImportMenuItem,
+            this.DeleteMenuItem,
             this.menuItem9,
-            this.ExtractMenu});
-            this.menuItem6.Text = "Edit";
+            this.ExtractMenuItem});
+            this.EditMenu.Text = "Edit";
             // 
-            // InsertMenu
+            // InsertMenuItem
             // 
-            this.InsertMenu.Index = 0;
-            this.InsertMenu.Text = "Insert...";
+            this.InsertMenuItem.Index = 0;
+            this.InsertMenuItem.Text = "Insert...";
+            this.InsertMenuItem.Click += new System.EventHandler(this.InsertMenuItem_Click);
             // 
-            // ImportMenu
+            // ImportMenuItem
             // 
-            this.ImportMenu.Index = 1;
-            this.ImportMenu.Text = "Import Over...";
+            this.ImportMenuItem.Index = 1;
+            this.ImportMenuItem.Text = "Import Over...";
             // 
-            // DeleteMenu
+            // DeleteMenuItem
             // 
-            this.DeleteMenu.Index = 2;
-            this.DeleteMenu.Text = "Delete";
+            this.DeleteMenuItem.Index = 2;
+            this.DeleteMenuItem.Text = "Delete";
             // 
             // menuItem9
             // 
             this.menuItem9.Index = 3;
             this.menuItem9.Text = "-";
             // 
-            // ExtractMenu
+            // ExtractMenuItem
             // 
-            this.ExtractMenu.Index = 4;
-            this.ExtractMenu.Text = "Extract";
-            this.ExtractMenu.Click += new System.EventHandler(this.ExtractMenu_Click);
+            this.ExtractMenuItem.Index = 4;
+            this.ExtractMenuItem.Text = "Extract";
+            this.ExtractMenuItem.Click += new System.EventHandler(this.ExtractMenu_Click);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.Filter = ".RAW files|*.raw";
             // 
             // SXXEditor
             // 
@@ -199,16 +205,17 @@
         private System.Windows.Forms.Button btnPlay;
         private System.Windows.Forms.MainMenu mainMenu1;
         private System.Windows.Forms.MenuItem menuItem1;
-        private System.Windows.Forms.MenuItem SaveMenu;
-        private System.Windows.Forms.MenuItem SaveAsMenu;
+        private System.Windows.Forms.MenuItem SaveMenuItem;
+        private System.Windows.Forms.MenuItem SaveAsMenuItem;
         private System.Windows.Forms.MenuItem menuItem4;
-        private System.Windows.Forms.MenuItem CloseMenu;
-        private System.Windows.Forms.MenuItem menuItem6;
-        private System.Windows.Forms.MenuItem InsertMenu;
-        private System.Windows.Forms.MenuItem ImportMenu;
+        private System.Windows.Forms.MenuItem CloseMenuItem;
+        private System.Windows.Forms.MenuItem EditMenu;
+        private System.Windows.Forms.MenuItem InsertMenuItem;
+        private System.Windows.Forms.MenuItem ImportMenuItem;
         private System.Windows.Forms.MenuItem menuItem9;
-        private System.Windows.Forms.MenuItem ExtractMenu;
+        private System.Windows.Forms.MenuItem ExtractMenuItem;
         private System.Windows.Forms.ColumnHeader columnHeader4;
-        private System.Windows.Forms.MenuItem DeleteMenu;
+        private System.Windows.Forms.MenuItem DeleteMenuItem;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }

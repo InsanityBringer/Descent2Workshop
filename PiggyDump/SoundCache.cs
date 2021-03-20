@@ -47,6 +47,11 @@ namespace Descent2Workshop
             return SoundDataCache[num];
         }
 
+        public void RemoveSoundID(int num)
+        {
+            SoundDataCache.RemoveAt(num);
+        }
+
         /// <summary>
         /// Helper function to create a sound cache from a given data file.
         /// </summary>
