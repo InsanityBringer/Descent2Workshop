@@ -45,6 +45,8 @@ namespace Descent2Workshop
 
         Task paletteTask;
 
+        int zoom = 1;
+
         public PIGEditor(PIGFile data, Palette palette, string filename)
         {
             datafile = data;
@@ -110,11 +112,26 @@ namespace Descent2Workshop
             }
         }
 
+        private void ChangeImageToSelected()
+        {
+            if (listView1.SelectedIndices.Count <= 0)
+            {
+                return;
+            }
+            ChangeImage(listView1.SelectedIndices[0]);
+        }
+
         private void ChangeImage(int id)
         {
             isLocked = true;
+            if (pictureBox1.Image != null)
+            {
+                Bitmap temp = (Bitmap)pictureBox1.Image;
+                pictureBox1.Image = null;
+                temp.Dispose();
+            }
             PIGImage image = datafile.Bitmaps[id];
-            pictureBox1.Image = PiggyBitmapUtilities.GetBitmap(datafile, palette, id);
+            pictureBox1.Image = PiggyBitmapUtilities.GetBitmap(datafile, palette, id, zoom);
             TransparentCheck.Checked = image.Transparent;
             SupertransparentCheck.Checked = image.SuperTransparent;
             NoLightingCheck.Checked = image.NoLighting;
@@ -127,17 +144,7 @@ namespace Descent2Workshop
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listView1.SelectedIndices.Count <= 0)
-            {
-                return;
-            }
-            if (pictureBox1.Image != null)
-            {
-                Bitmap temp = (Bitmap)pictureBox1.Image;
-                pictureBox1.Image = null;
-                temp.Dispose();
-            }
-            ChangeImage(listView1.SelectedIndices[0]);
+            ChangeImageToSelected();
         }
 
         private void PIGEditor_FormClosing(object sender, FormClosingEventArgs e)
@@ -481,6 +488,13 @@ namespace Descent2Workshop
                 img.Frame = 0;
                 RebuildItem(listView1.SelectedItems[i]);
             }
+        }
+
+        private void ZoomTrackBar_Scroll(object sender, EventArgs e)
+        {
+            zoom = ZoomTrackBar.Value + 1;
+            ZoomLabel.Text = string.Format("Zoom: {0}%", (int)(zoom * 100));
+            ChangeImageToSelected();
         }
     }
 }

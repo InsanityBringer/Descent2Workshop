@@ -350,32 +350,6 @@ namespace Descent2Workshop
         private void MnuAbout_Click(object sender, EventArgs e)
         {
 #if DEBUG
-            Descent1PIGFile piggyFile = new Descent1PIGFile(false, false);
-            PSXDatFile datFile = new PSXDatFile();
-            Stream stream = File.Open("H:/Descent/sw/old/descent.pig", FileMode.Open);
-            piggyFile.Read(stream);
-            stream.Close();
-            stream.Dispose();
-
-            /*stream = File.Open("C:/dev/psxdescent/DESCENT.DAT", FileMode.Open);
-            datFile.Read(stream);
-            stream.Close();
-            stream.Dispose();*/
-            Palette newPalette; int lumpIndex;
-
-            lumpIndex = defaultHogFile.GetLumpNum("DEFAULT.256");
-            if (lumpIndex != -1) newPalette = new Palette(defaultHogFile.GetLumpData(lumpIndex));
-            else newPalette = new Palette(); //If the palette couldn't be located, make a default grayscale palette
-            PIGFile test = new PIGFile();
-            for (int i = 1; i < piggyFile.Bitmaps.Count; i++)
-            {
-                test.Bitmaps.Add(piggyFile.Bitmaps[i]);
-            }
-            PIGEditor editor = new PIGEditor(test, newPalette, "ara ara");
-            editor.Show();
-            /*EditorHAMFile hack = DebugUtil.TranslatePIGToHam(piggyFile, test);
-            HAMEditor hameditor = new HAMEditor(hack, this, test, newPalette, "ara ara sayonara");
-            hameditor.Show();*/
 #else
             AppendConsole("Descent II Workshop by ISB... heh\n");
 #endif

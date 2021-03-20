@@ -66,6 +66,8 @@
             this.ColorPreview = new System.Windows.Forms.Label();
             this.CalculateAverageButton = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.ZoomLabel = new System.Windows.Forms.Label();
+            this.ZoomTrackBar = new System.Windows.Forms.TrackBar();
             this.CompressCheckBox = new System.Windows.Forms.CheckBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -73,6 +75,7 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ZoomTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -245,7 +248,7 @@
             this.listView1.LabelEdit = true;
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(314, 494);
+            this.listView1.Size = new System.Drawing.Size(288, 540);
             this.listView1.TabIndex = 3;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -285,7 +288,7 @@
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(491, 453);
+            this.pictureBox1.Size = new System.Drawing.Size(492, 473);
             this.pictureBox1.TabIndex = 4;
             this.pictureBox1.TabStop = false;
             // 
@@ -297,7 +300,7 @@
             // 
             this.TransparentCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.TransparentCheck.AutoSize = true;
-            this.TransparentCheck.Location = new System.Drawing.Point(7, 463);
+            this.TransparentCheck.Location = new System.Drawing.Point(3, 479);
             this.TransparentCheck.Name = "TransparentCheck";
             this.TransparentCheck.Size = new System.Drawing.Size(83, 17);
             this.TransparentCheck.TabIndex = 6;
@@ -308,7 +311,7 @@
             // 
             this.SupertransparentCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.SupertransparentCheck.AutoSize = true;
-            this.SupertransparentCheck.Location = new System.Drawing.Point(96, 463);
+            this.SupertransparentCheck.Location = new System.Drawing.Point(92, 479);
             this.SupertransparentCheck.Name = "SupertransparentCheck";
             this.SupertransparentCheck.Size = new System.Drawing.Size(107, 17);
             this.SupertransparentCheck.TabIndex = 7;
@@ -319,7 +322,7 @@
             // 
             this.NoLightingCheck.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.NoLightingCheck.AutoSize = true;
-            this.NoLightingCheck.Location = new System.Drawing.Point(209, 463);
+            this.NoLightingCheck.Location = new System.Drawing.Point(205, 479);
             this.NoLightingCheck.Name = "NoLightingCheck";
             this.NoLightingCheck.Size = new System.Drawing.Size(80, 17);
             this.NoLightingCheck.TabIndex = 8;
@@ -329,7 +332,7 @@
             // ColorPreview
             // 
             this.ColorPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.ColorPreview.Location = new System.Drawing.Point(373, 464);
+            this.ColorPreview.Location = new System.Drawing.Point(369, 480);
             this.ColorPreview.Name = "ColorPreview";
             this.ColorPreview.Size = new System.Drawing.Size(25, 14);
             this.ColorPreview.TabIndex = 10;
@@ -337,7 +340,7 @@
             // CalculateAverageButton
             // 
             this.CalculateAverageButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.CalculateAverageButton.Location = new System.Drawing.Point(404, 459);
+            this.CalculateAverageButton.Location = new System.Drawing.Point(400, 475);
             this.CalculateAverageButton.Name = "CalculateAverageButton";
             this.CalculateAverageButton.Size = new System.Drawing.Size(75, 23);
             this.CalculateAverageButton.TabIndex = 11;
@@ -358,6 +361,8 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.ZoomLabel);
+            this.splitContainer1.Panel2.Controls.Add(this.ZoomTrackBar);
             this.splitContainer1.Panel2.Controls.Add(this.CompressCheckBox);
             this.splitContainer1.Panel2.Controls.Add(this.pictureBox1);
             this.splitContainer1.Panel2.Controls.Add(this.CalculateAverageButton);
@@ -365,15 +370,36 @@
             this.splitContainer1.Panel2.Controls.Add(this.ColorPreview);
             this.splitContainer1.Panel2.Controls.Add(this.SupertransparentCheck);
             this.splitContainer1.Panel2.Controls.Add(this.NoLightingCheck);
-            this.splitContainer1.Size = new System.Drawing.Size(809, 494);
-            this.splitContainer1.SplitterDistance = 314;
+            this.splitContainer1.Size = new System.Drawing.Size(784, 540);
+            this.splitContainer1.SplitterDistance = 288;
             this.splitContainer1.TabIndex = 12;
+            // 
+            // ZoomLabel
+            // 
+            this.ZoomLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.ZoomLabel.AutoSize = true;
+            this.ZoomLabel.Location = new System.Drawing.Point(231, 505);
+            this.ZoomLabel.Name = "ZoomLabel";
+            this.ZoomLabel.Size = new System.Drawing.Size(66, 13);
+            this.ZoomLabel.TabIndex = 14;
+            this.ZoomLabel.Text = "Zoom: 100%";
+            // 
+            // ZoomTrackBar
+            // 
+            this.ZoomTrackBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.ZoomTrackBar.LargeChange = 1;
+            this.ZoomTrackBar.Location = new System.Drawing.Point(3, 502);
+            this.ZoomTrackBar.Maximum = 3;
+            this.ZoomTrackBar.Name = "ZoomTrackBar";
+            this.ZoomTrackBar.Size = new System.Drawing.Size(222, 45);
+            this.ZoomTrackBar.TabIndex = 13;
+            this.ZoomTrackBar.Scroll += new System.EventHandler(this.ZoomTrackBar_Scroll);
             // 
             // CompressCheckBox
             // 
             this.CompressCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.CompressCheckBox.AutoSize = true;
-            this.CompressCheckBox.Location = new System.Drawing.Point(295, 463);
+            this.CompressCheckBox.Location = new System.Drawing.Point(291, 479);
             this.CompressCheckBox.Name = "CompressCheckBox";
             this.CompressCheckBox.Size = new System.Drawing.Size(72, 17);
             this.CompressCheckBox.TabIndex = 12;
@@ -389,7 +415,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(809, 494);
+            this.ClientSize = new System.Drawing.Size(784, 540);
             this.Controls.Add(this.splitContainer1);
             this.Menu = this.mainMenu1;
             this.Name = "PIGEditor";
@@ -402,6 +428,7 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ZoomTrackBar)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -447,5 +474,7 @@
         private System.Windows.Forms.MenuItem menuItem2;
         private System.Windows.Forms.MenuItem MakeAnimatedMenuItem;
         private System.Windows.Forms.MenuItem ClearAnimationMenuItem;
+        private System.Windows.Forms.Label ZoomLabel;
+        private System.Windows.Forms.TrackBar ZoomTrackBar;
     }
 }

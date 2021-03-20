@@ -59,22 +59,41 @@ namespace Descent2Workshop
             return invCmap;
         }
 
-        public static Bitmap GetBitmap(PIGFile piggyFile, Palette palette, int index)
+        public static Bitmap GetBitmap(PIGFile piggyFile, Palette palette, int index, int scale = 1)
         {
+            int[] rgbTable = new int[256];
             PIGImage image = piggyFile.GetImage(index);
-            Bitmap bitmap = new Bitmap(image.Width, image.Height);
-            int[] rgbData = new int[image.Width * image.Height];
-            byte[] rawData = image.GetData();
-            byte b;
 
-            for (int i = 0; i < rawData.Length; i++)
+            int newWidth = (int)(image.Width * scale);
+            int newHeight = (int)(image.Height * scale);
+            Bitmap bitmap = new Bitmap(newWidth, newHeight);
+
+            for (int j = 0; j < 256; j++)
             {
-                b = rawData[i];
-                rgbData[i] = ((b == 255 ? 0 : 255) << 24) + (palette[b].R << 16) + (palette[b].G << 8) + (palette[b].B);
+                rgbTable[j] = ((j == 255 ? 0 : 255) << 24) + (palette[j].R << 16) + (palette[j].G << 8) + (palette[j].B);
             }
 
-            BitmapData bits = bitmap.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-            System.Runtime.InteropServices.Marshal.Copy(rgbData, 0, bits.Scan0, image.Width * image.Height);
+            int[] rgbData = new int[newWidth * newHeight];
+            byte[] rawData = image.GetData();
+
+            switch (scale)
+            {
+                case 1:
+                    Scale1X(image.Width, image.Height, newWidth, newHeight, rawData, rgbData, rgbTable);
+                    break;
+                case 2:
+                    Scale2X(image.Width, image.Height, newWidth, newHeight, rawData, rgbData, rgbTable);
+                    break;
+                case 3:
+                    Scale3X(image.Width, image.Height, newWidth, newHeight, rawData, rgbData, rgbTable);
+                    break;
+                case 4:
+                    Scale4X(image.Width, image.Height, newWidth, newHeight, rawData, rgbData, rgbTable);
+                    break;
+            }
+
+            BitmapData bits = bitmap.LockBits(new Rectangle(0, 0, newWidth, newHeight), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+            System.Runtime.InteropServices.Marshal.Copy(rgbData, 0, bits.Scan0, newWidth * newHeight);
             bitmap.UnlockBits(bits);
 
             return bitmap;
@@ -176,6 +195,100 @@ namespace Descent2Workshop
             }
             catch (Exception) { } //it didn't work
             return image;
+        }
+
+        //Unrolled scaling loops. These should be faster than a generic algorithim, I hope. Integer factors only.
+        //It would be nice if I could do this easier in System.Drawing, am I missing something obvious?
+        private static void Scale1X(int w, int h, int newW, int newH, byte[] src, int[] dest, int[] rgbTable)
+        {
+            int len = w * h;
+            for (int i = 0; i < len; i++)
+            {
+                dest[i] = rgbTable[src[i]];
+            }
+        }
+
+        private static void Scale2X(int w, int h, int newW, int newH, byte[] src, int[] dest, int[] rgbTable)
+        {
+            int len = newW * newH;
+            int offset = 0;
+            int i = 0;
+            int c;
+            for (int y = 0; y < h; y++)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    c = rgbTable[src[offset + x]];
+                    dest[i] = c;
+                    dest[i + 1] = c;
+                    dest[i + newW] = c;
+                    dest[i + newW + 1] = c;
+                    i += 2;
+                }
+                offset += w;
+                i += newW;
+            }
+        }
+
+        private static void Scale3X(int w, int h, int newW, int newH, byte[] src, int[] dest, int[] rgbTable)
+        {
+            int len = newW * newH;
+            int offset = 0;
+            int i = 0;
+            int c;
+            for (int y = 0; y < h; y++)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    c = rgbTable[src[offset + x]];
+                    dest[i] = c;
+                    dest[i + 1] = c;
+                    dest[i + 2] = c;
+                    dest[i + newW] = c;
+                    dest[i + newW + 1] = c;
+                    dest[i + newW + 2] = c;
+                    dest[i + newW * 2] = c;
+                    dest[i + newW * 2 + 1] = c;
+                    dest[i + newW * 2 + 2] = c;
+                    i += 3;
+                }
+                offset += w;
+                i += newW * 2;
+            }
+        }
+
+        private static void Scale4X(int w, int h, int newW, int newH, byte[] src, int[] dest, int[] rgbTable)
+        {
+            int len = newW * newH;
+            int offset = 0;
+            int i = 0;
+            int c;
+            for (int y = 0; y < h; y++)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    c = rgbTable[src[offset + x]];
+                    dest[i] = c;
+                    dest[i + 1] = c;
+                    dest[i + 2] = c;
+                    dest[i + 3] = c;
+                    dest[i + newW] = c;
+                    dest[i + newW + 1] = c;
+                    dest[i + newW + 2] = c;
+                    dest[i + newW + 3] = c;
+                    dest[i + newW * 2] = c;
+                    dest[i + newW * 2 + 1] = c;
+                    dest[i + newW * 2 + 2] = c;
+                    dest[i + newW * 2 + 3] = c;
+                    dest[i + newW * 3] = c;
+                    dest[i + newW * 3 + 1] = c;
+                    dest[i + newW * 3 + 2] = c;
+                    dest[i + newW * 3 + 3] = c;
+                    i += 4;
+                }
+                offset += w;
+                i += newW * 3;
+            }
         }
     }
 }
