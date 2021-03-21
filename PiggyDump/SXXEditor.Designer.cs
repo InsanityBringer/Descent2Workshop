@@ -49,6 +49,9 @@
             this.menuItem9 = new System.Windows.Forms.MenuItem();
             this.ExtractMenuItem = new System.Windows.Forms.MenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.UndoMenuItem = new System.Windows.Forms.MenuItem();
+            this.RedoMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem5 = new System.Windows.Forms.MenuItem();
             this.SuspendLayout();
             // 
             // listView1
@@ -142,6 +145,9 @@
             // 
             this.EditMenu.Index = 1;
             this.EditMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.UndoMenuItem,
+            this.RedoMenuItem,
+            this.menuItem5,
             this.InsertMenuItem,
             this.ImportMenuItem,
             this.DeleteMenuItem,
@@ -151,34 +157,51 @@
             // 
             // InsertMenuItem
             // 
-            this.InsertMenuItem.Index = 0;
+            this.InsertMenuItem.Index = 3;
             this.InsertMenuItem.Text = "Insert...";
             this.InsertMenuItem.Click += new System.EventHandler(this.InsertMenuItem_Click);
             // 
             // ImportMenuItem
             // 
-            this.ImportMenuItem.Index = 1;
+            this.ImportMenuItem.Index = 4;
             this.ImportMenuItem.Text = "Import Over...";
             // 
             // DeleteMenuItem
             // 
-            this.DeleteMenuItem.Index = 2;
+            this.DeleteMenuItem.Index = 5;
             this.DeleteMenuItem.Text = "Delete";
             // 
             // menuItem9
             // 
-            this.menuItem9.Index = 3;
+            this.menuItem9.Index = 6;
             this.menuItem9.Text = "-";
             // 
             // ExtractMenuItem
             // 
-            this.ExtractMenuItem.Index = 4;
+            this.ExtractMenuItem.Index = 7;
             this.ExtractMenuItem.Text = "Extract";
             this.ExtractMenuItem.Click += new System.EventHandler(this.ExtractMenu_Click);
             // 
             // openFileDialog1
             // 
             this.openFileDialog1.Filter = ".RAW files|*.raw";
+            // 
+            // UndoMenuItem
+            // 
+            this.UndoMenuItem.Index = 0;
+            this.UndoMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlZ;
+            this.UndoMenuItem.Text = "Undo";
+            // 
+            // RedoMenuItem
+            // 
+            this.RedoMenuItem.Index = 1;
+            this.RedoMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlY;
+            this.RedoMenuItem.Text = "Redo";
+            // 
+            // menuItem5
+            // 
+            this.menuItem5.Index = 2;
+            this.menuItem5.Text = "-";
             // 
             // SXXEditor
             // 
@@ -217,5 +240,8 @@
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.MenuItem DeleteMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.MenuItem UndoMenuItem;
+        private System.Windows.Forms.MenuItem RedoMenuItem;
+        private System.Windows.Forms.MenuItem menuItem5;
     }
 }
