@@ -184,7 +184,7 @@ namespace Descent2Workshop.EditorPanels
             {
                 TotalTimeTextBox.Enabled = FrameCountTextBox.Enabled = FrameNumTextBox.Enabled = false;
                 RemapAnimationButton.Enabled = FrameSpinner.Enabled = false;
-                if (clip.NumFrames < 0) return;
+                if (clip.NumFrames <= 0 || clip.FrameTime == 0) return;
                 //Ah, the horribly imprecise timer. Oh well
                 AnimTimer.Interval = (int)(1000.0 * clip.FrameTime);
                 if (AnimTimer.Interval < 10) AnimTimer.Interval = 10;

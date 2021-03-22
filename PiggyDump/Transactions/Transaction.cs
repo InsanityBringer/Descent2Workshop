@@ -98,5 +98,10 @@ namespace Descent2Workshop.Transactions
         public virtual void MergeIn(Transaction transaction)
         {
         }
+
+        public virtual bool ChangesListSize()
+        {
+            return false;
+        }
     }
 }

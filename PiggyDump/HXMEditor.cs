@@ -21,7 +21,6 @@
 */
 
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 
 using System.IO;
@@ -30,7 +29,6 @@ using Descent2Workshop.SaveHandlers;
 using Descent2Workshop.Transactions;
 using LibDescent.Data;
 using LibDescent.Edit;
-using OpenTK;
 
 namespace Descent2Workshop
 {

@@ -268,12 +268,61 @@ namespace Descent2Workshop
         private void InsertElem_Click(object sender, EventArgs e)
         {
             HAMType type = typeTable[EditorTabs.SelectedIndex];
-            int newID = datafile.AddElement(type);
+            /*int newID = datafile.AddElement(type);
             if (newID != -1)
             {
                 //Update the maximum of the numeric up/down control and ensure that any comboboxes that need to be regenerated for the current element are
                 ElementListInit();
                 ElementSpinner.Value = newID;
+            }*/
+            int newNum = 0;
+            Transaction transaction = null;
+
+            switch (type)
+            {
+                case HAMType.VClip:
+                    newNum = datafile.VClips.Count;
+                    transaction = new NamedListAddTransaction("Add VClip", datafile, "VClips", "VClipNames", datafile.VClips.Count, new VClip(), "New VClip", ElementNumber, PageNumber);
+                    break;
+                case HAMType.EClip:
+                    newNum = datafile.EClips.Count;
+                    transaction = new NamedListAddTransaction("Add EClip", datafile, "EClips", "EClipNames", datafile.EClips.Count, new EClip(), "New EClip", ElementNumber, PageNumber);
+                    break;
+                case HAMType.WClip:
+                    newNum = datafile.WClips.Count;
+                    transaction = new NamedListAddTransaction("Add WClip", datafile, "WClips", "WClipNames", datafile.WClips.Count, new WClip(), "New WClip", ElementNumber, PageNumber);
+                    break;
+                case HAMType.Robot:
+                    newNum = datafile.Robots.Count;
+                    transaction = new NamedListAddTransaction("Add Robot", datafile, "Robots", "RobotNames", datafile.Robots.Count, new Robot(), "New Robot", ElementNumber, PageNumber);
+                    break;
+                case HAMType.Weapon:
+                    newNum = datafile.Weapons.Count;
+                    transaction = new NamedListAddTransaction("Add Weapon", datafile, "Weapons", "WeaponNames", datafile.Weapons.Count, new Weapon(), "New Weapon", ElementNumber, PageNumber);
+                    break;
+                case HAMType.Model:
+                    newNum = datafile.Models.Count;
+                    transaction = new NamedListAddTransaction("Add Polymodel", datafile, "Models", "ModelNames", datafile.Models.Count, new Polymodel(10), "New Model", ElementNumber, PageNumber);
+                    break;
+                case HAMType.Powerup:
+                    newNum = datafile.Powerups.Count;
+                    transaction = new NamedListAddTransaction("Add Powerup", datafile, "Powerups", "PowerupNames", datafile.Powerups.Count, new Powerup(), "New Powerup", ElementNumber, PageNumber);
+                    break;
+                case HAMType.Reactor:
+                    newNum = datafile.Reactors.Count;
+                    transaction = new NamedListAddTransaction("Add Reactor", datafile, "Reactors", "ReactorNames", datafile.Reactors.Count, new Reactor(), "New Reactor", ElementNumber, PageNumber);
+                    break;
+                case HAMType.Cockpit:
+                    newNum = datafile.Cockpits.Count;
+                    transaction = new NamedListAddTransaction("Add Cockpit bitmap", datafile, "Cockpits", null, datafile.Cockpits.Count, (ushort)0, null, ElementNumber, PageNumber);
+                    break;
+            }
+
+            if (transaction != null)
+            {
+                transactionManager.ApplyTransaction(transaction);
+                ElementListInit(); //Ensure all local lists are updated, and update the spinner. 
+                ElementSpinner.Value = newNum;
             }
         }
 
@@ -866,10 +915,29 @@ namespace Descent2Workshop
             if (transaction.Tab != PageNumber)
                 EditorTabs.SelectedIndex = transaction.Tab;
 
-            if (transaction.Page != ElementNumber)
-                ElementSpinner.Value = transaction.Page;
+            //Sigh. This code is awful and needs to be rewritten.
+            //Hack to ensure the spinner and all combo boxes are set correctly.
+            if (transaction.ChangesListSize())
+            {
+                isLocked = true;
+                ElementSpinner.Value = 0;
+                ElementListInit();
+                isLocked = false;
+                if (e.Redo)
+                    ElementSpinner.Value = transaction.RedoPage;
+                else
+                    ElementSpinner.Value = transaction.Page;
+
+                FillOutCurrentPanel(transaction.Tab, ElementNumber);
+            }
             else
-                FillOutCurrentPanel(transaction.Tab, transaction.Page); //force an update
+            {
+                if (transaction.Page != ElementNumber)
+                    ElementSpinner.Value = transaction.Page;
+                else
+                    FillOutCurrentPanel(transaction.Tab, transaction.Page); //force an update
+            }
+
         }
 
         private void HAMEditor_FormClosing(object sender, FormClosingEventArgs e)

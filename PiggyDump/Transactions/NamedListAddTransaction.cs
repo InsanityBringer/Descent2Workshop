@@ -40,7 +40,8 @@ namespace Descent2Workshop.Transactions
             this.addName = addName;
 
             Type targetType = target.GetType();
-            nameProperty = targetType.GetProperty(namesPropertyName);
+            if (namesPropertyName != null) //Some element types don't have a namelist (like gauges, since it would be too verbose and useless), so allow that
+                nameProperty = targetType.GetProperty(namesPropertyName);
 
             RedoPage = addPos;
         }
@@ -48,17 +49,21 @@ namespace Descent2Workshop.Transactions
         public override bool Apply()
         {
             IList list = (IList)property.GetValue(target);
-            IList nameList = (IList)nameProperty.GetValue(target);
+            IList nameList = null;
+            if (nameProperty != null)
+                nameList = (IList)nameProperty.GetValue(target);
             if (addPos >= list.Count)
             {
                 list.Add(addObject); //just append to avoid issues
-                nameList.Add(addName);
+                if (nameProperty != null)
+                    nameList.Add(addName);
                 addPos = list.Count - 1; //Change the add pos in case it was an invalid value, needed to avoid issues with undo. 
             }
             else
             {
                 list.Insert(addPos, addObject);
-                nameList.Insert(addPos, addName);
+                if (nameProperty != null)
+                    nameList.Insert(addPos, addName);
             }
 
             return true;
@@ -67,9 +72,17 @@ namespace Descent2Workshop.Transactions
         public override void Revert()
         {
             IList list = (IList)property.GetValue(target);
-            IList nameList = (IList)nameProperty.GetValue(target);
+            IList nameList = null;
+            if (nameProperty != null)
+                nameList = (IList)nameProperty.GetValue(target);
             list.RemoveAt(addPos);
-            nameList.RemoveAt(addPos);
+            if (nameProperty != null)
+                nameList.RemoveAt(addPos);
+        }
+
+        public override bool ChangesListSize()
+        {
+            return true;
         }
     }
 }

@@ -159,7 +159,7 @@ namespace Descent2Workshop
                     foreach (int index in listView1.SelectedIndices)
                     {
                         string newpath = directory + Path.DirectorySeparatorChar + listView1.Items[index].Text + ".wav";
-                        byte[] data = datafile.LoadSound(index);
+                        byte[] data = cache.GetSound(index);
                         WriteSoundToFile(newpath, data);
                     }
                 }
@@ -167,7 +167,7 @@ namespace Descent2Workshop
                 {
                     if (saveFileDialog1.FileName != "")
                     {
-                        byte[] data = datafile.LoadSound(listView1.SelectedIndices[0]);
+                        byte[] data = cache.GetSound(listView1.SelectedIndices[0]);
                         WriteSoundToFile(saveFileDialog1.FileName, data);
                     }
                 }
