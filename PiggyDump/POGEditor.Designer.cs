@@ -305,6 +305,7 @@
             this.TransparentCheck.TabIndex = 6;
             this.TransparentCheck.Text = "Transparent";
             this.TransparentCheck.UseVisualStyleBackColor = true;
+            this.TransparentCheck.CheckedChanged += new System.EventHandler(this.TransparentCheck_CheckedChanged);
             // 
             // ColorPreview
             // 
@@ -322,6 +323,7 @@
             this.SupertransparentCheck.TabIndex = 7;
             this.SupertransparentCheck.Text = "Supertransparent";
             this.SupertransparentCheck.UseVisualStyleBackColor = true;
+            this.SupertransparentCheck.CheckedChanged += new System.EventHandler(this.SupertransparentCheck_CheckedChanged);
             // 
             // NoLightingCheck
             // 
@@ -332,6 +334,7 @@
             this.NoLightingCheck.TabIndex = 8;
             this.NoLightingCheck.Text = "No Lighting";
             this.NoLightingCheck.UseVisualStyleBackColor = true;
+            this.NoLightingCheck.CheckedChanged += new System.EventHandler(this.NoLightingCheck_CheckedChanged);
             // 
             // openFileDialog1
             // 

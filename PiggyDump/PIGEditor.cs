@@ -496,5 +496,35 @@ namespace Descent2Workshop
             ZoomLabel.Text = string.Format("Zoom: {0}%", (int)(zoom * 100));
             ChangeImageToSelected();
         }
+
+        private void SupertransparentCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            PIGImage img;
+            for (int i = 0; i < listView1.SelectedIndices.Count; i++)
+            {
+                img = datafile.Bitmaps[listView1.SelectedIndices[i]];
+                img.SuperTransparent = SupertransparentCheck.Checked;
+            }
+        }
+
+        private void TransparentCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            PIGImage img;
+            for (int i = 0; i < listView1.SelectedIndices.Count; i++)
+            {
+                img = datafile.Bitmaps[listView1.SelectedIndices[i]];
+                img.Transparent = TransparentCheck.Checked;
+            }
+        }
+
+        private void NoLightingCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            PIGImage img;
+            for (int i = 0; i < listView1.SelectedIndices.Count; i++)
+            {
+                img = datafile.Bitmaps[listView1.SelectedIndices[i]];
+                img.NoLighting = NoLightingCheck.Checked;
+            }
+        }
     }
 }
