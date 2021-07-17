@@ -499,6 +499,7 @@ namespace Descent2Workshop
 
         private void SupertransparentCheck_CheckedChanged(object sender, EventArgs e)
         {
+            if (isLocked) return;
             PIGImage img;
             for (int i = 0; i < listView1.SelectedIndices.Count; i++)
             {
@@ -509,6 +510,7 @@ namespace Descent2Workshop
 
         private void TransparentCheck_CheckedChanged(object sender, EventArgs e)
         {
+            if (isLocked) return;
             PIGImage img;
             for (int i = 0; i < listView1.SelectedIndices.Count; i++)
             {
@@ -519,6 +521,7 @@ namespace Descent2Workshop
 
         private void NoLightingCheck_CheckedChanged(object sender, EventArgs e)
         {
+            if (isLocked) return;
             PIGImage img;
             for (int i = 0; i < listView1.SelectedIndices.Count; i++)
             {
