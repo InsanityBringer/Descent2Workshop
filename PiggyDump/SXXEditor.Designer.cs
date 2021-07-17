@@ -43,15 +43,15 @@
             this.menuItem4 = new System.Windows.Forms.MenuItem();
             this.CloseMenuItem = new System.Windows.Forms.MenuItem();
             this.EditMenu = new System.Windows.Forms.MenuItem();
+            this.UndoMenuItem = new System.Windows.Forms.MenuItem();
+            this.RedoMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem5 = new System.Windows.Forms.MenuItem();
             this.InsertMenuItem = new System.Windows.Forms.MenuItem();
             this.ImportMenuItem = new System.Windows.Forms.MenuItem();
             this.DeleteMenuItem = new System.Windows.Forms.MenuItem();
             this.menuItem9 = new System.Windows.Forms.MenuItem();
             this.ExtractMenuItem = new System.Windows.Forms.MenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.UndoMenuItem = new System.Windows.Forms.MenuItem();
-            this.RedoMenuItem = new System.Windows.Forms.MenuItem();
-            this.menuItem5 = new System.Windows.Forms.MenuItem();
             this.SuspendLayout();
             // 
             // listView1
@@ -155,6 +155,23 @@
             this.ExtractMenuItem});
             this.EditMenu.Text = "Edit";
             // 
+            // UndoMenuItem
+            // 
+            this.UndoMenuItem.Index = 0;
+            this.UndoMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlZ;
+            this.UndoMenuItem.Text = "Undo";
+            // 
+            // RedoMenuItem
+            // 
+            this.RedoMenuItem.Index = 1;
+            this.RedoMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlY;
+            this.RedoMenuItem.Text = "Redo";
+            // 
+            // menuItem5
+            // 
+            this.menuItem5.Index = 2;
+            this.menuItem5.Text = "-";
+            // 
             // InsertMenuItem
             // 
             this.InsertMenuItem.Index = 3;
@@ -184,24 +201,7 @@
             // 
             // openFileDialog1
             // 
-            this.openFileDialog1.Filter = ".RAW files|*.raw";
-            // 
-            // UndoMenuItem
-            // 
-            this.UndoMenuItem.Index = 0;
-            this.UndoMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlZ;
-            this.UndoMenuItem.Text = "Undo";
-            // 
-            // RedoMenuItem
-            // 
-            this.RedoMenuItem.Index = 1;
-            this.RedoMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlY;
-            this.RedoMenuItem.Text = "Redo";
-            // 
-            // menuItem5
-            // 
-            this.menuItem5.Index = 2;
-            this.menuItem5.Text = "-";
+            this.openFileDialog1.Filter = ".WAV Files|*.wav";
             // 
             // SXXEditor
             // 

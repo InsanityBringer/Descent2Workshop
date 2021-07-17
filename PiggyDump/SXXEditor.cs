@@ -45,6 +45,7 @@ namespace Descent2Workshop
         public bool closeOnExit = true;
         private SoundCache cache;
         private TransactionManager transactionManager = new TransactionManager();
+        private string fileName;
 
         private SaveHandler saveHandler;
         public SXXEditor(StandardUI host, SNDFile datafile, SoundCache cache, string FileName)
@@ -53,6 +54,7 @@ namespace Descent2Workshop
             this.datafile = datafile;
             this.host = host;
             this.cache = cache;
+            this.fileName = FileName;
             Text = string.Format("{0} - Sound Editor", FileName);
         }
 
@@ -128,10 +130,24 @@ namespace Descent2Workshop
 
         private void SXXEditor_FormClosing(object sender, FormClosingEventArgs e)
         {
-            /*if (closeOnExit)
+            string currentFilename = "Untitled";
+            if (saveHandler != null)
+                currentFilename = saveHandler.GetUIName();
+
+            if (transactionManager.UnsavedFlag)
             {
-                datafile.CloseDataFile();
-            }*/
+                switch (MessageBox.Show(this, string.Format("Would you like to save changes to {0}?", currentFilename), "Unsaved changes", MessageBoxButtons.YesNoCancel))
+                {
+                    case DialogResult.Yes:
+                        SaveSNDFile();
+                        break;
+                    case DialogResult.No:
+                        break;
+                    case DialogResult.Cancel:
+                        e.Cancel = true;
+                        break;
+                }
+            }
         }
 
         private void listView1_DoubleClick(object sender, EventArgs e)
@@ -202,7 +218,7 @@ namespace Descent2Workshop
                 }
                 else
                 {
-                    //transactionManager.UnsavedFlag = false;
+                    transactionManager.UnsavedFlag = false;
                 }
             }
         }
@@ -233,10 +249,13 @@ namespace Descent2Workshop
             {
                 string name = openFileDialog1.SafeFileName;
                 int id = datafile.Sounds.Count;
-                BinaryReader br = new BinaryReader(File.OpenRead(openFileDialog1.FileName));
-                byte[] data = br.ReadBytes((int)br.BaseStream.Length);
+                //BinaryReader br = new BinaryReader(File.OpenRead(openFileDialog1.FileName));
+                //byte[] data = br.ReadBytes((int)br.BaseStream.Length);
+                Stream stream = File.OpenRead(openFileDialog1.FileName);
+                BasicSoundFile file = BasicSoundFile.ReadFromStream(stream);
+                stream.Close();
 
-                AddSoundTransaction transaction = new AddSoundTransaction(datafile, cache, id, name, data);
+                AddSoundTransaction transaction = new AddSoundTransaction(datafile, cache, id, name, file.Data);
                 transactionManager.ApplyTransaction(transaction);
 
                 SoundData sound = datafile.Sounds[id];

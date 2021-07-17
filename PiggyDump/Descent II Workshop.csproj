@@ -96,6 +96,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BasicSoundFile.cs" />
     <Compile Include="ConfigDialog.cs">
       <SubType>Form</SubType>
     </Compile>
