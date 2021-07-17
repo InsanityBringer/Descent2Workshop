@@ -39,12 +39,15 @@ namespace Descent2Workshop
 
                 if (sig == Util.MakeSig('f', 'm', 't', ' '))
                 {
+                    //TODO: Remove the four billion limitations here, make more flexible, this is why I was considering naudio originally I think.....
                     if (length < 16)
                         throw new InvalidDataException("Insufficient information in fmt header");
                     sound.FormatTag = br.ReadInt16();
                     if (sound.FormatTag != 1)
                         throw new InvalidDataException("Unsupported encoding method, only uncompressed waves are currently supported.");
                     sound.NumChannels = br.ReadInt16();
+                    if (sound.NumChannels != 1 && sound.NumChannels != 2)
+                        throw new InvalidDataException("Only mono or stereo sounds are supported. Preferrably mono.");
                     sound.SamplesPerSec = br.ReadInt32();
                     sound.AvgbytesPerSec = br.ReadInt32();
                     sound.BlockAlign = br.ReadInt16();
@@ -52,7 +55,21 @@ namespace Descent2Workshop
                 }
                 else if (sig == Util.MakeSig('d', 'a', 't', 'a'))
                 {
-                    sound.Data = br.ReadBytes((int)length);
+                    //Strip stereo data
+                    if (sound.NumChannels != 1)
+                    {
+                        uint numSamples = length / (uint)sound.NumChannels;
+                        sound.Data = new byte[numSamples];
+                        for (uint i = 0; i < numSamples; i++)
+                        {
+                            sound.Data[i] = br.ReadByte();
+                            br.ReadBytes((int)numSamples - 1);
+                        }
+                    }
+                    else
+                    {
+                        sound.Data = br.ReadBytes((int)length);
+                    }
                 }
 
                 br.BaseStream.Seek(position + length, SeekOrigin.Begin);
