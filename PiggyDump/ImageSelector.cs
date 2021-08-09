@@ -39,15 +39,15 @@ namespace Descent2Workshop
                 return Name;
             }
         }
-        private PIGFile pigFile;
+        private IImageProvider imageProvider;
         private Palette palette;
         private bool animOnly;
 
         public int Selection { get; set; }
-        public ImageSelector(PIGFile pigFile, Palette palette, bool animOnly)
+        public ImageSelector(IImageProvider imageProvider, Palette palette, bool animOnly)
         {
             InitializeComponent();
-            this.pigFile = pigFile;
+            this.imageProvider = imageProvider;
             this.palette = palette;
             this.animOnly = animOnly;
         }
@@ -55,9 +55,9 @@ namespace Descent2Workshop
         private void ImageSelector_Load(object sender, EventArgs e)
         {
             PIGImage img;
-            for (int i = 0; i < pigFile.Bitmaps.Count; i++)
+            for (int i = 0; i < imageProvider.Bitmaps.Count; i++)
             {
-                img = pigFile.Bitmaps[i];
+                img = imageProvider.Bitmaps[i];
                 ListEntry entry;
                 entry.Name = img.Name;
                 entry.id = i;
@@ -88,7 +88,7 @@ namespace Descent2Workshop
             }
             ListEntry entry = (ListEntry)listBox1.Items[listBox1.SelectedIndex];
             Selection = entry.id;
-            pictureBox1.Image = PiggyBitmapUtilities.GetBitmap(pigFile, palette, entry.id);
+            pictureBox1.Image = PiggyBitmapUtilities.GetBitmap(imageProvider, palette, entry.id);
         }
     }
 }
