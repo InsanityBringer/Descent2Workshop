@@ -258,6 +258,7 @@
             this.PaletteComboBox.Name = "PaletteComboBox";
             this.PaletteComboBox.Size = new System.Drawing.Size(121, 21);
             this.PaletteComboBox.TabIndex = 11;
+            this.PaletteComboBox.SelectedIndexChanged += new System.EventHandler(this.PaletteComboBox_SelectedIndexChanged);
             // 
             // ChooseReplacementButton
             // 
@@ -267,6 +268,7 @@
             this.ChooseReplacementButton.TabIndex = 10;
             this.ChooseReplacementButton.Text = "Choose...";
             this.ChooseReplacementButton.UseVisualStyleBackColor = true;
+            this.ChooseReplacementButton.Click += new System.EventHandler(this.ChooseReplacementButton_Click);
             // 
             // ReplacementSpinner
             // 
@@ -279,6 +281,7 @@
             this.ReplacementSpinner.Name = "ReplacementSpinner";
             this.ReplacementSpinner.Size = new System.Drawing.Size(44, 20);
             this.ReplacementSpinner.TabIndex = 9;
+            this.ReplacementSpinner.ValueChanged += new System.EventHandler(this.ReplacementSpinner_ValueChanged);
             // 
             // label2
             // 

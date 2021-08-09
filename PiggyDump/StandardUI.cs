@@ -541,8 +541,7 @@ namespace Descent2Workshop
                 string statusMsg;
                 if (FileUtilities.LoadDataFile(openFileDialog1.FileName, archive, out statusMsg))
                 {
-                    POGEditor archiveEditor = new POGEditor(archive, defaultHogFile, openFileDialog1.FileName);
-                    archiveEditor.host = this;
+                    POGEditor archiveEditor = new POGEditor(archive, defaultHogFile, this, openFileDialog1.FileName);
                     archiveEditor.Show();
                 }
                 else

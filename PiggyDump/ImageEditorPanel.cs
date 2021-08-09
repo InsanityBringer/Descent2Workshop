@@ -18,6 +18,8 @@ namespace Descent2Workshop
         private IImageProvider imageProvider;
         private bool isReplacingArchive;
         private int zoom = 1;
+        private IImageProvider baseProvider;
+        private Palette basePalette;
 
         private Palette palette;
         //Hold a linear basic palette. Want simplest possible representation for perf reasons
@@ -26,15 +28,26 @@ namespace Descent2Workshop
         //Task to regenerate inverse colormap
         Task paletteTask;
 
+        //Hack to signify the parent that a new palette needs to be set. 
+        public EventHandler PaletteChanged;
+
         public ListView.SelectedIndexCollection SelectedIndices { get => ImageListView.SelectedIndices; }
 
-        public ImageEditorPanel(IImageProvider imageProvider, bool isPOG)
+        public ImageEditorPanel(IImageProvider imageProvider, bool isPOG, IImageProvider baseProvider = null, Palette basePalette = null)
         {
             InitializeComponent();
             this.imageProvider = imageProvider;
             isReplacingArchive = isPOG;
 
             ReplacamentPanel.Visible = isReplacingArchive;
+
+            if (isPOG && (baseProvider == null || basePalette == null))
+                throw new ArgumentException("baseProvider and basePalette must not be null if isPOG is set");
+
+            this.baseProvider = baseProvider;
+            this.basePalette = basePalette;
+
+            PaletteComboBox.SelectedIndex = 0;
 
             GenerateList();
         }
@@ -110,17 +123,9 @@ namespace Descent2Workshop
             CompressCheckBox.Checked = image.RLECompressed;
             System.Drawing.Color color = System.Drawing.Color.FromArgb(palette.GetRGBAValue(image.AverageIndex));
             ColorPreview.BackColor = color;
+            ReplacementSpinner.Value = image.ReplacementNum;
             pictureBox1.Refresh();
             isLocked = false;
-        }
-        
-        private void ChangeImageToSelected()
-        {
-            if (ImageListView.SelectedIndices.Count <= 0)
-            {
-                return;
-            }
-            ChangeImage(ImageListView.SelectedIndices[0]);
         }
 
         private void CompressCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -191,16 +196,19 @@ namespace Descent2Workshop
             ColorPreview.BackColor = color;
             pictureBox1.Refresh();
         }
+
         private void ZoomTrackBar_Scroll(object sender, EventArgs e)
         {
             zoom = ZoomTrackBar.Value + 1;
             ZoomLabel.Text = string.Format("Zoom: {0}%", (int)(zoom * 100));
             ChangeImageToSelected();
         }
+
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             ChangeImageToSelected();
         }
+
         private void listView1_AfterLabelEdit(object sender, LabelEditEventArgs e)
         {
             if (e.Label != null) //if you don't do this your program crashes at complete random btw
@@ -208,6 +216,45 @@ namespace Descent2Workshop
                 imageProvider.Bitmaps[e.Item].Name = e.Label;
                 ImageListView.Items[e.Item].SubItems[0].Text = imageProvider.Bitmaps[e.Item].Name; //In case it got changed
             }
+        }
+
+        private void ReplacementSpinner_ValueChanged(object sender, EventArgs e)
+        {
+            if (isLocked) return;
+            int baseOffset = 0;
+            foreach (int num in ImageListView.SelectedIndices)
+            {
+                imageProvider.Bitmaps[num].ReplacementNum = (ushort)Util.Clamp((int)ReplacementSpinner.Value + baseOffset, 0, 2619);
+                baseOffset++;
+                RebuildItem(ImageListView.Items[num]);
+            }
+        }
+
+        private void ChooseReplacementButton_Click(object sender, EventArgs e)
+        {
+            if (isLocked) return;
+            int baseOffset = 0;
+            ImageSelector imageSelector = new ImageSelector(baseProvider, basePalette, false);
+            imageSelector.Selection = (int)ReplacementSpinner.Value;
+
+            if (imageSelector.ShowDialog() == DialogResult.OK)
+            {
+                foreach (int num in ImageListView.SelectedIndices)
+                {
+                    imageProvider.Bitmaps[num].ReplacementNum = (ushort)Util.Clamp(imageSelector.Selection + baseOffset, 0, 2619);
+                    baseOffset++;
+                    RebuildItem(ImageListView.Items[num]);
+                }
+            }
+        }
+
+        public void ChangeImageToSelected()
+        {
+            if (ImageListView.SelectedIndices.Count <= 0)
+            {
+                return;
+            }
+            ChangeImage(ImageListView.SelectedIndices[0]);
         }
 
         public void SetPalette(Palette palette)
@@ -368,6 +415,12 @@ namespace Descent2Workshop
                 img.Frame = 0;
                 RebuildItem(ImageListView.SelectedItems[i]);
             }
+        }
+
+        private void PaletteComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (PaletteChanged != null)
+                PaletteChanged(sender, e);
         }
     }
 }

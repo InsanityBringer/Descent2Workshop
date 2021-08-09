@@ -42,155 +42,56 @@ namespace Descent2Workshop
         private string filename;
         public StandardUI host;
         private Palette currentPalette = new Palette();
+        ImageEditorPanel panel;
 
-        //will I ever understand GUI programming? I wonder...
-        private bool isLocked = false;
-
-        //Hold a linear basic palette. Want simplest possible representation for perf reasons
-        private byte[] localPalette;
-        private byte[] inverseColormap;
-
-        Task paletteTask = null;
-
-        public POGEditor(POGFile data, EditorHOGFile hogFile, string filename)
+        public POGEditor(POGFile data, EditorHOGFile hogFile, StandardUI host, string filename)
         {
             datafile = data;
             this.filename = filename;
             this.hogFile = hogFile;
+            this.host = host;
             InitializeComponent();
             this.Text = string.Format("{0} - POG Editor", filename);
-            PaletteComboBox.SelectedIndex = 0; //default to groupa.256
+            panel = new ImageEditorPanel(data, true, host.DefaultPigFile, host.DefaultPalette);
+            panel.PaletteChanged += PaletteComboBox_SelectedIndexChanged;
+            panel.SetPalette(host.DefaultPalette);
+            components.Add(panel);
+            Controls.Add(panel);
+            panel.Dock = DockStyle.Fill;
         }
 
         private void POGEditor_Load(object sender, EventArgs e)
         {
-            for (int i = 0; i < datafile.Bitmaps.Count; i++)
-            {
-                PIGImage image = (PIGImage)datafile.Bitmaps[i];
-                ListViewItem lvi = GeneratePiggyEntry(i);
-                listView1.Items.Add(lvi);
-            }
-        }
-
-        private ListViewItem GeneratePiggyEntry(int i)
-        {
-            PIGImage image = datafile.Bitmaps[i];
-            ListViewItem lvi = new ListViewItem(image.Name);
-            lvi.SubItems.Add(image.ReplacementNum.ToString());
-            lvi.SubItems.Add(image.GetSize().ToString());
-            lvi.SubItems.Add(string.Format("{0}x{1}", image.Width, image.Height));
-            if (image.IsAnimated)
-            {
-                lvi.SubItems.Add(image.Frame.ToString());
-            }
-            else
-            {
-                lvi.SubItems.Add("-1");
-            }
-
-            return lvi;
-        }
-
-        private void RebuildItem(ListViewItem item)
-        {
-            PIGImage image;
-            int i = item.Index;
-
-            image = datafile.Bitmaps[i];
-            item.SubItems[1].Text = image.ReplacementNum.ToString();
-            item.SubItems[2].Text = image.GetSize().ToString();
-            item.SubItems[3].Text = string.Format("{0}x{1}", image.Width, image.Height);
-            item.Text = image.Name;
-            if (image.IsAnimated)
-            {
-                item.SubItems[4].Text = image.Frame.ToString();
-            }
-            else
-            {
-                item.SubItems[4].Text = "-1";
-            }
         }
 
         private void PaletteComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            byte[] data = hogFile.GetLumpData(hogFile.GetLumpNum(PaletteComboBox.Text));
+            ComboBox paletteComboBox = (ComboBox)sender;
+            byte[] data = hogFile.GetLumpData(hogFile.GetLumpNum(paletteComboBox.Text));
             if (data != null)
             {
                 currentPalette = new Palette(data);
-                localPalette = currentPalette.GetLinear();
-
-                if (paletteTask != null) //I don't know if it's a good idea to dispose a running task, so just wait for now
-                {
-                    paletteTask.Wait();
-                    paletteTask.Dispose();
-                }
-                paletteTask = Task.Run(() => { inverseColormap = PiggyBitmapUtilities.BuildInverseColormap(localPalette); });
-
-                if (listView1.Items.Count == 0) return;
-                if (listView1.SelectedIndices.Count == 0) return;
-
-                UpdateImage(listView1.SelectedIndices[0]);
+                panel.SetPalette(currentPalette);
+                panel.ChangeImageToSelected();
             }
-        }
-
-        private void UpdateImage(int id)
-        {
-            isLocked = true;
-            if (pictureBox1.Image != null)
-            {
-                Bitmap temp = (Bitmap)pictureBox1.Image;
-                pictureBox1.Image = null;
-                temp.Dispose();
-            }
-            PIGImage image = datafile.Bitmaps[listView1.SelectedIndices[0]];
-            pictureBox1.Image = PiggyBitmapUtilities.GetBitmap(datafile.Bitmaps[id], currentPalette);
-            TransparentCheck.Checked = image.Transparent;
-            SupertransparentCheck.Checked = image.SuperTransparent;
-            NoLightingCheck.Checked = image.NoLighting;
-            CompressCheckBox.Checked = image.RLECompressed;
-            System.Drawing.Color color = System.Drawing.Color.FromArgb(currentPalette.GetRGBAValue(image.AverageIndex));
-            ColorPreview.BackColor = color;
-            ReplacementSpinner.Value = (decimal)image.ReplacementNum;
-            pictureBox1.Refresh();
-            isLocked = false;
-        }
-
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (listView1.Items.Count == 0) return;
-            if (listView1.SelectedIndices.Count == 0) return;
-            UpdateImage(listView1.SelectedIndices[0]);
         }
 
         private void menuItem7_Click(object sender, EventArgs e)
         {
-            int baseImageID = 0;
             openFileDialog1.Multiselect = true;
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                ImageSelector imageSelector = new ImageSelector(host.DefaultPigFile, host.DefaultPalette, false);
+                //ImageSelector imageSelector = new ImageSelector(host.DefaultPigFile, host.DefaultPalette, false);
 
-                if (imageSelector.ShowDialog() == DialogResult.OK)
+                //if (imageSelector.ShowDialog() == DialogResult.OK)
                 {
                     foreach (string name in openFileDialog1.FileNames)
                     {
                         //If the inverse colormap isn't done, wait for it.
-                        paletteTask.Wait();
+                        panel.WaitPaletteTask();
 
                         Bitmap img = new Bitmap(name);
-                        PIGImage bitmap = PiggyBitmapUtilities.CreatePIGImage(img, localPalette, inverseColormap, Path.GetFileName(name).Substring(0, Math.Min(Path.GetFileName(name).Length, 8)));
-                        bitmap.ReplacementNum = (ushort)(imageSelector.Selection + baseImageID);
-
-                        if (openFileDialog1.FileNames.Length > 1) //Auto animation on multi import
-                        {
-                            bitmap.IsAnimated = true;
-                            bitmap.Frame = baseImageID;
-                        }
-                        baseImageID++;
-
-                        datafile.Bitmaps.Add(bitmap);
-                        ListViewItem lvi = GeneratePiggyEntry(datafile.Bitmaps.Count - 1);
-                        listView1.Items.Add(lvi);
+                        panel.AddImageFromBitmap(img, Path.GetFileNameWithoutExtension(name));
                         img.Dispose();
                     }
                 }
@@ -231,63 +132,6 @@ namespace Descent2Workshop
             else
             {
                 SaveAsMenuItem_Click(sender, e);
-            }
-        }
-
-        private void ReplacementSpinner_ValueChanged(object sender, EventArgs e)
-        {
-            if (isLocked) return;
-            int baseOffset = 0;
-            foreach (int num in listView1.SelectedIndices)
-            {
-                datafile.Bitmaps[num].ReplacementNum = (ushort)Util.Clamp((int)ReplacementSpinner.Value + baseOffset, 0, 2619);
-                baseOffset++;
-                RebuildItem(listView1.Items[num]);
-            }
-        }
-
-        private void ChooseReplacementButton_Click(object sender, EventArgs e)
-        {
-            ImageSelector imageSelector = new ImageSelector(host.DefaultPigFile, host.DefaultPalette, false);
-            imageSelector.Selection = (int)ReplacementSpinner.Value;
-
-            if (imageSelector.ShowDialog() == DialogResult.OK)
-            {
-                //Lazy solution: propagate through the spinner
-                ReplacementSpinner.Value = (decimal)imageSelector.Selection;
-            }
-        }
-
-        private void TransparentCheck_CheckedChanged(object sender, EventArgs e)
-        {
-            if (isLocked) return;
-            PIGImage img;
-            for (int i = 0; i < listView1.SelectedIndices.Count; i++)
-            {
-                img = datafile.Bitmaps[listView1.SelectedIndices[i]];
-                img.Transparent = TransparentCheck.Checked;
-            }
-        }
-
-        private void SupertransparentCheck_CheckedChanged(object sender, EventArgs e)
-        {
-            if (isLocked) return;
-            PIGImage img;
-            for (int i = 0; i < listView1.SelectedIndices.Count; i++)
-            {
-                img = datafile.Bitmaps[listView1.SelectedIndices[i]];
-                img.SuperTransparent = SupertransparentCheck.Checked;
-            }
-        }
-
-        private void NoLightingCheck_CheckedChanged(object sender, EventArgs e)
-        {
-            if (isLocked) return;
-            PIGImage img;
-            for (int i = 0; i < listView1.SelectedIndices.Count; i++)
-            {
-                img = datafile.Bitmaps[listView1.SelectedIndices[i]];
-                img.NoLighting = NoLightingCheck.Checked;
             }
         }
     }
