@@ -40,7 +40,7 @@ namespace Descent2Workshop
                 file.Textures.Add(texture);
             foreach (TMAPInfo tmapInfo in pigfile.TMapInfo)
                 file.TMapInfo.Add(tmapInfo);
-            foreach (byte sound in pigfile.Sounds)
+            foreach (byte sound in pigfile.SoundIDs)
                 file.Sounds.Add(sound);
             foreach (byte sound in pigfile.AltSounds)
                 file.AltSounds.Add(sound);

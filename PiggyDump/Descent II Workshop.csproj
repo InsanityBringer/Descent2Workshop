@@ -215,6 +215,12 @@
     <Compile Include="HXMEditor.Designer.cs">
       <DependentUpon>HXMEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="ImageEditorPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ImageEditorPanel.Designer.cs">
+      <DependentUpon>ImageEditorPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="LBMDecoder.cs" />
     <Compile Include="PiggyBitmapUtilities.cs" />
     <Compile Include="POGEditor.cs">
@@ -336,6 +342,9 @@
     <EmbeddedResource Include="HXMEditor.resx">
       <DependentUpon>HXMEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImageEditorPanel.resx">
+      <DependentUpon>ImageEditorPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="POGEditor.resx">
       <DependentUpon>POGEditor.cs</DependentUpon>

@@ -59,10 +59,10 @@ namespace Descent2Workshop
             return invCmap;
         }
 
-        public static Bitmap GetBitmap(PIGFile piggyFile, Palette palette, int index, int scale = 1)
+        public static Bitmap GetBitmap(IImageProvider piggyFile, Palette palette, int index, int scale = 1)
         {
             int[] rgbTable = new int[256];
-            PIGImage image = piggyFile.GetImage(index);
+            PIGImage image = piggyFile.Bitmaps[index];
 
             int newWidth = (int)(image.Width * scale);
             int newHeight = (int)(image.Height * scale);
