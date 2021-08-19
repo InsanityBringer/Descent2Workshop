@@ -134,5 +134,82 @@ namespace Descent2Workshop
                 SaveAsMenuItem_Click(sender, e);
             }
         }
+
+        private void MoveUpMenuItem_Click(object sender, EventArgs e)
+        {
+            panel.MoveSelectionUp();
+        }
+
+        private void MoveDownMenuItem_Click(object sender, EventArgs e)
+        {
+            panel.MoveSelectionDown();
+        }
+
+        private void ImportMenuItem_Click(object sender, EventArgs e)
+        {
+            if (panel.SelectedIndices.Count == 0) return;
+            openFileDialog1.Multiselect = false;
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                foreach (string name in openFileDialog1.FileNames)
+                {
+                    //If the inverse colormap isn't done, wait for it.
+                    panel.WaitPaletteTask();
+
+                    Bitmap img = new Bitmap(name);
+                    panel.ReplaceSelectedFromBitmap(img, Path.GetFileNameWithoutExtension(name));
+                    img.Dispose();
+                }
+            }
+        }
+
+        private string ImageFilename(int index)
+        {
+            PIGImage image = datafile.Bitmaps[index];
+            if (!image.IsAnimated)
+            {
+                return image.Name;
+            }
+            else
+            {
+                return String.Format("{0}+{1}", image.Name, image.Frame);
+            }
+        }
+
+        private void ExportMenuItem_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.Filter = "PNG Files|*.png";
+            if (panel.SelectedIndices.Count > 1)
+            {
+                saveFileDialog1.FileName = "ignored";
+            }
+            else
+            {
+                saveFileDialog1.FileName = ImageFilename(panel.SelectedIndices[0]);//listView1.Items[listView1.SelectedIndices[0]].Text;
+            }
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if (panel.SelectedIndices.Count > 1)
+                {
+                    string directory = Path.GetDirectoryName(saveFileDialog1.FileName);
+                    foreach (int index in panel.SelectedIndices)
+                    {
+                        Bitmap img = PiggyBitmapUtilities.GetBitmap(datafile, currentPalette, index);
+                        string newpath = directory + Path.DirectorySeparatorChar + ImageFilename(index) + ".png";
+                        img.Save(newpath);
+                        img.Dispose();
+                    }
+                }
+                else
+                {
+                    if (saveFileDialog1.FileName != "")
+                    {
+                        Bitmap img = PiggyBitmapUtilities.GetBitmap(datafile, currentPalette, panel.SelectedIndices[0]);
+                        img.Save(saveFileDialog1.FileName);
+                        img.Dispose();
+                    }
+                }
+            }
+        }
     }
 }
