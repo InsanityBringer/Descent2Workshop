@@ -35,6 +35,11 @@
             this.SizeColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ResolutionColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.FrameColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ReplacamentPanel = new System.Windows.Forms.Panel();
+            this.PaletteComboBox = new System.Windows.Forms.ComboBox();
+            this.ChooseReplacementButton = new System.Windows.Forms.Button();
+            this.ReplacementSpinner = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
             this.ZoomLabel = new System.Windows.Forms.Label();
             this.ZoomTrackBar = new System.Windows.Forms.TrackBar();
             this.CompressCheckBox = new System.Windows.Forms.CheckBox();
@@ -44,19 +49,14 @@
             this.ColorPreview = new System.Windows.Forms.Label();
             this.SupertransparentCheck = new System.Windows.Forms.CheckBox();
             this.NoLightingCheck = new System.Windows.Forms.CheckBox();
-            this.ReplacamentPanel = new System.Windows.Forms.Panel();
-            this.PaletteComboBox = new System.Windows.Forms.ComboBox();
-            this.ChooseReplacementButton = new System.Windows.Forms.Button();
-            this.ReplacementSpinner = new System.Windows.Forms.NumericUpDown();
-            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ZoomTrackBar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.ReplacamentPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ReplacementSpinner)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ZoomTrackBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -130,6 +130,66 @@
             // 
             this.FrameColumnHeader.Text = "Frame";
             this.FrameColumnHeader.Width = 50;
+            // 
+            // ReplacamentPanel
+            // 
+            this.ReplacamentPanel.Controls.Add(this.PaletteComboBox);
+            this.ReplacamentPanel.Controls.Add(this.ChooseReplacementButton);
+            this.ReplacamentPanel.Controls.Add(this.ReplacementSpinner);
+            this.ReplacamentPanel.Controls.Add(this.label2);
+            this.ReplacamentPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ReplacamentPanel.Location = new System.Drawing.Point(0, 666);
+            this.ReplacamentPanel.Name = "ReplacamentPanel";
+            this.ReplacamentPanel.Size = new System.Drawing.Size(305, 65);
+            this.ReplacamentPanel.TabIndex = 4;
+            // 
+            // PaletteComboBox
+            // 
+            this.PaletteComboBox.FormattingEnabled = true;
+            this.PaletteComboBox.Items.AddRange(new object[] {
+            "groupa.256",
+            "water.256",
+            "fire.256",
+            "ice.256",
+            "alien1.256",
+            "alien2.256"});
+            this.PaletteComboBox.Location = new System.Drawing.Point(3, 34);
+            this.PaletteComboBox.Name = "PaletteComboBox";
+            this.PaletteComboBox.Size = new System.Drawing.Size(121, 21);
+            this.PaletteComboBox.TabIndex = 11;
+            this.PaletteComboBox.TextChanged += new System.EventHandler(this.PaletteComboBox_SelectedIndexChanged);
+            // 
+            // ChooseReplacementButton
+            // 
+            this.ChooseReplacementButton.Location = new System.Drawing.Point(117, 5);
+            this.ChooseReplacementButton.Name = "ChooseReplacementButton";
+            this.ChooseReplacementButton.Size = new System.Drawing.Size(75, 23);
+            this.ChooseReplacementButton.TabIndex = 10;
+            this.ChooseReplacementButton.Text = "Choose...";
+            this.ChooseReplacementButton.UseVisualStyleBackColor = true;
+            this.ChooseReplacementButton.Click += new System.EventHandler(this.ChooseReplacementButton_Click);
+            // 
+            // ReplacementSpinner
+            // 
+            this.ReplacementSpinner.Location = new System.Drawing.Point(67, 8);
+            this.ReplacementSpinner.Maximum = new decimal(new int[] {
+            2620,
+            0,
+            0,
+            0});
+            this.ReplacementSpinner.Name = "ReplacementSpinner";
+            this.ReplacementSpinner.Size = new System.Drawing.Size(44, 20);
+            this.ReplacementSpinner.TabIndex = 9;
+            this.ReplacementSpinner.ValueChanged += new System.EventHandler(this.ReplacementSpinner_ValueChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 10);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(58, 13);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "Replacing:";
             // 
             // ZoomLabel
             // 
@@ -231,67 +291,6 @@
             this.NoLightingCheck.UseVisualStyleBackColor = true;
             this.NoLightingCheck.CheckedChanged += new System.EventHandler(this.NoLightingCheck_CheckedChanged);
             // 
-            // ReplacamentPanel
-            // 
-            this.ReplacamentPanel.Controls.Add(this.PaletteComboBox);
-            this.ReplacamentPanel.Controls.Add(this.ChooseReplacementButton);
-            this.ReplacamentPanel.Controls.Add(this.ReplacementSpinner);
-            this.ReplacamentPanel.Controls.Add(this.label2);
-            this.ReplacamentPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ReplacamentPanel.Location = new System.Drawing.Point(0, 666);
-            this.ReplacamentPanel.Name = "ReplacamentPanel";
-            this.ReplacamentPanel.Size = new System.Drawing.Size(305, 65);
-            this.ReplacamentPanel.TabIndex = 4;
-            // 
-            // PaletteComboBox
-            // 
-            this.PaletteComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.PaletteComboBox.FormattingEnabled = true;
-            this.PaletteComboBox.Items.AddRange(new object[] {
-            "groupa.256",
-            "water.256",
-            "fire.256",
-            "ice.256",
-            "alien1.256",
-            "alien2.256"});
-            this.PaletteComboBox.Location = new System.Drawing.Point(3, 34);
-            this.PaletteComboBox.Name = "PaletteComboBox";
-            this.PaletteComboBox.Size = new System.Drawing.Size(121, 21);
-            this.PaletteComboBox.TabIndex = 11;
-            this.PaletteComboBox.SelectedIndexChanged += new System.EventHandler(this.PaletteComboBox_SelectedIndexChanged);
-            // 
-            // ChooseReplacementButton
-            // 
-            this.ChooseReplacementButton.Location = new System.Drawing.Point(117, 5);
-            this.ChooseReplacementButton.Name = "ChooseReplacementButton";
-            this.ChooseReplacementButton.Size = new System.Drawing.Size(75, 23);
-            this.ChooseReplacementButton.TabIndex = 10;
-            this.ChooseReplacementButton.Text = "Choose...";
-            this.ChooseReplacementButton.UseVisualStyleBackColor = true;
-            this.ChooseReplacementButton.Click += new System.EventHandler(this.ChooseReplacementButton_Click);
-            // 
-            // ReplacementSpinner
-            // 
-            this.ReplacementSpinner.Location = new System.Drawing.Point(67, 8);
-            this.ReplacementSpinner.Maximum = new decimal(new int[] {
-            2620,
-            0,
-            0,
-            0});
-            this.ReplacementSpinner.Name = "ReplacementSpinner";
-            this.ReplacementSpinner.Size = new System.Drawing.Size(44, 20);
-            this.ReplacementSpinner.TabIndex = 9;
-            this.ReplacementSpinner.ValueChanged += new System.EventHandler(this.ReplacementSpinner_ValueChanged);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 10);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(58, 13);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "Replacing:";
-            // 
             // ImageEditorPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -304,11 +303,11 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.ZoomTrackBar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ReplacamentPanel.ResumeLayout(false);
             this.ReplacamentPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ReplacementSpinner)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ZoomTrackBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }

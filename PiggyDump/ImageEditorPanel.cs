@@ -419,8 +419,7 @@ namespace Descent2Workshop
 
         private void PaletteComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (PaletteChanged != null)
-                PaletteChanged(sender, e);
+            PaletteChanged?.Invoke(sender, e);
         }
     }
 }
