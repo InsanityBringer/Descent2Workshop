@@ -152,6 +152,7 @@ namespace Descent2Workshop.EditorPanels
                     else
                     {
                         cbTexEClip.SelectedIndex = tmapInfo.EClipNum + 1;
+                        isLocked = false;
                         return;
                     }
                 }
