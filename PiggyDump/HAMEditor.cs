@@ -280,6 +280,10 @@ namespace Descent2Workshop
 
             switch (type)
             {
+                case HAMType.TMAPInfo:
+                    newNum = datafile.Textures.Count;
+                    transaction = new AddTextureTransaction("Add Texture", datafile, "Textures", "TMapInfo", datafile.Textures.Count, 0, new TMAPInfo(), ElementNumber, PageNumber);
+                    break;
                 case HAMType.VClip:
                     newNum = datafile.VClips.Count;
                     transaction = new NamedListAddTransaction("Add VClip", datafile, "VClips", "VClipNames", datafile.VClips.Count, new VClip(), "New VClip", ElementNumber, PageNumber);
