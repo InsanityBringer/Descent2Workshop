@@ -119,10 +119,9 @@ namespace Descent2Workshop.EditorPanels
             double value;
             if (double.TryParse(textBox.Text, out value))
             {
-                FixTransaction transaction = new FixTransaction("VClip property", clip, (string)textBox.Tag, vclipID, 1, value);
+                VClipTimeTransaction transaction = new VClipTimeTransaction("VClip property", clip, (string)textBox.Tag, vclipID, 1, (Fix)value);
                 transactionManager.ApplyTransaction(transaction);
-                //hack
-                clip.FrameTime = clip.PlayTime / clip.NumFrames;
+                //The transaction may have changed frame time, so update it.
                 FrameTimeTextBox.Text = clip.FrameTime.ToString();
             }
         }
@@ -173,8 +172,10 @@ namespace Descent2Workshop.EditorPanels
             int value;
             if (int.TryParse(textBox.Text, out value))
             {
-                IntegerTransaction transaction = new IntegerTransaction("VClip property", clip, (string)textBox.Tag, vclipID, 1, value);
+                VClipTimeTransaction transaction = new VClipTimeTransaction("VClip property", clip, (string)textBox.Tag, vclipID, 1, value);
                 transactionManager.ApplyTransaction(transaction);
+                //The transaction may have changed frame time, so update it.
+                FrameTimeTextBox.Text = clip.FrameTime.ToString();
             }
         }
 

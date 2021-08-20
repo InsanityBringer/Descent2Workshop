@@ -302,7 +302,7 @@
             this.txtEffectFrameCount.Size = new System.Drawing.Size(77, 20);
             this.txtEffectFrameCount.TabIndex = 23;
             this.txtEffectFrameCount.Tag = "NumFrames";
-            this.txtEffectFrameCount.TextChanged += new System.EventHandler(this.EClipClipProperty_TextChanged);
+            this.txtEffectFrameCount.TextChanged += new System.EventHandler(this.EClipClipIntegerProperty_TextChanged);
             // 
             // label17
             // 

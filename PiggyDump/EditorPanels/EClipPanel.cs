@@ -217,8 +217,26 @@ namespace Descent2Workshop.EditorPanels
             double value;
             if (double.TryParse(textBox.Text, out value))
             {
-                FixTransaction transaction = new FixTransaction("EClip property", clip.Clip, (string)textBox.Tag, eclipID, 2, value);
+                //FixTransaction transaction = new FixTransaction("EClip property", clip.Clip, (string)textBox.Tag, eclipID, 2, value);
+                VClipTimeTransaction transaction = new VClipTimeTransaction("EClip property", clip.Clip, (string)textBox.Tag, eclipID, 2, (Fix)value);
                 transactionManager.ApplyTransaction(transaction);
+                //The transaction may have changed frame time, so update it.
+                txtEffectFrameSpeed.Text = clip.Clip.FrameTime.ToString();
+            }
+        }
+
+        private void EClipClipIntegerProperty_TextChanged(object sender, EventArgs e)
+        {
+            if (isLocked || transactionManager.TransactionInProgress)
+                return;
+            TextBox textBox = (TextBox)sender;
+            int value;
+            if (int.TryParse(textBox.Text, out value))
+            {
+                VClipTimeTransaction transaction = new VClipTimeTransaction("EClip property", clip.Clip, (string)textBox.Tag, eclipID, 2, value);
+                transactionManager.ApplyTransaction(transaction);
+                //The transaction may have changed frame time, so update it.
+                txtEffectFrameSpeed.Text = clip.Clip.FrameTime.ToString();
             }
         }
 
