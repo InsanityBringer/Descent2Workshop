@@ -110,6 +110,8 @@ namespace Descent2Workshop
             this.Text = string.Format("{0} - HAM Editor", currentFilename);
 
             transactionManager.undoEvent += DoUndoEvent;
+
+            datafile.CompatObjBitmaps = StandardUI.options.GetOption("CompatObjBitmaps", bool.FalseString) == bool.TrueString;
         }
 
         private void HAMEditor2_Load(object sender, EventArgs e)

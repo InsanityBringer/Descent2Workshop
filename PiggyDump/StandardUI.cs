@@ -350,7 +350,7 @@ namespace Descent2Workshop
         private void MnuAbout_Click(object sender, EventArgs e)
         {
 #if DEBUG
-            Stream stream = File.OpenRead("C:/Games/Descent/DESCENT.PIG");
+            /*Stream stream = File.OpenRead("C:/Games/Descent/DESCENT.PIG");
             Descent1PIGFile piggyFile = new Descent1PIGFile();
             piggyFile.Read(stream);
             stream.Dispose();
@@ -361,7 +361,41 @@ namespace Descent2Workshop
             }
             Palette palette = new Palette(defaultHogFile.GetLumpData("default.256"));
             PIGEditor editor = new PIGEditor(newPiggyFile, palette, "ara ara");
-            editor.Show();
+            editor.Show();*/
+
+            HAMFile ham = new HAMFile();
+            Stream stream = File.OpenRead("C:/Games/Descent/D2X-Rebirth/GOOD.HAM");
+            ham.Read(stream);
+            stream.Dispose();
+            StreamWriter sw = new StreamWriter("goodtbls.txt");
+            sw.WriteLine("Obj Bitmaps");
+            for (int i = 0; i < ham.ObjBitmaps.Count; i++)
+            {
+                sw.WriteLine(ham.ObjBitmaps[i]);
+            }
+            sw.WriteLine("Obj Bitmaps Ptrs");
+            for (int i = 0; i < ham.ObjBitmapPointers.Count; i++)
+            {
+                sw.WriteLine(ham.ObjBitmapPointers[i]);
+            }
+            sw.Close();
+            ham = new HAMFile();
+            stream = File.OpenRead("C:/Games/Descent/D2X-Rebirth/DESCENT2.HAM");
+            ham.Read(stream);
+            stream.Dispose();
+            sw = new StreamWriter("newtbls.txt");
+            sw.WriteLine("Obj Bitmaps");
+            for (int i = 0; i < ham.ObjBitmaps.Count; i++)
+            {
+                sw.WriteLine(ham.ObjBitmaps[i]);
+            }
+            sw.WriteLine("Obj Bitmaps Ptrs");
+            for (int i = 0; i < ham.ObjBitmapPointers.Count; i++)
+            {
+                sw.WriteLine(ham.ObjBitmapPointers[i]);
+            }
+            sw.Close();
+
 #else
             AppendConsole("Descent II Workshop by ISB... heh\n");
 #endif
