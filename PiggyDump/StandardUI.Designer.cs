@@ -60,9 +60,6 @@
             this.HelpMenu = new System.Windows.Forms.MenuItem();
             this.AboutMenu = new System.Windows.Forms.MenuItem();
             this.DebugMenu = new System.Windows.Forms.MenuItem();
-            this.EditorMenuItem = new System.Windows.Forms.MenuItem();
-            this.LoadLevelMenuItem = new System.Windows.Forms.MenuItem();
-            this.menuItem1 = new System.Windows.Forms.MenuItem();
             this.DumpDescent1PigMenuItem = new System.Windows.Forms.MenuItem();
             this.DumpDescent2PigMenuItem = new System.Windows.Forms.MenuItem();
             this.textBox3 = new System.Windows.Forms.TextBox();
@@ -454,38 +451,19 @@
             // 
             this.DebugMenu.Index = 4;
             this.DebugMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.EditorMenuItem,
-            this.LoadLevelMenuItem,
-            this.menuItem1,
             this.DumpDescent1PigMenuItem,
             this.DumpDescent2PigMenuItem});
             this.DebugMenu.Text = "Debug";
             // 
-            // EditorMenuItem
-            // 
-            this.EditorMenuItem.Index = 0;
-            this.EditorMenuItem.Text = "Editor...";
-            // 
-            // LoadLevelMenuItem
-            // 
-            this.LoadLevelMenuItem.Index = 1;
-            this.LoadLevelMenuItem.Text = "Load Level...";
-            this.LoadLevelMenuItem.Click += new System.EventHandler(this.LoadLevelMenuItem_Click);
-            // 
-            // menuItem1
-            // 
-            this.menuItem1.Index = 2;
-            this.menuItem1.Text = "-";
-            // 
             // DumpDescent1PigMenuItem
             // 
-            this.DumpDescent1PigMenuItem.Index = 3;
+            this.DumpDescent1PigMenuItem.Index = 0;
             this.DumpDescent1PigMenuItem.Text = "Dump Descent 1 PIG...";
             this.DumpDescent1PigMenuItem.Click += new System.EventHandler(this.DumpDescent1PigMenuItem_Click);
             // 
             // DumpDescent2PigMenuItem
             // 
-            this.DumpDescent2PigMenuItem.Index = 4;
+            this.DumpDescent2PigMenuItem.Index = 1;
             this.DumpDescent2PigMenuItem.Text = "Dump Descent 2 PIG...";
             this.DumpDescent2PigMenuItem.Click += new System.EventHandler(this.DumpDescent2PigMenuItem_Click);
             // 
@@ -2338,9 +2316,6 @@
         private System.Windows.Forms.MenuItem menuItem2;
         private System.Windows.Forms.MenuItem NewHXMMenu;
         private System.Windows.Forms.MenuItem DebugMenu;
-        private System.Windows.Forms.MenuItem EditorMenuItem;
-        private System.Windows.Forms.MenuItem LoadLevelMenuItem;
-        private System.Windows.Forms.MenuItem menuItem1;
         private System.Windows.Forms.MenuItem DumpDescent1PigMenuItem;
         private System.Windows.Forms.MenuItem DumpDescent2PigMenuItem;
     }

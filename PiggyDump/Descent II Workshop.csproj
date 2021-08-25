@@ -158,20 +158,6 @@
     <Compile Include="EditorPanels\WeaponPanel.Designer.cs">
       <DependentUpon>WeaponPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Editor\ConvertToOverload.cs" />
-    <Compile Include="Editor\EditorState.cs" />
-    <Compile Include="Editor\EditorUI.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Editor\EditorUI.Designer.cs">
-      <DependentUpon>EditorUI.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Editor\InputEvent.cs" />
-    <Compile Include="Editor\Renderer\Camera.cs" />
-    <Compile Include="Editor\Renderer\GLUtilities.cs" />
-    <Compile Include="Editor\Renderer\LevelData.cs" />
-    <Compile Include="Editor\Renderer\MineRenderer.cs" />
-    <Compile Include="Editor\Renderer\Shader.cs" />
     <Compile Include="ElementCopy.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -316,9 +302,6 @@
     <EmbeddedResource Include="EditorPanels\WeaponPanel.resx">
       <DependentUpon>WeaponPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Editor\EditorUI.resx">
-      <DependentUpon>EditorUI.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ElementBrowser.resx">
       <DependentUpon>ElementBrowser.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -436,23 +419,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Editor\FragmentShaderMine.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Editor\FragmentShaderOutline.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Editor\VertexShaderShadow.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Editor\VertexShaderMine.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Editor\VertexShaderOutline.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LibDescent\Data\LibDescent.Data.csproj">

@@ -350,6 +350,18 @@ namespace Descent2Workshop
         private void MnuAbout_Click(object sender, EventArgs e)
         {
 #if DEBUG
+            Stream stream = File.OpenRead("C:/Games/Descent/DESCENT.PIG");
+            Descent1PIGFile piggyFile = new Descent1PIGFile();
+            piggyFile.Read(stream);
+            stream.Dispose();
+            PIGFile newPiggyFile = new PIGFile();
+            for (int i = 1; i < piggyFile.Bitmaps.Count; i++)
+            {
+                newPiggyFile.Bitmaps.Add(piggyFile.Bitmaps[i]);
+            }
+            Palette palette = new Palette(defaultHogFile.GetLumpData("default.256"));
+            PIGEditor editor = new PIGEditor(newPiggyFile, palette, "ara ara");
+            editor.Show();
 #else
             AppendConsole("Descent II Workshop by ISB... heh\n");
 #endif
