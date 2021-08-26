@@ -23,7 +23,7 @@
 using System;
 using System.Windows.Forms;
 using System.IO;
-using OpenTK.Graphics;
+using System.Drawing;
 using Descent2Workshop.SaveHandlers;
 using LibDescent.Data;
 using LibDescent.Edit;
@@ -363,7 +363,7 @@ namespace Descent2Workshop
             PIGEditor editor = new PIGEditor(newPiggyFile, palette, "ara ara");
             editor.Show();*/
 
-            HAMFile ham = new HAMFile();
+            /*HAMFile ham = new HAMFile();
             Stream stream = File.OpenRead("C:/Games/Descent/D2X-Rebirth/GOOD.HAM");
             ham.Read(stream);
             stream.Dispose();
@@ -394,7 +394,7 @@ namespace Descent2Workshop
             {
                 sw.WriteLine(ham.ObjBitmapPointers[i]);
             }
-            sw.Close();
+            sw.Close();*/
 
 #else
             AppendConsole("Descent II Workshop by ISB... heh\n");
@@ -566,7 +566,7 @@ namespace Descent2Workshop
             openFileDialog1.Filter = "Font files|*.FNT";
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                Font font = new Font();
+                LibDescent.Data.Font font = new LibDescent.Data.Font();
                 font.LoadFont(openFileDialog1.FileName);
                 FontViewer viewer = new FontViewer(font);
                 viewer.Show();
@@ -644,6 +644,83 @@ namespace Descent2Workshop
                 if (lumpIndex != -1) newPalette = new Palette(defaultHogFile.GetLumpData(lumpIndex));
                 else newPalette = new Palette(); //If the palette couldn't be located, make a default grayscale palette
                 DebugUtil.DumpPIGToBBM(piggyFile, newPalette, saveFileDialog1.FileName);
+            }
+        }
+
+        private void menuItem1_Click(object sender, EventArgs e)
+        {
+            string[] levelnames = {"d2leva-1.rl2", "d2leva-2.rl2", "d2leva-3.rl2", "d2leva-4.rl2", "d2leva-S.rl2",
+                            "d2levb-1.rl2", "d2levb-2.rl2", "d2levb-3.rl2", "d2levb-4.rl2", "d2levb-S.rl2",
+                            "d2levc-1.rl2", "d2levc-2.rl2", "d2levc-3.rl2", "d2levc-4.rl2", "d2levc-S.rl2",
+                            "d2levd-1.rl2", "d2levd-2.rl2", "d2levd-3.rl2", "d2levd-4.rl2", "d2levd-S.rl2",
+                            "d2leve-1.rl2", "d2leve-2.rl2", "d2leve-3.rl2", "d2leve-4.rl2", "d2leve-S.rl2",
+                            "d2levf-1.rl2", "d2levf-2.rl2", "d2levf-3.rl2", "d2levf-4.rl2", "d2levf-S.rl2", };
+
+            openFileDialog1.Filter = ".HAM files|*.HAM";
+            HAMFile hamfile = new HAMFile();
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                Stream stream = File.Open(openFileDialog1.FileName, FileMode.Open);
+                hamfile.Read(stream);
+                stream.Close();
+                stream.Dispose();
+            }
+
+            int[] usenums = new int[hamfile.Textures.Count];
+
+            foreach (string name in levelnames)
+            {
+                Stream lumpstream = defaultHogFile.GetLumpAsStream(name);
+                D2Level level = D2Level.CreateFromStream(lumpstream);
+
+                for (int i = 0; i < level.Segments.Count; i++)
+                {
+                    Segment seg = level.Segments[i];
+                    for (int j = 0; j < 6; j++)
+                    {
+                        Side side = seg.GetSide((SegSide)j);
+                        if (side.BaseTextureIndex < usenums.Length)
+                            usenums[side.BaseTextureIndex]++;
+                        else
+                            AppendConsole(string.Format("Level {0}, segment {1} side {2}'s base texture ({3}) is invalid\r\n", name, i, j, side.BaseTextureIndex));
+                        if (side.OverlayTextureIndex < usenums.Length)
+                            usenums[side.OverlayTextureIndex]++;
+                        else
+                            AppendConsole(string.Format("Level {0}, segment {1} side {2}'s overlay texture ({3}) is invalid\r\n", name, i, j, side.OverlayTextureIndex));
+                    }
+                }
+
+                for (int i = 0; i < level.Objects.Count; i++)
+                {
+                    LevelObject obj = level.Objects[i];
+                    if (obj.RenderTypeID == RenderTypeID.Polyobj)
+                    {
+                        PolymodelRenderType renderType = (PolymodelRenderType)obj.RenderType;
+                        if (renderType.TextureOverride != -1)
+                        {
+                            usenums[renderType.TextureOverride]++;
+                        }
+                    }
+                }
+
+                lumpstream.Dispose();
+            }
+
+            //Check all used textures
+            for (int i = 0; i < usenums.Length; i++)
+            {
+                if (usenums[i] == 0)
+                {
+                    //AppendConsole(string.Format("Texture {0} is unused.\r\n", defaultPigFile.Bitmaps[hamfile.Textures[i]].Name));
+                    PIGImage image = defaultPigFile.Bitmaps[hamfile.Textures[i]];
+                    if (image.Frame == 0 || image.Frame == -1)
+                    {
+                        Bitmap bitmap = PiggyBitmapUtilities.GetBitmap(image, DefaultPalette);
+                        string path = Path.Combine("C:/games/Descent/D2X-Rebirth/tcrf", string.Format("descent2-{0}.png", image.Name));
+                        bitmap.Save(path);
+                        bitmap.Dispose();
+                    }
+                }
             }
         }
     }

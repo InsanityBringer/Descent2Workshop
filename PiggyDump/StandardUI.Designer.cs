@@ -224,6 +224,7 @@
             this.label76 = new System.Windows.Forms.Label();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.tbLog = new System.Windows.Forms.TextBox();
+            this.menuItem1 = new System.Windows.Forms.MenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.tabPage10.SuspendLayout();
@@ -452,7 +453,8 @@
             this.DebugMenu.Index = 4;
             this.DebugMenu.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.DumpDescent1PigMenuItem,
-            this.DumpDescent2PigMenuItem});
+            this.DumpDescent2PigMenuItem,
+            this.menuItem1});
             this.DebugMenu.Text = "Debug";
             // 
             // DumpDescent1PigMenuItem
@@ -2069,6 +2071,12 @@
             this.tbLog.TabIndex = 2;
             this.tbLog.Text = "Descent II Workshop log";
             // 
+            // menuItem1
+            // 
+            this.menuItem1.Index = 2;
+            this.menuItem1.Text = "Export unused textures";
+            this.menuItem1.Click += new System.EventHandler(this.menuItem1_Click);
+            // 
             // StandardUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2318,5 +2326,6 @@
         private System.Windows.Forms.MenuItem DebugMenu;
         private System.Windows.Forms.MenuItem DumpDescent1PigMenuItem;
         private System.Windows.Forms.MenuItem DumpDescent2PigMenuItem;
+        private System.Windows.Forms.MenuItem menuItem1;
     }
 }
