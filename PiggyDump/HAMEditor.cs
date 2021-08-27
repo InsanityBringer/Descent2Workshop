@@ -288,39 +288,39 @@ namespace Descent2Workshop
                     break;
                 case HAMType.VClip:
                     newNum = datafile.VClips.Count;
-                    transaction = new NamedListAddTransaction("Add VClip", datafile, "VClips", "VClipNames", datafile.VClips.Count, new VClip(), "New VClip", ElementNumber, PageNumber);
+                    transaction = new ListAddTransaction("Add VClip", datafile, "VClips", datafile.VClips.Count, new VClip(), ElementNumber, PageNumber);
                     break;
                 case HAMType.EClip:
                     newNum = datafile.EClips.Count;
-                    transaction = new NamedListAddTransaction("Add EClip", datafile, "EClips", "EClipNames", datafile.EClips.Count, new EClip(), "New EClip", ElementNumber, PageNumber);
+                    transaction = new ListAddTransaction("Add EClip", datafile, "EClips", datafile.EClips.Count, new EClip(), ElementNumber, PageNumber);
                     break;
                 case HAMType.WClip:
                     newNum = datafile.WClips.Count;
-                    transaction = new NamedListAddTransaction("Add WClip", datafile, "WClips", "WClipNames", datafile.WClips.Count, new WClip(), "New WClip", ElementNumber, PageNumber);
+                    transaction = new ListAddTransaction("Add WClip", datafile, "WClips", datafile.WClips.Count, new WClip(), ElementNumber, PageNumber);
                     break;
                 case HAMType.Robot:
                     newNum = datafile.Robots.Count;
-                    transaction = new NamedListAddTransaction("Add Robot", datafile, "Robots", "RobotNames", datafile.Robots.Count, new Robot(), "New Robot", ElementNumber, PageNumber);
+                    transaction = new ListAddTransaction("Add Robot", datafile, "Robots", datafile.Robots.Count, new Robot(), ElementNumber, PageNumber);
                     break;
                 case HAMType.Weapon:
                     newNum = datafile.Weapons.Count;
-                    transaction = new NamedListAddTransaction("Add Weapon", datafile, "Weapons", "WeaponNames", datafile.Weapons.Count, new Weapon(), "New Weapon", ElementNumber, PageNumber);
+                    transaction = new ListAddTransaction("Add Weapon", datafile, "Weapons", datafile.Weapons.Count, new Weapon(), ElementNumber, PageNumber);
                     break;
                 case HAMType.Model:
                     newNum = datafile.Models.Count;
-                    transaction = new NamedListAddTransaction("Add Polymodel", datafile, "Models", "ModelNames", datafile.Models.Count, new Polymodel(10), "New Model", ElementNumber, PageNumber);
+                    transaction = new ListAddTransaction("Add Polymodel", datafile, "Models", datafile.Models.Count, new Polymodel(10), ElementNumber, PageNumber);
                     break;
                 case HAMType.Powerup:
                     newNum = datafile.Powerups.Count;
-                    transaction = new NamedListAddTransaction("Add Powerup", datafile, "Powerups", "PowerupNames", datafile.Powerups.Count, new Powerup(), "New Powerup", ElementNumber, PageNumber);
+                    transaction = new ListAddTransaction("Add Powerup", datafile, "Powerups", datafile.Powerups.Count, new Powerup(), ElementNumber, PageNumber);
                     break;
                 case HAMType.Reactor:
                     newNum = datafile.Reactors.Count;
-                    transaction = new NamedListAddTransaction("Add Reactor", datafile, "Reactors", "ReactorNames", datafile.Reactors.Count, new Reactor(), "New Reactor", ElementNumber, PageNumber);
+                    transaction = new ListAddTransaction("Add Reactor", datafile, "Reactors", datafile.Reactors.Count, new Reactor(), ElementNumber, PageNumber);
                     break;
                 case HAMType.Cockpit:
                     newNum = datafile.Cockpits.Count;
-                    transaction = new NamedListAddTransaction("Add Cockpit bitmap", datafile, "Cockpits", null, datafile.Cockpits.Count, (ushort)0, null, ElementNumber, PageNumber);
+                    transaction = new ListAddTransaction("Add Cockpit bitmap", datafile, "Cockpits", datafile.Cockpits.Count, (ushort)0, ElementNumber, PageNumber);
                     break;
             }
 
@@ -382,7 +382,7 @@ namespace Descent2Workshop
         private void InitTexturePanel()
         {
             SetElementControl(true, false);
-            texturePanel.Init(datafile.EClipNames, palette);
+            texturePanel.Init(datafile.EClips, palette);
         }
 
         private void InitVClipPanel()
@@ -394,7 +394,7 @@ namespace Descent2Workshop
         private void InitEClipPanel()
         {
             SetElementControl(true, true);
-            eclipPanel.Init(datafile.VClipNames, datafile.EClipNames, datafile.SoundNames, palette);
+            eclipPanel.Init(datafile.VClips, datafile.EClips, datafile.SoundNames, palette);
         }
 
         private void InitWallPanel()
@@ -406,13 +406,13 @@ namespace Descent2Workshop
         private void InitWeaponPanel()
         {
             SetElementControl(true, true);
-            weaponPanel.Init(datafile.SoundNames, datafile.VClipNames, datafile.WeaponNames, datafile.ModelNames, piggyFile, palette);
+            weaponPanel.Init(datafile.SoundNames, datafile.VClips, datafile.Weapons, datafile.Models, piggyFile, palette);
         }
 
         private void InitRobotPanel()
         {
             SetElementControl(true, true);
-            robotPanel.Init(datafile.VClipNames, datafile.SoundNames, datafile.RobotNames, datafile.WeaponNames, datafile.PowerupNames, datafile.ModelNames);
+            robotPanel.Init(datafile.VClips, datafile.SoundNames, datafile.Robots, datafile.Weapons, datafile.Powerups, datafile.Models);
         }
 
         private void InitSoundPanel()
@@ -427,19 +427,22 @@ namespace Descent2Workshop
             cbPowerupPickupSound.Items.Clear();
             cbPowerupSprite.Items.Clear();
             cbPowerupPickupSound.Items.AddRange(datafile.SoundNames.ToArray());
-            cbPowerupSprite.Items.AddRange(datafile.VClipNames.ToArray());
+            string[] stringarray = new string[datafile.VClips.Count];
+            for (int i = 0; i < datafile.VClips.Count; i++)
+                stringarray[i] = datafile.VClips[i].Name;
+            cbPowerupSprite.Items.AddRange(stringarray);
         }
 
         private void InitModelPanel()
         {
             SetElementControl(true, true);
-            polymodelPanel.Init(datafile.ModelNames);
+            polymodelPanel.Init(datafile.Models);
         }
 
         private void InitReactorPanel()
         {
             SetElementControl(true, true);
-            reactorPanel.Init(datafile.ModelNames);
+            reactorPanel.Init(datafile.Models);
         }
 
         //---------------------------------------------------------------------
@@ -493,7 +496,7 @@ namespace Descent2Workshop
             vclipPanel.Stop();
             VClip clip = datafile.VClips[num];
             vclipPanel.Update(num, clip, datafile.piggyFile, palette);
-            txtElemName.Text = datafile.VClipNames[num];
+            txtElemName.Text = clip.Name;
         }
 
         public void UpdateEClipPanel(int num)
@@ -501,7 +504,7 @@ namespace Descent2Workshop
             eclipPanel.Stop();
             EClip clip = datafile.EClips[num];
             eclipPanel.Update(num, clip, datafile.piggyFile);
-            txtElemName.Text = datafile.EClipNames[num];
+            txtElemName.Text = clip.Name;
         }
 
         public void UpdateWClipPanel(int num)
@@ -515,7 +518,7 @@ namespace Descent2Workshop
         public void UpdateRobotPanel(int num)
         {
             Robot robot = datafile.Robots[num];
-            txtElemName.Text = datafile.RobotNames[num];
+            txtElemName.Text = robot.Name;
 
             robotPanel.Update(robot, num);
         }
@@ -523,7 +526,7 @@ namespace Descent2Workshop
         public void UpdateWeaponPanel(int num)
         {
             Weapon weapon = datafile.Weapons[num];
-            txtElemName.Text = datafile.WeaponNames[num];
+            txtElemName.Text = weapon.Name;
 
             weaponPanel.Update(weapon, num);
         }
@@ -531,7 +534,7 @@ namespace Descent2Workshop
         private void UpdateModelPanel(int num)
         {
             Polymodel model = datafile.Models[num];
-            txtElemName.Text = datafile.ModelNames[num];
+            txtElemName.Text = model.Name;
 
             polymodelPanel.Update(model, num);
         }
@@ -539,7 +542,7 @@ namespace Descent2Workshop
         private void UpdateReactorPanel(int num)
         {
             Reactor reactor = datafile.Reactors[num];
-            txtElemName.Text = datafile.ReactorNames[num];
+            txtElemName.Text = reactor.Name;
 
             reactorPanel.Update(reactor, num);
         }
@@ -551,7 +554,7 @@ namespace Descent2Workshop
             cbPowerupSprite.SelectedIndex = powerup.VClipNum;
             txtPowerupSize.Text = powerup.Size.ToString();
             txtPowerupLight.Text = powerup.Light.ToString();
-            txtElemName.Text = datafile.PowerupNames[num];
+            txtElemName.Text = powerup.Name;
         }
 
         private void UpdateShipPanel()
@@ -559,12 +562,12 @@ namespace Descent2Workshop
             Ship ship = datafile.PlayerShip;
             cbPlayerExplosion.Items.Clear();
             for (int i = 0; i < datafile.VClips.Count; i++)
-                cbPlayerExplosion.Items.Add(datafile.VClipNames[i]);
+                cbPlayerExplosion.Items.Add(datafile.VClips[i].Name);
             cbPlayerModel.Items.Clear(); cbMarkerModel.Items.Clear();
             for (int i = 0; i < datafile.Models.Count; i++)
             {
-                cbPlayerModel.Items.Add(datafile.ModelNames[i]);
-                cbMarkerModel.Items.Add(datafile.ModelNames[i]);
+                cbPlayerModel.Items.Add(datafile.Models[i].Name);
+                cbMarkerModel.Items.Add(datafile.Models[i].Name);
             }
 
             txtShipBrakes.Text = ship.Brakes.ToString();

@@ -226,6 +226,7 @@
     <Compile Include="Transactions\IndexedIntegerTransaction.cs" />
     <Compile Include="Transactions\IndexedUnsignedTransaction.cs" />
     <Compile Include="Transactions\IntegerTransaction.cs" />
+    <Compile Include="Transactions\ListAddTransaction.cs" />
     <Compile Include="Transactions\ListReplaceTransaction.cs" />
     <Compile Include="Transactions\ModelReplaceTransaction.cs" />
     <Compile Include="Transactions\NamedListAddTransaction.cs" />

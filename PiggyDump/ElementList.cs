@@ -21,33 +21,33 @@ namespace Descent2Workshop
             switch (type)
             {
                 case HAMType.VClip:
-                    foreach (String name in datafile.VClipNames)
+                    foreach (VClip vclip in datafile.VClips)
                     {
-                        ElementListBox.Items.Add(name);
+                        ElementListBox.Items.Add(vclip.Name);
                     }
                     break;
                 case HAMType.EClip:
-                    foreach (String name in datafile.EClipNames)
+                    foreach (EClip clip in datafile.EClips)
                     {
-                        ElementListBox.Items.Add(name);
+                        ElementListBox.Items.Add(clip.Name);
                     }
                     break;
                 case HAMType.Robot:
-                    foreach (String name in datafile.RobotNames)
+                    foreach (Robot robot in datafile.Robots)
                     {
-                        ElementListBox.Items.Add(name);
+                        ElementListBox.Items.Add(robot.Name);
                     }
                     break;
                 case HAMType.Weapon:
-                    foreach (String name in datafile.WeaponNames)
+                    foreach (Weapon weapon in datafile.Weapons)
                     {
-                        ElementListBox.Items.Add(name);
+                        ElementListBox.Items.Add(weapon.Name);
                     }
                     break;
                 case HAMType.Model:
-                    foreach (String name in datafile.ModelNames)
+                    foreach (Polymodel model in datafile.Models)
                     {
-                        ElementListBox.Items.Add(name);
+                        ElementListBox.Items.Add(model.Name);
                     }
                     break;
                 case HAMType.Sound:

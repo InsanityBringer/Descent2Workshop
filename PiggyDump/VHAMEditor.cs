@@ -151,7 +151,7 @@ namespace Descent2Workshop
             List<string> modelList = new List<string>();
             for (int i = 0; i < datafile.GetNumModels(); i++)
                 modelList.Add(datafile.GetModelName(i));
-            weaponPanel.Init(datafile.BaseHAM.SoundNames, datafile.BaseHAM.VClipNames, weaponList, modelList, datafile.BaseHAM.piggyFile, palette);
+            weaponPanel.Init(datafile.BaseHAM.SoundNames, datafile.BaseHAM.VClips, weaponList.ToArray(), modelList.ToArray(), datafile.BaseHAM.piggyFile, palette);
         }
 
         private void InitRobotPanel()
@@ -166,7 +166,7 @@ namespace Descent2Workshop
             for (int i = 0; i < datafile.GetNumModels(); i++)
                 modelList.Add(datafile.GetModelName(i));
 
-            robotPanel.Init(datafile.BaseHAM.VClipNames, datafile.BaseHAM.SoundNames, robotList, weaponList, datafile.BaseHAM.PowerupNames, modelList);
+            robotPanel.Init(datafile.BaseHAM.VClips, datafile.BaseHAM.SoundNames, robotList.ToArray(), weaponList.ToArray(), datafile.BaseHAM.Powerups, modelList.ToArray());
         }
 
         private void InitModelPanel()
@@ -176,7 +176,7 @@ namespace Descent2Workshop
             {
                 names.Add(datafile.GetModelName(i));
             }
-            polymodelPanel.Init(names);
+            polymodelPanel.Init(names.ToArray());
         }
 
         public void UpdateRobotPanel(int num)
@@ -184,7 +184,7 @@ namespace Descent2Workshop
             Robot robot = datafile.Robots[num];
             robotPanel.Update(robot, num);
 
-            txtElemName.Text = datafile.RobotNames[num];
+            txtElemName.Text = datafile.Robots[num].Name;
         }
 
         public void UpdateWeaponPanel(int num)
@@ -192,7 +192,7 @@ namespace Descent2Workshop
             Weapon weapon = datafile.Weapons[num];
             weaponPanel.Update(weapon, num);
 
-            txtElemName.Text = datafile.WeaponNames[num];
+            txtElemName.Text = datafile.Weapons[num].Name;
         }
 
         private void UpdateModelPanel(int num)
@@ -200,7 +200,7 @@ namespace Descent2Workshop
             Polymodel model = datafile.Models[num];
             polymodelPanel.Update(model, num);
 
-            txtElemName.Text = datafile.ModelNames[num];
+            txtElemName.Text = datafile.Models[num].Name;
         }
     }
 }

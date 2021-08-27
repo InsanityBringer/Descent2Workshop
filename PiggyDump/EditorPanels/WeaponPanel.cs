@@ -58,7 +58,7 @@ namespace Descent2Workshop.EditorPanels
             this.tabPage = tabPage;
         }
 
-        public void Init(List<string> SoundNames, List<string> VClipNames, List<string> WeaponNames, List<string> ModelNames, PIGFile piggyFile, Palette palette)
+        public void Init(List<string> SoundNames, List<VClip> VClips, List<Weapon> Weapons, List<Polymodel> Models, PIGFile piggyFile, Palette palette)
         {
             this.piggyFile = piggyFile;
             this.palette = palette;
@@ -77,20 +77,64 @@ namespace Descent2Workshop.EditorPanels
             cbWeaponRobotHit.Items.Clear(); cbWeaponRobotHit.Items.Add("None");
             cbWeaponVClip.Items.Clear(); cbWeaponVClip.Items.Add("None");
 
-            stringarray = VClipNames.ToArray();
+            stringarray = new string[VClips.Count];
+            for (int i = 0; i < VClips.Count; i++)
+                stringarray[i] = VClips[i].Name;
+            cbWeaponMuzzleFlash.Items.AddRange(stringarray);
+            cbWeaponWallHit.Items.AddRange(stringarray);
+            cbWeaponRobotHit.Items.AddRange(stringarray);
+            cbWeaponVClip.Items.AddRange(stringarray);
+
+            stringarray = new string[Weapons.Count];
+            for (int i = 0; i < Weapons.Count; i++)
+                stringarray[i] = Weapons[i].Name;
+            cbWeaponChildren.Items.Clear(); cbWeaponChildren.Items.Add("None"); //this will be fun since my own size can change. ugh
+            cbWeaponChildren.Items.AddRange(stringarray);
+            cbWeaponModel1.Items.Clear(); cbWeaponModel1.Items.Add("None");
+            cbWeaponModel2.Items.Clear(); cbWeaponModel2.Items.Add("None");
+
+            stringarray = new string[Models.Count];
+            for (int i = 0; i < Models.Count; i++)
+                stringarray[i] = Models[i].Name;
+            cbWeaponModel1.Items.AddRange(stringarray);
+            cbWeaponModel2.Items.AddRange(stringarray);
+            isLocked = false;
+        }
+
+        public void Init(List<string> SoundNames, List<VClip> VClips, string[] WeaponNames, string[] ModelNames, PIGFile piggyFile, Palette palette)
+        {
+            this.piggyFile = piggyFile;
+            this.palette = palette;
+            isLocked = true;
+            cbWeaponFireSound.Items.Clear(); cbWeaponFireSound.Items.Add("None");
+            cbWeaponRobotHitSound.Items.Clear(); cbWeaponRobotHitSound.Items.Add("None");
+            cbWeaponWallHitSound.Items.Clear(); cbWeaponWallHitSound.Items.Add("None");
+
+            string[] stringarray = SoundNames.ToArray();
+            cbWeaponFireSound.Items.AddRange(stringarray);
+            cbWeaponRobotHitSound.Items.AddRange(stringarray);
+            cbWeaponWallHitSound.Items.AddRange(stringarray);
+
+            cbWeaponMuzzleFlash.Items.Clear(); cbWeaponMuzzleFlash.Items.Add("None");
+            cbWeaponWallHit.Items.Clear(); cbWeaponWallHit.Items.Add("None");
+            cbWeaponRobotHit.Items.Clear(); cbWeaponRobotHit.Items.Add("None");
+            cbWeaponVClip.Items.Clear(); cbWeaponVClip.Items.Add("None");
+
+            stringarray = new string[VClips.Count];
+            for (int i = 0; i < VClips.Count; i++)
+                stringarray[i] = VClips[i].Name;
             cbWeaponMuzzleFlash.Items.AddRange(stringarray);
             cbWeaponWallHit.Items.AddRange(stringarray);
             cbWeaponRobotHit.Items.AddRange(stringarray);
             cbWeaponVClip.Items.AddRange(stringarray);
 
             cbWeaponChildren.Items.Clear(); cbWeaponChildren.Items.Add("None"); //this will be fun since my own size can change. ugh
-            cbWeaponChildren.Items.AddRange(WeaponNames.ToArray());
+            cbWeaponChildren.Items.AddRange(WeaponNames);
             cbWeaponModel1.Items.Clear(); cbWeaponModel1.Items.Add("None");
             cbWeaponModel2.Items.Clear(); cbWeaponModel2.Items.Add("None");
 
-            stringarray = ModelNames.ToArray();
-            cbWeaponModel1.Items.AddRange(stringarray);
-            cbWeaponModel2.Items.AddRange(stringarray);
+            cbWeaponModel1.Items.AddRange(ModelNames);
+            cbWeaponModel2.Items.AddRange(ModelNames);
             isLocked = false;
         }
 

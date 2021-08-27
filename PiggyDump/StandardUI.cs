@@ -350,7 +350,7 @@ namespace Descent2Workshop
         private void MnuAbout_Click(object sender, EventArgs e)
         {
 #if DEBUG
-            /*Stream stream = File.OpenRead("C:/Games/Descent/DESCENT.PIG");
+            Stream stream = File.OpenRead("C:/Games/Descent/DESCENT.PIG");
             Descent1PIGFile piggyFile = new Descent1PIGFile();
             piggyFile.Read(stream);
             stream.Dispose();
@@ -361,7 +361,7 @@ namespace Descent2Workshop
             }
             Palette palette = new Palette(defaultHogFile.GetLumpData("default.256"));
             PIGEditor editor = new PIGEditor(newPiggyFile, palette, "ara ara");
-            editor.Show();*/
+            editor.Show();
 
             /*HAMFile ham = new HAMFile();
             Stream stream = File.OpenRead("C:/Games/Descent/D2X-Rebirth/GOOD.HAM");
@@ -707,7 +707,7 @@ namespace Descent2Workshop
             }
 
             //Check all used textures
-            for (int i = 0; i < usenums.Length; i++)
+            /*for (int i = 0; i < usenums.Length; i++)
             {
                 if (usenums[i] == 0)
                 {
@@ -721,7 +721,18 @@ namespace Descent2Workshop
                         bitmap.Dispose();
                     }
                 }
+            }*/
+
+            StreamWriter sw = new StreamWriter("texturecount.txt");
+
+            for (int i = 0; i < usenums.Length; i++)
+            {
+                PIGImage image = defaultPigFile.Bitmaps[hamfile.Textures[i]];
+                if (image.Frame == -1 || image.Frame == 0)
+                    sw.WriteLine("Texture {0}({1}) is used {2} times.", i, image.Name, usenums[i]);
             }
+
+            sw.Dispose();
         }
     }
 }

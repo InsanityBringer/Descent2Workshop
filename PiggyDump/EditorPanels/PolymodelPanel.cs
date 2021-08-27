@@ -146,13 +146,26 @@ namespace Descent2Workshop.EditorPanels
         }
 
 
-        public void Init(List<string> modelNames)
+        public void Init(List<Polymodel> models)
         {
             cbModelDeadModel.Items.Clear(); cbModelDeadModel.Items.Add("None");
             cbModelDyingModel.Items.Clear(); cbModelDyingModel.Items.Add("None");
             cbModelLowDetail.Items.Clear(); cbModelLowDetail.Items.Add("None");
 
-            string[] names = modelNames.ToArray();
+            string[] names = new string[models.Count];
+            for (int i = 0; i < models.Count; i++)
+                names[i] = models[i].Name;
+
+            cbModelDeadModel.Items.AddRange(names);
+            cbModelDyingModel.Items.AddRange(names);
+            cbModelLowDetail.Items.AddRange(names);
+        }
+
+        public void Init(string[] names)
+        {
+            cbModelDeadModel.Items.Clear(); cbModelDeadModel.Items.Add("None");
+            cbModelDyingModel.Items.Clear(); cbModelDyingModel.Items.Add("None");
+            cbModelLowDetail.Items.Clear(); cbModelLowDetail.Items.Add("None");
 
             cbModelDeadModel.Items.AddRange(names);
             cbModelDyingModel.Items.AddRange(names);

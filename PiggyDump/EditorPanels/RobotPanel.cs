@@ -16,8 +16,8 @@ namespace Descent2Workshop.EditorPanels
         private int robotid;
 
         //Name lists for drops
-        private List<string> RobotNames;
-        private List<string> PowerupNames;
+        private string[] RobotNames;
+        private string[] PowerupNames;
 
         //to assist with my sanity
         private TextBox[] FieldOfViewControls = new TextBox[5];
@@ -57,10 +57,14 @@ namespace Descent2Workshop.EditorPanels
             this.transactionManager = transactionManager;
         }
 
-        public void Init(List<string> VClipNames, List<string> SoundNames, List<string> RobotNames, List<string> WeaponNames, List<string> PowerupNames, List<string> ModelNames)
+        public void Init(List<VClip> VClips, List<string> SoundNames, List<Robot> Robots, List<Weapon> Weapons, List<Powerup> Powerups, List<Polymodel> Models)
         {
-            this.RobotNames = RobotNames;
-            this.PowerupNames = PowerupNames;
+            RobotNames = new string[Robots.Count];
+            for (int i = 0; i < Robots.Count; i++)
+                RobotNames[i] = Robots[i].Name;
+            PowerupNames = new string[Powerups.Count];
+            for (int i = 0; i < Powerups.Count; i++)
+                PowerupNames[i] = Powerups[i].Name;
 
             cbRobotAttackSound.Items.Clear();
             cbRobotClawSound.Items.Clear();
@@ -82,19 +86,69 @@ namespace Descent2Workshop.EditorPanels
             cbRobotWeapon1.Items.Clear();
             cbRobotWeapon2.Items.Clear(); cbRobotWeapon2.Items.Add("None");
 
-            stringarray = WeaponNames.ToArray();
+            stringarray = new string[Weapons.Count];
+            for (int i = 0; i < Weapons.Count; i++)
+                stringarray[i] = Weapons[i].Name;
             cbRobotWeapon1.Items.AddRange(stringarray);
             cbRobotWeapon2.Items.AddRange(stringarray);
 
             RobotHitVClipComboBox.Items.Clear(); RobotHitVClipComboBox.Items.Add("None");
             RobotDeathVClipComboBox.Items.Clear(); RobotDeathVClipComboBox.Items.Add("None");
 
-            stringarray = VClipNames.ToArray();
+            stringarray = new string[VClips.Count];
+            for (int i = 0; i < VClips.Count; i++)
+                stringarray[i] = VClips[i].Name;
             RobotHitVClipComboBox.Items.AddRange(stringarray);
             RobotDeathVClipComboBox.Items.AddRange(stringarray);
             RobotModelComboBox.Items.Clear();
 
-            RobotModelComboBox.Items.AddRange(ModelNames.ToArray<string>());
+            stringarray = new string[Models.Count];
+            for (int i = 0; i < Models.Count; i++)
+                stringarray[i] = Models[i].Name;
+            RobotModelComboBox.Items.AddRange(stringarray);
+        }
+
+        public void Init(List<VClip> VClips, List<string> SoundNames, string[] RobotNames, string[] WeaponNames, List<Powerup> Powerups, string[] ModelNames)
+        {
+            this.RobotNames = RobotNames;
+            PowerupNames = new string[Powerups.Count];
+            for (int i = 0; i < Powerups.Count; i++)
+                PowerupNames[i] = Powerups[i].Name;
+
+            cbRobotAttackSound.Items.Clear();
+            cbRobotClawSound.Items.Clear();
+            cbRobotDyingSound.Items.Clear();
+            cbRobotSeeSound.Items.Clear();
+            cbRobotTauntSound.Items.Clear();
+            cbRobotHitSound.Items.Clear();
+            cbRobotDeathSound.Items.Clear();
+
+            string[] stringarray = SoundNames.ToArray();
+            cbRobotAttackSound.Items.AddRange(stringarray);
+            cbRobotClawSound.Items.AddRange(stringarray);
+            cbRobotDyingSound.Items.AddRange(stringarray);
+            cbRobotSeeSound.Items.AddRange(stringarray);
+            cbRobotTauntSound.Items.AddRange(stringarray);
+            cbRobotHitSound.Items.AddRange(stringarray);
+            cbRobotDeathSound.Items.AddRange(stringarray);
+
+            cbRobotWeapon1.Items.Clear();
+            cbRobotWeapon2.Items.Clear(); cbRobotWeapon2.Items.Add("None");
+
+            cbRobotWeapon1.Items.AddRange(WeaponNames);
+            cbRobotWeapon2.Items.AddRange(WeaponNames);
+
+            RobotHitVClipComboBox.Items.Clear(); RobotHitVClipComboBox.Items.Add("None");
+            RobotDeathVClipComboBox.Items.Clear(); RobotDeathVClipComboBox.Items.Add("None");
+
+            stringarray = new string[VClips.Count];
+            for (int i = 0; i < VClips.Count; i++)
+                stringarray[i] = VClips[i].Name;
+            RobotHitVClipComboBox.Items.AddRange(stringarray);
+            RobotDeathVClipComboBox.Items.AddRange(stringarray);
+            RobotModelComboBox.Items.Clear();
+
+            RobotModelComboBox.Items.AddRange(ModelNames);
         }
 
         public void InitHXM(EditorHXMFile hxmFile)
@@ -209,14 +263,12 @@ namespace Descent2Workshop.EditorPanels
             cbRobotDropItem.Items.Clear();
             if (dropType != 1)
             {
-                for (int i = 0; i < PowerupNames.Count; i++)
-                    cbRobotDropItem.Items.Add(PowerupNames[i]);
+                cbRobotDropItem.Items.AddRange(PowerupNames);
                 cbRobotDropItem.SelectedIndex = robot.ContainsID;
             }
             else
             {
-                for (int i = 0; i < RobotNames.Count; i++)
-                    cbRobotDropItem.Items.Add(RobotNames[i]);
+                cbRobotDropItem.Items.AddRange(RobotNames);
                 cbRobotDropItem.SelectedIndex = robot.ContainsID;
             }
             //cbRobotDropItem.SelectedIndex = 0;

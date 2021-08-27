@@ -170,7 +170,7 @@ namespace Descent2Workshop
                 WeaponNames.Add(datafile.GetWeaponName(i));
             }
 
-            robotPanel.Init(datafile.BaseHAM.VClipNames, datafile.BaseHAM.SoundNames, RobotNames, WeaponNames, datafile.BaseHAM.PowerupNames, ModelNames);
+            robotPanel.Init(datafile.BaseHAM.VClips, datafile.BaseHAM.SoundNames, RobotNames.ToArray(), WeaponNames.ToArray(), datafile.BaseHAM.Powerups, ModelNames.ToArray());
             robotPanel.InitHXM(datafile);
         }
 
@@ -190,7 +190,7 @@ namespace Descent2Workshop
                 names.Add(datafile.GetModelName(i));
             }
 
-            polymodelPanel.Init(names);
+            polymodelPanel.Init(names.ToArray());
 
             names.Clear();
             //annoying hack, need a different list for the replacement box
@@ -260,13 +260,13 @@ namespace Descent2Workshop
             {
                 case 0:
                     {
-                        NamedListAddTransaction transaction = new NamedListAddTransaction("New robot", datafile, "replacedRobots", "RobotNames", newelem, new Robot(), "New Robot", ElementNumber, 0);
+                        ListAddTransaction transaction = new ListAddTransaction("New robot", datafile, "replacedRobots", newelem, new Robot(), ElementNumber, 0);
                         transactionManager.ApplyTransaction(transaction);
                     }
                     break;
                 case 1:
                     {
-                        NamedListAddTransaction transaction = new NamedListAddTransaction("New model", datafile, "replacedModels", "ModelNames", newelem, new Polymodel(10), "New Model", ElementNumber, 1);
+                        ListAddTransaction transaction = new ListAddTransaction("New model", datafile, "replacedModels", newelem, new Polymodel(10), ElementNumber, 1);
                         transactionManager.ApplyTransaction(transaction);
                     }
                     break;

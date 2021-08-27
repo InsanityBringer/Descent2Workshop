@@ -53,10 +53,14 @@ namespace Descent2Workshop.EditorPanels
             this.transactionManager = transactionManager;
         }
 
-        public void Init(List<string> EClipNames, Palette palette)
+        public void Init(List<EClip> EClips, Palette palette)
         {
             cbTexEClip.Items.Clear(); cbTexEClip.Items.Add("None");
-            cbTexEClip.Items.AddRange(EClipNames.ToArray());
+
+            string[] EClipNames = new string[EClips.Count];
+            for (int i = 0; i < EClips.Count; i++)
+                EClipNames[i] = EClips[i].Name;
+            cbTexEClip.Items.AddRange(EClipNames);
             this.palette = palette;
         }
 

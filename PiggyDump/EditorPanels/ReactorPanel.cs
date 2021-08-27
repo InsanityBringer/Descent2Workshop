@@ -53,10 +53,13 @@ namespace Descent2Workshop.EditorPanels
             this.transactionManager = transactionManager;
         }
 
-        public void Init(List<string> modelNames)
+        public void Init(List<Polymodel> models)
         {
             cbReactorModel.Items.Clear();
-            cbReactorModel.Items.AddRange(modelNames.ToArray());
+            string[] stringarray = new string[models.Count];
+            for (int i = 0; i < models.Count; i++)
+                stringarray[i] = models[i].Name;
+            cbReactorModel.Items.AddRange(stringarray);
         }
 
         public void Update(Reactor reactor, int id)
