@@ -78,6 +78,7 @@
             this.SaveMenu.Index = 0;
             this.SaveMenu.Shortcut = System.Windows.Forms.Shortcut.CtrlS;
             this.SaveMenu.Text = "Save";
+            this.SaveMenu.Click += new System.EventHandler(this.SaveMenu_Click);
             // 
             // SaveAsMenu
             // 

@@ -248,5 +248,14 @@ namespace Descent2Workshop
         {
             panel.UnanimateSelectedRange();
         }
+
+        private void SaveMenu_Click(object sender, EventArgs e)
+        {
+            if (File.Exists(filename))
+            {
+                DoSave(filename);
+            }
+            SaveAsMenu_Click(sender, e);
+        }
     }
 }
