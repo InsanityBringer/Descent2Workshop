@@ -118,7 +118,7 @@ namespace Descent2Workshop.SaveHandlers
 
         public override Stream GetStream()
         {
-            Stream stream = null;
+            stream = null;
             try
             {
                 stream = File.Open(newfilename, FileMode.Create);
