@@ -40,10 +40,11 @@ namespace Descent2Workshop
                 file.Textures.Add(texture);
             foreach (TMAPInfo tmapInfo in pigfile.TMapInfo)
                 file.TMapInfo.Add(tmapInfo);
-            foreach (byte sound in pigfile.SoundIDs)
-                file.Sounds.Add(sound);
-            foreach (byte sound in pigfile.AltSounds)
-                file.AltSounds.Add(sound);
+
+            for (int i = 0; i < pigfile.SoundIDs.Length; i++)
+                file.Sounds[i] = pigfile.SoundIDs[i];
+            for (int i = 0; i < pigfile.AltSounds.Length; i++)
+                file.AltSounds[i] = pigfile.AltSounds[i];
             foreach (VClip clip in pigfile.VClips)
                 file.VClips.Add(clip);
             foreach (EClip clip in pigfile.EClips)
@@ -99,10 +100,10 @@ namespace Descent2Workshop
                 file.Textures.Add(texture);
             foreach (TMAPInfo tmapInfo in pigfile.TMapInfo)
                 file.TMapInfo.Add(tmapInfo);
-            foreach (byte sound in pigfile.Sounds)
-                file.Sounds.Add(sound);
-            foreach (byte sound in pigfile.AltSounds)
-                file.AltSounds.Add(sound);
+            for (int i = 0; i < pigfile.Sounds.Length; i++)
+                file.Sounds[i] = pigfile.Sounds[i];
+            for (int i = 0; i < pigfile.AltSounds.Length; i++)
+                file.AltSounds[i] = pigfile.AltSounds[i];
             foreach (VClip clip in pigfile.VClips)
                 file.VClips.Add(clip);
             foreach (EClip clip in pigfile.EClips)
