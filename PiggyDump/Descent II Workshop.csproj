@@ -220,6 +220,7 @@
     <Compile Include="SoundCache.cs" />
     <Compile Include="Transactions\AddSoundTransaction.cs" />
     <Compile Include="Transactions\AddTextureTransaction.cs" />
+    <Compile Include="Transactions\ByteArrayReplaceTransaction.cs" />
     <Compile Include="Transactions\BoolTransaction.cs" />
     <Compile Include="Transactions\FixTransaction.cs" />
     <Compile Include="Transactions\IndexedFixTransaction.cs" />

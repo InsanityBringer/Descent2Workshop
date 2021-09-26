@@ -97,7 +97,7 @@ namespace Descent2Workshop.EditorPanels
             int value = control.SelectedIndex - 1;
             if (value < 0) value = 255;
 
-            ListReplaceTransaction transaction = new ListReplaceTransaction("Sound id", datafile, (string)control.Tag, soundID, (byte)value, soundID, tabPage);
+            ByteArrayReplaceTransaction transaction = new ByteArrayReplaceTransaction("Sound id", datafile, (string)control.Tag, soundID, (byte)value, soundID, tabPage);
             transactionManager.ApplyTransaction(transaction);
         }
     }

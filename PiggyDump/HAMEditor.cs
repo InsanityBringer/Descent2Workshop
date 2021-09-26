@@ -169,7 +169,7 @@ namespace Descent2Workshop
                     InitModelPanel();
                     break;
                 case 7:
-                    ElementSpinner.Maximum = datafile.Sounds.Count - 1;
+                    ElementSpinner.Maximum = datafile.Sounds.Length - 1;
                     InitSoundPanel();
                     break;
                 case 8:
