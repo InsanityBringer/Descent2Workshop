@@ -350,8 +350,8 @@ namespace Descent2Workshop
         private void MnuAbout_Click(object sender, EventArgs e)
         {
 #if DEBUG
-            Stream stream = File.OpenRead("C:/Games/Descent/DESCENT.PIG");
-            Descent1PIGFile piggyFile = new Descent1PIGFile();
+            Stream stream = File.OpenRead("h:/descent/data/mac-full/DESCENT.PIG");
+            Descent1PIGFile piggyFile = new Descent1PIGFile(true);
             piggyFile.Read(stream);
             stream.Dispose();
             PIGFile newPiggyFile = new PIGFile();
@@ -488,6 +488,8 @@ namespace Descent2Workshop
                 //if (defaultSoundFile != null)
                 //    defaultSoundFile.CloseDataFile();
                 options.SetOption("SNDFile", filename);
+
+                defaultSoundFile = defaultSND;
             }
             catch (Exception exc)
             {

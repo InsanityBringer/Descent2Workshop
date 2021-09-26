@@ -322,6 +322,20 @@ namespace Descent2Workshop.EditorPanels
             Button button = (Button)sender;
             ImageSelector selector = new ImageSelector(piggyFile, palette, false);
             IntegerTransaction transaction;
+            int start = 0;
+            switch (button.Tag)
+            {
+                case "1":
+                    int.TryParse(txtWeaponCockpitImage.Text, out start);
+                    break;
+                case "2":
+                    int.TryParse(txtWeaponCockpitImageh.Text, out start);
+                    break;
+                case "3":
+                    int.TryParse(txtWeaponStaticSprite.Text, out start);
+                    break;
+            }
+            selector.Selection = start;
             if (selector.ShowDialog() == DialogResult.OK)
             {
                 isLocked = true;
