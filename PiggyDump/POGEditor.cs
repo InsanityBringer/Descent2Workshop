@@ -114,6 +114,7 @@ namespace Descent2Workshop
 
         private void SaveAsMenuItem_Click(object sender, EventArgs e)
         {
+            saveFileDialog1.Filter = "POG Files|*.pog";
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 if (saveFileDialog1.FileName != "")

@@ -89,6 +89,7 @@ namespace Descent2Workshop
 
         private void SaveAsMenu_Click(object sender, EventArgs e)
         {
+            saveFileDialog1.Filter = "PIG Files|*.pig";
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 if (saveFileDialog1.FileName != "")
