@@ -266,5 +266,31 @@ namespace Descent2Workshop
                 listView1.Items.Add(lvi);
             }
         }
+
+        private void ImportMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedIndices.Count == 0) return;
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                string name = openFileDialog1.SafeFileName;
+                int id = listView1.SelectedIndices[0];
+                //BinaryReader br = new BinaryReader(File.OpenRead(openFileDialog1.FileName));
+                //byte[] data = br.ReadBytes((int)br.BaseStream.Length);
+                Stream stream = File.OpenRead(openFileDialog1.FileName);
+                BasicSoundFile file = BasicSoundFile.ReadFromStream(stream);
+                stream.Close();
+
+                ReplaceSoundTransaction transaction = new ReplaceSoundTransaction(datafile, cache, id, name, file.Data);
+                transactionManager.ApplyTransaction(transaction);
+
+                SoundData sound = datafile.Sounds[id];
+                ListViewItem lvi = new ListViewItem(sound.Name);
+                lvi.SubItems.Add(sound.Length.ToString());
+                lvi.SubItems.Add(sound.Offset.ToString());
+                lvi.SubItems.Add(id.ToString());
+                listView1.Items[id] = lvi;
+            }
+        }
     }
 }

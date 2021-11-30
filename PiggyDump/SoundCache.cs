@@ -42,6 +42,11 @@ namespace Descent2Workshop
             SoundDataCache.Add(data);
         }
 
+        public void CacheSoundAt(byte[] data, int index)
+        {
+            SoundDataCache[index] = data;
+        }
+
         public byte[] GetSound(int num)
         {
             return SoundDataCache[num];

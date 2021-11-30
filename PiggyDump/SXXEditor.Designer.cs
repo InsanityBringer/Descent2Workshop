@@ -182,6 +182,7 @@
             // 
             this.ImportMenuItem.Index = 4;
             this.ImportMenuItem.Text = "Import Over...";
+            this.ImportMenuItem.Click += new System.EventHandler(this.ImportMenuItem_Click);
             // 
             // DeleteMenuItem
             // 

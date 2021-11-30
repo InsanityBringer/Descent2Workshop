@@ -231,6 +231,7 @@
     <Compile Include="Transactions\ListReplaceTransaction.cs" />
     <Compile Include="Transactions\ModelReplaceTransaction.cs" />
     <Compile Include="Transactions\NamedListAddTransaction.cs" />
+    <Compile Include="Transactions\ReplaceSoundTransaction.cs" />
     <Compile Include="Transactions\RobotDropTypeTransaction.cs" />
     <Compile Include="Transactions\TMapInfoEClipTransaction.cs" />
     <Compile Include="Transactions\TMapInfoTransaction.cs" />
