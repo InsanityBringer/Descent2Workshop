@@ -256,6 +256,7 @@ namespace Descent2Workshop.EditorPanels
             int testTextures;
             foreach (Polymodel testModel in hxmFile.ReplacedModels)
             {
+                if (testModel == model) continue;
                 testTextures = testModel.BaseTexture + hxmFile.CountUniqueObjBitmaps(testModel);
                 if (bestFit < testTextures)
                 {
