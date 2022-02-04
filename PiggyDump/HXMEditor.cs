@@ -260,13 +260,13 @@ namespace Descent2Workshop
             {
                 case 0:
                     {
-                        ListAddTransaction transaction = new ListAddTransaction("New robot", datafile, "replacedRobots", newelem, new Robot(), ElementNumber, 0);
+                        ListAddTransaction transaction = new ListAddTransaction("New robot", datafile, "ReplacedRobots", newelem, new Robot(), ElementNumber, 0);
                         transactionManager.ApplyTransaction(transaction);
                     }
                     break;
                 case 1:
                     {
-                        ListAddTransaction transaction = new ListAddTransaction("New model", datafile, "replacedModels", newelem, new Polymodel(10), ElementNumber, 1);
+                        ListAddTransaction transaction = new ListAddTransaction("New model", datafile, "ReplacedModels", newelem, new Polymodel(10), ElementNumber, 1);
                         transactionManager.ApplyTransaction(transaction);
                     }
                     break;

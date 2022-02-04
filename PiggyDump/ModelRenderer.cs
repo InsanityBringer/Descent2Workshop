@@ -125,7 +125,7 @@ namespace Descent2Workshop
         public void Draw()
         {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            if (model.InterpreterData.Length == 0 || model.NumSubmodels == 0) return;
+            if (model == null || model.InterpreterData.Length == 0 || model.NumSubmodels == 0) return;
             GL.CullFace(CullFaceMode.Front);
             /*if (wireframe)
                 GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
