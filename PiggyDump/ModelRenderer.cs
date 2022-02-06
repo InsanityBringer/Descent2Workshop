@@ -334,6 +334,16 @@ namespace Descent2Workshop
 
                             GL.End();
 
+                            GL.Begin(PrimitiveType.Lines);
+                            GL.Color3(0.0, 1.0, 0.0);
+                            GL.Vertex3(-model.Offset.X, -model.Offset.Y, -model.Offset.Z);
+                            GL.Vertex3(0.0, 0.0, 0.0);
+
+                            GL.Color3(1.0, 1.0, 0.0);
+                            GL.Vertex3(0.0, 0.0, 0.0);
+                            GL.Vertex3(model.Normal.X * 2, model.Normal.Y * 2,  model.Normal.Z * 2);
+                            GL.End();
+
                             if (!emulateSoftware)
                                 GL.Enable(EnableCap.DepthTest);
                         }
