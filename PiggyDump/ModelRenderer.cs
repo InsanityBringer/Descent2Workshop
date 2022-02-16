@@ -542,6 +542,27 @@ namespace Descent2Workshop
                     case 8:
                         offset += 2;
                         break;
+                    case 9: //far subcall, Rebirth extension
+                        {
+                            int baseOffset = offset - 2;
+                            short submodelNum = GetShort(data, ref offset);
+                            FixVector submodelOffset = GetFixVector(data, ref offset);
+                            int modelOffset = GetInt(data, ref offset);
+                            //offset += 2;
+
+                            Submodel newModel = mainModel.Submodels[submodelNum];
+                            GL.PushMatrix();
+                            GL.Translate(submodelOffset.X, submodelOffset.Y, submodelOffset.Z);
+                            if (frame >= 0)
+                            {
+                                GL.Rotate((mainModel.AnimationMatrix[submodelNum, frame].B / 16384.0f) * 90.0, 0.0, 0.0, 1.0);
+                                GL.Rotate((mainModel.AnimationMatrix[submodelNum, frame].H / 16384.0f) * 90.0, 0.0, 1.0, 0.0);
+                                GL.Rotate((mainModel.AnimationMatrix[submodelNum, frame].P / 16384.0f) * 90.0, 1.0, 0.0, 0.0);
+                            }
+                            Execute(data, baseOffset + modelOffset, mainModel, newModel);
+                            GL.PopMatrix();
+                        }
+                        break;
                     default:
                         throw new Exception(string.Format("Unknown interpreter instruction {0} at offset {1}\n", instruction, offset));
                 }
