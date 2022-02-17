@@ -621,6 +621,9 @@ class DescentExporter(bpy.types.Operator):
             
         if bpy.context.scene.frame_end - bpy.context.scene.frame_start + 1 > 5:
             self.report({'WARNING'}, "Scene contains more than 5 frames. This model won't work with Descent as-is.")
+            
+        if len(polymodel.subobjects) > 10:
+            self.report({'WARNING'}, "Exported object contains more than 10 subobjects. This model won't work with Descent as-is.")
     
 def exportIPOFOption(self, context):
     self.layout.operator_context = 'INVOKE_DEFAULT'
