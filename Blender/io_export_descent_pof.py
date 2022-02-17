@@ -97,6 +97,10 @@ class WrongTypeException(Exception):
     def __init__(self, objName, objType):
         self.name = objName
         self.type = objType
+        
+class DisplacementTooLargeException(Exception):
+    def __init__(self, meshName):
+        self.name = meshName
 
 class Gun:
     pass
@@ -258,12 +262,14 @@ class Subobject:
                 #struct.pack_into("<h", data, 18 * subobjNum, destination - (18 * subobjNum))
                 datastream.write(struct.pack("<h", displacement))
             else:
-                print("Generating wide sobjcall")
-                datastream.seek((startoffset + (20 * subobjNum)))
-                datastream.write(struct.pack("<h", 9)) #Write new instruction header
-                datastream.seek((startoffset + (20 * subobjNum)) + 16)
+                #This is killed for now, since the proposed instruction 9 was never implemented in any port or editor. 
+                #print("Generating wide sobjcall")
+                #datastream.seek((startoffset + (20 * subobjNum)))
+                #datastream.write(struct.pack("<h", 9)) #Write new instruction header
+                #datastream.seek((startoffset + (20 * subobjNum)) + 16)
                 #struct.pack_into("<h", data, 18 * subobjNum, destination - (18 * subobjNum))
-                datastream.write(struct.pack("<i", displacement))
+                #datastream.write(struct.pack("<i", displacement))
+                raise DisplacementTooLargeException(self.name)
             datastream.seek(0, io.SEEK_END)
             destination = datastream.tell()
             subobjNum += 1
@@ -599,6 +605,9 @@ class DescentExporter(bpy.types.Operator):
             return
         except TooLargeException as err:
             self.report({'ERROR'}, str.format("Mesh {0}'s data size is greater than 32 kilobytes: {0}", err.name, err.displacement))
+            return
+        except DisplacementTooLargeException as err:
+            self.report({'ERROR'}, str.format("Displacement exceeded 32768 bytes when generating object {0}'s children", err.name))
             return
         
         try:
