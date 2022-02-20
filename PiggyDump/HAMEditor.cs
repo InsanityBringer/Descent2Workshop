@@ -141,43 +141,43 @@ namespace Descent2Workshop
             switch (EditorTabs.SelectedIndex)
             {
                 case 0:
-                    ElementSpinner.Maximum = datafile.TMapInfo.Count - 1;
+                    ElementSpinner.Maximum = Math.Max(0, datafile.TMapInfo.Count - 1);
                     InitTexturePanel();
                     break;
                 case 1:
-                    ElementSpinner.Maximum = datafile.VClips.Count - 1;
+                    ElementSpinner.Maximum = Math.Max(0, datafile.VClips.Count - 1);
                     InitVClipPanel();
                     break;
                 case 2:
-                    ElementSpinner.Maximum = datafile.EClips.Count - 1;
+                    ElementSpinner.Maximum = Math.Max(0, datafile.EClips.Count - 1);
                     InitEClipPanel();
                     break;
                 case 3:
-                    ElementSpinner.Maximum = datafile.WClips.Count - 1;
+                    ElementSpinner.Maximum = Math.Max(0, datafile.WClips.Count - 1);
                     InitWallPanel();
                     break;
                 case 4:
-                    ElementSpinner.Maximum = datafile.Robots.Count - 1;
+                    ElementSpinner.Maximum = Math.Max(0, datafile.Robots.Count - 1);
                     InitRobotPanel();
                     break;
                 case 5:
-                    ElementSpinner.Maximum = datafile.Weapons.Count - 1;
+                    ElementSpinner.Maximum = Math.Max(0, datafile.Weapons.Count - 1);
                     InitWeaponPanel();
                     break;
                 case 6:
-                    ElementSpinner.Maximum = datafile.Models.Count - 1;
+                    ElementSpinner.Maximum = Math.Max(0, datafile.Models.Count - 1);
                     InitModelPanel();
                     break;
                 case 7:
-                    ElementSpinner.Maximum = datafile.Sounds.Length - 1;
+                    ElementSpinner.Maximum = Math.Max(0, datafile.Sounds.Length - 1);
                     InitSoundPanel();
                     break;
                 case 8:
-                    ElementSpinner.Maximum = datafile.Reactors.Count - 1;
+                    ElementSpinner.Maximum = Math.Max(0, datafile.Reactors.Count - 1);
                     InitReactorPanel();
                     break;
                 case 9:
-                    ElementSpinner.Maximum = datafile.Powerups.Count - 1;
+                    ElementSpinner.Maximum = Math.Max(0, datafile.Powerups.Count - 1);
                     InitPowerupPanel();
                     break;
                 case 10:
@@ -185,11 +185,11 @@ namespace Descent2Workshop
                     SetElementControl(false, false);
                     break;
                 case 11:
-                    ElementSpinner.Maximum = datafile.Gauges.Count - 1;
+                    ElementSpinner.Maximum = Math.Max(0, datafile.Gauges.Count - 1);
                     SetElementControl(false, false);
                     break;
                 case 12:
-                    ElementSpinner.Maximum = datafile.Cockpits.Count - 1;
+                    ElementSpinner.Maximum = Math.Max(0, datafile.Cockpits.Count - 1);
                     SetElementControl(true, false);
                     break;
                 case 13:
@@ -208,13 +208,25 @@ namespace Descent2Workshop
             isLocked = false;
         }
 
+        private void SetElementNumber(int number)
+        {
+            if (!isLocked)
+            {
+                ElementSpinner.Value = number;
+                isLocked = true;
+            }
+
+            FillOutCurrentPanel(EditorTabs.SelectedIndex, (int)ElementSpinner.Value);
+            
+            isLocked = false;
+        }
+
         private void nudElementNum_ValueChanged(object sender, EventArgs e)
         {
             if (!isLocked)
             {
                 isLocked = true;
-                FillOutCurrentPanel(EditorTabs.SelectedIndex, (int)ElementSpinner.Value);
-                isLocked = false;
+                SetElementNumber((int)ElementSpinner.Value);
             }
         }
 
@@ -335,21 +347,24 @@ namespace Descent2Workshop
         private void DeleteElem_Click(object sender, EventArgs e)
         {
             HAMType type = typeTable[EditorTabs.SelectedIndex];
-            int returnv = datafile.DeleteElement(type, ElementNumber);
-            if (returnv >= 0)
+            Transaction transaction = null;
+            int maxNum = 0;
+
+            switch (type)
             {
-                //Update the maximum of the numeric up/down control and ensure that any comboboxes that need to be regenerated for the current element are
-                ElementListInit();
-                isLocked = true;
-                if (ElementSpinner.Value >= returnv)
-                    ElementSpinner.Value = returnv - 1;
-                FillOutCurrentPanel(EditorTabs.SelectedIndex, ElementNumber);
-                isLocked = false;
+                case HAMType.TMAPInfo:
+                    transaction = new DeleteTMAPInfoTransaction(datafile, ElementNumber, PageNumber);
+                    maxNum = Math.Max(0, datafile.TMapInfo.Count - 1);
+                    break;
             }
-            else
+
+            if (transaction != null)
             {
-                statusBar1.Text = "Can't delete last element: It is being referenced by other elements";
+                transactionManager.ApplyTransaction(transaction);
+                ElementListInit(); //Ensure all local lists are updated, and update the spinner. 
+                SetElementNumber(Math.Min(ElementNumber, maxNum));
             }
+
         }
 
         private void ListElem_Click(object sender, EventArgs e)
@@ -462,8 +477,18 @@ namespace Descent2Workshop
 
         public void UpdateTexturePanel(int num)
         {
-            TMAPInfo texture = datafile.TMapInfo[num];
-            texturePanel.Update(datafile, datafile.piggyFile, num, texture);
+            if (datafile.TMapInfo.Count == 0)
+            {
+                statusBar1.Text = "No TMAPInfo present";
+                texturePanel.Enabled = false;
+            }
+            else
+            {
+                statusBar1.Text = "";
+                texturePanel.Enabled = true;
+                TMAPInfo texture = datafile.TMapInfo[num];
+                texturePanel.Update(datafile, datafile.piggyFile, num, texture);
+            }
         }
 
         public void UpdateGaguePanel(int num)

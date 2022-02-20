@@ -542,6 +542,8 @@ namespace Descent2Workshop
                     case 8:
                         offset += 2;
                         break;
+                    //Pulled since this isn't supported yet. 
+                        /*
                     case 9: //far subcall, Rebirth extension
                         {
                             int baseOffset = offset - 2;
@@ -562,7 +564,7 @@ namespace Descent2Workshop
                             Execute(data, baseOffset + modelOffset, mainModel, newModel);
                             GL.PopMatrix();
                         }
-                        break;
+                        break;*/
                     default:
                         throw new Exception(string.Format("Unknown interpreter instruction {0} at offset {1}\n", instruction, offset));
                 }
