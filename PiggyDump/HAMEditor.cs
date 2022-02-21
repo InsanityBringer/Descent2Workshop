@@ -37,7 +37,7 @@ namespace Descent2Workshop
     {
         private static HAMType[] typeTable = { HAMType.TMAPInfo, HAMType.VClip, HAMType.EClip, HAMType.WClip, HAMType.Robot, HAMType.Weapon,
             HAMType.Model, HAMType.Sound, HAMType.Reactor, HAMType.Powerup, HAMType.Ship, HAMType.Gauge, HAMType.Cockpit, HAMType.XLAT };
-        private EditorHAMFile datafile;
+        public EditorHAMFile datafile { get; private set; } //TODO: shouldn't be public settable, needs work
         private StandardUI host;
         private Palette palette;
         private PIGFile piggyFile;
@@ -353,7 +353,7 @@ namespace Descent2Workshop
             switch (type)
             {
                 case HAMType.TMAPInfo:
-                    transaction = new DeleteTMAPInfoTransaction(datafile, ElementNumber, PageNumber);
+                    transaction = new DeleteTMAPInfoTransaction(datafile, this, "datafile", ElementNumber, PageNumber);
                     maxNum = Math.Max(0, datafile.TMapInfo.Count - 1);
                     break;
             }
