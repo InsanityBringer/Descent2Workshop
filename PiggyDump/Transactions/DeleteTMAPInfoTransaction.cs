@@ -1,4 +1,26 @@
-﻿using System;
+﻿/*
+    Copyright (c) 2019 SaladBadger
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+*/
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +30,13 @@ using LibDescent.Edit;
 
 namespace Descent2Workshop.Transactions
 {
-    public struct ChangedTMAPReference
+    public struct ChangedHAMReference
     {
         public object obj;
         public IList source;
         public int id;
 
-        public ChangedTMAPReference(object obj, IList source, int id)
+        public ChangedHAMReference(object obj, IList source, int id)
         {
             this.obj = obj; this.source = source; this.id = id;
         }
@@ -22,7 +44,7 @@ namespace Descent2Workshop.Transactions
 
     public class DeleteTMAPInfoTransaction : Transaction
     {
-        List<ChangedTMAPReference> references = new List<ChangedTMAPReference>();
+        List<ChangedHAMReference> references = new List<ChangedHAMReference>();
         EditorHAMFile datafile;
         TMAPInfo lastValue;
         ushort lastTexture;
@@ -53,14 +75,14 @@ namespace Descent2Workshop.Transactions
                     if (datafile.EClips[i].ChangingObjectTexture == deleteNum)
                     {
                         datafile.EClips[i].ChangingWallTexture = -1;
-                        references.Add(new ChangedTMAPReference(temp, datafile.EClips, i));
+                        references.Add(new ChangedHAMReference(temp, datafile.EClips, i));
                     }
 
                     //Change references to further elements by subtracting one
                     else if (datafile.EClips[i].ChangingObjectTexture > deleteNum)
                     {
                         datafile.EClips[i].ChangingWallTexture--;
-                        references.Add(new ChangedTMAPReference(temp, datafile.EClips, i));
+                        references.Add(new ChangedHAMReference(temp, datafile.EClips, i));
                     }
                 }
 
@@ -71,14 +93,14 @@ namespace Descent2Workshop.Transactions
                     if (datafile.TMapInfo[i].DestroyedID == deleteNum)
                     {
                         datafile.TMapInfo[i].DestroyedID = -1;
-                        references.Add(new ChangedTMAPReference(temp, datafile.TMapInfo, i));
+                        references.Add(new ChangedHAMReference(temp, datafile.TMapInfo, i));
                     }
 
                     //Change references to further elements by subtracting one
                     else if (datafile.TMapInfo[i].DestroyedID > deleteNum)
                     {
                         datafile.TMapInfo[i].DestroyedID--;
-                        references.Add(new ChangedTMAPReference(temp, datafile.TMapInfo, i));
+                        references.Add(new ChangedHAMReference(temp, datafile.TMapInfo, i));
                     }
                 }
 
@@ -104,7 +126,7 @@ namespace Descent2Workshop.Transactions
                     }
 
                     if (change)
-                        references.Add(new ChangedTMAPReference(temp, datafile.WClips, i));
+                        references.Add(new ChangedHAMReference(temp, datafile.WClips, i));
                 }
             }
             return true;
@@ -115,7 +137,7 @@ namespace Descent2Workshop.Transactions
             datafile.Textures.Insert(deleteNum, lastTexture);
             datafile.TMapInfo.Insert(deleteNum, lastValue);
 
-            foreach (ChangedTMAPReference reference in references)
+            foreach (ChangedHAMReference reference in references)
             {
                 reference.source[reference.id] = reference.obj;
             }

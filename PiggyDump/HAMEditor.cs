@@ -356,6 +356,10 @@ namespace Descent2Workshop
                     transaction = new DeleteTMAPInfoTransaction(datafile, ElementNumber, PageNumber);
                     maxNum = Math.Max(0, datafile.TMapInfo.Count - 1);
                     break;
+                case HAMType.VClip:
+                    transaction = new DeleteVClipTransaction(datafile, ElementNumber, PageNumber);
+                    maxNum = Math.Max(0, datafile.VClips.Count - 1);
+                    break;
             }
 
             if (transaction != null)
