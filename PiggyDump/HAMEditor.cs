@@ -1071,23 +1071,23 @@ namespace Descent2Workshop
             //TODO: This should probably be evalulated at the time something happens. 
             if (transactionManager.CanUndo())
             {
-                UndoMenuItem.Enabled = true;
+                //UndoMenuItem.Enabled = true;
                 UndoMenuItem.Text = "Undo " + transactionManager.GetUndoMessage();
             }
             else
             {
-                UndoMenuItem.Enabled = false;
+                //UndoMenuItem.Enabled = false;
                 UndoMenuItem.Text = "Undo";
             }
 
             if (transactionManager.CanRedo())
             {
-                RedoMenuItem.Enabled = true;
+                //RedoMenuItem.Enabled = true;
                 RedoMenuItem.Text = "Redo " + transactionManager.GetRedoMessage();
             }
             else
             {
-                RedoMenuItem.Enabled = false;
+                //RedoMenuItem.Enabled = false;
                 RedoMenuItem.Text = "Redo";
             }
         }
