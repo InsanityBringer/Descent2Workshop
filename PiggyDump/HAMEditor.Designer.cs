@@ -40,6 +40,9 @@
             this.menuItem10 = new System.Windows.Forms.MenuItem();
             this.menuItem11 = new System.Windows.Forms.MenuItem();
             this.menuItem12 = new System.Windows.Forms.MenuItem();
+            this.menuItem7 = new System.Windows.Forms.MenuItem();
+            this.menuItem8 = new System.Windows.Forms.MenuItem();
+            this.menuItem13 = new System.Windows.Forms.MenuItem();
             this.menuItem4 = new System.Windows.Forms.MenuItem();
             this.menuItem5 = new System.Windows.Forms.MenuItem();
             this.mnuFindRefs = new System.Windows.Forms.MenuItem();
@@ -127,9 +130,6 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.mainToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.menuItem7 = new System.Windows.Forms.MenuItem();
-            this.menuItem8 = new System.Windows.Forms.MenuItem();
-            this.menuItem13 = new System.Windows.Forms.MenuItem();
             this.EditorTabs.SuspendLayout();
             this.PowerupTabPage.SuspendLayout();
             this.ShipTabPage.SuspendLayout();
@@ -189,6 +189,7 @@
             this.menuItem8,
             this.menuItem13});
             this.menuItem6.Text = "Edit";
+            this.menuItem6.Select += new System.EventHandler(this.menuItem6_Click_1);
             // 
             // UndoMenuItem
             // 
@@ -223,6 +224,25 @@
             // 
             this.menuItem12.Index = 5;
             this.menuItem12.Text = "Paste";
+            // 
+            // menuItem7
+            // 
+            this.menuItem7.Index = 6;
+            this.menuItem7.Text = "-";
+            // 
+            // menuItem8
+            // 
+            this.menuItem8.Index = 7;
+            this.menuItem8.Shortcut = System.Windows.Forms.Shortcut.Ins;
+            this.menuItem8.Text = "Insert";
+            this.menuItem8.Click += new System.EventHandler(this.InsertElem_Click);
+            // 
+            // menuItem13
+            // 
+            this.menuItem13.Index = 8;
+            this.menuItem13.Shortcut = System.Windows.Forms.Shortcut.Del;
+            this.menuItem13.Text = "Delete";
+            this.menuItem13.Click += new System.EventHandler(this.DeleteElem_Click);
             // 
             // menuItem4
             // 
@@ -1171,25 +1191,6 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             this.openFileDialog1.Filter = "Parallax Object files|*.POF";
-            // 
-            // menuItem7
-            // 
-            this.menuItem7.Index = 6;
-            this.menuItem7.Text = "-";
-            // 
-            // menuItem8
-            // 
-            this.menuItem8.Index = 7;
-            this.menuItem8.Shortcut = System.Windows.Forms.Shortcut.Ins;
-            this.menuItem8.Text = "Insert";
-            this.menuItem8.Click += new System.EventHandler(this.InsertElem_Click);
-            // 
-            // menuItem13
-            // 
-            this.menuItem13.Index = 8;
-            this.menuItem13.Shortcut = System.Windows.Forms.Shortcut.Del;
-            this.menuItem13.Text = "Delete";
-            this.menuItem13.Click += new System.EventHandler(this.DeleteElem_Click);
             // 
             // HAMEditor
             // 

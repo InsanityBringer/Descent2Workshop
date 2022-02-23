@@ -55,9 +55,22 @@ namespace Descent2Workshop.Transactions
             return queuePosition > queueTail;
         }
 
+        public string GetUndoMessage()
+        {
+            if (!CanUndo()) return "";
+            return GetPreviousTransaction().OperationName;
+        }
+
         public bool CanRedo()
         {
             return queuePosition < queueHead;
+        }
+
+        public string GetRedoMessage()
+        {
+            if (!CanRedo()) return "";
+
+            return transactionQueue[queuePosition].OperationName;
         }
 
         private Transaction GetPreviousTransaction()
@@ -113,7 +126,7 @@ namespace Descent2Workshop.Transactions
                 undoEvent(this, args);
             }
             TransactionInProgress = false;
-            queuePosition--;
+            queuePosition = undoPosition;
         }
 
         public void DoRedo()

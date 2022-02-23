@@ -138,62 +138,49 @@ namespace Descent2Workshop
             //Hacks aaaa
             vclipPanel.Stop();
             eclipPanel.Stop();
-            switch (EditorTabs.SelectedIndex)
+            ElementSpinner.Maximum = Math.Max(0, GetNumElements(typeTable[PageNumber]) - 1);
+            switch (PageNumber)
             {
                 case 0:
-                    ElementSpinner.Maximum = Math.Max(0, datafile.TMapInfo.Count - 1);
                     InitTexturePanel();
                     break;
                 case 1:
-                    ElementSpinner.Maximum = Math.Max(0, datafile.VClips.Count - 1);
                     InitVClipPanel();
                     break;
                 case 2:
-                    ElementSpinner.Maximum = Math.Max(0, datafile.EClips.Count - 1);
                     InitEClipPanel();
                     break;
                 case 3:
-                    ElementSpinner.Maximum = Math.Max(0, datafile.WClips.Count - 1);
                     InitWallPanel();
                     break;
                 case 4:
-                    ElementSpinner.Maximum = Math.Max(0, datafile.Robots.Count - 1);
                     InitRobotPanel();
                     break;
                 case 5:
-                    ElementSpinner.Maximum = Math.Max(0, datafile.Weapons.Count - 1);
                     InitWeaponPanel();
                     break;
                 case 6:
-                    ElementSpinner.Maximum = Math.Max(0, datafile.Models.Count - 1);
                     InitModelPanel();
                     break;
                 case 7:
-                    ElementSpinner.Maximum = Math.Max(0, datafile.Sounds.Length - 1);
                     InitSoundPanel();
                     break;
                 case 8:
-                    ElementSpinner.Maximum = Math.Max(0, datafile.Reactors.Count - 1);
                     InitReactorPanel();
                     break;
                 case 9:
-                    ElementSpinner.Maximum = Math.Max(0, datafile.Powerups.Count - 1);
                     InitPowerupPanel();
                     break;
                 case 10:
-                    ElementSpinner.Maximum = 0;
                     SetElementControl(false, false);
                     break;
                 case 11:
-                    ElementSpinner.Maximum = Math.Max(0, datafile.Gauges.Count - 1);
                     SetElementControl(false, false);
                     break;
                 case 12:
-                    ElementSpinner.Maximum = Math.Max(0, datafile.Cockpits.Count - 1);
                     SetElementControl(true, false);
                     break;
                 case 13:
-                    ElementSpinner.Maximum = 2619;
                     SetElementControl(false, false);
                     break;
             }
@@ -279,6 +266,42 @@ namespace Descent2Workshop
             }
         }
 
+        private int GetNumElements(HAMType type)
+        {
+            switch (type)
+            {
+                case HAMType.TMAPInfo:
+                    return datafile.Textures.Count;
+                case HAMType.VClip:
+                    return datafile.VClips.Count;
+                case HAMType.EClip:
+                    return datafile.EClips.Count;
+                case HAMType.WClip:
+                    return datafile.WClips.Count;
+                case HAMType.Sound:
+                    return 254;
+                case HAMType.Robot:
+                    return datafile.Robots.Count;
+                case HAMType.Weapon:
+                    return datafile.Weapons.Count;
+                case HAMType.Model:
+                    return datafile.Models.Count;
+                case HAMType.Powerup:
+                    return datafile.Powerups.Count;
+                case HAMType.Reactor:
+                    return datafile.Reactors.Count;
+                case HAMType.Cockpit:
+                    return datafile.Cockpits.Count;
+                case HAMType.Gauge:
+                    return datafile.Gauges.Count;
+                case HAMType.Ship:
+                    return 1;
+                case HAMType.XLAT:
+                    return datafile.BitmapXLATData.Length;
+            }
+            return 1;
+        }
+
         private void InsertElem_Click(object sender, EventArgs e)
         {
             HAMType type = typeTable[EditorTabs.SelectedIndex];
@@ -346,9 +369,12 @@ namespace Descent2Workshop
 
         private void DeleteElem_Click(object sender, EventArgs e)
         {
-            HAMType type = typeTable[EditorTabs.SelectedIndex];
+            HAMType type = typeTable[PageNumber];
             Transaction transaction = null;
             int maxNum = 0;
+
+            //nothing to delete
+            if (GetNumElements(type) == 0) return; 
 
             switch (type)
             {
@@ -483,7 +509,7 @@ namespace Descent2Workshop
         {
             if (datafile.TMapInfo.Count == 0)
             {
-                statusBar1.Text = "No TMAPInfo present";
+                statusBar1.Text = "No TMAPInfo present.";
                 texturePanel.Enabled = false;
             }
             else
@@ -523,9 +549,20 @@ namespace Descent2Workshop
         public void UpdateVClipPanel(int num)
         {
             vclipPanel.Stop();
-            VClip clip = datafile.VClips[num];
-            vclipPanel.Update(num, clip, datafile.piggyFile, palette);
-            txtElemName.Text = clip.Name;
+
+            if (datafile.VClips.Count == 0)
+            {
+                statusBar1.Text = "No VClips present.";
+                vclipPanel.Enabled = false;
+            }
+            else
+            {
+                statusBar1.Text = "";
+                VClip clip = datafile.VClips[num];
+                vclipPanel.Enabled = true;
+                vclipPanel.Update(num, clip, datafile.piggyFile, palette);
+                txtElemName.Text = clip.Name;
+            }
         }
 
         public void UpdateEClipPanel(int num)
@@ -1026,6 +1063,32 @@ namespace Descent2Workshop
                         break;
                 }
                 editedName = false;
+            }
+        }
+
+        private void menuItem6_Click_1(object sender, EventArgs e)
+        {
+            //TODO: This should probably be evalulated at the time something happens. 
+            if (transactionManager.CanUndo())
+            {
+                UndoMenuItem.Enabled = true;
+                UndoMenuItem.Text = "Undo " + transactionManager.GetUndoMessage();
+            }
+            else
+            {
+                UndoMenuItem.Enabled = false;
+                UndoMenuItem.Text = "Undo";
+            }
+
+            if (transactionManager.CanRedo())
+            {
+                RedoMenuItem.Enabled = true;
+                RedoMenuItem.Text = "Redo " + transactionManager.GetRedoMessage();
+            }
+            else
+            {
+                RedoMenuItem.Enabled = false;
+                RedoMenuItem.Text = "Redo";
             }
         }
     }
