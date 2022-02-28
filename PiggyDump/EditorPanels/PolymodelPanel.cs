@@ -130,7 +130,7 @@ namespace Descent2Workshop.EditorPanels
             modelRenderer.ShowRadius = ShowRadiusCheckBox.Checked;
             modelRenderer.EmulateSoftware = NoDepthCheckBox.Checked;
 
-            modelRenderer.Draw();
+            modelRenderer.Draw((int)ModelNumSpinner.Value);
             ModelViewControl.SwapBuffers();
         }
 
@@ -189,6 +189,9 @@ namespace Descent2Workshop.EditorPanels
             UIUtil.SafeFillComboBox(cbModelLowDetail, model.SimplerModels);
             UIUtil.SafeFillComboBox(cbModelDyingModel, model.DyingModelnum + 1);
             UIUtil.SafeFillComboBox(cbModelDeadModel, model.DeadModelnum + 1);
+            ModelNumSpinner.Minimum = -1;
+            ModelNumSpinner.Value = -1;
+            ModelNumSpinner.Maximum = model.NumSubmodels - 1;
 
             txtModelMinX.Text = model.Mins.X.ToString();
             txtModelMinY.Text = model.Mins.Y.ToString();
@@ -343,6 +346,12 @@ namespace Descent2Workshop.EditorPanels
             ModelReplaceTransaction transaction = new ModelReplaceTransaction("Load model", (object)model, newModel, modelID, tabPage);
             transactionManager.ApplyTransaction(transaction);
             Update(newModel, modelID);
+        }
+
+        private void ModelNumSpinner_ValueChanged(object sender, EventArgs e)
+        {
+            if (isLocked) return;
+            ModelViewControl.Invalidate();
         }
     }
 }

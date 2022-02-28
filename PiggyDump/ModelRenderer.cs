@@ -122,7 +122,7 @@ namespace Descent2Workshop
             GL.Ortho(-scale * xAspect, scale * xAspect, -scale, scale, -32, 32);
         }
 
-        public void Draw()
+        public void Draw(int submodel = -1)
         {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             if (model == null || model.InterpreterData.Length == 0 || model.NumSubmodels == 0) return;
@@ -166,7 +166,7 @@ namespace Descent2Workshop
 
             //Console.WriteLine("x: {0} y: {1} z: {2} angle: {3} pitch: {4}", cameraPoint.X, cameraPoint.Y, cameraPoint.Z, angle, pitch);
 
-            Execute(model.InterpreterData, 0, model, model.Submodels[0]);
+            Execute(model.InterpreterData, submodel == -1 ? 0 : model.Submodels[submodel].Pointer, model, model.Submodels[submodel == -1 ? 0 : submodel]);
             //DrawSubobject(model, model.submodels[0]);
 
             if (ShowRadius)

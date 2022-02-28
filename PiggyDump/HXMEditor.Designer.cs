@@ -51,6 +51,8 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.ReplacedElementComboBox = new System.Windows.Forms.ComboBox();
+            this.menuItem6 = new System.Windows.Forms.MenuItem();
+            this.AllocateReplacementsMenuItem = new System.Windows.Forms.MenuItem();
             this.EditorTabs.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ElementSpinner)).BeginInit();
             this.SuspendLayout();
@@ -59,7 +61,8 @@
             // 
             this.mainMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuItem1,
-            this.EditMenu});
+            this.EditMenu,
+            this.menuItem6});
             // 
             // menuItem1
             // 
@@ -122,61 +125,68 @@
             this.EditorTabs.Controls.Add(this.RobotTabPage);
             this.EditorTabs.Controls.Add(this.ModelTabPage);
             this.EditorTabs.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.EditorTabs.Location = new System.Drawing.Point(0, 40);
+            this.EditorTabs.Location = new System.Drawing.Point(0, 62);
+            this.EditorTabs.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.EditorTabs.Name = "EditorTabs";
             this.EditorTabs.SelectedIndex = 0;
-            this.EditorTabs.Size = new System.Drawing.Size(856, 539);
+            this.EditorTabs.Size = new System.Drawing.Size(1284, 829);
             this.EditorTabs.TabIndex = 2;
             this.EditorTabs.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // RobotTabPage
             // 
-            this.RobotTabPage.Location = new System.Drawing.Point(4, 22);
+            this.RobotTabPage.Location = new System.Drawing.Point(4, 29);
+            this.RobotTabPage.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.RobotTabPage.Name = "RobotTabPage";
-            this.RobotTabPage.Size = new System.Drawing.Size(848, 513);
+            this.RobotTabPage.Size = new System.Drawing.Size(1276, 796);
             this.RobotTabPage.TabIndex = 4;
             this.RobotTabPage.Text = "Robots";
             this.RobotTabPage.UseVisualStyleBackColor = true;
             // 
             // ModelTabPage
             // 
-            this.ModelTabPage.Location = new System.Drawing.Point(4, 22);
+            this.ModelTabPage.Location = new System.Drawing.Point(4, 29);
+            this.ModelTabPage.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ModelTabPage.Name = "ModelTabPage";
-            this.ModelTabPage.Size = new System.Drawing.Size(848, 513);
+            this.ModelTabPage.Size = new System.Drawing.Size(1276, 796);
             this.ModelTabPage.TabIndex = 6;
             this.ModelTabPage.Text = "Models";
             this.ModelTabPage.UseVisualStyleBackColor = true;
             // 
             // statusBar1
             // 
-            this.statusBar1.Location = new System.Drawing.Point(0, 579);
+            this.statusBar1.Location = new System.Drawing.Point(0, 891);
+            this.statusBar1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.statusBar1.Name = "statusBar1";
-            this.statusBar1.Size = new System.Drawing.Size(856, 22);
+            this.statusBar1.Size = new System.Drawing.Size(1284, 34);
             this.statusBar1.TabIndex = 3;
             this.statusBar1.Text = "statusBar1";
             // 
             // label50
             // 
             this.label50.AutoSize = true;
-            this.label50.Location = new System.Drawing.Point(423, 15);
+            this.label50.Location = new System.Drawing.Point(634, 23);
+            this.label50.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label50.Name = "label50";
-            this.label50.Size = new System.Drawing.Size(99, 13);
+            this.label50.Size = new System.Drawing.Size(147, 20);
             this.label50.TabIndex = 220;
             this.label50.Text = "Replacing Element:";
             // 
             // ElementSpinner
             // 
-            this.ElementSpinner.Location = new System.Drawing.Point(102, 12);
+            this.ElementSpinner.Location = new System.Drawing.Point(153, 18);
+            this.ElementSpinner.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ElementSpinner.Name = "ElementSpinner";
-            this.ElementSpinner.Size = new System.Drawing.Size(63, 20);
+            this.ElementSpinner.Size = new System.Drawing.Size(94, 26);
             this.ElementSpinner.TabIndex = 215;
             this.ElementSpinner.ValueChanged += new System.EventHandler(this.nudElementNum_ValueChanged);
             // 
             // DeleteButton
             // 
-            this.DeleteButton.Location = new System.Drawing.Point(342, 9);
+            this.DeleteButton.Location = new System.Drawing.Point(513, 14);
+            this.DeleteButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.DeleteButton.Name = "DeleteButton";
-            this.DeleteButton.Size = new System.Drawing.Size(75, 23);
+            this.DeleteButton.Size = new System.Drawing.Size(112, 35);
             this.DeleteButton.TabIndex = 219;
             this.DeleteButton.Text = "Delete";
             this.DeleteButton.UseVisualStyleBackColor = true;
@@ -184,17 +194,19 @@
             // label48
             // 
             this.label48.AutoSize = true;
-            this.label48.Location = new System.Drawing.Point(8, 14);
+            this.label48.Location = new System.Drawing.Point(12, 22);
+            this.label48.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(88, 13);
+            this.label48.Size = new System.Drawing.Size(132, 20);
             this.label48.TabIndex = 216;
             this.label48.Text = "Element Number:";
             // 
             // InsertButton
             // 
-            this.InsertButton.Location = new System.Drawing.Point(261, 9);
+            this.InsertButton.Location = new System.Drawing.Point(392, 14);
+            this.InsertButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.InsertButton.Name = "InsertButton";
-            this.InsertButton.Size = new System.Drawing.Size(75, 23);
+            this.InsertButton.Size = new System.Drawing.Size(112, 35);
             this.InsertButton.TabIndex = 218;
             this.InsertButton.Text = "Insert";
             this.InsertButton.UseVisualStyleBackColor = true;
@@ -203,9 +215,10 @@
             // label49
             // 
             this.label49.AutoSize = true;
-            this.label49.Location = new System.Drawing.Point(171, 15);
+            this.label49.Location = new System.Drawing.Point(256, 23);
+            this.label49.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label49.Name = "label49";
-            this.label49.Size = new System.Drawing.Size(84, 13);
+            this.label49.Size = new System.Drawing.Size(127, 20);
             this.label49.TabIndex = 217;
             this.label49.Text = "Element Control:";
             // 
@@ -221,17 +234,31 @@
             // 
             this.ReplacedElementComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ReplacedElementComboBox.FormattingEnabled = true;
-            this.ReplacedElementComboBox.Location = new System.Drawing.Point(528, 11);
+            this.ReplacedElementComboBox.Location = new System.Drawing.Point(792, 17);
+            this.ReplacedElementComboBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ReplacedElementComboBox.Name = "ReplacedElementComboBox";
-            this.ReplacedElementComboBox.Size = new System.Drawing.Size(205, 21);
+            this.ReplacedElementComboBox.Size = new System.Drawing.Size(306, 28);
             this.ReplacedElementComboBox.TabIndex = 221;
             this.ReplacedElementComboBox.SelectedIndexChanged += new System.EventHandler(this.ReplacedElementComboBox_SelectedIndexChanged);
             // 
+            // menuItem6
+            // 
+            this.menuItem6.Index = 2;
+            this.menuItem6.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.AllocateReplacementsMenuItem});
+            this.menuItem6.Text = "Actions";
+            // 
+            // AllocateReplacementsMenuItem
+            // 
+            this.AllocateReplacementsMenuItem.Index = 0;
+            this.AllocateReplacementsMenuItem.Text = "Allocate Replaced Bitmaps and Joints";
+            this.AllocateReplacementsMenuItem.Click += new System.EventHandler(this.AllocateReplacementsMenuItem_Click);
+            // 
             // HXMEditor
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(856, 601);
+            this.ClientSize = new System.Drawing.Size(1284, 925);
             this.Controls.Add(this.ReplacedElementComboBox);
             this.Controls.Add(this.label50);
             this.Controls.Add(this.ElementSpinner);
@@ -242,6 +269,7 @@
             this.Controls.Add(this.EditorTabs);
             this.Controls.Add(this.statusBar1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Menu = this.mainMenu1;
             this.Name = "HXMEditor";
             this.Text = "HXMEditor";
@@ -278,5 +306,7 @@
         private System.Windows.Forms.MenuItem EditMenu;
         private System.Windows.Forms.MenuItem UndoMenuItem;
         private System.Windows.Forms.MenuItem RedoMenuItem;
+        private System.Windows.Forms.MenuItem menuItem6;
+        private System.Windows.Forms.MenuItem AllocateReplacementsMenuItem;
     }
 }

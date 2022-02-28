@@ -46,6 +46,8 @@ namespace Descent2Workshop.Transactions
         /// <param name="label">The name of the operation to display in the Undo menu.</param>
         public Transaction(string label)
         {
+            OperationName = label;
+            Page = -1; Tab = -1;
         }
         /// <summary>
         /// Constructor for operations performed in interfaces with multiple tabs with multiple pages.

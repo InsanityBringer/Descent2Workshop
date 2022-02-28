@@ -371,6 +371,14 @@ namespace Descent2Workshop
         private void DoUndoEvent(object sender, UndoEventArgs e)
         {
             Transaction transaction = e.UndoneTransaction;
+
+            //If there's not an associated tab and page, update the current panel just in case it was changed. 
+            if (transaction.Tab < 0)
+            {
+                FillOutCurrentPanel(PageNumber, ElementNumber);
+                return;
+            }
+
             if (transaction.Tab != PageNumber)
                 EditorTabs.SelectedIndex = transaction.Tab;
 
@@ -391,5 +399,64 @@ namespace Descent2Workshop
             }
         }
 
+        private void AllocateReplacementsMenuItem_Click(object sender, EventArgs e)
+        {
+            List<FreeRange> objBitmapRanges = new List<FreeRange>();
+            List<FreeRange> objBmpPtrRanges = new List<FreeRange>();
+            List<FreeRange> jointRanges = new List<FreeRange>();
+            List<int> eclipNums = new List<int>();
+
+            int numObjBitmaps, numObjBmpPtrs;
+
+            for (int i = 0; i < datafile.BaseHAM.EClips.Count; i++)
+            {
+                if (datafile.BaseHAM.EClips[i].ChangingObjectTexture != -1)
+                    eclipNums.Add(datafile.BaseHAM.EClips[i].ChangingObjectTexture);
+            }
+
+            foreach (Polymodel model in datafile.ReplacedModels)
+            {
+                if (model.ReplacementID < datafile.BaseHAM.Models.Count)
+                {
+                    Polymodel replacedModel = datafile.BaseHAM.Models[model.ReplacementID];
+                    FreeRange objBitmapRange;
+                    objBitmapRange.count = replacedModel.NumTextures;
+                    objBitmapRange.start = int.MaxValue;
+                    for (int i = 0; i < replacedModel.NumTextures; i++)
+                    {
+                        int index = datafile.BaseHAM.ObjBitmapPointers[i];
+                        if (eclipNums.Contains(index))
+                            objBitmapRange.count--;
+                        else
+                            if (index < objBitmapRange.start)
+                                objBitmapRange.start = index;
+                    }
+
+                    //Could be a model made of only eclips or solid textures
+                    if (objBitmapRange.count > 0)
+                        objBitmapRanges.Add(objBitmapRange);
+
+                    FreeRange objBmpPtrRange;
+                    objBmpPtrRange.count = replacedModel.NumTextures;
+                    objBmpPtrRange.start = replacedModel.FirstTexture;
+
+                    if (objBmpPtrRange.count > 0)
+                        objBmpPtrRanges.Add(objBmpPtrRange);
+                }
+            }
+
+            int j;
+            for (j = 0; j < datafile.BaseHAM.ObjBitmaps.Count; j++)
+            {
+                if (datafile.BaseHAM.ObjBitmaps[j] == 0)
+                    break;
+            }
+            numObjBitmaps = j;
+            //TODO: Counting this reliably is difficult since there's no unused value
+            numObjBmpPtrs = 502;
+
+            AllocateRangesTransaction transaction = new AllocateRangesTransaction(datafile, numObjBitmaps, objBitmapRanges, numObjBmpPtrs, objBmpPtrRanges, datafile.BaseHAM.Joints.Count, jointRanges, eclipNums);
+            transactionManager.ApplyTransaction(transaction);
+        }
     }
 }
