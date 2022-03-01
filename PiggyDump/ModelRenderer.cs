@@ -261,6 +261,8 @@ namespace Descent2Workshop
             return FixVector.FromRawValues(GetInt(data, ref offset), GetInt(data, ref offset), GetInt(data, ref offset));
         }
 
+        private int baseVert, endVert;
+
         private void Execute(byte[] data, int offset, Polymodel mainModel, Submodel model)
         {
             short instruction = GetShort(data, ref offset);
@@ -446,6 +448,11 @@ namespace Descent2Workshop
                                 GL.Begin(PrimitiveType.TriangleFan);
                             for (int i = 0; i < pointc; i++)
                             {
+#if DEBUG
+                                if (points[i] < baseVert || points[i] > endVert)
+                                    throw new Exception("Vertex out of object's range");
+#endif
+
                                 double vx = interpPoints[points[i]].X;
                                 double vy = interpPoints[points[i]].Y;
                                 double vz = interpPoints[points[i]].Z;
@@ -537,6 +544,11 @@ namespace Descent2Workshop
                             {
                                 interpPoints[i + firstPoint] = GetFixVector(data, ref offset);
                             }
+
+#if DEBUG
+                            baseVert = firstPoint;
+                            endVert = firstPoint + pointc;
+#endif
                         }
                         break;
                     case 8:

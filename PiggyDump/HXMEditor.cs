@@ -419,7 +419,9 @@ namespace Descent2Workshop
                 if (model.ReplacementID < datafile.BaseHAM.Models.Count)
                 {
                     Polymodel replacedModel = datafile.BaseHAM.Models[model.ReplacementID];
-                    FreeRange objBitmapRange;
+                    //No, don't do this! This causes texture corruption!
+                    //Textures used in the original data are sourced from here. Just allocate in the free range for now. 
+                    /*FreeRange objBitmapRange;
                     objBitmapRange.count = replacedModel.NumTextures;
                     objBitmapRange.start = int.MaxValue;
                     for (int i = 0; i < replacedModel.NumTextures; i++)
@@ -434,7 +436,7 @@ namespace Descent2Workshop
 
                     //Could be a model made of only eclips or solid textures
                     if (objBitmapRange.count > 0)
-                        objBitmapRanges.Add(objBitmapRange);
+                        objBitmapRanges.Add(objBitmapRange);*/
 
                     FreeRange objBmpPtrRange;
                     objBmpPtrRange.count = replacedModel.NumTextures;
