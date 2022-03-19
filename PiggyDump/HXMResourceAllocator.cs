@@ -88,7 +88,7 @@ namespace Descent2Workshop
                     starti = i;
                     for (j = 0; j < size; i++, j++)
                     {
-                        if (i >= Maximum)
+                        if (i+1 >= Maximum)
                             return -1;
 
                         if (Allocation[i] != 0)

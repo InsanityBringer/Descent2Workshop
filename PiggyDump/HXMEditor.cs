@@ -22,7 +22,7 @@
 
 using System;
 using System.Collections.Generic;
-
+using System.Text;
 using System.IO;
 using System.Windows.Forms;
 using Descent2Workshop.SaveHandlers;
@@ -459,6 +459,19 @@ namespace Descent2Workshop
 
             AllocateRangesTransaction transaction = new AllocateRangesTransaction(datafile, numObjBitmaps, objBitmapRanges, numObjBmpPtrs, objBmpPtrRanges, datafile.BaseHAM.Joints.Count, jointRanges, eclipNums);
             transactionManager.ApplyTransaction(transaction);
+
+            if (transaction.HasFailedElements)
+            {
+                StringBuilder errorString = new StringBuilder();
+                errorString.AppendLine("Found errors while allocating ranges.\n");
+                foreach (string str in transaction.FailedElements)
+                {
+                    errorString.AppendLine(str);
+                }
+                errorString.AppendLine("\nThese must be resolved by hand, or data loss can occur");
+
+                MessageBox.Show(errorString.ToString(), "Failed to allocate some elements", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

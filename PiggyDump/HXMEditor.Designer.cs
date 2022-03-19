@@ -38,6 +38,8 @@
             this.EditMenu = new System.Windows.Forms.MenuItem();
             this.UndoMenuItem = new System.Windows.Forms.MenuItem();
             this.RedoMenuItem = new System.Windows.Forms.MenuItem();
+            this.menuItem6 = new System.Windows.Forms.MenuItem();
+            this.AllocateReplacementsMenuItem = new System.Windows.Forms.MenuItem();
             this.EditorTabs = new System.Windows.Forms.TabControl();
             this.RobotTabPage = new System.Windows.Forms.TabPage();
             this.ModelTabPage = new System.Windows.Forms.TabPage();
@@ -51,8 +53,6 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.ReplacedElementComboBox = new System.Windows.Forms.ComboBox();
-            this.menuItem6 = new System.Windows.Forms.MenuItem();
-            this.AllocateReplacementsMenuItem = new System.Windows.Forms.MenuItem();
             this.EditorTabs.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ElementSpinner)).BeginInit();
             this.SuspendLayout();
@@ -119,6 +119,19 @@
             this.RedoMenuItem.Shortcut = System.Windows.Forms.Shortcut.CtrlY;
             this.RedoMenuItem.Text = "Redo";
             this.RedoMenuItem.Click += new System.EventHandler(this.RedoMenuItem_Click);
+            // 
+            // menuItem6
+            // 
+            this.menuItem6.Index = 2;
+            this.menuItem6.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.AllocateReplacementsMenuItem});
+            this.menuItem6.Text = "Actions";
+            // 
+            // AllocateReplacementsMenuItem
+            // 
+            this.AllocateReplacementsMenuItem.Index = 0;
+            this.AllocateReplacementsMenuItem.Text = "Allocate Replaced Bitmaps and Joints";
+            this.AllocateReplacementsMenuItem.Click += new System.EventHandler(this.AllocateReplacementsMenuItem_Click);
             // 
             // EditorTabs
             // 
@@ -240,19 +253,6 @@
             this.ReplacedElementComboBox.Size = new System.Drawing.Size(306, 28);
             this.ReplacedElementComboBox.TabIndex = 221;
             this.ReplacedElementComboBox.SelectedIndexChanged += new System.EventHandler(this.ReplacedElementComboBox_SelectedIndexChanged);
-            // 
-            // menuItem6
-            // 
-            this.menuItem6.Index = 2;
-            this.menuItem6.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.AllocateReplacementsMenuItem});
-            this.menuItem6.Text = "Actions";
-            // 
-            // AllocateReplacementsMenuItem
-            // 
-            this.AllocateReplacementsMenuItem.Index = 0;
-            this.AllocateReplacementsMenuItem.Text = "Allocate Replaced Bitmaps and Joints";
-            this.AllocateReplacementsMenuItem.Click += new System.EventHandler(this.AllocateReplacementsMenuItem_Click);
             // 
             // HXMEditor
             // 

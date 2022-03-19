@@ -14,6 +14,23 @@ namespace Descent2Workshop.Transactions
     {
         public int start, count;
     }
+
+    public class SortedIndex : IComparable
+    {
+        public int ID { get; set; }
+        public int NumTextures { get; set; }
+
+        public int CompareTo(object obj)
+        {
+            SortedIndex other = (SortedIndex)obj;
+            return NumTextures.CompareTo(other.NumTextures);
+        }
+
+        public SortedIndex(int id, int numTextures)
+        {
+            ID = id; NumTextures = numTextures;
+        }
+    }
     public class AllocateRangesTransaction : Transaction
     {
         private EditorHXMFile datafile;
@@ -21,6 +38,11 @@ namespace Descent2Workshop.Transactions
         private HXMResourceAllocator objBmpPtrAllocator;
         private HXMResourceAllocator jointAllocator;
         private List<ChangedHAMReference> changedElements = new List<ChangedHAMReference>();
+        private List<string> failedElements = new List<string>();
+
+        public bool HasFailedElements { get { return failedElements.Count > 0; } }
+
+        public ICollection<string> FailedElements { get => failedElements; }
 
         public AllocateRangesTransaction(EditorHXMFile datafile, int numObjBitmaps, IList<FreeRange> freedObjBitmaps,
             int numObjBmpPtrs, IList<FreeRange> freedObjBmpPtrs, 
@@ -57,9 +79,18 @@ namespace Descent2Workshop.Transactions
         public override bool Apply()
         {
             Polymodel model;
+            SortedIndex[] sortedIndices = new SortedIndex[datafile.ReplacedModels.Count];
             for (int i = 0; i < datafile.ReplacedModels.Count; i++)
             {
                 model = datafile.ReplacedModels[i];
+                sortedIndices[i] = new SortedIndex(i, model.NumTextures);
+            }
+            Array.Sort(sortedIndices);
+            Array.Reverse(sortedIndices);
+
+            for (int i = 0; i < datafile.ReplacedModels.Count; i++)
+            {
+                model = datafile.ReplacedModels[sortedIndices[i].ID];
                 Polymodel oldmodel = model.Clone();
                 int numObjBitmaps = datafile.CountUniqueObjBitmaps(model);
 
@@ -71,13 +102,21 @@ namespace Descent2Workshop.Transactions
                     model.BaseTexture = newObjBitmapStart;
                     objBitmapAllocator.AllocateRange(newObjBitmapStart, numObjBitmaps);
                 }
+                else if (numObjBitmaps > 0)
+                {
+                    failedElements.Add($"Model {sortedIndices[i].ID} failed to allocate object bitmaps.");
+                }
                 if (newObjBmpPtrStart != -1 && model.NumTextures > 0)
                 {
                     model.FirstTexture = (ushort)newObjBmpPtrStart;
                     objBmpPtrAllocator.AllocateRange(newObjBmpPtrStart, model.NumTextures);
                 }
+                else if (model.NumTextures > 0)
+                {
+                    failedElements.Add($"Model {sortedIndices[i].ID} failed to allocate object bitmap pointers.");
+                }
 
-                ChangedHAMReference element = new ChangedHAMReference(oldmodel, datafile.ReplacedModels, i);
+                ChangedHAMReference element = new ChangedHAMReference(oldmodel, datafile.ReplacedModels, sortedIndices[i].ID);
                 changedElements.Add(element);
             }
             return true;
