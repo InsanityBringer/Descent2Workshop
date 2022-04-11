@@ -204,12 +204,14 @@
             // ZoomTrackBar
             // 
             this.ZoomTrackBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.ZoomTrackBar.AutoSize = false;
             this.ZoomTrackBar.LargeChange = 1;
             this.ZoomTrackBar.Location = new System.Drawing.Point(3, 693);
             this.ZoomTrackBar.Maximum = 3;
             this.ZoomTrackBar.Name = "ZoomTrackBar";
-            this.ZoomTrackBar.Size = new System.Drawing.Size(222, 45);
+            this.ZoomTrackBar.Size = new System.Drawing.Size(222, 28);
             this.ZoomTrackBar.TabIndex = 13;
+            this.ZoomTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.ZoomTrackBar.Scroll += new System.EventHandler(this.ZoomTrackBar_Scroll);
             // 
             // CompressCheckBox
