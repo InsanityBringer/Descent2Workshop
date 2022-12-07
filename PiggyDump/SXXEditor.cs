@@ -249,7 +249,7 @@ namespace Descent2Workshop
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 int sampleRate = isLowFi ? 11025 : 22050;
-                string name = openFileDialog1.SafeFileName;
+                string name = Path.GetFileNameWithoutExtension(openFileDialog1.SafeFileName);
                 int id = datafile.Sounds.Count;
                 //BinaryReader br = new BinaryReader(File.OpenRead(openFileDialog1.FileName));
                 //byte[] data = br.ReadBytes((int)br.BaseStream.Length);
@@ -279,7 +279,7 @@ namespace Descent2Workshop
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 int sampleRate = isLowFi ? 11025 : 22050;
-                string name = openFileDialog1.SafeFileName;
+                string name = Path.GetFileNameWithoutExtension(openFileDialog1.SafeFileName);
                 int id = listView1.SelectedIndices[0];
                 //BinaryReader br = new BinaryReader(File.OpenRead(openFileDialog1.FileName));
                 //byte[] data = br.ReadBytes((int)br.BaseStream.Length);
