@@ -64,11 +64,11 @@ namespace Descent2Workshop
                 statusMsg = string.Format("Error reading data file {0}:\r\n{1}", filename, exc.Message);
                 success = false;
             }
-            catch (Exception exc)
+            /*catch (Exception exc)
             {
                 statusMsg = string.Format("Unexpected error reading data file {0}:\r\n{1}", filename, exc.Message);
                 success = false;
-            }
+            }*/
             finally
             {
                 if (stream != null)

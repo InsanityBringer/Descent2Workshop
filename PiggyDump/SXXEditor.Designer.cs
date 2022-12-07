@@ -124,6 +124,7 @@
             // 
             this.SaveMenuItem.Index = 0;
             this.SaveMenuItem.Text = "Save";
+            this.SaveMenuItem.Click += new System.EventHandler(this.SaveMenuItem_Click);
             // 
             // SaveAsMenuItem
             // 

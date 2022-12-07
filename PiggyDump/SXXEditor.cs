@@ -48,13 +48,14 @@ namespace Descent2Workshop
         private string fileName;
 
         private SaveHandler saveHandler;
-        public SXXEditor(StandardUI host, SNDFile datafile, SoundCache cache, string FileName)
+        public SXXEditor(StandardUI host, SNDFile datafile, SoundCache cache, string FileName, SaveHandler saveHandler)
         {
             InitializeComponent();
             this.datafile = datafile;
             this.host = host;
             this.cache = cache;
             this.fileName = FileName;
+            this.saveHandler = saveHandler;
             Text = string.Format("{0} - Sound Editor", FileName);
         }
 
@@ -247,13 +248,17 @@ namespace Descent2Workshop
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
+                int sampleRate = isLowFi ? 11025 : 22050;
                 string name = openFileDialog1.SafeFileName;
                 int id = datafile.Sounds.Count;
                 //BinaryReader br = new BinaryReader(File.OpenRead(openFileDialog1.FileName));
                 //byte[] data = br.ReadBytes((int)br.BaseStream.Length);
                 Stream stream = File.OpenRead(openFileDialog1.FileName);
-                BasicSoundFile file = BasicSoundFile.ReadFromStream(stream);
+                BasicSoundFile file = BasicSoundFile.ReadFromStream(stream, sampleRate);
                 stream.Close();
+
+                if (file.BitsPerSample != 8 || file.SamplesPerSec != sampleRate)
+                    host.AppendConsole("Imported sound has been resampled\r\n");
 
                 AddSoundTransaction transaction = new AddSoundTransaction(datafile, cache, id, name, file.Data);
                 transactionManager.ApplyTransaction(transaction);
@@ -273,13 +278,17 @@ namespace Descent2Workshop
 
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
+                int sampleRate = isLowFi ? 11025 : 22050;
                 string name = openFileDialog1.SafeFileName;
                 int id = listView1.SelectedIndices[0];
                 //BinaryReader br = new BinaryReader(File.OpenRead(openFileDialog1.FileName));
                 //byte[] data = br.ReadBytes((int)br.BaseStream.Length);
                 Stream stream = File.OpenRead(openFileDialog1.FileName);
-                BasicSoundFile file = BasicSoundFile.ReadFromStream(stream);
+                BasicSoundFile file = BasicSoundFile.ReadFromStream(stream, sampleRate);
                 stream.Close();
+
+                if (file.BitsPerSample != 8 || file.SamplesPerSec != sampleRate)
+                    host.AppendConsole("Imported sound has been resampled\r\n");
 
                 ReplaceSoundTransaction transaction = new ReplaceSoundTransaction(datafile, cache, id, name, file.Data);
                 transactionManager.ApplyTransaction(transaction);
@@ -291,6 +300,11 @@ namespace Descent2Workshop
                 lvi.SubItems.Add(id.ToString());
                 listView1.Items[id] = lvi;
             }
+        }
+
+        private void SaveMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveSNDFile();
         }
     }
 }

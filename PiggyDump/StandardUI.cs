@@ -297,7 +297,7 @@ namespace Descent2Workshop
                 SoundCache cache = SoundCache.CreateCacheFromFile(archive);
                 newSoundStream.Close();
 
-                SXXEditor archiveEditor = new SXXEditor(this, archive, cache, openFileDialog1.FileName);
+                SXXEditor archiveEditor = new SXXEditor(this, archive, cache, openFileDialog1.FileName, new FileSaveHandler(openFileDialog1.FileName));
                 if (Path.GetExtension(openFileDialog1.FileName).Equals(".S11", StringComparison.OrdinalIgnoreCase) ||
                     Path.GetExtension(openFileDialog1.FileName).Equals(".HAM", StringComparison.OrdinalIgnoreCase))
                 {
