@@ -282,7 +282,9 @@ namespace Descent2Workshop
 
         public void ReplaceSelectedFromBitmap(Bitmap img, string name)
         {
+            PIGImage oldbitmap = imageProvider.Bitmaps[ImageListView.SelectedIndices[0]];
             PIGImage bitmap = PiggyBitmapUtilities.CreatePIGImage(img, localPalette, inverseColormap, name.Substring(0, Math.Min(name.Length, 8)));
+            bitmap.ReplacementNum = oldbitmap.ReplacementNum;
             imageProvider.Bitmaps[ImageListView.SelectedIndices[0]] = bitmap;
             RebuildItem(ImageListView.SelectedItems[0]);
             ChangeImage(ImageListView.SelectedIndices[0]);
