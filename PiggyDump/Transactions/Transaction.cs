@@ -105,5 +105,10 @@ namespace Descent2Workshop.Transactions
         {
             return false;
         }
+
+        public virtual bool NeedsListUpdate()
+        {
+            return false;
+        }
     }
 }

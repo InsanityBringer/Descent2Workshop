@@ -230,6 +230,7 @@
     <Compile Include="Transactions\AllocateRangesTransaction.cs" />
     <Compile Include="Transactions\ByteArrayReplaceTransaction.cs" />
     <Compile Include="Transactions\BoolTransaction.cs" />
+    <Compile Include="Transactions\DeleteEClipTransaction.cs" />
     <Compile Include="Transactions\DeleteTMAPInfoTransaction.cs" />
     <Compile Include="Transactions\DeleteVClipTransaction.cs" />
     <Compile Include="Transactions\FixTransaction.cs" />

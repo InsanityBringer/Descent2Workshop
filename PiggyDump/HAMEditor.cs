@@ -386,6 +386,10 @@ namespace Descent2Workshop
                     transaction = new DeleteVClipTransaction(datafile, ElementNumber, PageNumber);
                     maxNum = Math.Max(0, datafile.VClips.Count - 1);
                     break;
+                case HAMType.EClip:
+                    transaction = new DeleteEClipTransaction(datafile, ElementNumber, PageNumber);
+                    maxNum = Math.Max(0, datafile.EClips.Count - 1);
+                    break;
             }
 
             if (transaction != null)
@@ -1010,7 +1014,12 @@ namespace Descent2Workshop
                 if (transaction.Page != ElementNumber)
                     ElementSpinner.Value = transaction.Page;
                 else
+                {
+                    if (transaction.NeedsListUpdate())
+                        ElementListInit();
+
                     FillOutCurrentPanel(transaction.Tab, transaction.Page); //force an update
+                }
             }
 
         }

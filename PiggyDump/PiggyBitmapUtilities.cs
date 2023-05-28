@@ -62,6 +62,8 @@ namespace Descent2Workshop
         public static Bitmap GetBitmap(IImageProvider piggyFile, Palette palette, int index, int scale = 1)
         {
             int[] rgbTable = new int[256];
+            if (index > piggyFile.Bitmaps.Count)
+                index = 0; //If out of bounds, show the bogus image
             PIGImage image = piggyFile.Bitmaps[index];
 
             int newWidth = (int)(image.Width * scale);
