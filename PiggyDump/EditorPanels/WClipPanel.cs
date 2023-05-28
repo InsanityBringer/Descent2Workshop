@@ -140,7 +140,7 @@ namespace Descent2Workshop.EditorPanels
             if (isLocked || transactionManager.TransactionInProgress)
                 return;
             ComboBox control = (ComboBox)sender;
-            IntegerTransaction transaction = new IntegerTransaction("WClip property", clip, (string)control.Tag, wclipID, 3, control.SelectedIndex);
+            IntegerTransaction transaction = new IntegerTransaction("WClip property", clip, (string)control.Tag, wclipID, 3, control.SelectedIndex - 1);
             transactionManager.ApplyTransaction(transaction);
         }
 
