@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
 using LibDescent.Data;
@@ -18,7 +14,7 @@ namespace Descent2Workshop
             int bestdist = int.MaxValue;
             int dist;
 
-            for (int i = 0; i < 255; i++)
+            for (int i = 0; i < 254; i++)
             {
                 int lR = palette[i * 3];
                 int lG = palette[i * 3 + 1];
@@ -70,9 +66,15 @@ namespace Descent2Workshop
             int newHeight = (int)(image.Height * scale);
             Bitmap bitmap = new Bitmap(newWidth, newHeight);
 
+            int alpha = 255;
             for (int j = 0; j < 256; j++)
             {
-                rgbTable[j] = ((j == 255 ? 0 : 255) << 24) + (palette[j].R << 16) + (palette[j].G << 8) + (palette[j].B);
+                if (j == 254)
+                    alpha = 128;
+                else if (j == 255)
+                    alpha = 0;
+
+                rgbTable[j] = (alpha << 24) + (palette[j].R << 16) + (palette[j].G << 8) + (palette[j].B);
             }
 
             int[] rgbData = new int[newWidth * newHeight];
@@ -108,10 +110,16 @@ namespace Descent2Workshop
             byte[] rawData = image.GetData();
             byte b;
 
+            int alpha = 255;
             for (int i = 0; i < rawData.Length; i++)
             {
                 b = rawData[i];
-                rgbData[i] = ((b == 255 ? 0 : 255) << 24) + (palette[b].R << 16) + (palette[b].G << 8) + (palette[b].B);
+                if (b == 254)
+                    alpha = 128;
+                else if (b == 255)
+                    alpha = 0;
+
+                rgbData[i] = (alpha << 24) + (palette[b].R << 16) + (palette[b].G << 8) + (palette[b].B);
             }
 
             BitmapData bits = bitmap.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
@@ -176,10 +184,15 @@ namespace Descent2Workshop
             int color;
             for (int i = 0; i < data.Length; i++)
             {
-                if (basedata[i * 4 + 3] < 255)
+                if (basedata[i * 4 + 3] < 85)
                 {
                     image.Transparent = true;
                     color = 255;
+                }
+                else if (basedata[i * 4 + 3] < 169)
+                {
+                    image.SuperTransparent = true;
+                    color = 254;
                 }
                 else
                 {
