@@ -215,6 +215,12 @@
       <DependentUpon>ImageEditorPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="LBMDecoder.cs" />
+    <Compile Include="LevelViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PictureBoxInterpolation.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="PiggyBitmapUtilities.cs" />
     <Compile Include="POGEditor.cs">
       <SubType>Form</SubType>
@@ -222,6 +228,7 @@
     <Compile Include="POGEditor.Designer.cs">
       <DependentUpon>POGEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="PreviewGenerator.cs" />
     <Compile Include="SaveHandlers\FileSaveHandler.cs" />
     <Compile Include="SaveHandlers\SaveHandler.cs" />
     <Compile Include="SoundCache.cs" />
