@@ -48,11 +48,16 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lvlPreview = new Descent2Workshop.LevelViewer();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.picPreview = new Descent2Workshop.PictureBoxInterpolation();
+            this.txtPreview = new System.Windows.Forms.TextBox();
+            this.lblPreviewPlaceholder = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picPreview)).BeginInit();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -148,6 +153,7 @@
             this.listView1.TabIndex = 3;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             this.listView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.listView1_DragDrop);
             this.listView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.listView1_DragEnter);
             this.listView1.DragOver += new System.Windows.Forms.DragEventHandler(this.listView1_DragOver);
@@ -189,19 +195,71 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.label1);
+            this.splitContainer1.Panel2.Controls.Add(this.lvlPreview);
+            this.splitContainer1.Panel2.Controls.Add(this.btnSave);
+            this.splitContainer1.Panel2.Controls.Add(this.picPreview);
+            this.splitContainer1.Panel2.Controls.Add(this.txtPreview);
+            this.splitContainer1.Panel2.Controls.Add(this.lblPreviewPlaceholder);
+            this.splitContainer1.Panel2.SizeChanged += new System.EventHandler(this.splitContainer1_Panel2_SizeChanged);
             this.splitContainer1.Size = new System.Drawing.Size(862, 500);
             this.splitContainer1.SplitterDistance = 352;
             this.splitContainer1.TabIndex = 4;
             // 
-            // label1
+            // lvlPreview
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(135, 224);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(244, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Really Cool Element Previewer Feature Goes Here";
+            this.lvlPreview.BackColor = System.Drawing.Color.Black;
+            this.lvlPreview.Host = null;
+            this.lvlPreview.Level = null;
+            this.lvlPreview.Location = new System.Drawing.Point(0, 0);
+            this.lvlPreview.Name = "lvlPreview";
+            this.lvlPreview.Size = new System.Drawing.Size(150, 150);
+            this.lvlPreview.TabIndex = 4;
+            this.lvlPreview.Visible = false;
+            this.lvlPreview.VSync = false;
+            // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(0, 0);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(100, 23);
+            this.btnSave.TabIndex = 3;
+            this.btnSave.Text = "Save in HOG";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Visible = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // picPreview
+            // 
+            this.picPreview.BackColor = System.Drawing.Color.Black;
+            this.picPreview.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            this.picPreview.Location = new System.Drawing.Point(0, 0);
+            this.picPreview.Name = "picPreview";
+            this.picPreview.Size = new System.Drawing.Size(100, 50);
+            this.picPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picPreview.TabIndex = 2;
+            this.picPreview.TabStop = false;
+            this.picPreview.Visible = false;
+            // 
+            // txtPreview
+            // 
+            this.txtPreview.Location = new System.Drawing.Point(0, 29);
+            this.txtPreview.MaxLength = 0;
+            this.txtPreview.Multiline = true;
+            this.txtPreview.Name = "txtPreview";
+            this.txtPreview.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtPreview.Size = new System.Drawing.Size(181, 36);
+            this.txtPreview.TabIndex = 1;
+            this.txtPreview.Visible = false;
+            this.txtPreview.ModifiedChanged += new System.EventHandler(this.txtPreview_ModifiedChanged);
+            // 
+            // lblPreviewPlaceholder
+            // 
+            this.lblPreviewPlaceholder.AutoSize = true;
+            this.lblPreviewPlaceholder.Location = new System.Drawing.Point(135, 224);
+            this.lblPreviewPlaceholder.Name = "lblPreviewPlaceholder";
+            this.lblPreviewPlaceholder.Size = new System.Drawing.Size(244, 13);
+            this.lblPreviewPlaceholder.TabIndex = 0;
+            this.lblPreviewPlaceholder.Text = "Really Cool Element Previewer Feature Goes Here";
             // 
             // HOGEditor
             // 
@@ -212,12 +270,14 @@
             this.Menu = this.mainMenu1;
             this.Name = "HOGEditor";
             this.Text = "HOGEditor";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HOGEditor_FormClosing);
             this.Load += new System.EventHandler(this.HOGEditor_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picPreview)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -243,6 +303,10 @@
         private System.Windows.Forms.MenuItem menuItem10;
         private System.Windows.Forms.MenuItem ExportMenu;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblPreviewPlaceholder;
+        private System.Windows.Forms.TextBox txtPreview;
+        private System.Windows.Forms.Button btnSave;
+        private PictureBoxInterpolation picPreview;
+        private LevelViewer lvlPreview;
     }
 }

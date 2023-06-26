@@ -41,6 +41,7 @@ namespace Descent2Workshop
 
         public SNDFile DefaultSoundFile { get => defaultSoundFile; }
         public PIGFile DefaultPigFile { get => defaultPigFile; }
+        public EditorHOGFile DefaultHogFile { get => defaultHogFile; }
         public Palette DefaultPalette { get; private set; }
 
         public StandardUI()

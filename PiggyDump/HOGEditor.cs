@@ -31,6 +31,7 @@ using System.Windows.Forms;
 using System.IO;
 using LibDescent.Data;
 using LibDescent.Edit;
+using System.Drawing.Imaging;
 
 namespace Descent2Workshop
 {
@@ -38,23 +39,49 @@ namespace Descent2Workshop
     {
         private EditorHOGFile datafile;
         private StandardUI host;
+        private bool CurrentTextLF;
+        private string CurrentTextName;
+        private bool CurrentTextEncoded;
+        private bool _modified;
+
+        private bool Modified {
+            get => _modified;
+            set
+            {
+                if (value == _modified) return;
+                _modified = value;
+                UpdateTitle();
+            }
+        }
+
         public HOGEditor(EditorHOGFile data, StandardUI host)
         {
             InitializeComponent();
             datafile = data;
             this.host = host;
-            this.Text = string.Format("{0} - Hog Editor", datafile.Filename);
+            lvlPreview.Host = host;
+            UpdateTitle();
+        }
+
+        private void UpdateTitle()
+        {
+            Text = string.Format("{0} - Hog Editor{1}", datafile.Filename,
+                Modified ? " (modified)" : "");
+        }
+
+        private ListViewItem LumpToListItem(HOGLump lump)
+        {
+            ListViewItem listItem = new ListViewItem(lump.Name);
+            listItem.SubItems.Add(lump.Size.ToString());
+            listItem.SubItems.Add(lump.Type.ToString());
+            return listItem;
         }
 
         private void HOGEditor_Load(object sender, EventArgs e)
         {
-            byte[] data;
             for (int x = 0; x < datafile.NumLumps; x++)
             {
-                ListViewItem lumpElement = new ListViewItem(datafile.GetLumpHeader(x).Name);
-                lumpElement.SubItems.Add(datafile.GetLumpHeader(x).Size.ToString());
-                lumpElement.SubItems.Add(datafile.GetLumpHeader(x).Type.ToString());
-                listView1.Items.Add(lumpElement);
+                listView1.Items.Add(LumpToListItem(datafile.GetLumpHeader(x)));
             }
             string count = string.Format("Total Elements: {0}", datafile.NumLumps);
         }
@@ -74,21 +101,19 @@ namespace Descent2Workshop
             HOGLump newLump = new HOGLump(filename, size, -1);
             newLump.Data = data;
             newLump.Type = HOGLump.IdentifyLump(newLump.Name, newLump.Data);
-            //datafile.AddLump(newLump);
+            var listItem = LumpToListItem(newLump);
 
-            ListViewItem lumpElement = new ListViewItem(newLump.Name);
-            lumpElement.SubItems.Add(newLump.Size.ToString());
-            lumpElement.SubItems.Add(newLump.Type.ToString());
             if (index != -1)
             {
-                listView1.Items.Insert(index, lumpElement);
+                listView1.Items.Insert(index, listItem);
                 datafile.AddLumpAt(newLump, index);
             }
             else
             {
-                listView1.Items.Add(lumpElement);
+                listView1.Items.Add(listItem);
                 datafile.AddLump(newLump);
             }
+            Modified = true;
         }
 
         private void InsertMenu_Click(object sender, EventArgs e)
@@ -168,6 +193,7 @@ namespace Descent2Workshop
                 try
                 {
                     datafile.Write(saveFileDialog1.FileName);
+                    Modified = false;
                 }
                 catch (Exception exc)
                 {
@@ -191,6 +217,7 @@ namespace Descent2Workshop
             try
             {
                 datafile.Write(datafile.Filename);
+                Modified = false;
             }
             catch (Exception exc)
             {
@@ -287,6 +314,209 @@ namespace Descent2Workshop
                     targetIndex++;
                 }
             }
+        }
+
+        private void splitContainer1_Panel2_SizeChanged(object sender, EventArgs e)
+        {
+            Control control = (Control)sender;
+            txtPreview.Width = control.Width;
+            txtPreview.Height = control.Height - txtPreview.Top;
+            picPreview.Width = control.Width;
+            picPreview.Height = control.Height;
+            lvlPreview.Width = control.Width;
+            lvlPreview.Height = control.Height;
+        }
+
+        private static Bitmap IndexedImageToBitmap(IIndexedImage img)
+        {
+            Bitmap bm;
+            byte[] data = img.Data;
+            int stride = img.Width;
+            if ((stride & 3) != 0)
+            {
+                stride += 4 - (stride & 3);
+                data = new byte[img.Height * stride];
+                for (int y = 0; y < img.Height; y++)
+                    Array.Copy(img.Data, y * img.Width, data, y * stride, img.Width);
+            }
+            unsafe
+            {
+                fixed (byte* ptr = data)
+                    bm = new Bitmap(img.Width, img.Height, stride,
+                            PixelFormat.Format8bppIndexed, new IntPtr(ptr));
+            }
+            var pal = bm.Palette;
+            for (int i = 0; i < img.Palette.Length; i++)
+            {
+                var c = img.Palette[i];
+                pal.Entries[i] = System.Drawing.Color.FromArgb(c.A, c.R, c.G, c.B);
+            }
+            bm.Palette = pal;
+            return bm;
+        }
+
+        private string LumpToText(int index)
+        {
+            switch (datafile.GetLumpHeader(index).Type)
+            {
+                case LumpType.EncodedText:
+                    return TXBConverter.DecodeTXB(datafile.GetLumpData(index));
+
+                case LumpType.Mission:
+                case LumpType.Text:
+                case LumpType.SongList:
+                    var text = Encoding.GetEncoding("ISO-8859-1").GetString(datafile.GetLumpData(index));
+                    if (text.EndsWith("\x1a"))
+                        text = text.Substring(0, text.Length - 1);
+                    return text;
+            }
+            return null;
+        }
+
+        private IIndexedImage LumpToIndexedImage(int index)
+        {
+            switch (datafile.GetLumpHeader(index).Type)
+            {
+                case LumpType.PCXImage:
+                    var pcxImg = new PCXImage();
+                    pcxImg.Read(datafile.GetLumpData(index));
+                    return pcxImg;
+
+                case LumpType.LBMImage:
+                    var bbmImg = new BBMImage();
+                    bbmImg.Read(datafile.GetLumpData(index));
+                    return bbmImg;
+
+                case LumpType.Palette:
+                    var pal = new Palette(datafile.GetLumpData(index));
+                    return PreviewGenerator.PaletteToImage(pal);
+
+                case LumpType.Font:
+                    var font = new LibDescent.Data.Font();
+                    font.LoadFont(datafile.GetLumpAsStream(index));
+                    return PreviewGenerator.FontToImage(font);
+            }
+            return null;
+        }
+
+        private ILevel LumpToLevel(int index)
+        {
+            var type = datafile.GetLumpHeader(index).Type;
+            if (type != LumpType.Level) return null;
+            string ext = Path.GetExtension(datafile.GetLumpHeader(index).Name);
+            if (ext == ".rdl" || ext == ".sdl")
+                return D1Level.CreateFromStream(datafile.GetLumpAsStream(index));
+            else
+                return D2Level.CreateFromStream(datafile.GetLumpAsStream(index));
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdatePreview();
+        }
+
+        private void UpdatePreview()
+        {
+            int index = listView1.SelectedIndices.Count > 0 ? listView1.SelectedIndices[0] : -1;
+            bool havePreview = false;
+
+            string text;
+            if (index != -1 && (text = LumpToText(index)) != null)
+            {
+                CurrentTextName = datafile.GetLumpHeader(index).Name;
+                CurrentTextEncoded = datafile.GetLumpHeader(index).Type == LumpType.EncodedText;
+                CurrentTextLF = !text.Contains('\r');
+                if (CurrentTextLF)
+                    text = text.Replace("\n", "\r\n");
+                txtPreview.Text = text;
+                txtPreview.Visible = true;
+                txtPreview.Modified = false;
+                btnSave.Visible = true;
+                btnSave.Enabled = false;
+                havePreview = true;
+            }
+            else
+            {
+                txtPreview.Visible = false;
+                btnSave.Visible = false;
+            }
+
+            IIndexedImage img;
+            if (index != -1 && (img = LumpToIndexedImage(index)) != null)
+            {
+                picPreview.Image = IndexedImageToBitmap(img);
+                picPreview.Visible = true;
+                havePreview = true;
+            }
+            else
+            {
+                picPreview.Visible = false;
+            }
+
+            ILevel level;
+            if (index != -1 && (level = LumpToLevel(index)) != null)
+            {
+                lvlPreview.Level = level;
+                lvlPreview.Visible = true;
+                havePreview = true;
+            }
+            else
+            {
+                lvlPreview.Visible = false;
+            }
+
+            lblPreviewPlaceholder.Visible = !havePreview;
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            string text = txtPreview.Text;
+            if (CurrentTextLF)
+                text = text.Replace("\r\n", "\n");
+            byte[] data;
+            if (CurrentTextEncoded)
+                data = TXBConverter.EncodeTXB(text);
+            else
+                data = Encoding.GetEncoding("ISO-8859-1").GetBytes(text);
+
+            var newLump = new HOGLump(CurrentTextName, data);
+
+            var listItem = LumpToListItem(newLump);
+            listItem.Selected = true;
+
+            int index = datafile.GetLumpNum(newLump.Name);
+            if (index == -1)
+            {
+                datafile.AddLump(newLump);
+                listView1.Items.Add(listItem);
+            }
+            else
+            {
+                datafile.DeleteLump(index);
+                datafile.AddLumpAt(newLump, index);
+                listView1.Items[index] = listItem;
+            }
+            Modified = true;
+        }
+
+        private void txtPreview_ModifiedChanged(object sender, EventArgs e)
+        {
+            btnSave.Enabled = ((TextBox)sender).Modified;
+        }
+
+        private void HOGEditor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!Modified)
+                return;
+            var res = MessageBox.Show("HOG file is modified, do you want to save the changes?",
+                    "HOG Editor", MessageBoxButtons.YesNoCancel);
+            if (res == DialogResult.Cancel)
+            {
+                e.Cancel = true;
+                return;
+            }
+            if (res == DialogResult.Yes)
+                SaveMenu_Click(null, null);
         }
     }
 }
