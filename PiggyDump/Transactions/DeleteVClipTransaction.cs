@@ -45,6 +45,7 @@ namespace Descent2Workshop.Transactions
         {
             lastValue = datafile.VClips[deleteNum];
             datafile.VClips.RemoveAt(deleteNum);
+            RedoPage = Math.Max(0, Page - 1); //It's no good if this reaches 0, but the HAM editor will prevent it. 
 
             //Resolve references
             references.Clear();

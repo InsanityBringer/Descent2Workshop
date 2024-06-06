@@ -59,6 +59,7 @@ namespace Descent2Workshop.Transactions
         {
             lastTexture = datafile.Textures[deleteNum];
             lastValue = datafile.TMapInfo[deleteNum];
+            RedoPage = Math.Max(0, Page - 1);
 
             datafile.Textures.RemoveAt(deleteNum);
             datafile.TMapInfo.RemoveAt(deleteNum);

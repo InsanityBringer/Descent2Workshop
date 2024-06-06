@@ -390,6 +390,14 @@ namespace Descent2Workshop
                     transaction = new DeleteEClipTransaction(datafile, ElementNumber, PageNumber);
                     maxNum = Math.Max(0, datafile.EClips.Count - 1);
                     break;
+                case HAMType.Robot:
+                    transaction = new DeleteRobotTransaction(datafile, ElementNumber, PageNumber);
+                    maxNum = Math.Max(0, datafile.Robots.Count - 1);
+                    break;
+                case HAMType.Weapon:
+                    transaction = new DeleteWeaponTransaction(datafile, ElementNumber, PageNumber);
+                    maxNum = Math.Max(0, datafile.Weapons.Count - 1);
+                    break;
             }
 
             if (transaction != null)

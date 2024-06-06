@@ -34,8 +34,13 @@ namespace Descent2Workshop.Transactions
                 {
                     if (datafile.TMapInfo[i].EClipNum == deleteNum)
                     {
-                        datafile.TMapInfo[i].EClipNum = -1;
                         references.Add(new ChangedHAMReference(datafile.TMapInfo[i].Clone(), datafile.TMapInfo, i));
+                        datafile.TMapInfo[i].EClipNum = -1;
+                    }
+                    else if (datafile.TMapInfo[i].EClipNum > deleteNum)
+                    {
+                        references.Add(new ChangedHAMReference(datafile.TMapInfo[i].Clone(), datafile.TMapInfo, i));
+                        datafile.TMapInfo[i].EClipNum--;
                     }
                 }
             }
@@ -44,10 +49,15 @@ namespace Descent2Workshop.Transactions
             {
                 for (int i = 0; i < datafile.EClips.Count; i++)
                 {
-                    if (datafile.EClips[i].ExplosionEClip == i)
+                    if (datafile.EClips[i].ExplosionEClip == deleteNum)
                     {
-                        datafile.EClips[i].ExplosionEClip = -1;
                         references.Add(new ChangedHAMReference(datafile.EClips[i].Clone(), datafile.EClips, i));
+                        datafile.EClips[i].ExplosionEClip = -1;
+                    }
+                    else if (datafile.EClips[i].ExplosionEClip > deleteNum)
+                    {
+                        references.Add(new ChangedHAMReference(datafile.EClips[i].Clone(), datafile.EClips, i));
+                        datafile.EClips[i].ExplosionEClip--;
                     }
                 }
             }
