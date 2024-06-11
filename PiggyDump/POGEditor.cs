@@ -22,16 +22,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using LibDescent.Data;
 using LibDescent.Edit;
+using Descent2Workshop.SaveHandlers;
+using Descent2Workshop.Transactions;
 
 namespace Descent2Workshop
 {
@@ -39,25 +36,33 @@ namespace Descent2Workshop
     {
         public POGFile datafile;
         private EditorHOGFile hogFile; //used as a source for palettes
-        private string filename;
         public StandardUI host;
         private Palette currentPalette = new Palette();
         ImageEditorPanel panel;
+        private SaveHandler saveHandler;
+        private TransactionManager transactionManager = new TransactionManager();
 
-        public POGEditor(POGFile data, EditorHOGFile hogFile, StandardUI host, string filename)
+        public POGEditor(POGFile data, EditorHOGFile hogFile, StandardUI host, SaveHandler saveHandler)
         {
             datafile = data;
-            this.filename = filename;
             this.hogFile = hogFile;
             this.host = host;
             InitializeComponent();
-            this.Text = string.Format("{0} - POG Editor", filename);
+            if (saveHandler == null)
+            {
+                this.Text = "untitled - POG Editor";
+            }
+            else
+            {
+                this.Text = string.Format("{0} - POG Editor", saveHandler.GetUIName());
+            }
             panel = new ImageEditorPanel(data, true, host.DefaultPigFile, host.DefaultPalette);
             panel.PaletteChanged += PaletteComboBox_SelectedIndexChanged;
             panel.SetPalette(host.DefaultPalette);
             components.Add(panel);
             Controls.Add(panel);
             panel.Dock = DockStyle.Fill;
+            this.saveHandler = saveHandler;
         }
 
         private void POGEditor_Load(object sender, EventArgs e)
@@ -98,17 +103,31 @@ namespace Descent2Workshop
             }
         }
 
-        private void DoSave(string filename)
+        private void SavePOGFile()
         {
-            string statusMsg;
-            if (!FileUtilities.SaveDataFile(filename, datafile, out statusMsg))
+            if (saveHandler == null) //No save handler, so can't actually save right now
             {
-                MessageBox.Show(statusMsg, "Error saving POG file.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //HACK: Just call the save as handler for now... This needs restructuring
+                SaveAsMenuItem_Click(this, new EventArgs());
+                return; //and don't repeat the save code when we recall ourselves.
+            }
+            Stream stream = saveHandler.GetStream();
+            if (stream == null)
+            {
+                MessageBox.Show(this, string.Format("Error opening save file {0}:\r\n{1}", saveHandler.GetUIName(), saveHandler.GetErrorMsg()));
             }
             else
             {
-                filename = saveFileDialog1.FileName;
-                Text = string.Format("{0} - POG Editor", filename);
+                datafile.Write(stream);
+                stream.Dispose();
+                if (saveHandler.FinalizeStream())
+                {
+                    MessageBox.Show(this, string.Format("Error writing save file {0}:\r\n{1}", saveHandler.GetUIName(), saveHandler.GetErrorMsg()));
+                }
+                else
+                {
+                    transactionManager.UnsavedFlag = false;
+                }
             }
         }
 
@@ -119,21 +138,19 @@ namespace Descent2Workshop
             {
                 if (saveFileDialog1.FileName != "")
                 {
-                    DoSave(saveFileDialog1.FileName);
+                    if (saveHandler != null)
+                        saveHandler.Destroy();
+
+                    saveHandler = new FileSaveHandler(saveFileDialog1.FileName);
+                    SavePOGFile();
+                    this.Text = string.Format("{0} - POG Editor", saveHandler.GetUIName());
                 }
             }
         }
 
         private void SaveMenuItem_Click(object sender, EventArgs e)
         {
-            if (filename != "")
-            {
-                DoSave(filename);
-            }
-            else
-            {
-                SaveAsMenuItem_Click(sender, e);
-            }
+            SavePOGFile();
         }
 
         private void MoveUpMenuItem_Click(object sender, EventArgs e)

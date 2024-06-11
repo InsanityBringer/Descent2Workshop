@@ -243,6 +243,7 @@
     <Compile Include="Transactions\DeleteVClipTransaction.cs" />
     <Compile Include="Transactions\DeleteWeaponTransaction.cs" />
     <Compile Include="Transactions\FixTransaction.cs" />
+    <Compile Include="Transactions\ImageUpdateEventArgs.cs" />
     <Compile Include="Transactions\IndexedFixTransaction.cs" />
     <Compile Include="Transactions\IndexedIntegerTransaction.cs" />
     <Compile Include="Transactions\IndexedUnsignedTransaction.cs" />

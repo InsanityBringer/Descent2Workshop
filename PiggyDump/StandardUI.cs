@@ -590,7 +590,7 @@ namespace Descent2Workshop
                 string statusMsg;
                 if (FileUtilities.LoadDataFile(openFileDialog1.FileName, archive, out statusMsg))
                 {
-                    POGEditor archiveEditor = new POGEditor(archive, defaultHogFile, this, openFileDialog1.FileName);
+                    POGEditor archiveEditor = new POGEditor(archive, defaultHogFile, this, new FileSaveHandler(openFileDialog1.FileName));
                     archiveEditor.Show();
                 }
                 else
@@ -736,6 +736,11 @@ namespace Descent2Workshop
             }
 
             sw.Dispose();
+        }
+
+        private void NewPOGMenu_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
