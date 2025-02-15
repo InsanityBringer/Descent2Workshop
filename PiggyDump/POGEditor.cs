@@ -190,7 +190,7 @@ namespace Descent2Workshop
             }
             else
             {
-                return String.Format("{0}+{1}", image.Name, image.Frame);
+                return String.Format("{0}#{1}", image.Name, image.Frame);
             }
         }
 
