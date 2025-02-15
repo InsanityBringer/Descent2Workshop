@@ -49,6 +49,7 @@
             this.ColorPreview = new System.Windows.Forms.Label();
             this.SupertransparentCheck = new System.Windows.Forms.CheckBox();
             this.NoLightingCheck = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -73,6 +74,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.label1);
             this.splitContainer1.Panel2.Controls.Add(this.ZoomLabel);
             this.splitContainer1.Panel2.Controls.Add(this.ZoomTrackBar);
             this.splitContainer1.Panel2.Controls.Add(this.CompressCheckBox);
@@ -241,7 +243,7 @@
             // CalculateAverageButton
             // 
             this.CalculateAverageButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.CalculateAverageButton.Location = new System.Drawing.Point(400, 666);
+            this.CalculateAverageButton.Location = new System.Drawing.Point(400, 691);
             this.CalculateAverageButton.Name = "CalculateAverageButton";
             this.CalculateAverageButton.Size = new System.Drawing.Size(75, 23);
             this.CalculateAverageButton.TabIndex = 11;
@@ -264,7 +266,7 @@
             // ColorPreview
             // 
             this.ColorPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.ColorPreview.Location = new System.Drawing.Point(369, 671);
+            this.ColorPreview.Location = new System.Drawing.Point(369, 696);
             this.ColorPreview.Name = "ColorPreview";
             this.ColorPreview.Size = new System.Drawing.Size(25, 14);
             this.ColorPreview.TabIndex = 10;
@@ -292,6 +294,16 @@
             this.NoLightingCheck.Text = "No Lighting";
             this.NoLightingCheck.UseVisualStyleBackColor = true;
             this.NoLightingCheck.CheckedChanged += new System.EventHandler(this.NoLightingCheck_CheckedChanged);
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(369, 671);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(76, 13);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "Average color:";
             // 
             // ImageEditorPanel
             // 
@@ -337,5 +349,6 @@
         private System.Windows.Forms.Button ChooseReplacementButton;
         private System.Windows.Forms.NumericUpDown ReplacementSpinner;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }
