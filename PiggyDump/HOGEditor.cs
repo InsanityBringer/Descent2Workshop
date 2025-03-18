@@ -421,6 +421,11 @@ namespace Descent2Workshop
             bool havePreview = false;
 
             string text;
+
+            //Deal with bugs induced by listviews generating selected index change events in weird ways. 
+            if (index >= datafile.Lumps.Count)
+                return;
+
             if (index != -1 && (text = LumpToText(index)) != null)
             {
                 CurrentTextName = datafile.GetLumpHeader(index).Name;
