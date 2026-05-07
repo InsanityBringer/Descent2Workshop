@@ -96,11 +96,10 @@ namespace Descent2Workshop
                 filename = filename.Remove(12);
             }
             br = new BinaryReader(File.Open(path, FileMode.Open));
-            int size = (int)br.BaseStream.Length;
+            uint size = (uint)br.BaseStream.Length;
             byte[] data = br.ReadBytes((int)br.BaseStream.Length);
-            HOGLump newLump = new HOGLump(filename, size, -1);
+            HOGLump newLump = new HOGLump(datafile, filename, size, 0);
             newLump.Data = data;
-            newLump.Type = HOGLump.IdentifyLump(newLump.Name, newLump.Data);
             var listItem = LumpToListItem(newLump);
 
             if (index != -1)
